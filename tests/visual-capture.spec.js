@@ -42,3 +42,32 @@ test('checkout e pix 390', async ({ page }) => {
   await page.locator('#checkoutNext').click();
   await page.screenshot({path:'qa/screenshots/pix-payment-390.png',fullPage:true});
 });
+
+test('admin 390', async ({ page }) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/admin.html');
+  await page.screenshot({path:'qa/screenshots/admin-dashboard-390.png',fullPage:true});
+  await page.getByRole('button',{name:'Pix'}).click();
+  await page.screenshot({path:'qa/screenshots/admin-pix-390.png',fullPage:true});
+});
+
+test('checkout desktop 1440', async ({ page }) => {
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto('/');
+  await page.getByRole('button',{name:'Escolher este kit'}).nth(1).click();
+  await page.screenshot({path:'qa/screenshots/checkout-desktop-1440.png',fullPage:true});
+});
+
+test('acompanhamento pedido 390', async ({ page }) => {
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');
+  await page.evaluate(()=>{
+    localStorage.setItem('natal_orders',JSON.stringify([{
+      id:'NATAL-DEMO',createdAt:new Date().toISOString(),status:'Pagamento informado',
+      plan:'Personalizado',childName:'Miguel',customerName:'Cliente',phone:'13974100193',
+      total:59.42,txid:'NATALDEMO'
+    }]));
+  });
+  await page.goto('/pedido.html?id=NATAL-DEMO');
+  await page.screenshot({path:'qa/screenshots/order-status-390.png',fullPage:true});
+});
