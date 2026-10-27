@@ -24,7 +24,12 @@ test('assets visuais carregam sem quebra', async ({ page }) => {
     if(response.status()>=400) failed.push({url:response.url(),status:response.status()});
   });
   await page.goto('/');
-  const broken=await page.evaluate(()=>[...document.images].filter(img=>!img.complete||img.naturalWidth===0).map(img=>img.getAttribute('src')));
+  const images=page.locator('img');
+  for(let i=0;i<await images.count();i++){
+    await images.nth(i).scrollIntoViewIfNeeded();
+  }
+  await page.waitForFunction(() => [...document.images].every(img => img.complete));
+  const broken=await page.evaluate(()=>[...document.images].filter(img=>img.naturalWidth===0).map(img=>img.getAttribute('src')));
   expect(broken).toEqual([]);
   expect(failed.filter(x=>/\.(svg|png|webp|avif|jpg|jpeg)(\?|$)/i.test(x.url))).toEqual([]);
 });
