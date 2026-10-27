@@ -51,19 +51,19 @@ const pixFeedback=document.querySelector("#pixCopyFeedback");
 const pixPaidButton=document.querySelector("#pixPaidButton");
 const sendPaymentWhatsApp=document.querySelector("#sendPaymentWhatsApp");
 let step=1;
-let currentProduct=PRODUCTS[1];
+let currentProduct=PRODUCTS.find(p=>p.id==="personal")||PRODUCTS[0]||DEFAULT_PRODUCTS[1];
 let currentOrderId=null;
 
 plan.innerHTML=PRODUCTS.map(p=>`<option value="${p.name}">${p.name} — ${money(p.price)}</option>`).join("");
 plan.value=currentProduct.name;
 
 function setProduct(name){
-  currentProduct=PRODUCTS.find(p=>p.name===name)||PRODUCTS[1];
+  currentProduct=PRODUCTS.find(p=>p.name===name)||PRODUCTS.find(p=>p.id==="personal")||PRODUCTS[0]||DEFAULT_PRODUCTS[1];
   plan.value=currentProduct.name;
   renderSummary();
 }
 function openCheckout(name){
-  setProduct(name||"Personalizado");
+  setProduct(name||currentProduct?.name||"Personalizado");
   step=1;
   renderStep();
   dialog.showModal();
@@ -227,6 +227,6 @@ document.querySelector("#findCep").addEventListener("click",async()=>{
 
 const bar=document.querySelector("#mobileBuyBar");
 const barStrong=bar?.querySelector("strong");
-if(barStrong)barStrong.textContent=`${money(discounted(PRODUCTS[1].price))} no Pix`;
+if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price))} no Pix`;
 const observer=new IntersectionObserver(([entry])=>{if(!dialog.open&&!pixDialog.open)bar.hidden=entry.isIntersecting},{threshold:.15});
 observer.observe(document.querySelector(".hero"));
