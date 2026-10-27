@@ -219,3 +219,33 @@ test('resumo lateral existe só no desktop e acompanha produto', async ({ page }
   await page.setViewportSize({width:390,height:844});
   await expect(page.locator('.checkout-side')).toBeHidden();
 });
+
+test('carrinho soma itens, altera quantidade e leva ao checkout', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button',{name:'Adicionar ao carrinho'}).nth(1).click();
+  await expect(page.locator('#cartDialog')).toBeVisible();
+  await expect(page.locator('#cartCount')).toHaveText('1');
+  await page.locator('[data-cart-plus="personal"]').click();
+  await expect(page.locator('#cartCount')).toHaveText('2');
+  await expect(page.locator('#cartItems')).toContainText('Personalizado');
+  await page.locator('#cartCheckout').click();
+  await expect(page.locator('#checkoutDialog')).toBeVisible();
+  await expect(page.locator('#checkoutCartMini')).toContainText('2× Kit');
+  await expect(page.locator('#checkoutCartMini')).toContainText('Personalizado');
+});
+
+test('carrinho não cria overflow no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/');
+  await page.getByRole('button',{name:'Adicionar ao carrinho'}).first().click();
+  const dims=await page.evaluate(()=>({
+    doc:document.documentElement.scrollWidth,
+    body:document.body.scrollWidth,
+    inner:window.innerWidth,
+    cart:document.querySelector('#cartDialog').getBoundingClientRect().width
+  }));
+  expect(dims.doc).toBeLessThanOrEqual(dims.inner);
+  expect(dims.body).toBeLessThanOrEqual(dims.inner);
+  expect(dims.cart).toBeLessThanOrEqual(dims.inner);
+});
