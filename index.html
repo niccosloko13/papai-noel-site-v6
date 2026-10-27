@@ -37,10 +37,6 @@
     </div>
     <div class="hero-media">
       <picture>
-        <source media="(max-width: 640px)" srcset="assets/visuals/hero-mobile.svg" type="image/avif">
-        <source media="(max-width: 640px)" srcset="assets/visuals/hero-mobile.svg" type="image/webp">
-        <source srcset="assets/visuals/hero-desktop.svg" type="image/avif">
-        <source srcset="assets/visuals/hero-desktop.svg" type="image/webp">
         <img src="assets/visuals/hero-desktop.svg" alt="Kit Papai Noel Passou Aqui preparado em uma sala de Natal" fetchpriority="high">
       </picture>
     </div>
@@ -63,8 +59,6 @@
     <div class="experience-track" role="list">
       <article class="experience-card" role="listitem">
         <picture>
-          <source srcset="assets/visuals/pegadas.svg" type="image/avif">
-          <source srcset="assets/visuals/pegadas.svg" type="image/webp">
           <img src="assets/visuals/pegadas.svg" alt="Pegadas vermelhas do Papai Noel aplicadas no chão da sala" loading="lazy">
         </picture>
         <div>
@@ -75,8 +69,6 @@
       </article>
       <article class="experience-card" role="listitem">
         <picture>
-          <source srcset="assets/visuals/janela.svg" type="image/avif">
-          <source srcset="assets/visuals/janela.svg" type="image/webp">
           <img src="assets/visuals/janela.svg" alt="Adesivo Papai Noel passou aqui aplicado em uma janela" loading="lazy">
         </picture>
         <div>
@@ -87,8 +79,6 @@
       </article>
       <article class="experience-card" role="listitem">
         <picture>
-          <source srcset="assets/visuals/placa.svg" type="image/avif">
-          <source srcset="assets/visuals/placa.svg" type="image/webp">
           <img src="assets/visuals/placa.svg" alt="Placa personalizada escrita Na casa do Miguel" loading="lazy">
         </picture>
         <div>
@@ -210,7 +200,7 @@
     </div>
 
     <div class="pix-qr-wrap">
-      <canvas id="pixQrCanvas" width="280" height="280" aria-label="QR Code Pix"></canvas>
+      <div id="pixQrCanvas" class="pix-qr" aria-label="QR Code Pix"></div>
     </div>
 
     <div class="pix-recipient">
@@ -245,7 +235,7 @@
   <nav><a href="contato.html">Contato</a><a href="#entrega">Entrega e confiança</a></nav>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
+<script src="vendor/qrcode.min.js" defer></script>
 <script src="pix.js" defer></script>
 <script src="app.js" defer></script>
 </body>
