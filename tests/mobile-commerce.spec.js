@@ -30,6 +30,7 @@ test('checkout completa fluxo e abre Pix manual', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   console.log('[qa] admin');
   await page.goto('/admin.html');
+  await page.getByRole('button',{name:'Pix'}).click();
   await page.locator('#pixKey').fill('teste@example.com');
   await page.locator('#displayName').fill('NATAL EXPERIENCIAS');
   await page.locator('#receiverName').fill('NATAL EXPERIENCIAS');
@@ -137,6 +138,7 @@ test('barra fixa não cobre CTAs enquanto os kits estão visíveis', async ({ pa
 test('cliente recebe link de acompanhamento após informar Pix', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/admin.html');
+  await page.getByRole('button',{name:'Pix'}).click();
   await page.locator('#pixKey').fill('teste@example.com');
   await page.locator('#displayName').fill('NATAL EXPERIENCIAS');
   await page.locator('#receiverName').fill('NATAL EXPERIENCIAS');
