@@ -138,11 +138,11 @@
   <button class="btn btn-primary" data-buy="Personalizado">Comprar</button>
 </div>
 
-<dialog class="checkout-dialog" id="checkoutDialog">
+<dialog class="checkout-dialog" id="checkoutDialog" aria-labelledby="checkoutTitle">
   <form method="dialog" class="checkout-shell" id="checkoutForm">
     <header class="checkout-top">
       <button type="button" class="icon-btn" id="closeCheckout" aria-label="Fechar checkout">×</button>
-      <div><small id="checkoutStepLabel">Etapa 1 de 3</small><strong>Finalizar pedido</strong></div>
+      <div><small id="checkoutStepLabel">Etapa 1 de 3</small><strong id="checkoutTitle">Finalizar pedido</strong></div>
     </header>
     <div class="checkout-progress" aria-hidden="true"><span id="checkoutProgress"></span></div>
 
@@ -188,11 +188,11 @@
   </form>
 </dialog>
 
-<dialog class="pix-dialog" id="pixDialog">
+<dialog class="pix-dialog" id="pixDialog" aria-labelledby="pixTitle">
   <section class="pix-panel">
     <button class="icon-btn pix-close" type="button" id="closePix" aria-label="Fechar pagamento">×</button>
     <span class="eyebrow">PAGAMENTO PIX</span>
-    <h2>Finalize seu pagamento</h2>
+    <h2 id="pixTitle">Finalize seu pagamento</h2>
     <p class="pix-subtitle">Confira o valor e o recebedor antes de pagar.</p>
 
     <div class="pix-order-meta">
