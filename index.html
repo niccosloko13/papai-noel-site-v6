@@ -197,6 +197,56 @@
   </form>
 </dialog>
 
+<dialog class="pix-dialog" id="pixDialog">
+  <section class="pix-panel">
+    <button class="icon-btn pix-close" type="button" id="closePix" aria-label="Fechar pagamento">×</button>
+    <span class="eyebrow">PAGAMENTO PIX</span>
+    <h2>Finalize seu pagamento</h2>
+    <p class="pix-subtitle">Confira o valor e o recebedor antes de pagar.</p>
+
+    <div class="pix-order-meta">
+      <div><small>Pedido</small><strong id="pixOrderId">—</strong></div>
+      <div><small>Valor</small><strong id="pixOrderTotal">—</strong></div>
+    </div>
+
+    <div class="pix-qr-wrap">
+      <canvas id="pixQrCanvas" width="280" height="280" aria-label="QR Code Pix"></canvas>
+    </div>
+
+    <div class="pix-recipient">
+      <small>Recebedor</small>
+      <strong id="pixReceiverLabel">Configure no Admin</strong>
+    </div>
+
+    <label class="pix-copy-label">Pix copia e cola
+      <textarea id="pixCopyPaste" rows="4" readonly></textarea>
+    </label>
+
+    <button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button>
+    <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
+
+    <div class="pix-instructions">
+      <b>Como pagar</b>
+      <ol>
+        <li>Abra o app do seu banco.</li>
+        <li>Escolha Pix e escaneie o QR Code ou cole o código.</li>
+        <li>Confira o recebedor e o valor antes de confirmar.</li>
+      </ol>
+    </div>
+
+    <button class="btn btn-primary" type="button" id="pixPaidButton">Já fiz o Pix</button>
+    <p class="pix-manual-note">A confirmação é manual. Seu pedido só muda para <b>Pago</b> depois que nossa equipe conferir o recebimento.</p>
+    <a class="pix-support-link" href="https://wa.me/5513974100193?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20com%20meu%20pedido%20do%20Kit%20Papai%20Noel%20Passou%20Aqui." target="_blank" rel="noopener">Precisa de ajuda? Fale com o atendimento</a>
+  </section>
+</dialog>
+
+<footer class="site-footer">
+  <div><strong>Kit Papai Noel Passou Aqui</strong><span>Atendimento: (13) 97410-0193</span></div>
+  <nav><a href="contato.html">Contato</a><a href="#entrega">Entrega e confiança</a></nav>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
+<script src="pix.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>
