@@ -25,3 +25,9 @@ jobs:
           name: visual-qa
           path: qa/screenshots
           if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-failures
+          path: test-results
+          if-no-files-found: ignore
