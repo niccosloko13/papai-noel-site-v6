@@ -1712,3 +1712,339 @@ body{
   .hero-proof-rail .proof-item strong{font-size:.86rem}
   .microtrust-refined{margin-top:10px}
 }
+
+
+
+/* ===== V5 sophisticated type + audience split + compact product cards ===== */
+body{
+  font-family:"Manrope",Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.trust-copy h2,.section-heading h2{
+  font-family:"Fraunces",Georgia,serif;
+  font-variation-settings:"SOFT" 50,"WONK" 0;
+}
+.brand-copy strong{font-family:"Fraunces",Georgia,serif}
+.hero-cinematic h1{font-family:"Fraunces",Georgia,serif}
+.hero-line-accent{font-style:normal;color:#f5cb64}
+
+/* product card cleanup */
+.kits-section{padding-top:104px}
+.product-grid{padding-top:18px}
+.product-card{overflow:hidden}
+.product-card:nth-child(1),.product-card:nth-child(2),.product-card:nth-child(3){transform:none}
+.product-card.recommended{transform:translateY(-10px)}
+.product-ribbon{
+  top:14px;
+  left:14px;
+  transform:none;
+  min-width:0;
+  max-width:calc(100% - 28px);
+  padding:7px 10px;
+  border:0;
+  border-radius:999px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:.65rem
+}
+.product-card figure{
+  aspect-ratio:4/3;
+  border-radius:0;
+  overflow:hidden
+}
+.product-card figure img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  padding:0
+}
+.product-card-body{padding:22px}
+.product-card h3{font-size:clamp(1.65rem,2.4vw,2rem);line-height:1.04}
+.product-prop{min-height:0}
+.benefits{padding:12px 13px}
+.product-actions{margin-top:2px}
+
+/* family vs business */
+.audience-section{
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:104px max(18px,calc((100vw - var(--max))/2)) 96px;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(160,27,43,.07),transparent 24rem),
+    radial-gradient(circle at 88% 15%,rgba(9,81,56,.08),transparent 28rem),
+    #f8f1e8
+}
+.audience-heading{
+  max-width:920px;
+  margin-bottom:34px
+}
+.audience-heading h2{
+  font-size:clamp(2.7rem,5.6vw,5.4rem);
+  line-height:.98;
+  color:#731827
+}
+.audience-heading h2 em{font-style:normal;color:#0d5a40}
+.audience-heading p{font-size:1.03rem;max-width:68ch}
+.audience-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px
+}
+.audience-card{
+  position:relative;
+  min-height:620px;
+  overflow:hidden;
+  border-radius:30px;
+  box-shadow:0 26px 70px rgba(60,34,24,.14);
+  isolation:isolate
+}
+.audience-card img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .45s ease
+}
+.audience-card:hover img{transform:scale(1.025)}
+.audience-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.02) 22%,rgba(12,10,8,.14) 48%,rgba(13,9,7,.88) 100%),
+    linear-gradient(90deg,rgba(72,14,24,.16),transparent 60%);
+  z-index:1
+}
+.audience-business .audience-overlay{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.03) 22%,rgba(4,28,19,.18) 48%,rgba(4,33,24,.9) 100%)
+}
+.audience-content{
+  position:absolute;
+  z-index:3;
+  left:26px;right:26px;bottom:28px;
+  color:#fff
+}
+.audience-number{
+  display:grid;
+  place-items:center;
+  width:38px;height:38px;
+  margin-bottom:14px;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:50%;
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(8px);
+  font-size:.72rem;font-weight:800
+}
+.audience-content small{
+  display:block;
+  color:#f5d788;
+  font-size:.68rem;
+  font-weight:900;
+  letter-spacing:.13em
+}
+.audience-content h3{
+  margin:8px 0 10px;
+  max-width:14ch;
+  color:#fff;
+  font-size:clamp(2rem,3.2vw,3.45rem);
+  line-height:.98
+}
+.audience-content p{
+  max-width:46ch;
+  margin:0 0 18px;
+  color:rgba(255,255,255,.78)
+}
+.audience-content a{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  min-height:44px;
+  padding:0 15px;
+  border-radius:12px;
+  background:#fff8ec;
+  color:#40151a;
+  font-size:.82rem;
+  font-weight:900
+}
+.audience-business .audience-content a{color:#0d4d38}
+.audience-product-note{
+  position:absolute;
+  z-index:3;
+  top:18px;right:18px;
+  display:grid;
+  gap:2px;
+  max-width:190px;
+  padding:11px 13px;
+  border-radius:14px;
+  background:rgba(255,249,239,.93);
+  color:#2c1d18;
+  box-shadow:0 12px 30px rgba(0,0,0,.12)
+}
+.audience-product-note span{font-size:.62rem;color:#8f6e44;font-weight:800}
+.audience-product-note strong{font-size:.82rem}
+.audience-footnote{
+  margin:14px 0 0;
+  color:#8b7c72;
+  font-size:.76rem
+}
+
+/* how it works - photo-led */
+.ritual-section{
+  padding-top:96px;
+  padding-bottom:96px
+}
+.ritual-section .section-heading p{
+  margin-inline:auto;
+  max-width:58ch
+}
+.ritual-section .steps{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px
+}
+.ritual-section .steps>div{
+  min-height:0;
+  padding:0 0 22px;
+  overflow:hidden;
+  background:#fffdf9;
+  border:1px solid #eadfce;
+  box-shadow:0 18px 44px rgba(84,45,25,.08)
+}
+.step-photo{
+  display:block!important;
+  width:100%;
+  height:190px;
+  margin:0 0 18px!important;
+  color:inherit!important;
+  overflow:hidden;
+  background:#eee3d4
+}
+.step-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.ritual-section .steps b,
+.ritual-section .steps>div>span:not(.step-photo){
+  margin-left:22px
+}
+.ritual-section .steps h3,
+.ritual-section .steps p{
+  margin-left:22px;
+  margin-right:22px
+}
+.ritual-section .steps b{
+  margin-top:-38px;
+  position:relative;
+  z-index:2
+}
+
+/* final CTA becomes editorial */
+.final-cta-story{
+  width:min(100% - 32px,var(--max));
+  min-height:0;
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  gap:0;
+  padding:0;
+  overflow:hidden;
+  color:#fff;
+  border-radius:34px;
+  background:#781522;
+  box-shadow:0 28px 76px rgba(98,20,31,.22)
+}
+.final-cta-media{
+  position:relative;
+  min-height:520px
+}
+.final-cta-media>img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.final-cta-media:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent 62%,rgba(120,21,34,.62) 100%)
+}
+.final-product-card{
+  position:absolute;
+  z-index:3;
+  left:24px;bottom:24px;
+  width:min(330px,calc(100% - 48px));
+  display:grid;
+  grid-template-columns:82px 1fr;
+  gap:11px;
+  align-items:center;
+  padding:11px;
+  border-radius:18px;
+  background:rgba(255,249,239,.94);
+  color:#2c1b17;
+  box-shadow:0 18px 44px rgba(0,0,0,.18)
+}
+.final-product-card img{
+  width:82px;height:82px;object-fit:cover;border-radius:12px;background:#eee1cf
+}
+.final-product-card div{display:grid;gap:2px}
+.final-product-card small{color:#a31e30;font-size:.62rem;font-weight:900}
+.final-product-card strong{font-size:.95rem}
+.final-product-card span{color:#0b6547;font-weight:900;font-size:.8rem}
+.final-cta-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:52px
+}
+.final-cta-copy .eyebrow{color:#f2d07f}
+.final-cta-copy h2{
+  max-width:11ch;
+  margin:.5rem 0 1rem;
+  font-size:clamp(2.8rem,4.9vw,5.2rem);
+  line-height:.96
+}
+.final-cta-copy p{
+  max-width:46ch;
+  margin:0 0 22px;
+  color:rgba(255,255,255,.76);
+  font-size:1rem
+}
+.final-cta-copy .btn{
+  align-self:flex-start;
+  background:#f4cd6d;
+  color:#4d160e
+}
+.final-cta-copy>small{
+  margin-top:12px;
+  color:rgba(255,255,255,.62)
+}
+
+@media(max-width:900px){
+  .audience-grid{grid-template-columns:1fr}
+  .audience-card{min-height:520px}
+  .ritual-section .steps{grid-template-columns:1fr}
+  .final-cta-story{grid-template-columns:1fr}
+  .final-cta-media{min-height:380px}
+  .final-cta-copy{padding:38px 28px 42px}
+}
+@media(max-width:699px){
+  .kits-section{padding-top:82px}
+  .product-grid{padding-top:8px}
+  .product-card.recommended{transform:none}
+  .product-card figure{aspect-ratio:16/11}
+  .product-ribbon{top:10px;left:10px;max-width:calc(100% - 20px)}
+  .audience-section{padding-top:78px;padding-bottom:74px}
+  .audience-heading h2{font-size:clamp(2.6rem,11.5vw,4rem)}
+  .audience-card{min-height:500px;border-radius:24px}
+  .audience-content{left:18px;right:18px;bottom:20px}
+  .audience-content h3{font-size:2.35rem}
+  .audience-product-note{top:12px;right:12px;max-width:160px}
+  .ritual-section{padding-top:74px;padding-bottom:74px}
+  .step-photo{height:175px}
+  .final-cta-story{width:calc(100% - 24px);border-radius:26px}
+  .final-cta-media{min-height:320px}
+  .final-product-card{left:14px;bottom:14px;width:calc(100% - 28px)}
+  .final-cta-copy{padding:30px 20px 34px}
+  .final-cta-copy h2{font-size:clamp(2.65rem,11vw,3.9rem)}
+}
