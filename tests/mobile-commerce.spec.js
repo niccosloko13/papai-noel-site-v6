@@ -161,3 +161,44 @@ test('cliente recebe link de acompanhamento após informar Pix', async ({ page }
   const href=await link.getAttribute('href');
   expect(href).toContain('pedido.html?id=NATAL-');
 });
+
+test('hero mobile mantém CTA e início do produto no primeiro viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const metrics = await page.evaluate(() => {
+    const cta=document.querySelector('.hero-copy .btn');
+    const media=document.querySelector('.hero-media');
+    const c=cta.getBoundingClientRect();
+    const m=media.getBoundingClientRect();
+    return {ctaTop:c.top,ctaBottom:c.bottom,mediaTop:m.top,viewport:innerHeight};
+  });
+  expect(metrics.ctaBottom).toBeLessThanOrEqual(metrics.viewport);
+  expect(metrics.mediaTop).toBeLessThan(metrics.viewport);
+});
+
+test('alvos de toque principais têm pelo menos 44px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const sizes=await page.evaluate(() => [...document.querySelectorAll('.btn,.header-cta')].map(el=>{
+    const r=el.getBoundingClientRect();
+    return {text:el.textContent.trim(),w:r.width,h:r.height};
+  }));
+  for(const item of sizes){
+    expect(item.h, item.text).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('checkout mobile ocupa a largura sem overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/');
+  await page.getByRole('button',{name:'Escolher este kit'}).first().click();
+  const dims=await page.evaluate(()=>({
+    doc:document.documentElement.scrollWidth,
+    body:document.body.scrollWidth,
+    inner:window.innerWidth,
+    dialog:document.querySelector('#checkoutDialog').getBoundingClientRect().width
+  }));
+  expect(dims.doc).toBeLessThanOrEqual(dims.inner);
+  expect(dims.body).toBeLessThanOrEqual(dims.inner);
+  expect(dims.dialog).toBeLessThanOrEqual(dims.inner);
+});
