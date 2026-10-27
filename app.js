@@ -49,6 +49,7 @@ const pixCanvas=document.querySelector("#pixQrCanvas");
 const pixCode=document.querySelector("#pixCopyPaste");
 const pixFeedback=document.querySelector("#pixCopyFeedback");
 const pixPaidButton=document.querySelector("#pixPaidButton");
+const sendPaymentWhatsApp=document.querySelector("#sendPaymentWhatsApp");
 let step=1;
 let currentProduct=PRODUCTS[1];
 let currentOrderId=null;
@@ -145,6 +146,8 @@ async function showPixPayment(order){
   pixPaidButton.disabled=false;
   pixPaidButton.textContent="Já fiz o Pix";
   pixPaidButton.classList.remove("is-informed");
+  sendPaymentWhatsApp.hidden=true;
+  sendPaymentWhatsApp.href="#";
   if(window.QRCode){
     pixCanvas.innerHTML="";
     new window.QRCode(pixCanvas,{
@@ -166,7 +169,13 @@ function markPaymentInformed(){
   pixPaidButton.disabled=true;
   pixPaidButton.textContent="Pagamento informado ✓";
   pixPaidButton.classList.add("is-informed");
-  pixFeedback.textContent="Recebemos sua informação. Nossa equipe vai conferir o Pix e atualizar o pedido.";
+  pixFeedback.textContent="Recebemos sua informação. Para nossa equipe localizar o pagamento sem atraso, envie a confirmação pelo WhatsApp.";
+  const order=getOrders().find(o=>o.id===currentOrderId);
+  if(order){
+    const msg=`Olá! Já fiz o Pix do pedido ${order.id} no valor de ${money(order.total)}. Nome: ${order.customerName||""}. Vou aguardar a conferência.`;
+    sendPaymentWhatsApp.href="https://wa.me/5513974100193?text="+encodeURIComponent(msg);
+    sendPaymentWhatsApp.hidden=false;
+  }
 }
 
 document.addEventListener("click",e=>{
