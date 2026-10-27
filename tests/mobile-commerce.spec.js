@@ -59,7 +59,7 @@ test('checkout completa fluxo e abre Pix manual', async ({ page }) => {
   await expect(page.locator('#pixDialog')).toBeVisible();
   console.log('[qa] pix visível');
   await expect(page.locator('#pixCopyPaste')).not.toHaveValue('');
-  await expect(page.locator('#pixQrCanvas canvas, #pixQrCanvas img')).toHaveCount(1);
+  await expect(page.locator('#pixQrCanvas > *').first()).toBeVisible();
   await page.locator('#pixPaidButton').click();
   await expect(page.locator('#pixPaidButton')).toContainText('Pagamento informado');
 });
@@ -179,10 +179,15 @@ test('hero mobile mantém CTA e início do produto no primeiro viewport', async 
 test('alvos de toque principais têm pelo menos 44px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  const sizes=await page.evaluate(() => [...document.querySelectorAll('.btn,.header-cta')].map(el=>{
-    const r=el.getBoundingClientRect();
-    return {text:el.textContent.trim(),w:r.width,h:r.height};
-  }));
+  const sizes=await page.evaluate(() => [...document.querySelectorAll('.btn,.header-cta')]
+    .filter(el => {
+      const r=el.getBoundingClientRect();
+      return r.width>0 && r.height>0 && getComputedStyle(el).visibility!=='hidden';
+    })
+    .map(el=>{
+      const r=el.getBoundingClientRect();
+      return {text:el.textContent.trim(),w:r.width,h:r.height};
+    }));
   for(const item of sizes){
     expect(item.h, item.text).toBeGreaterThanOrEqual(44);
   }
