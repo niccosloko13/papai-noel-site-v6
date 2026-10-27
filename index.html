@@ -9,26 +9,42 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="announcement-bar" role="note">
+  <span>🎄 Edição especial de Natal</span>
+  <b>15% OFF no Pix</b>
+  <span>Personalizado para a sua família</span>
+</div>
 <header class="site-header">
   <a class="brand" href="#inicio" aria-label="Kit Papai Noel Passou Aqui">
     <span class="brand-kicker">Kit</span>
     <strong>Papai Noel Passou Aqui</strong>
   </a>
-  <a class="header-cta" href="#kits">Comprar</a>
+  <div class="header-actions">
+    <a class="header-cta" href="#kits">Ver kits</a>
+    <button class="cart-trigger" id="openCart" type="button" aria-label="Abrir carrinho">
+      <span class="cart-icon" aria-hidden="true">🛍️</span>
+      <span class="cart-label">Carrinho</span>
+      <b id="cartCount">0</b>
+    </button>
+  </div>
 </header>
 
 <main>
   <section class="hero section" id="inicio">
     <div class="hero-copy">
-      <span class="eyebrow">MAGIA PERSONALIZADA DE NATAL</span>
-      <h1>Faça seu filho acreditar que o Papai Noel realmente passou por aí.</h1>
-      <p>Pegadas e itens personalizados para criar uma manhã de Natal inesquecível.</p>
+      <div class="hero-season"><span>✦</span> EDIÇÃO NATAL 2026 <span>✦</span></div>
+      <span class="eyebrow">UMA EXPERIÊNCIA PARA A MANHÃ DE NATAL</span>
+      <h1>Faça parecer que o <em>Papai Noel</em> realmente passou por aí.</h1>
+      <p>Você prepara tudo à noite. Pela manhã, a criança encontra pegadas, sinais e itens personalizados com o nome dela.</p>
       <div class="hero-price">
         <span>A partir de</span>
         <strong>R$ 39,90</strong>
         <em>15% OFF no Pix</em>
       </div>
-      <a class="btn btn-primary" href="#kits">Escolher meu kit</a>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-holiday" href="#kits">Escolher meu kit</a>
+        <a class="hero-secondary" href="#experiencia">Ver como fica em casa →</a>
+      </div>
       <div class="microtrust" aria-label="Benefícios">
         <span>✓ Personalizado</span>
         <span>✓ Envio para todo o Brasil</span>
@@ -36,18 +52,20 @@
       </div>
     </div>
     <div class="hero-media">
+      <div class="hero-photo-badge hero-photo-badge-top"><span>✦</span><b>Personalizado</b><small>com o nome da criança</small></div>
       <picture>
         <source media="(max-width: 640px)" srcset="assets/visuals/hero-mobile.svg">
         <img src="assets/visuals/hero-desktop.svg" alt="Kit Papai Noel Passou Aqui preparado em uma sala de Natal" fetchpriority="high">
       </picture>
+      <div class="hero-photo-badge hero-photo-badge-bottom"><b>Uma noite para preparar.</b><small>Uma lembrança para a vida toda.</small></div>
     </div>
   </section>
 
   <section class="section" id="kits">
     <div class="section-heading">
       <span class="eyebrow">ESCOLHA SEU KIT</span>
-      <h2>Três formas de criar a surpresa.</h2>
-      <p>O Personalizado é o favorito para quem quer deixar a experiência mais real.</p>
+      <h2>Escolha o tamanho da magia.</h2>
+      <p>Todos os kits foram pensados para montar em poucos minutos. O Personalizado é o equilíbrio ideal entre surpresa, detalhe e preço.</p>
     </div>
     <div class="product-grid" id="productGrid" tabindex="0" role="region" aria-label="Kits disponíveis"></div>
   </section>
@@ -94,12 +112,12 @@
   <section class="section how-it-works" id="como-funciona">
     <div class="section-heading">
       <span class="eyebrow">SIMPLES DE PREPARAR</span>
-      <h2>Três passos e está pronto.</h2>
+      <h2>A mágica acontece em três passos.</h2>
     </div>
     <div class="steps">
-      <div><b>1</b><h3>Escolha</h3><p>Selecione o kit ideal.</p></div>
-      <div><b>2</b><h3>Personalize</h3><p>Informe o nome da criança e a carta.</p></div>
-      <div><b>3</b><h3>Prepare</h3><p>Monte a surpresa na noite de Natal.</p></div>
+      <div><b>1</b><span>ESCOLHA</span><h3>Seu kit ideal</h3><p>Do essencial ao completo, escolha o nível de experiência que você quer criar.</p></div>
+      <div><b>2</b><span>PERSONALIZE</span><h3>Com o nome dela</h3><p>Informe o nome da criança e deixe a carta com a mensagem da sua família.</p></div>
+      <div><b>3</b><span>PREPARE À NOITE</span><h3>Acorde para a magia</h3><p>Monte as pegadas e os detalhes. Pela manhã, é só assistir à reação.</p></div>
     </div>
   </section>
 
@@ -133,6 +151,28 @@
   </section>
 </main>
 
+<dialog class="cart-dialog" id="cartDialog" aria-labelledby="cartTitle">
+  <section class="cart-panel">
+    <header class="cart-head">
+      <div><span class="eyebrow">SUA SACOLA</span><h2 id="cartTitle">Carrinho de Natal</h2></div>
+      <button class="icon-btn" id="closeCart" type="button" aria-label="Fechar carrinho">×</button>
+    </header>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-empty" id="cartEmpty">
+      <span class="cart-empty-icon">🎁</span>
+      <h3>Sua sacola está vazia</h3>
+      <p>Escolha um kit para começar a preparar a surpresa.</p>
+      <button class="btn btn-primary" id="cartShop" type="button">Ver os kits</button>
+    </div>
+    <footer class="cart-footer" id="cartFooter" hidden>
+      <div class="cart-savings"><span>Economia no Pix</span><b id="cartSavings">—</b></div>
+      <div class="cart-total"><span>Total no Pix</span><strong id="cartTotal">—</strong></div>
+      <button class="btn btn-primary btn-holiday" id="cartCheckout" type="button">Continuar para personalização</button>
+      <small>Você revisa tudo antes de gerar o Pix.</small>
+    </footer>
+  </section>
+</dialog>
+
 <div class="mobile-buy-bar" id="mobileBuyBar" hidden>
   <div><small>Kit Personalizado</small><strong>R$ 59,42 no Pix</strong></div>
   <button class="btn btn-primary" data-buy="Personalizado">Comprar</button>
@@ -165,8 +205,9 @@
     </aside>
 
     <section class="checkout-step active" data-step="1">
-      <h2>Personalize seu kit</h2>
-      <label>Kit<select id="checkoutPlan"></select></label>
+      <div class="checkout-step-kicker">PASSO 1 • PERSONALIZAÇÃO</div>
+      <h2>Deixe a surpresa com a cara da sua família.</h2>
+      <div class="checkout-cart-mini" id="checkoutCartMini"></div>
       <label>Nome da criança<input id="childName" maxlength="40" required placeholder="Ex.: Miguel"></label>
       <label>Como você quer que seja escrito na carta?
         <textarea id="letterText" maxlength="220" rows="4" placeholder="Opcional. Deixe em branco para usar nossa mensagem padrão."></textarea>
@@ -180,7 +221,8 @@
     </section>
 
     <section class="checkout-step" data-step="2">
-      <h2>Onde vamos entregar?</h2>
+      <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
+      <h2>Para onde a magia vai?</h2>
       <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" required></label>
       <button type="button" class="btn btn-secondary" id="findCep">Buscar CEP</button>
       <label>Endereço<input id="address" required></label>
@@ -193,7 +235,8 @@
     </section>
 
     <section class="checkout-step" data-step="3">
-      <h2>Pagamento</h2>
+      <div class="checkout-step-kicker">PASSO 3 • PAGAMENTO</div>
+      <h2>Revise e finalize no Pix.</h2>
       <div class="order-summary" id="orderSummary"></div>
       <label class="payment-choice selected"><input type="radio" checked name="payment" value="Pix"><span><strong>Pix</strong><small>15% de desconto</small></span></label>
       <label class="payment-choice disabled"><input type="radio" disabled><span><strong>Cartão</strong><small>Em manutenção</small></span></label>
