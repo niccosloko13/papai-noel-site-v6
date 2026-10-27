@@ -233,5 +233,19 @@ document.querySelector("#findCep").addEventListener("click",async()=>{
 const bar=document.querySelector("#mobileBuyBar");
 const barStrong=bar?.querySelector("strong");
 if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price))} no Pix`;
-const observer=new IntersectionObserver(([entry])=>{if(!dialog.open&&!pixDialog.open)bar.hidden=entry.isIntersecting},{threshold:.15});
-observer.observe(document.querySelector(".hero"));
+
+const stickyVisibility={hero:true,kits:false};
+function refreshStickyBuyBar(){
+  if(!bar)return;
+  const blocked=stickyVisibility.hero||stickyVisibility.kits||dialog.open||pixDialog.open;
+  bar.hidden=blocked;
+}
+const observer=new IntersectionObserver((entries)=>{
+  for(const entry of entries){
+    if(entry.target.id==="inicio")stickyVisibility.hero=entry.isIntersecting;
+    if(entry.target.id==="kits")stickyVisibility.kits=entry.isIntersecting;
+  }
+  refreshStickyBuyBar();
+},{threshold:.08});
+observer.observe(document.querySelector("#inicio"));
+observer.observe(document.querySelector("#kits"));
