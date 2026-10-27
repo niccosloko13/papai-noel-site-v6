@@ -34,7 +34,15 @@ test('assets visuais carregam sem quebra', async ({ page }) => {
   expect(failed.filter(x=>/\.(svg|png|webp|avif|jpg|jpeg)(\?|$)/i.test(x.url))).toEqual([]);
 });
 
-test('landing mantém exatamente seis blocos comerciais', async ({ page }) => {
+test('landing mantém a narrativa comercial oficial em oito blocos', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('main > section.section')).toHaveCount(6);
+  await expect(page.locator('main > section.section')).toHaveCount(8);
+  const ids = await page.locator('main > section.section').evaluateAll(nodes => nodes.map(n => n.id || n.className));
+  expect(ids[0]).toBe('inicio');
+  expect(ids[1]).toBe('conteudo-kit');
+  expect(ids[2]).toBe('kits');
+  expect(ids[3]).toBe('como-fica');
+  expect(ids[4]).toBe('experiencia');
+  expect(ids[5]).toBe('como-funciona');
+  expect(ids[6]).toBe('entrega');
 });
