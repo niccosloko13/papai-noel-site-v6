@@ -20,30 +20,23 @@ window.STORE_DATA = Object.freeze({
   products: [
     {
       id: "basic",
-      name: "Básico",
+      name: "Essencial",
       price: 39.90,
-      prop: "Para criar a surpresa essencial.",
-      benefits: ["10 pegadas adesivas","Adesivo para janela","Guia rápido de aplicação"],
-      image: "assets/visuals/kit-basico.svg",
+      prop: "As pistas essenciais para transformar a casa na noite de Natal.",
+      benefits: ["10 pares de pegadas (20 unidades)","Adesivo para janela","Guia de aplicação"],
+      image: "assets/product/pegadas.jpg",
+      gallery: ["assets/product/pegadas.jpg","assets/product/adesivo-janela.jpg"],
       active: true
     },
     {
       id: "personal",
       name: "Personalizado",
       price: 69.90,
-      prop: "A experiência que faz a visita parecer real.",
-      benefits: ["20 pegadas adesivas","Adesivo para janela","Placa com nome da criança","Certificado personalizado"],
-      image: "assets/visuals/kit-personalizado.svg",
-      badge: "Mais escolhido",
-      active: true
-    },
-    {
-      id: "premium",
-      name: "Premium",
-      price: 99.90,
-      prop: "A experiência completa para presentear.",
-      benefits: ["30 pegadas adesivas","Adesivo para janela","Placa personalizada","Certificado oficial","Guia mágico","Embalagem especial"],
-      image: "assets/visuals/kit-premium.svg",
+      prop: "Mais pistas e detalhes personalizados para fazer a visita parecer única.",
+      benefits: ["18 pares de pegadas (36 unidades)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada"],
+      image: "assets/product/pegadas.jpg",
+      gallery: ["assets/product/pegadas.jpg","assets/product/adesivo-janela.jpg"],
+      badge: "Experiência completa",
       active: true
     }
   ]
