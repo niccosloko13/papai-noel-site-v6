@@ -88,6 +88,16 @@ function renderSummary(){
     <div class="summary-row"><span>Desconto Pix ${Number(cfg.discount)||0}%</span><b>− ${money(currentProduct.price-productPix)}</b></div>
     <div class="summary-row"><span>Frete</span><b>${shipping===0?"Grátis":money(shipping)}</b></div>
     <div class="summary-row total"><span>Total no Pix</span><b>${money(total)}</b></div>`;
+  const sidePlan=document.querySelector("#sidePlan");
+  const sidePrice=document.querySelector("#sidePrice");
+  const sidePix=document.querySelector("#sidePix");
+  const sideShipping=document.querySelector("#sideShipping");
+  const sideTotal=document.querySelector("#sideTotal");
+  if(sidePlan)sidePlan.textContent=currentProduct.name;
+  if(sidePrice)sidePrice.textContent=money(currentProduct.price);
+  if(sidePix)sidePix.textContent=(Number(cfg.discount)||0)+"% OFF";
+  if(sideShipping)sideShipping.textContent=shipping===0?"Grátis":money(shipping);
+  if(sideTotal)sideTotal.textContent=money(total);
 }
 function validateStep(){
   const active=document.querySelector(`.checkout-step[data-step="${step}"]`);
