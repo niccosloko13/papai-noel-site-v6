@@ -133,3 +133,29 @@ test('barra fixa não cobre CTAs enquanto os kits estão visíveis', async ({ pa
   await page.locator('#como-funciona').scrollIntoViewIfNeeded();
   await expect(page.locator('#mobileBuyBar')).toBeVisible();
 });
+
+test('cliente recebe link de acompanhamento após informar Pix', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/admin.html');
+  await page.locator('#pixKey').fill('teste@example.com');
+  await page.locator('#displayName').fill('NATAL EXPERIENCIAS');
+  await page.locator('#receiverName').fill('NATAL EXPERIENCIAS');
+  await page.locator('#savePix').click();
+
+  await page.goto('/');
+  await page.getByRole('button',{name:'Escolher este kit'}).first().click();
+  await page.locator('#childName').fill('Ana');
+  await page.locator('#checkoutNext').click();
+  await page.locator('#cep').fill('09710000');
+  await page.locator('#address').fill('Rua Teste');
+  await page.locator('#number').fill('10');
+  await page.locator('#customerName').fill('Cliente');
+  await page.locator('#phone').fill('13974100193');
+  await page.locator('#checkoutNext').click();
+  await page.locator('#checkoutNext').click();
+  await page.locator('#pixPaidButton').click();
+  const link=page.locator('#trackOrderLink');
+  await expect(link).toBeVisible();
+  const href=await link.getAttribute('href');
+  expect(href).toContain('pedido.html?id=NATAL-');
+});
