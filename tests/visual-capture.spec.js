@@ -20,6 +20,7 @@ for (const [name,width,height] of shots) {
 test('checkout e pix 390', async ({ page }) => {
   await page.setViewportSize({width:390,height:844});
   await page.goto('/admin.html');
+  await page.getByRole('button',{name:'Pix'}).click();
   await page.locator('#pixKey').fill('teste@example.com');
   await page.locator('#displayName').fill('NATAL EXPERIENCIAS');
   await page.locator('#receiverName').fill('NATAL EXPERIENCIAS');
