@@ -2,7 +2,7 @@ const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
   {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["10 pares de pegadas (20 unidades)","Adesivo para janela","Guia de aplicação"],image:"assets/product/pegadas.jpg",active:true},
   {id:"personal",name:"Personalizado",price:69.90,prop:"Mais pistas e detalhes personalizados para fazer a visita parecer única.",benefits:["18 pares de pegadas (36 unidades)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada"],image:"assets/product/pegadas.jpg",badge:"Experiência completa",active:true}
 ]);
-const getProducts=()=>JSON.parse(localStorage.getItem("natal_products")||"null")||DEFAULT_PRODUCTS;
+const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id))?stored:DEFAULT_PRODUCTS};
 let PRODUCTS=getProducts().filter(p=>p.active!==false);
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
