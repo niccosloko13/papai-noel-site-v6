@@ -87,3 +87,6 @@ a{color:inherit;text-decoration:none}
     width:100%;
   }
 }
+
+.pix-qr canvas,.pix-qr img,.pix-qr table{display:block!important;max-width:100%!important;height:auto!important;margin:auto!important}
+.pix-qr table{border-collapse:collapse}
