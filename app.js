@@ -145,8 +145,18 @@ async function showPixPayment(order){
   pixPaidButton.disabled=false;
   pixPaidButton.textContent="Já fiz o Pix";
   pixPaidButton.classList.remove("is-informed");
-  if(window.QRCode?.toCanvas){
-    await window.QRCode.toCanvas(pixCanvas,order.pixPayload,{width:280,margin:1,errorCorrectionLevel:"M"});
+  if(window.QRCode){
+    pixCanvas.innerHTML="";
+    new window.QRCode(pixCanvas,{
+      text:order.pixPayload,
+      width:280,
+      height:280,
+      colorDark:"#111111",
+      colorLight:"#ffffff",
+      correctLevel:window.QRCode.CorrectLevel.M
+    });
+  } else {
+    pixCanvas.textContent="QR Code indisponível. Use o Pix copia e cola.";
   }
   pixDialog.showModal();
 }
