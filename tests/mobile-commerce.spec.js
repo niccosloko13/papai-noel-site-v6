@@ -124,3 +124,12 @@ test('catálogo continua funcional com apenas um produto ativo', async ({ page }
   await page.getByRole('button',{name:'Escolher este kit'}).click();
   await expect(page.locator('#checkoutDialog')).toBeVisible();
 });
+
+test('barra fixa não cobre CTAs enquanto os kits estão visíveis', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.locator('#kits').scrollIntoViewIfNeeded();
+  await expect(page.locator('#mobileBuyBar')).toBeHidden();
+  await page.locator('#como-funciona').scrollIntoViewIfNeeded();
+  await expect(page.locator('#mobileBuyBar')).toBeVisible();
+});
