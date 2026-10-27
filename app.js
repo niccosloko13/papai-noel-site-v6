@@ -234,18 +234,24 @@ const bar=document.querySelector("#mobileBuyBar");
 const barStrong=bar?.querySelector("strong");
 if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price))} no Pix`;
 
-const stickyVisibility={hero:true,kits:false};
+function isInViewport(el){
+  if(!el)return false;
+  const r=el.getBoundingClientRect();
+  return r.bottom>0 && r.top<window.innerHeight;
+}
+let stickyTick=false;
 function refreshStickyBuyBar(){
   if(!bar)return;
-  const blocked=stickyVisibility.hero||stickyVisibility.kits||dialog.open||pixDialog.open;
+  const blocked=isInViewport(document.querySelector("#inicio"))||
+    isInViewport(document.querySelector("#kits"))||
+    dialog.open||pixDialog.open;
   bar.hidden=blocked;
 }
-const observer=new IntersectionObserver((entries)=>{
-  for(const entry of entries){
-    if(entry.target.id==="inicio")stickyVisibility.hero=entry.isIntersecting;
-    if(entry.target.id==="kits")stickyVisibility.kits=entry.isIntersecting;
-  }
-  refreshStickyBuyBar();
-},{threshold:.08});
-observer.observe(document.querySelector("#inicio"));
-observer.observe(document.querySelector("#kits"));
+function scheduleStickyRefresh(){
+  if(stickyTick)return;
+  stickyTick=true;
+  requestAnimationFrame(()=>{stickyTick=false;refreshStickyBuyBar()});
+}
+window.addEventListener("scroll",scheduleStickyRefresh,{passive:true});
+window.addEventListener("resize",scheduleStickyRefresh);
+refreshStickyBuyBar();
