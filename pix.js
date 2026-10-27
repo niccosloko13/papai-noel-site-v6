@@ -45,14 +45,17 @@
   }
 
   function getPixConfig() {
+    const base = window.STORE_DATA?.pix || {};
+    const shipping = window.STORE_DATA?.shipping || {};
     return {
-      enabled: true,
+      enabled: false,
       discount: 15,
       key: "",
       receiverName: "",
       displayName: "",
       city: "SAO PAULO",
-      shippingFlat: 0,
+      shippingFlat: Number(shipping.flatRate || 0),
+      ...base,
       ...JSON.parse(localStorage.getItem("natal_pix_config") || "{}")
     };
   }
