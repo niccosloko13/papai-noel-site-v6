@@ -1,8 +1,8 @@
-const DEFAULT_PRODUCTS=[
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
   {id:"basic",name:"Básico",price:39.90,prop:"Para criar a surpresa essencial.",benefits:["10 pegadas adesivas","Adesivo para janela","Guia rápido de aplicação"],image:"assets/visuals/kit-basico.svg",active:true},
   {id:"personal",name:"Personalizado",price:69.90,prop:"A experiência que faz a visita parecer real.",benefits:["20 pegadas adesivas","Adesivo para janela","Placa com nome da criança","Certificado personalizado"],image:"assets/visuals/kit-personalizado.svg",badge:"Mais escolhido",active:true},
   {id:"premium",name:"Premium",price:99.90,prop:"A experiência completa para presentear.",benefits:["30 pegadas adesivas","Adesivo para janela","Placa personalizada","Certificado oficial","Guia mágico","Embalagem especial"],image:"assets/visuals/kit-premium.svg",active:true}
-];
+]);
 const getProducts=()=>JSON.parse(localStorage.getItem("natal_products")||"null")||DEFAULT_PRODUCTS;
 let PRODUCTS=getProducts().filter(p=>p.active!==false);
 
