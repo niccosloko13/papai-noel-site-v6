@@ -50,6 +50,7 @@ const pixCode=document.querySelector("#pixCopyPaste");
 const pixFeedback=document.querySelector("#pixCopyFeedback");
 const pixPaidButton=document.querySelector("#pixPaidButton");
 const sendPaymentWhatsApp=document.querySelector("#sendPaymentWhatsApp");
+const trackOrderLink=document.querySelector("#trackOrderLink");
 let step=1;
 let currentProduct=PRODUCTS.find(p=>p.id==="personal")||PRODUCTS[0]||DEFAULT_PRODUCTS[1];
 let currentOrderId=null;
@@ -148,6 +149,8 @@ async function showPixPayment(order){
   pixPaidButton.classList.remove("is-informed");
   sendPaymentWhatsApp.hidden=true;
   sendPaymentWhatsApp.href="#";
+  trackOrderLink.hidden=true;
+  trackOrderLink.href="#";
   if(window.QRCode){
     pixCanvas.innerHTML="";
     new window.QRCode(pixCanvas,{
@@ -175,6 +178,8 @@ function markPaymentInformed(){
     const msg=`Olá! Já fiz o Pix do pedido ${order.id} no valor de ${money(order.total)}. Nome: ${order.customerName||""}. Vou aguardar a conferência.`;
     sendPaymentWhatsApp.href="https://wa.me/5513974100193?text="+encodeURIComponent(msg);
     sendPaymentWhatsApp.hidden=false;
+    trackOrderLink.href="pedido.html?id="+encodeURIComponent(order.id);
+    trackOrderLink.hidden=false;
   }
 }
 
