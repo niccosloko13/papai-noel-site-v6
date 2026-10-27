@@ -2479,3 +2479,71 @@ h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.tr
   .real-life-main{grid-column:auto}
   .real-life-card{min-height:440px}
 }
+
+
+/* ===== V8 two-kit product photography ===== */
+.kits-section .product-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  max-width:980px;
+  margin-inline:auto;
+  gap:24px
+}
+.kits-section .product-card:nth-child(1){transform:rotate(-.45deg)}
+.kits-section .product-card:nth-child(2){transform:translateY(-10px)}
+.product-card figure{
+  overflow:hidden;
+  aspect-ratio:16/10;
+  background:#efe7dc
+}
+.product-card figure>img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.product-photo-strip{
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  gap:7px;
+  padding:8px 10px 0;
+  background:#fff
+}
+.product-photo-strip img{
+  width:100%;
+  height:92px;
+  object-fit:cover;
+  border-radius:12px;
+  border:1px solid #eadfd4;
+  background:#f4eee7
+}
+.kit-contents-stage .contents-main{
+  width:min(82%,620px);
+  box-shadow:0 24px 58px rgba(54,35,24,.15)
+}
+.kit-contents-stage .contents-main img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.real-life-card img{
+  filter:none
+}
+.real-life-card:nth-child(2) img,
+.real-life-card:nth-child(3) img{
+  object-position:center
+}
+.real-life-note,
+.kit-contents-note{
+  font-style:normal;
+  letter-spacing:.01em
+}
+@media(max-width:699px){
+  .kits-section .product-grid{
+    grid-template-columns:1fr;
+    max-width:none;
+    gap:18px
+  }
+  .kits-section .product-card:nth-child(1),
+  .kits-section .product-card:nth-child(2){transform:none}
+  .product-card figure{aspect-ratio:4/3}
+  .product-photo-strip img{height:78px}
+}
