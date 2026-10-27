@@ -1,7 +1,7 @@
 const PRODUCTS=[
-  {name:"Básico",price:39.90,prop:"Para criar a surpresa essencial.",benefits:["10 pegadas adesivas","Adesivo para janela","Guia rápido de aplicação"],image:"assets/art/web/03-kit-basico.avif"},
-  {name:"Personalizado",price:69.90,prop:"A experiência que faz a visita parecer real.",benefits:["20 pegadas adesivas","Adesivo para janela","Placa com nome da criança","Certificado personalizado"],image:"assets/art/web/04-kit-personalizado.avif",badge:"Mais escolhido"},
-  {name:"Premium",price:99.90,prop:"A experiência completa para presentear.",benefits:["30 pegadas adesivas","Adesivo para janela","Placa personalizada","Certificado oficial","Guia mágico","Embalagem especial"],image:"assets/art/web/05-kit-premium.avif"}
+  {name:"Básico",price:39.90,prop:"Para criar a surpresa essencial.",benefits:["10 pegadas adesivas","Adesivo para janela","Guia rápido de aplicação"],image:"assets/visuals/kit-basico.svg"},
+  {name:"Personalizado",price:69.90,prop:"A experiência que faz a visita parecer real.",benefits:["20 pegadas adesivas","Adesivo para janela","Placa com nome da criança","Certificado personalizado"],image:"assets/visuals/kit-personalizado.svg",badge:"Mais escolhido"},
+  {name:"Premium",price:99.90,prop:"A experiência completa para presentear.",benefits:["30 pegadas adesivas","Adesivo para janela","Placa personalizada","Certificado oficial","Guia mágico","Embalagem especial"],image:"assets/visuals/kit-premium.svg"}
 ];
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
