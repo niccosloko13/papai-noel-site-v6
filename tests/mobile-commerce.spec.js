@@ -74,3 +74,42 @@ test('admin lista e confirma pedido informado', async ({ page }) => {
   await page.getByRole('button', { name: 'Confirmar pagamento' }).click();
   await expect(page.locator('#orders')).toContainText('Pago');
 });
+
+test('payload Pix contém valor, TXID e CRC consistente', async ({ page }) => {
+  await page.goto('/');
+  const data = await page.evaluate(() => {
+    const input = {
+      key:'teste@example.com',
+      receiverName:'NATAL EXPERIENCIAS',
+      city:'SAO PAULO',
+      amount:59.42,
+      txid:'NATAL123456'
+    };
+    const payload = window.NatalPix.buildPixPayload(input);
+    const body = payload.slice(0,-4);
+    return {
+      payload,
+      crc: payload.slice(-4),
+      expected: window.NatalPix.crc16(body),
+      hasAmount: payload.includes('540559.42'),
+      hasTxid: payload.includes('NATAL123456')
+    };
+  });
+  expect(data.crc).toBe(data.expected);
+  expect(data.hasAmount).toBeTruthy();
+  expect(data.hasTxid).toBeTruthy();
+  expect(data.payload.startsWith('000201')).toBeTruthy();
+});
+
+test('catálogo continua funcional com apenas um produto ativo', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    localStorage.setItem('natal_products', JSON.stringify([
+      {id:'only',name:'Único',price:49.9,prop:'Teste',benefits:['Item'],image:'assets/visuals/kit-basico.svg',active:true}
+    ]));
+  });
+  await page.reload();
+  await expect(page.locator('#productGrid .product-card')).toHaveCount(1);
+  await page.getByRole('button',{name:'Escolher este kit'}).click();
+  await expect(page.locator('#checkoutDialog')).toBeVisible();
+});
