@@ -146,6 +146,24 @@
     </header>
     <div class="checkout-progress" aria-hidden="true"><span id="checkoutProgress"></span></div>
 
+    <aside class="checkout-side" aria-label="Resumo do pedido">
+      <span class="eyebrow">SEU PEDIDO</span>
+      <div class="checkout-side-product">
+        <small>Kit selecionado</small>
+        <strong id="sidePlan">Personalizado</strong>
+      </div>
+      <div class="checkout-side-lines">
+        <div><span>Preço</span><b id="sidePrice">R$ 69,90</b></div>
+        <div><span>Pix</span><b id="sidePix">15% OFF</b></div>
+        <div><span>Frete</span><b id="sideShipping">A calcular</b></div>
+      </div>
+      <div class="checkout-side-total">
+        <span>Total no Pix</span>
+        <strong id="sideTotal">R$ 59,42</strong>
+      </div>
+      <p>Você revisa a personalização antes de concluir. O pagamento só é considerado pago após conferência manual.</p>
+    </aside>
+
     <section class="checkout-step active" data-step="1">
       <h2>Personalize seu kit</h2>
       <label>Kit<select id="checkoutPlan"></select></label>
