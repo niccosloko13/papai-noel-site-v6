@@ -25,7 +25,10 @@ for (const viewport of viewports) {
 }
 
 test('checkout completa fluxo e abre Pix manual', async ({ page }) => {
+  page.on('pageerror', err => console.log('[pageerror]', err.message));
+  page.on('console', msg => console.log('[browser]', msg.type(), msg.text()));
   await page.setViewportSize({ width: 390, height: 844 });
+  console.log('[qa] admin');
   await page.goto('/admin.html');
   await page.locator('#pixKey').fill('teste@example.com');
   await page.locator('#displayName').fill('NATAL EXPERIENCIAS');
@@ -33,19 +36,27 @@ test('checkout completa fluxo e abre Pix manual', async ({ page }) => {
   await page.locator('#pixCity').fill('SAO PAULO');
   await page.locator('#savePix').click();
 
+  console.log('[qa] loja');
   await page.goto('/');
+  console.log('[qa] abrir checkout');
   await page.getByRole('button', { name: 'Escolher este kit' }).nth(1).click();
+  console.log('[qa] checkout aberto');
   await page.locator('#childName').fill('Miguel');
   await page.locator('#checkoutNext').click();
+  console.log('[qa] etapa 2');
   await page.locator('#cep').fill('09710000');
   await page.locator('#address').fill('Rua de teste');
   await page.locator('#number').fill('123');
   await page.locator('#customerName').fill('Cliente Teste');
   await page.locator('#phone').fill('13974100193');
   await page.locator('#checkoutNext').click();
+  console.log('[qa] etapa 3');
   await expect(page.locator('#orderSummary')).toContainText('Total no Pix');
+  console.log('[qa] gerar pix');
   await page.locator('#checkoutNext').click();
+  console.log('[qa] clique gerar pix retornou');
   await expect(page.locator('#pixDialog')).toBeVisible();
+  console.log('[qa] pix visível');
   await expect(page.locator('#pixCopyPaste')).not.toHaveValue('');
   await expect(page.locator('#pixQrCanvas canvas, #pixQrCanvas img')).toHaveCount(1);
   await page.locator('#pixPaidButton').click();
