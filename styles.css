@@ -459,3 +459,13 @@ body{
   .checkout-mini-item{grid-template-columns:48px 1fr auto}
   .checkout-mini-item img{width:48px;height:58px}
 }
+
+
+.hero-media img{object-position:center 55%}
+.experience-card:nth-child(1) img{object-position:center 55%}
+.experience-card:nth-child(2) img{object-position:center center}
+.experience-card:nth-child(3) img{object-position:center 60%}
+@media(max-width:699px){
+  .hero-media img{aspect-ratio:4/5;object-position:center 58%}
+  .experience-card img{aspect-ratio:4/5}
+}
