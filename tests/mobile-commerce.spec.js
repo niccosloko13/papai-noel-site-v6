@@ -207,3 +207,15 @@ test('checkout mobile ocupa a largura sem overflow', async ({ page }) => {
   expect(dims.body).toBeLessThanOrEqual(dims.inner);
   expect(dims.dialog).toBeLessThanOrEqual(dims.inner);
 });
+
+test('resumo lateral existe só no desktop e acompanha produto', async ({ page }) => {
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto('/');
+  await page.getByRole('button',{name:'Escolher este kit'}).nth(2).click();
+  await expect(page.locator('.checkout-side')).toBeVisible();
+  await expect(page.locator('#sidePlan')).toHaveText('Premium');
+  await expect(page.locator('#sidePrice')).toContainText('99,90');
+
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.locator('.checkout-side')).toBeHidden();
+});
