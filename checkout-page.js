@@ -72,12 +72,12 @@ function renderStep(){
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function validate(){
- if(step===2&&(!$("#address").value||$("#addressResult").hidden)){alert("Busque o CEP para confirmar seu endereço.");return false}
+ if(step===2&&(!$("#address").value||$("#addressResult").hidden)){alert("Consulte seu CEP antes de continuar.");$("#cep").focus();return false}
  let ok=true;
  const active=$('.checkout-step[data-step="'+step+'"]');
  active.querySelectorAll("[required]").forEach(el=>{
   if(el.hidden||el.closest("[hidden]"))return;
-  if(!el.value.trim()||!el.checkValidity()){el.setAttribute("aria-invalid","true");ok=false}else el.removeAttribute("aria-invalid");
+  if(!el.value.trim()||!el.checkValidity()){el.setAttribute("aria-invalid","true");if(ok){el.focus();el.reportValidity()}ok=false}else el.removeAttribute("aria-invalid");
  });
  return ok;
 }
