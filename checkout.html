@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#FBF7EF">
+<meta name="robots" content="noindex,nofollow">
 <title>Finalizar pedido • Papai Noel Passou Aqui</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,20 +84,20 @@
     <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
     <div class="checkout-step-title"><h1>Onde vamos entregar a surpresa?</h1><p>Comece pelo CEP. A gente encontra o endereço e você só completa o que falta.</p></div>
     <div class="cep-search">
-      <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" required></label>
+      <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" required></label>
       <button type="button" class="btn btn-secondary cep-search-button" id="findCep"><span class="cep-search-icon" aria-hidden="true">⌖</span><span>Buscar endereço</span></button>
     </div>
     <div class="address-result" id="addressResult" hidden>
       <div class="address-found"><span class="address-check" aria-hidden="true">✓</span><div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div></div>
       <input id="address" required hidden>
       <div class="field-grid">
-        <label>Número<input id="number" inputmode="numeric" required placeholder="Ex.: 123"></label>
+        <label>Número<input id="number" inputmode="numeric" required placeholder="Ex.: 123" autocomplete="address-line2"></label>
         <label>Complemento <span class="field-optional">opcional</span><input id="complement" placeholder="Apto, bloco..."></label>
       </div>
     </div>
     <div class="delivery-contact">
       <label>Nome de quem faz o pedido<input id="customerName" autocomplete="name" required placeholder="Seu nome"></label>
-      <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999"></label>
+      <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999" aria-describedby="phoneHelp"><small id="phoneHelp">Para avisar sobre seu pedido e a entrega. Não enviamos mensagens desnecessárias.</small></label>
     </div>
   </section>
 
