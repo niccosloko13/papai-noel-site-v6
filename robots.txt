@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /checkout.html
+Disallow: /pedido.html
+Sitemap: https://papai-noel-site-v6.vercel.app/sitemap.xml
