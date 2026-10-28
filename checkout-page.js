@@ -67,12 +67,16 @@ function renderStep(){
  progress.style.width=(step/3*100)+"%";
  document.body.dataset.checkoutStep=String(step);
  back.hidden=step===1;
- next.textContent=step===3?"Gerar meu Pix":"Continuar";
+ next.textContent=step===3?"Gerar meu Pix":step===1?"Continuar para entrega":"Conferir minha surpresa";
+ const titles=["Vamos preparar a surpresa?","Para onde vai essa magia?","Tudo pronto para emocionar."];
+ const descriptions=["Os detalhes que tornam esse Natal único.","O endereço aparece sozinho ao digitar o CEP.","Confira a surpresa antes de finalizar."];
+ $("#checkoutMomentTitle").textContent=titles[step-1];
+ $("#checkoutMomentText").textContent=descriptions[step-1];
  if(step===3)renderReview();
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function validate(){
- if(step===2&&(!$("#address").value||$("#addressResult").hidden)){alert("Consulte seu CEP antes de continuar.");$("#cep").focus();return false}
+ if(step===2&&(!$("#address").value||$("#addressResult").hidden||confirmedCep!==cepInput.value.replace(/\\D/g,""))){setCepStatus("Informe um CEP válido e aguarde o endereço aparecer.","error");$("#cep").focus();return false}
  let ok=true;
  const active=$('.checkout-step[data-step="'+step+'"]');
  active.querySelectorAll("[required]").forEach(el=>{
@@ -147,24 +151,56 @@ next.addEventListener("click",async()=>{
  finally{next.disabled=false;next.textContent=label}
 });
 back.addEventListener("click",()=>{if(step>1){step--;renderStep()}});
-$("#cep").addEventListener("input",()=>{
- $("#address").value="";
+const cepInput=$("#cep"),cepStatus=$("#cepStatus");
+let cepTimer=null,cepRequest=null,confirmedCep="";
+function setCepStatus(message,state="idle"){
+ cepStatus.textContent=message;cepStatus.dataset.state=state;
+ cepInput.setAttribute("aria-invalid",state==="error"?"true":"false");
+}
+function clearCepResult(){
+ confirmedCep="";
+ $("#address").value="";$("#addressFoundText").textContent="";
  $("#addressResult").hidden=true;
- const btn=$("#findCep");
- btn.classList.remove("is-found");
- const label=btn.querySelector("span:last-child");
- if(label)label.textContent="Buscar endereço";
+}
+async function lookupCep(raw){
+ if(cepRequest)cepRequest.abort();
+ cepRequest=new AbortController();
+ const controller=cepRequest;
+ setCepStatus("Localizando o endereço…","loading");
+ try{
+  const response=await fetch("https://viacep.com.br/ws/"+raw+"/json/",{signal:controller.signal,cache:"no-store"});
+  if(!response.ok)throw Error("NETWORK");
+  const data=await response.json();
+  if(data.erro)throw Error("NOT_FOUND");
+  if(raw!==cepInput.value.replace(/\\D/g,""))return;
+  const address=[data.logradouro,data.bairro,data.localidade,data.uf].filter(Boolean).join(" • ");
+  if(!data.localidade||!data.uf||!address)throw Error("INCOMPLETE");
+  $("#address").value=address;$("#addressFoundText").textContent=address;
+  $("#addressResult").hidden=false;confirmedCep=raw;
+  setCepStatus("Endereço encontrado. Complete apenas o número e o complemento.","success");
+ }catch(error){
+  if(error.name==="AbortError"||raw!==cepInput.value.replace(/\\D/g,""))return;
+  clearCepResult();
+  setCepStatus(error.message==="NOT_FOUND"?"CEP não encontrado. Confira os números.":"Não conseguimos consultar esse CEP. Corrija ou tente novamente.","error");
+ }finally{if(cepRequest===controller)cepRequest=null}
+}
+function handleCepInput(){
+ const raw=cepInput.value.replace(/\\D/g,"").slice(0,8);
+ cepInput.value=raw.length>5?raw.slice(0,5)+"-"+raw.slice(5):raw;
+ clearTimeout(cepTimer);
+ if(cepRequest){cepRequest.abort();cepRequest=null}
+ if(raw!==confirmedCep)clearCepResult();
+ if(raw.length===8){
+  setCepStatus("Consultando seu CEP automaticamente…","loading");
+  cepTimer=setTimeout(()=>lookupCep(raw),280);
+ }else setCepStatus(raw.length?"Continue digitando o CEP.":"", "idle");
+}
+cepInput.addEventListener("input",handleCepInput);
+cepInput.addEventListener("change",()=>{
+ const raw=cepInput.value.replace(/\\D/g,"");
+ if(raw.length===8&&confirmedCep!==raw){clearTimeout(cepTimer);lookupCep(raw)}
 });
-$("#findCep").addEventListener("click",async()=>{
- const raw=$("#cep").value.replace(/\D/g,"");if(raw.length!==8)return alert("Digite um CEP válido.");
- const b=$("#findCep"),label=b.querySelector("span:last-child");b.disabled=true;if(label)label.textContent="Buscando...";
- try{const r=await fetch("https://viacep.com.br/ws/"+raw+"/json/");const d=await r.json();if(d.erro)throw 0;
- const value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");
- $("#address").value=value;$("#addressFoundText").textContent=value;$("#addressResult").hidden=false;
- b.classList.add("is-found");if(label)label.textContent="Endereço encontrado";$("#number").focus()}
- catch{b.classList.remove("is-found");if(label)label.textContent="Buscar endereço";alert("Não foi possível consultar o CEP agora.")}
- finally{b.disabled=false;if(!b.classList.contains("is-found")&&label)label.textContent="Buscar endereço"}
-});
+if(cepInput.value)handleCepInput();
 $("#copyPix").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#pixCopyPaste").value)}catch{$("#pixCopyPaste").select();document.execCommand("copy")}$("#pixCopyFeedback").textContent="Código Pix copiado ✓"});
 $("#pixPaidButton").addEventListener("click",async()=>{
  const b=$("#pixPaidButton");b.disabled=true;
