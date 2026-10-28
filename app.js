@@ -114,6 +114,8 @@ const progress=document.querySelector("#checkoutProgress");
 const stepLabel=document.querySelector("#checkoutStepLabel");
 const summary=document.querySelector("#orderSummary");
 const checkoutCartMini=document.querySelector("#checkoutCartMini");
+const addressResult=document.querySelector("#addressResult");
+const addressFoundText=document.querySelector("#addressFoundText");
 const pixCanvas=document.querySelector("#pixQrCanvas");
 const pixCode=document.querySelector("#pixCopyPaste");
 const pixFeedback=document.querySelector("#pixCopyFeedback");
@@ -167,6 +169,7 @@ function checkoutTotal(){
 }
 function renderCheckoutMini(){
   const items=checkoutExpanded();
+  if(!checkoutCartMini)return;
   checkoutCartMini.innerHTML=items.map(i=>`
     <div class="checkout-mini-item">
       <img src="${i.product.image}" alt="">
@@ -199,7 +202,10 @@ function renderStep(){
   back.hidden=step===1;
   next.textContent=step===3?"Gerar meu Pix":"Continuar";
   document.querySelector("#mobileBuyBar").hidden=true;
-  if(step===3)renderSummary();
+  if(step===3){
+    renderSummary();
+    renderReview();
+  }
 }
 function renderSummary(){
   const cfg=pixConfig();
@@ -225,6 +231,25 @@ function renderSummary(){
   if(sideShipping)sideShipping.textContent=shipping===0?"Grátis":money(shipping);
   if(sideTotal)sideTotal.textContent=money(total);
 }
+function renderReview(){
+  const personalized=checkoutHasPersonalized();
+  const person=personalized?(child.value.trim()||"—"):"Kit Essencial";
+  const msg=personalized?(letter.value.trim()||"Mensagem padrão do Papai Noel"):"Sem personalização";
+  const addr=[document.querySelector("#address").value.trim(),document.querySelector("#number").value.trim(),document.querySelector("#complement").value.trim()].filter(Boolean).join(", ");
+  const customer=document.querySelector("#customerName").value.trim();
+  const phone=document.querySelector("#phone").value.trim();
+  const n=document.querySelector("#reviewChildName");
+  const m=document.querySelector("#reviewMessage");
+  const a=document.querySelector("#reviewAddress");
+  const c=document.querySelector("#reviewCustomer");
+  const t=document.querySelector("#reviewTotal");
+  if(n)n.textContent=person;
+  if(m)m.textContent=msg;
+  if(a)a.textContent=addr||"—";
+  if(c)c.textContent=[customer,phone].filter(Boolean).join(" • ")||"—";
+  if(t)t.textContent=money(checkoutTotal());
+}
+
 function validateStep(){
   const active=document.querySelector(`.checkout-step[data-step="${step}"]`);
   let ok=true;
@@ -275,6 +300,10 @@ async function showPixPayment(order){
   document.querySelector("#pixOrderId").textContent=order.id;
   document.querySelector("#pixOrderTotal").textContent=money(order.total);
   document.querySelector("#pixReceiverLabel").textContent=cfg.displayName||cfg.receiverName||"Recebedor Pix";
+  const pixName=document.querySelector("#pixChildName");
+  const pixMsg=document.querySelector("#pixMagicMessage");
+  if(pixName)pixName.textContent=order.childName||order.customerName||"Seu pedido";
+  if(pixMsg)pixMsg.textContent=order.childName?`A surpresa de ${order.childName} já está quase a caminho.`:"Seu pedido já está quase a caminho.";
   pixCode.value=order.pixPayload;
   pixFeedback.textContent="";
   pixPaidButton.disabled=false;
@@ -341,14 +370,27 @@ document.querySelector("#copyPix").addEventListener("click",async()=>{
   catch{pixCode.focus();pixCode.select();document.execCommand("copy");pixFeedback.textContent="Código Pix copiado ✓"}
 });
 document.querySelector("#findCep").addEventListener("click",async()=>{
-  const raw=document.querySelector("#cep").value.replace(/\D/g,"");
+  const cepInput=document.querySelector("#cep");
+  const raw=cepInput.value.replace(/\D/g,"");
   if(raw.length!==8)return alert("Digite um CEP válido.");
+  const button=document.querySelector("#findCep");
+  const original=button.textContent;
+  button.disabled=true;button.textContent="Buscando...";
   try{
     const r=await fetch(`https://viacep.com.br/ws/${raw}/json/`);
     const d=await r.json();
     if(d.erro)throw new Error();
-    document.querySelector("#address").value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");
-  }catch{alert("Não foi possível consultar o CEP agora.")}
+    const value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");
+    document.querySelector("#address").value=value;
+    if(addressFoundText)addressFoundText.textContent=value;
+    if(addressResult)addressResult.hidden=false;
+    document.querySelector("#number")?.focus();
+  }catch{
+    if(addressResult)addressResult.hidden=true;
+    alert("Não foi possível consultar o CEP agora.");
+  }finally{
+    button.disabled=false;button.textContent=original;
+  }
 });
 
 const bar=document.querySelector("#mobileBuyBar");
