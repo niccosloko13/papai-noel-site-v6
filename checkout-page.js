@@ -182,4 +182,11 @@ fetch("/api/checkout-config",{cache:"no-store"}).then(async r=>{
  if(step===3)renderReview();
 }).catch(()=>{publicPixConfig={enabled:false,discount:15,shippingFlat:0}});
 syncMode();updatePreview();renderStep();
+fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
+ if(!data||!Array.isArray(data.products))return;
+ for(const product of products){const latest=data.products.find(p=>p.id===product.id);if(latest)Object.assign(product,latest)}
+ if(!primaryProduct.active){alert("Este kit está temporariamente indisponível.");location.href="index.html#kits";return}
+ syncMode();if(step===3)renderReview();
+}).catch(()=>{});
+
 })();
