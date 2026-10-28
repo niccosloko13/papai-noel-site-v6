@@ -10,7 +10,7 @@ body{background:linear-gradient(140deg,#0e362b,#27503b 55%,#672b39);min-height:1
 .notice{color:#a12e3e;font-weight:700;font-size:.84rem}.track-refresh{font-size:.75rem;color:#6d756d}
 @media(max-width:460px){.track-page{margin-top:8px;padding:18px 14px;border-radius:16px}.track-header{padding:13px}.track-extra div{display:grid;gap:1px}.track-actions{display:grid}}
 </style></head><body>
-<header class="track-header"><a href="index.html">Papai Noel Passou Aqui</a><a href="contato.html">Atendimento</a></header>
+<header class="track-header"><a href="index.html">Papai Noel Passou Aqui</a><a href="minha-conta.html">Minha conta</a></header>
 <main class="track-page"><span class="eyebrow">SUA ÁREA DE ACOMPANHAMENTO</span><h1>Seu Natal, passo a passo.</h1><p>Veja as atualizações do seu pedido em um só lugar. Guarde seu acesso privado para consultar quando quiser.</p>
 <form id="trackForm" class="track-form"><label>Número do pedido<input id="orderId" autocomplete="off" placeholder="NATAL-..." required></label><label>Chave de acesso do pedido<input id="accessKey" autocomplete="off" placeholder="Código privado recebido ao concluir" required></label><button class="btn btn-primary" type="submit">Acompanhar pedido</button><div id="trackError" class="notice" role="status"></div></form>
 <div id="trackResult" hidden></div><p class="track-refresh" id="refreshNotice" hidden>Informações atualizadas automaticamente enquanto esta página estiver aberta.</p>
@@ -39,6 +39,6 @@ async function loadOrder(){
 $("#trackForm").addEventListener("submit",e=>{e.preventDefault();loadOrder().then(()=>{if(!$("#trackResult").hidden){clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)loadOrder()},30000)}})});
 const saved=(()=>{try{return JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}")}catch{return {}}})();
 $("#orderId").value=q.get("id")||saved.id||"";
-$("#accessKey").value=(q.get("key")||((q.get("id")===saved.id)?saved.accessKey:""))||"";
+$("#accessKey").value=(((q.get("id")===saved.id)?saved.accessKey:""))||"";
 if($("#orderId").value&&$("#accessKey").value)$("#trackForm").requestSubmit();
 </script></body></html>
