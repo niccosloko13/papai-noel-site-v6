@@ -1,11 +1,11 @@
 const {test,expect,devices}=require('@playwright/test');
 test.describe('iPhone 13 — experiência completa',()=>{
- test.use({...devices['iPhone 13'],browserName:'webkit'});
+ test.use({...devices['iPhone 13'],browserName:'webkit',reducedMotion:'reduce'});
  test('home, navegação, kits, demonstração, segurança e rodapé',async({page},testInfo)=>{
   const failures=[];
   page.on('pageerror',e=>failures.push(e.message));
   await page.route('**/api/events',route=>route.fulfill({status:202,json:{ok:true}}));
-  await page.route('**/api/products',route=>route.fulfill({status:200,json:{products:[]}}));
+  await page.route('**/api/products',route=>route.fulfill({status:503,json:{error:'fallback test'}}));
   await page.goto('/index.html');
   await expect(page.locator('#inicio')).toBeVisible();
   await expect(page.locator('.confidence-strip')).toBeVisible();
