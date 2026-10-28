@@ -10,6 +10,8 @@ if(!expanded.length){location.href="index.html#kits";return}
 const personalized=expanded.some(i=>i.product.id==="personal");
 const primaryItem=expanded.find(i=>i.product.id==="personal")||expanded[0];
 const primaryProduct=primaryItem.product;
+const trackStoreEvent=(name,data={})=>{try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
+trackStoreEvent("checkout_view",{product_id:primaryProduct.id});
 let step=1,currentOrderId=null;
 const $=s=>document.querySelector(s);
 const steps=[...document.querySelectorAll(".checkout-step")];
@@ -113,6 +115,7 @@ function createOrder(){
  customerName:$("#customerName").value.trim(),phone:$("#phone").value.trim(),cep:$("#cep").value.trim(),address:$("#address").value.trim(),number:$("#number").value.trim(),complement:$("#complement").value.trim()};
  const all=orders();all.unshift(order);saveOrders(all);
  if(pending.fromCart)localStorage.setItem("natal_cart","[]");
+ trackStoreEvent("order_created",{order_id:id,total:order.total,product_id:primaryProduct.id});
  return order;
 }
 function showPayment(order){
@@ -145,6 +148,7 @@ $("#copyPix").addEventListener("click",async()=>{try{await navigator.clipboard.w
 $("#pixPaidButton").addEventListener("click",()=>{
  const all=orders(),o=all.find(x=>x.id===currentOrderId);if(o){o.status="Pagamento informado";o.paymentInformedAt=new Date().toISOString();saveOrders(all);
  $("#trackOrderLink").href="pedido.html?id="+encodeURIComponent(o.id);$("#trackOrderLink").hidden=false;}
+ trackStoreEvent("payment_informed",{order_id:currentOrderId,total:o?.total||0});
  $("#pixPaidButton").disabled=true;$("#pixPaidButton").innerHTML="<span>Pagamento registrado ✓</span>";$("#pixPaidButton").classList.add("is-informed");$("#paymentCelebrationMessage").hidden=false;
 });
 syncMode();updatePreview();renderStep();
