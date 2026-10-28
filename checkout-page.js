@@ -135,8 +135,11 @@ $("#findCep").addEventListener("click",async()=>{
  const raw=$("#cep").value.replace(/\D/g,"");if(raw.length!==8)return alert("Digite um CEP válido.");
  const b=$("#findCep"),label=b.querySelector("span:last-child");b.disabled=true;if(label)label.textContent="Buscando...";
  try{const r=await fetch("https://viacep.com.br/ws/"+raw+"/json/");const d=await r.json();if(d.erro)throw 0;
- const value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");$("#address").value=value;$("#addressFoundText").textContent=value;$("#addressResult").hidden=false;$("#number").focus()}
- catch{alert("Não foi possível consultar o CEP agora.")}finally{b.disabled=false;b.textContent=old}
+ const value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");
+ $("#address").value=value;$("#addressFoundText").textContent=value;$("#addressResult").hidden=false;
+ b.classList.add("is-found");if(label)label.textContent="Endereço encontrado";$("#number").focus()}
+ catch{b.classList.remove("is-found");if(label)label.textContent="Buscar endereço";alert("Não foi possível consultar o CEP agora.")}
+ finally{b.disabled=false;if(!b.classList.contains("is-found")&&label)label.textContent="Buscar endereço"}
 });
 $("#copyPix").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#pixCopyPaste").value)}catch{$("#pixCopyPaste").select();document.execCommand("copy")}$("#pixCopyFeedback").textContent="Código Pix copiado ✓"});
 $("#pixPaidButton").addEventListener("click",()=>{
