@@ -31,7 +31,18 @@
   <section class="checkout-step active checkout-step-personal" data-step="1">
     <div class="checkout-step-kicker">PASSO 1 • PERSONALIZAÇÃO</div>
     <div class="checkout-step-title"><h1>Veja a carta antes de concluir.</h1><p>Preencha e acompanhe a prévia. Você pode revisar tudo antes de continuar.</p></div>
-    <div class="personalization-layout">
+
+    <div class="basic-checkout-summary" id="basicCheckoutSummary" hidden>
+      <div class="basic-summary-image"><img id="basicSummaryImage" src="" alt=""></div>
+      <div class="basic-summary-copy">
+        <span>SEU KIT ESCOLHIDO</span>
+        <h2 id="basicSummaryTitle">Kit Essencial</h2>
+        <p id="basicSummaryText">Tudo pronto para você montar a surpresa em poucos minutos.</p>
+        <div class="basic-summary-list" id="basicSummaryList"></div>
+      </div>
+    </div>
+
+    <div class="personalization-layout" id="personalizationLayout">
       <div class="letter-preview-wrap" id="letterPreviewWrap">
         <div class="letter-preview-head"><div><small>PRÉVIA DA CARTA</small><strong>É assim que a mensagem vai aparecer</strong></div><span>Atualiza ao vivo</span></div>
         <div class="letter-preview" aria-live="polite">
@@ -76,6 +87,17 @@
     <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
     <div class="checkout-step-title"><h1>Última conferência.</h1><p>Revise nome, entrega e valor antes de gerar o Pix.</p></div>
     <div class="review-ready" aria-hidden="true"><span>✦</span><strong>Tudo pronto para o Polo Norte</strong><span>✦</span></div>
+
+    <div class="review-kit-showcase">
+      <div class="review-kit-photo"><img id="reviewKitImage" src="" alt=""></div>
+      <div class="review-kit-copy">
+        <span class="review-kit-kicker">SEU KIT DE NATAL</span>
+        <h2 id="reviewKitTitle">Kit Essencial</h2>
+        <p id="reviewKitProp">As pistas essenciais para transformar a casa na noite de Natal.</p>
+        <div class="review-kit-items" id="reviewKitItems"></div>
+      </div>
+    </div>
+
     <div class="review-card">
       <div class="review-person"><span class="review-spark">✦</span><small>A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
       <div class="review-grid"><div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div><div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div></div>
