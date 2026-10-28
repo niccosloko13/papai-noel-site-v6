@@ -183,3 +183,5 @@
  .cx-track-form input,.cx-form input,.cx-claim input{max-width:100%}
 }
 @media(max-width:360px){.cx-nav a{font-size:10px;padding:9px 3px}.cx-brand-copy strong{font-size:13px}}
+
+.cx-nav a[aria-current=page]{color:#fff!important;font-weight:800}
