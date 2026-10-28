@@ -122,3 +122,5 @@ body .hero-product-photo img{background:#183a2e}
 body .product-card,body .experience-list article,body .scene-card{contain:layout style}
 body .product-card a:focus-visible,body .product-card button:focus-visible{outline:3px solid #bf985f;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+.confidence-icon svg{width:21px;height:21px;display:block;stroke:#e8be73;flex:none}@media(max-width:390px){.confidence-icon svg{width:17px;height:17px}}
