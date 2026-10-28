@@ -8,7 +8,7 @@ const dist=path.join(root,"dist");
 const required=[
   "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
-  "styles.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css",
+  "styles.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css",
   "robots.txt","sitemap.xml",
   "api/_db.js","api/checkout.js","api/admin/auth.js",
   "api/admin/orders.js","api/admin/settings.js",
@@ -36,7 +36,7 @@ const staticFiles=[
   "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
   "styles.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
-  "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css",
+  "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css",
   "robots.txt","sitemap.xml"
 ];
 const staticDirs=["assets","vendor"];
