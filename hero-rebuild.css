@@ -1,0 +1,125 @@
+/* Hero 2026 v2 — full-bleed photo, NOT two isolated columns */
+body .hero.section.hero-cinematic{
+ position:relative!important;isolation:isolate!important;display:flex!important;align-items:center!important;
+ width:100%!important;max-width:none!important;min-height:clamp(680px,calc(100svh - 70px),880px)!important;
+ padding:42px max(24px,calc((100vw - 1380px)/2)) 50px!important;
+ margin:0!important;overflow:hidden!important;background:#0e3027!important;
+ border:0!important;border-radius:0!important;
+}
+body .hero-cinematic .hero-backdrop{position:absolute!important;z-index:-2!important;inset:0!important;opacity:1!important;pointer-events:none!important;background:#11372a!important}
+body .hero-cinematic .hero-scene-background{
+ position:absolute!important;z-index:-1!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;pointer-events:none!important;
+}
+body .hero-cinematic .hero-scene-background img{
+ width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;
+ object-position:72% 48%!important;max-width:none!important;min-height:100%!important;
+ border:0!important;border-radius:0!important;filter:saturate(1.09) contrast(1.04)!important;
+}
+body .hero-cinematic:before{
+ content:""!important;position:absolute!important;z-index:0!important;inset:0!important;pointer-events:none!important;
+ background:linear-gradient(90deg,rgba(3,31,24,.98) 0%,rgba(3,31,24,.94) 19%,rgba(4,37,28,.84) 32%,rgba(5,35,27,.48) 49%,rgba(5,33,25,.07) 70%,rgba(7,26,20,.05) 100%),linear-gradient(0deg,rgba(2,23,17,.53),transparent 30%)!important;
+}
+body .hero-cinematic:after{
+ content:""!important;position:absolute!important;z-index:0!important;inset:0!important;pointer-events:none!important;
+ background:radial-gradient(circle at 86% 12%,rgba(248,188,91,.11),transparent 37%)!important;
+}
+body .hero-cinematic .hero-copy.hero-campaign-art{
+ position:relative!important;z-index:2!important;display:flex!important;flex-direction:column!important;
+ justify-content:center!important;align-items:flex-start!important;
+ width:min(100%,570px)!important;max-width:570px!important;min-width:0!important;
+ padding:12px 0!important;margin:0!important;
+}
+body .hero-cinematic .hero-kicker-row{
+ margin:0 0 16px!important;display:inline-flex!important;align-items:center!important;gap:8px!important;
+ background:rgba(4,37,26,.55)!important;border:1px solid rgba(233,187,104,.62)!important;
+ border-radius:100px!important;padding:8px 13px!important;width:max-content!important;max-width:100%!important;
+}
+body .hero-cinematic .hero-kicker-row .eyebrow{
+ font-size:10px!important;color:#f1ce81!important;letter-spacing:.14em!important;margin:0!important;
+}
+body .hero-cinematic .hero-campaign-title{
+ font-family:"DM Serif Display",Georgia,serif!important;font-size:clamp(52px,5.8vw,84px)!important;
+ max-width:560px!important;width:100%!important;line-height:.89!important;
+ letter-spacing:-.055em!important;text-wrap:initial!important;margin:0!important;
+ text-shadow:0 3px 25px rgba(0,0,0,.28)!important;
+}
+body .hero-cinematic .hero-campaign-title .hero-line{display:block!important;white-space:nowrap!important}
+body .hero-cinematic .hero-line-soft{font-size:.85em!important}
+body .hero-cinematic .hero-line-gold{font-size:1em!important}
+body .hero-cinematic .hero-line-main{font-size:.78em!important}
+body .hero-cinematic .hero-line-script{
+ font-size:.86em!important;color:#f5c45e!important;transform:none!important;
+ margin-top:.03em!important;text-decoration:underline;text-decoration-color:#ba7e2b;
+ text-decoration-thickness:3px;text-underline-offset:6px;
+}
+body .hero-cinematic .hero-story-note{margin:22px 0 14px!important;max-width:460px!important}
+body .hero-cinematic .hero-story-note p{
+ font-size:14px!important;line-height:1.55!important;color:#f4ead8!important;font-weight:550!important;
+}
+body .hero-cinematic .hero-offer-card{
+ order:3!important;margin:13px 0 0!important;width:max-content!important;max-width:100%!important;
+ padding:10px 13px!important;gap:16px!important;border-radius:14px!important;
+ background:rgba(10,47,36,.75)!important;border:1px solid rgba(232,197,132,.33)!important;
+}
+body .hero-cinematic .hero-offer-main strong{font-size:27px!important}
+body .hero-cinematic .hero-actions-campaign{
+ order:2!important;margin:8px 0 0!important;display:flex!important;align-items:center!important;
+ gap:18px!important;flex-wrap:wrap!important;
+}
+body .hero-cinematic .hero-actions-campaign .btn-holiday{
+ background:linear-gradient(115deg,#bf2935,#8f192a)!important;color:#fff!important;
+ border:1px solid #dc5a61!important;border-radius:100px!important;
+ padding:0 25px!important;min-height:54px!important;width:auto!important;box-shadow:0 11px 24px #2c060e67!important;
+}
+body .hero-cinematic .hero-actions-campaign .hero-secondary{color:#f9e4be!important;font-size:12px!important}
+body .hero-cinematic .hero-tiny-trust{
+ order:1!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;
+ gap:12px 18px!important;color:#f5e3c0!important;font-size:11px!important;
+ margin:5px 0 9px!important;line-height:1.35!important;
+}
+body .hero-cinematic .hero-tiny-trust span{display:inline-flex!important;align-items:center!important;gap:5px!important}
+body .hero-cinematic .hero-social-note{
+ order:4!important;color:#f4dcb0!important;font-size:11px!important;margin-top:14px!important;
+}
+body .hero-cinematic .hero-social-note span{color:#efbd5c!important;letter-spacing:3px!important;margin-right:7px!important}
+@media(max-width:1050px){
+ body .hero.section.hero-cinematic{min-height:690px!important;padding:42px 25px!important}
+ body .hero-cinematic .hero-copy.hero-campaign-art{max-width:470px!important}
+ body .hero-cinematic .hero-campaign-title{font-size:clamp(48px,6.7vw,73px)!important}
+ body .hero-cinematic:before{background:linear-gradient(90deg,#072b22f7 0%,#072b22ea 27%,#072b2299 55%,transparent 100%),linear-gradient(0deg,#072b2255,transparent 50%)!important}
+}
+@media(max-width:700px){
+ body .hero.section.hero-cinematic{
+  display:flex!important;align-items:flex-end!important;justify-content:flex-start!important;
+  min-height:760px!important;min-height:min(840px,calc(100svh + 85px))!important;
+  padding:32px 18px 27px!important;overflow:hidden!important;
+ }
+ body .hero-cinematic .hero-scene-background img{object-position:60% 12%!important;filter:saturate(1.13) contrast(1.03)!important}
+ body .hero-cinematic:before{
+  background:linear-gradient(0deg,rgba(3,28,23,.99) 0%,rgba(5,32,26,.97) 24%,rgba(7,35,27,.84) 45%,rgba(8,33,26,.17) 73%,rgba(5,26,21,.02) 100%)!important;
+ }
+ body .hero-cinematic .hero-copy.hero-campaign-art{max-width:100%!important;width:100%!important;padding:0!important;justify-content:flex-end!important}
+ body .hero-cinematic .hero-kicker-row{margin-bottom:10px!important;padding:6px 9px!important}
+ body .hero-cinematic .hero-kicker-row .eyebrow{font-size:9px!important;letter-spacing:.1em!important}
+ body .hero-cinematic .hero-campaign-title{
+  font-size:clamp(42px,10.7vw,65px)!important;line-height:.85!important;letter-spacing:-.06em!important;
+  max-width:100%!important;
+ }
+ body .hero-cinematic .hero-line-main{font-size:.77em!important}
+ body .hero-cinematic .hero-story-note{margin:14px 0 9px!important}
+ body .hero-cinematic .hero-story-note p{font-size:12px!important;line-height:1.42!important}
+ body .hero-cinematic .hero-tiny-trust{font-size:10px!important;gap:6px 12px!important;margin:6px 0!important}
+ body .hero-cinematic .hero-actions-campaign{display:grid!important;grid-template-columns:1fr!important;width:100%!important;gap:8px!important;margin-top:5px!important}
+ body .hero-cinematic .hero-actions-campaign .btn-holiday{width:100%!important;justify-content:space-between!important;min-height:49px!important}
+ body .hero-cinematic .hero-actions-campaign .hero-secondary{display:none!important}
+ body .hero-cinematic .hero-offer-card{margin:8px 0 0!important;padding:8px 11px!important}
+ body .hero-cinematic .hero-offer-main strong{font-size:22px!important}
+ body .hero-cinematic .hero-social-note{margin-top:9px!important;font-size:10px!important}
+}
+@media(max-width:390px){
+ body .hero.section.hero-cinematic{min-height:710px!important;padding-inline:14px!important}
+ body .hero-cinematic .hero-campaign-title{font-size:clamp(40px,10.6vw,47px)!important}
+ body .hero-cinematic .hero-tiny-trust{font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){body .hero-cinematic *{animation:none!important;transition:none!important}}
