@@ -99,12 +99,12 @@ function loadPix(){
 }
 $("#savePix").onclick=()=>{
  const out={enabled:true,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value||0),shippingFlat:Number($("#shippingFlat").value||0)};
- localStorage.setItem("natal_pix_config",JSON.stringify(out));$("#pixMsg").innerHTML='<div class="notice">Configuração Pix salva neste navegador.</div>';
+ api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})}).then(()=>{serverSettings.pix=out;$("#pixMsg").textContent="Configuração salva no servidor."}).catch(e=>$("#pixMsg").textContent=e.message);
 };
 
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
 function loadMarketing(){const c={...marketingDefaults,...(serverSettings.marketing||{})};Object.keys(c).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""})}
-$("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());localStorage.setItem("natal_marketing_config",JSON.stringify(out));$("#marketingMsg").innerHTML='<div class="notice">IDs salvos. Integração de eventos preparada para a loja.</div>'};
+$("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketing",value:out})}).then(()=>{serverSettings.marketing=out;$("#marketingMsg").textContent="IDs salvos no servidor."}).catch(e=>$("#marketingMsg").textContent=e.message);
 
 const seoDefaults={title:"Kit Papai Noel Passou Aqui | Natal 2026",description:"Crie uma surpresa de Natal inesquecível com pegadas do Papai Noel, adesivo de janela e opções personalizadas.",image:"assets/product/kit-personalizado.webp"};
 function loadSeo(){const c={...seoDefaults,...(serverSettings.seo||{})};$("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;renderSeoChecks(c)}
@@ -118,7 +118,7 @@ function renderSeoChecks(c){
  ];
  $("#seoChecks").innerHTML=checks.map(([t,ok])=>'<div class="seo-check"><span>'+t+'</span><b class="'+(ok?"ok":"warn")+'">'+(ok?"OK":"Revisar")+'</b></div>').join("");
 }
-$("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};localStorage.setItem("natal_seo_config",JSON.stringify(out));renderSeoChecks(out);$("#seoMsg").innerHTML='<div class="notice">Rascunho SEO salvo.</div>'};
+$("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})}).then(()=>{serverSettings.seo=out;renderSeoChecks(out);$("#seoMsg").textContent="Rascunho salvo no servidor."}).catch(e=>$("#seoMsg").textContent=e.message);
 
 function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();bindStatus()}
 })();
