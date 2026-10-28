@@ -93,10 +93,13 @@
 
   <section class="checkout-step checkout-step-delivery" data-step="2">
     <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
-    <div class="checkout-step-title"><h1>Onde vamos entregar a surpresa?</h1><p>Comece pelo CEP. A gente encontra o endereço e você só completa o que falta.</p></div>
-    <div class="cep-search">
-      <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" required></label>
-      <button type="button" class="btn btn-secondary cep-search-button" id="findCep"><span class="cep-search-icon" aria-hidden="true">⌖</span><span>Buscar endereço</span></button>
+    <div class="checkout-step-title"><h2>Um destino para a magia.</h2><p>Digite o CEP e veja seu endereço aparecer automaticamente. Depois é só completar.</p></div>
+    <div class="cep-search cep-auto-search">
+      <label for="cep">CEP
+        <span class="cep-field-wrap"><input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" aria-describedby="cepHelp cepStatus" required><span class="cep-field-symbol" aria-hidden="true">⌖</span></span>
+      </label>
+      <small id="cepHelp">O endereço aparece sozinho ao completar os 8 números.</small>
+      <div id="cepStatus" class="cep-status" role="status" aria-live="polite"></div>
     </div>
     <div class="address-result" id="addressResult" hidden>
       <div class="address-found"><span class="address-check" aria-hidden="true">✓</span><div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div></div>
@@ -114,7 +117,7 @@
 
   <section class="checkout-step checkout-step-review" data-step="3">
     <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
-    <div class="checkout-step-title"><h1>Última conferência.</h1><p>Revise nome, entrega e valor antes de gerar o Pix.</p></div>
+    <div class="checkout-step-title"><h2>Olha só o que está chegando.</h2><p>Essa é a surpresa que você vai preparar. Confira os detalhes e finalize com carinho.</p></div>
     <div class="review-ready" aria-hidden="true"><span>✦</span><strong>Tudo pronto para o Polo Norte</strong><span>✦</span></div>
 
     <div class="review-kit-showcase">
@@ -134,12 +137,12 @@
     </div>
   </section>
 
-  <footer class="checkout-page-actions"><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary" id="checkoutNext">Continuar</button></footer>
+  <footer class="checkout-page-actions"><div class="checkout-page-action-buttons"><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary checkout-primary-action" id="checkoutNext">Continuar</button></div><div class="checkout-reassurance">✦ Você pode conferir tudo antes de pagar</div></footer>
 </section>
 </main>
 
 <section class="checkout-payment-scene" id="paymentScene" hidden>
-  <div class="pix-panel pix-panel-special">
+  <div class="pix-panel pix-panel-special"><div class="pix-scene-top" aria-hidden="true">✦ &nbsp; NOITE DE NATAL &nbsp; ✦</div>
     <div class="pix-celebration" aria-hidden="true"><i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i></div>
     <span class="eyebrow">ÚLTIMO PASSO</span><h2>Seu Pix está pronto.</h2><p class="pix-subtitle" id="pixMagicMessage">A surpresa já está quase a caminho.</p>
     <div class="pix-personal-note"><small>PREPARANDO PARA</small><strong id="pixChildName">—</strong></div>
