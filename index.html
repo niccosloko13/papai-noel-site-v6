@@ -231,7 +231,17 @@
       <button type="button" class="icon-btn" id="closeCheckout" aria-label="Fechar checkout">×</button>
       <div><small id="checkoutStepLabel">Etapa 1 de 3</small><strong id="checkoutTitle">Finalizar pedido</strong></div>
     </header>
-    <div class="checkout-progress" aria-hidden="true"><span id="checkoutProgress"></span></div>
+    <div class="checkout-progress-wrap" aria-hidden="true">
+      <div class="checkout-progress"><span id="checkoutProgress"></span></div>
+      <div class="checkout-progress-steps">
+        <span data-progress-step="1"><i>1</i><b>Personalizar</b></span>
+        <span data-progress-step="2"><i>2</i><b>Entrega</b></span>
+        <span data-progress-step="3"><i>3</i><b>Revisar e pagar</b></span>
+      </div>
+    </div>
+    <div class="checkout-magic-sky" aria-hidden="true">
+      <i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>❄</i>
+    </div>
 
     <section class="checkout-step active checkout-step-personal" data-step="1">
       <div class="checkout-step-kicker">PASSO 1 • PERSONALIZAÇÃO</div>
@@ -257,6 +267,7 @@
             <span>Atualiza ao vivo</span>
           </div>
           <div class="letter-preview" aria-live="polite">
+            <div class="letter-seal" aria-hidden="true"><span>PN</span></div>
             <div class="letter-preview-stamp">POLO NORTE</div>
             <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
             <small class="letter-preview-kicker">Mensagem especial do Papai Noel</small>
@@ -285,7 +296,7 @@
 
       <div class="address-result" id="addressResult" hidden>
         <div class="address-found">
-          <span aria-hidden="true">✓</span>
+          <span class="address-check" aria-hidden="true">✓</span>
           <div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div>
         </div>
         <input id="address" required hidden>
@@ -308,6 +319,7 @@
         <p>Revise os dados principais. Depois disso, o Pix é gerado.</p>
       </div>
 
+      <div class="review-ready" aria-hidden="true"><span>✦</span><strong>Tudo pronto para o Polo Norte</strong><span>✦</span></div>
       <div class="review-card">
         <div class="review-person">
           <span class="review-spark">✦</span>
@@ -341,7 +353,10 @@
     <button class="icon-btn pix-close" type="button" id="closePix" aria-label="Fechar pagamento">×</button>
 
     <div class="pix-celebration" aria-hidden="true">
-      <i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i>
+      <i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i><i>❄</i><i>✦</i>
+    </div>
+    <div class="pix-night-sky" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
     <span class="eyebrow">ÚLTIMO PASSO</span>
@@ -379,7 +394,12 @@
     </details>
     <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
 
-    <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton">Já fiz o Pix</button>
+    <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton"><span>Já fiz o Pix</span><i aria-hidden="true">✦</i></button>
+    <div class="payment-celebration-message" id="paymentCelebrationMessage" aria-live="polite" hidden>
+      <span aria-hidden="true">✦</span>
+      <div><small>PAGAMENTO INFORMADO</small><strong>Agora é com a gente.</strong></div>
+      <span aria-hidden="true">✦</span>
+    </div>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
     <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
 
