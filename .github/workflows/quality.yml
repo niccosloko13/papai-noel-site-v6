@@ -23,8 +23,10 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Check build output and syntax
         run: npm run build
-      - name: Test checkout at 390px and 1440px
-        run: npx playwright test tests/checkout-responsive.spec.js tests/customer-ux.spec.js tests/full-site-iphone.spec.js tests/santa-letter-mobile.spec.js tests/hero-product-focus.spec.js
+      - name: Validate Pix payload format and CRC
+        run: node --test tests/pix-payload.test.js
+      - name: Test iPhone Safari, direct-ad campaign, checkout and account
+        run: npx playwright test tests/checkout-responsive.spec.js tests/customer-ux.spec.js tests/full-site-iphone.spec.js tests/santa-letter-mobile.spec.js tests/hero-product-focus.spec.js tests/conversion-journey.spec.js
         env:
           CI: 'true'
       - uses: actions/upload-artifact@v4
