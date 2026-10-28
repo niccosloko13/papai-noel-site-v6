@@ -28,7 +28,6 @@ function updatePreview(){
  previewName.textContent="Querido "+n+",";
  previewLetter.textContent=letter.value.trim()||"Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!";
  count.textContent=letter.value.length;
- if(letterExpand?.getAttribute("aria-expanded")==="true")$("#letterPreviewPaper").scrollIntoView({block:"nearest",behavior:"instant"});
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
 function syncMode(){
