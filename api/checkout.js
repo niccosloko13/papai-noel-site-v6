@@ -9,8 +9,8 @@ module.exports=async function(req,res){
  try{
  const b=req.body||{};if(JSON.stringify(b).length>8000)return res.status(413).json({error:"Pedido muito grande"});
  const items=Array.isArray(b.items)?b.items:[],ids=items.map(x=>x.id);
- if(items.length!==1||!catalog[ids[0]]||items[0].qty!==1)return res.status(400).json({error:"Escolha um kit válido"});
- const personal=ids[0]==="personal";
+ if(!items.length||items.length>2||new Set(ids).size!==ids.length||items.some(i=>!catalog[i.id]||!Number.isInteger(i.qty)||i.qty<1||i.qty>10))return res.status(400).json({error:"Escolha kits e quantidades válidos"});
+ const personal=ids.includes("personal");
  const fields={customerName:clean(b.customerName,90),phone:clean(b.phone,22),cep:clean(b.cep,9),address:clean(b.address,250),number:clean(b.number,20),complement:clean(b.complement,90),childName:personal?clean(b.childName,40):"",letter:personal?clean(b.letter,220):""};
  if(!fields.customerName||fields.phone.replace(/\D/g,"").length<10||fields.cep.replace(/\D/g,"").length!==8||!fields.address||!fields.number||(personal&&!fields.childName))return res.status(400).json({error:"Revise os dados do pedido"});
  await init();
@@ -18,11 +18,11 @@ module.exports=async function(req,res){
  if(config.enabled!==true||!config.key||!config.receiverName)return res.status(503).json({error:"Pagamento Pix temporariamente indisponível"});
  const disc=Number(config.discount);const shipping=Number(config.shippingFlat||0);
  if(!Number.isFinite(disc)||disc<0||disc>50||!Number.isFinite(shipping)||shipping<0||shipping>1000)return res.status(503).json({error:"Configuração de pagamento inválida"});
- const product=catalog[ids[0]],total=Math.round((product.price*(1-disc/100)+shipping)*100)/100;
+ const total=Math.round((items.reduce((sum,i)=>sum+catalog[i.id].price*i.qty,0)*(1-disc/100)+shipping)*100)/100;
  const id="NATAL-"+crypto.randomBytes(6).toString("hex").toUpperCase();
  const claim=crypto.randomBytes(32).toString("hex");
  const payload=buildPix({key:config.key,receiverName:config.receiverName,city:config.city||"SAO PAULO",amount:total,txid:id.replace("-","")});
- const order={id,createdAt:new Date().toISOString(),status:"Aguardando pagamento",items:[{id:ids[0],name:product.name,qty:1,unitPrice:product.price}],total,discountPercent:disc,shipping, ...fields,paymentClaimHash:crypto.createHash("sha256").update(claim).digest("hex")};
+ const order={id,createdAt:new Date().toISOString(),status:"Aguardando pagamento",items:items.map(i=>({id:i.id,name:catalog[i.id].name,qty:i.qty,unitPrice:catalog[i.id].price})),total,discountPercent:disc,shipping, ...fields,paymentClaimHash:crypto.createHash("sha256").update(claim).digest("hex")};
  await db().query("INSERT INTO natal_orders(id,status,data) VALUES($1,$2,$3)",[id,order.status,JSON.stringify(order)]);
  return res.status(201).json({id,total,pixPayload:payload,discountPercent:disc,receiverName:config.displayName||config.receiverName,claim});
  }catch(e){console.error("checkout submit",e.code||e.message);return res.status(503).json({error:"Não foi possível criar o pedido no momento"})}
