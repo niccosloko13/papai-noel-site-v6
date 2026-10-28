@@ -10,14 +10,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="checkout-premium.css?v=20261028-mobile-v2">
+<link rel="stylesheet" href="conversion-refresh.css?v=20261028-c">
+<link rel="stylesheet" href="checkout-premium.css?v=20261028-trust">
 </head>
 <body class="checkout-page">
 <div class="natal-atmosphere" aria-hidden="true"><div class="natal-stars"></div><div class="natal-fir natal-fir-left"></div><div class="natal-fir natal-fir-right"></div><span class="natal-ornament natal-ornament-one"></span><span class="natal-ornament natal-ornament-two"></span></div>
 <header class="checkout-page-header">
   <a href="index.html#kits" class="checkout-page-back" aria-label="Voltar para os kits">←</a>
   <div><small>EDIÇÃO DE NATAL</small><strong>Papai Noel Passou Aqui</strong></div>
-  <span class="checkout-page-secure">✦ Sua surpresa de Natal</span>
+  <a class="checkout-identity-link" href="minha-conta.html">Área do cliente</a><span class="checkout-page-secure">♢ Conexão protegida</span>
 </header>
 
 <main class="checkout-page-main">
@@ -30,7 +31,7 @@
 <small>FEITO PARA SURPREENDER DE VERDADE</small>
 </aside>
 <section class="checkout-page-shell">
-  <div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
+  <div class="checkout-trust-row" aria-label="Segurança e atendimento"><span>✓ Seus dados protegidos</span><span>✓ Pix com valor confirmado na revisão</span><span>✓ Suporte por WhatsApp</span></div><div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
   <div class="checkout-page-progress" aria-label="Etapas do pedido">
     <div class="checkout-progress"><span id="checkoutProgress"></span></div>
     <div class="checkout-progress-steps">
@@ -133,7 +134,7 @@
     <div class="review-card">
       <div class="review-person"><span class="review-spark">✦</span><small id="reviewPersonLabel">A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
       <div class="review-grid"><div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div><div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div></div>
-      <div class="review-total"><span><small>TOTAL NO PIX</small><b>15% OFF aplicado</b></span><strong id="reviewTotal">R$ 0,00</strong></div>
+      <div class="review-total"><span><small>TOTAL NO PIX</small><b>15% OFF aplicado</b></span><strong id="reviewTotal">—</strong></div>
     </div>
   </section>
 
@@ -152,10 +153,10 @@
     <details class="pix-copy-box"><summary>Pix copia e cola <span>+</span></summary><label class="pix-copy-label">Código Pix<textarea id="pixCopyPaste" rows="3" readonly></textarea></label><button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button></details>
     <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
     <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton"><span>Já fiz o Pix</span><i aria-hidden="true">✦</i></button>
-    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><span>✦</span><div><small>PAGAMENTO INFORMADO</small><strong>Agora é com a gente.</strong></div><span>✦</span></div>
+    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><span>✦</span><div><small>AVISO RECEBIDO</small><strong>Vamos conferir o pagamento.</strong></div><span>✦</span></div>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
-    <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
-    <a class="btn btn-secondary" href="minha-conta.html" id="createCustomerAccount">Criar minha conta e guardar pedidos</a>
+    <a class="btn btn-secondary" id="trackOrderLink" href="minha-conta.html" hidden>Ver minha compra na área do cliente</a>
+    <a class="btn btn-secondary" href="minha-conta.html" id="createCustomerAccount" href="minha-conta.html#criar-conta">Criar acesso e guardar minha compra</a>
   </div>
 </section>
 
