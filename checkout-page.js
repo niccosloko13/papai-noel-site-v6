@@ -4,7 +4,12 @@ const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).
 let publicPixConfig=null;
 const cfg=()=>publicPixConfig||{discount:15,shippingFlat:0,enabled:false};
 const discounted=v=>Math.round(v*(1-(Number(cfg().discount)||0)/100)*100)/100;
-const pending=JSON.parse(localStorage.getItem("natal_checkout_pending")||"null");
+const params=new URLSearchParams(location.search);
+const campaignKit=params.get("kit");
+const directKit=["basic","personal"].includes(campaignKit)?campaignKit:null;
+let savedPending=null;
+try{savedPending=JSON.parse(localStorage.getItem("natal_checkout_pending")||"null")}catch{}
+const pending=directKit?{items:[{id:directKit,qty:1}],fromCart:false,fromCampaign:true}:savedPending;
 if(!pending?.items?.length){location.href="index.html#kits";return}
 const expanded=pending.items.map(i=>({product:products.find(p=>p.id===i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
 if(!expanded.length){location.href="index.html#kits";return}
@@ -36,6 +41,7 @@ function closeLetterDialog(){
 }
 letterExpand?.addEventListener("click",showLetterDialog);
 $("#basicLetterTrigger")?.addEventListener("click",showLetterDialog);
+$("#openSantaLetter")?.addEventListener("click",showLetterDialog);
 $("#reviewLetterTrigger")?.addEventListener("click",showLetterDialog);
 $("#closeLetterDialog")?.addEventListener("click",closeLetterDialog);
 $("#letterDialogDone")?.addEventListener("click",closeLetterDialog);
@@ -45,8 +51,8 @@ function updatePriceDisplay(){const amount=money(total());$("#stepOneKitPrice").
 
 function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
 function updatePreview(){
- const n=child.value.trim()||"Miguel";
- previewName.textContent=personalized?"Querido "+n+",":"Olá, pequena estrela,";
+ const n=child.value.trim()||"sua criança";
+ previewName.textContent=personalized?"Querido "+n+",":"Olá, minha pequena estrela,";
  previewLetter.textContent=(!personalized||!letter.value.trim())?"Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!":letter.value.trim();
  count.textContent=letter.value.length;
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
@@ -91,16 +97,16 @@ function renderStep(){
  progress.style.width=(step/3*100)+"%";
  document.body.dataset.checkoutStep=String(step);
  back.hidden=step===1;
- next.textContent=step===3?"Gerar meu Pix":step===1?"Continuar para entrega":"Conferir minha surpresa";
- const titles=["Seu kit de Natal","O endereço da surpresa","Confira antes do Pix"];
- const descriptions=["Uma surpresa especial começa aqui.","Vamos encontrar seu endereço.","Todos os detalhes reunidos."];
+ next.textContent=step===3?"Gerar Pix seguro":step===1?"Quero preparar a surpresa":"Revisar e pagar";
+ const titles=["Uma surpresa que vai emocionar","Para onde vai a magia?","Quase pronto para o Natal"];
+ const descriptions=["O segredo está nos pequenos detalhes.","Complete os dados para a entrega.","Confira e gere o Pix com segurança."];
  $("#checkoutMomentTitle").textContent=titles[step-1];
  $("#checkoutMomentText").textContent=descriptions[step-1];
  if(step===3)renderReview();
  if(step===2)trackStoreEvent("begin_checkout",{product_id:primaryProduct.id});
  if(step===3)trackStoreEvent("shipping_info",{product_id:primaryProduct.id});
  updatePriceDisplay();
- window.scrollTo({top:0,behavior:"smooth"});
+ window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
 }
 function validate(){
  if(step===2&&(!$("#address").value||$("#addressResult").hidden||confirmedCep!==cepInput.value.replace(/\D/g,""))){setCepStatus("Informe um CEP válido e aguarde o endereço aparecer.","error");$("#cep").focus();return false}
