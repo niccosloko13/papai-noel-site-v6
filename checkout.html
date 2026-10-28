@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="conversion-refresh.css?v=20261028-c">
-<link rel="stylesheet" href="checkout-premium.css?v=20261028-natal-letter-v5">
+<link rel="stylesheet" href="checkout-premium.css?v=20261028-natal-letter-v5"><link rel="stylesheet" href="premium-experience.css?v=20261028-checkout-v1">
 </head>
 <body class="checkout-page">
 <div class="natal-atmosphere" aria-hidden="true"><div class="natal-stars"></div><div class="natal-fir natal-fir-left"></div><div class="natal-fir natal-fir-right"></div><span class="natal-ornament natal-ornament-one"></span><span class="natal-ornament natal-ornament-two"></span></div>
@@ -31,7 +31,7 @@
 <small>FEITO PARA SURPREENDER DE VERDADE</small>
 </aside>
 <section class="checkout-page-shell">
-  <div class="checkout-experience-banner"><span class="checkout-experience-icon" aria-hidden="true">✦</span><div><small>UMA EXPERIÊNCIA DE NATAL</small><strong>Sua surpresa, do seu jeito.</strong></div><span class="checkout-experience-flare" aria-hidden="true">✧</span></div><div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
+  <div class="checkout-experience-banner"><span class="checkout-experience-icon" aria-hidden="true">✦</span><div><small>NATAL 2026 · EDIÇÃO ESPECIAL</small><strong>A magia começa com um detalhe.</strong></div><span class="checkout-experience-flare" aria-hidden="true">✧</span></div><div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
   <div class="checkout-page-progress" aria-label="Etapas do pedido">
     <div class="checkout-progress"><span id="checkoutProgress"></span></div>
     <div class="checkout-progress-steps">
@@ -42,7 +42,7 @@
   </div>
 
   <section class="checkout-step active checkout-step-personal" data-step="1">
-    <div class="checkout-step-kicker">PASSO 1 • SUA SURPRESA</div>
+    <div class="checkout-step-kicker">PASSO 1 · O SEGREDO DO NATAL</div>
 
     <div class="checkout-oneview" id="checkoutOneView">
       <div class="checkout-oneview-product">
@@ -54,6 +54,9 @@
         </div>
       </div>
 
+      <button class="checkout-letter-stage" type="button" id="openSantaLetter" aria-haspopup="dialog" aria-controls="letterDialog">
+        <span class="envelope" aria-hidden="true">✉</span><span><small>UM RECADO DIRETO DO POLO NORTE</small><strong>Uma carta assinada pelo Papai Noel.</strong><em>Toque para abrir e descobrir a mensagem</em></span><span class="arrow" aria-hidden="true">↗</span>
+      </button>
       <div class="basic-checkout-summary" id="basicCheckoutSummary" hidden>
         <div class="basic-summary-copy">
           <span>JÁ VEM PRONTO</span>
@@ -118,7 +121,7 @@
 
   <section class="checkout-step checkout-step-review" data-step="3">
     <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
-    <div class="checkout-step-title"><h2>Confira sua surpresa.</h2><p>Revise tudo antes de gerar o Pix.</p></div>
+    <div class="checkout-step-title"><h2>Está tudo pronto para a magia.</h2><p>Revise a carta, os itens e o endereço antes de pagar.</p></div>
     
 
     <div class="review-kit-showcase">
@@ -132,7 +135,7 @@
     </div>
 
     <div class="review-card">
-      <button id="reviewLetterTrigger" class="checkout-letter-trigger review-letter-trigger" type="button"><span aria-hidden="true">✉</span><span>Visualizar carta do Papai Noel</span><span aria-hidden="true">↗</span></button><div class="review-person"><span class="review-spark">✦</span><small id="reviewPersonLabel">A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
+      <div class="checkout-review-postcard"><span class="letter-icon" aria-hidden="true">✉</span><span><strong>A carta da sua surpresa</strong><small>Revise a mensagem antes do Pix</small></span><button id="reviewLetterTrigger" type="button" aria-haspopup="dialog">Abrir carta ↗</button></div><div class="review-person"><span class="review-spark">✦</span><small id="reviewPersonLabel">A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
       <div class="review-grid"><div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div><div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div></div>
       <div class="review-total"><span><small>TOTAL NO PIX</small><b>15% OFF aplicado</b></span><strong id="reviewTotal">—</strong></div>
     </div>
@@ -172,5 +175,5 @@
 <script src="store-data.js"></script>
 <script src="vendor/qrcode.min.js"></script>
 <script src="pix.js"></script>
-<script src="checkout-page.js?v=20261028-natal-letter-v4"></script>
+<script src="checkout-page.js?v=20261028-ads-journey-v1"></script>
 </body></html>
