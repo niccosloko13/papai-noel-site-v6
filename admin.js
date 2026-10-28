@@ -31,7 +31,7 @@ form.addEventListener("submit",async e=>{
 });
 $("#logoutBtn").onclick=logout;
 
-const titles={dashboard:["PAINEL","Visão geral"],orders:["VENDAS","Pedidos"],pix:["PAGAMENTOS","Pix"],marketing:["AQUISIÇÃO","Anúncios"],seo:["ORGANIC","SEO"]};
+const titles={dashboard:["PAINEL","Visão geral"],orders:["VENDAS","Pedidos"],products:["CATÁLOGO","Produtos"],pix:["PAGAMENTOS","Pix"],marketing:["AQUISIÇÃO","Anúncios"],seo:["ORGANIC","SEO"]};
 function selectTab(id){
  $$(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
  $$(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
@@ -103,6 +103,41 @@ function renderOrders(){
 }
 $("#orderSearch").addEventListener("input",renderOrders);$("#orderFilter").addEventListener("change",renderOrders);
 
+const productDefaults=(window.STORE_DATA?.products||[]).map(p=>({...p,benefits:[...p.benefits]}));
+function loadProducts(){
+ const products=Array.isArray(serverSettings.products)&&serverSettings.products.length===2?serverSettings.products:productDefaults;
+ $("#productEditors").innerHTML=products.map(p=>`
+ <div class="product-editor" data-product-id="${esc(p.id)}">
+  <div class="product-editor-photo"><img src="${esc(p.image)}" alt="Foto do Kit ${esc(p.name)}" loading="lazy"></div>
+  <div class="product-editor-fields">
+    <h3>Kit ${esc(p.id==="basic"?"Essencial":"Personalizado")}</h3>
+    <label>Nome<input data-field="name" maxlength="45" value="${esc(p.name)}"></label>
+    <label>Descrição<textarea data-field="prop" maxlength="350" rows="3">${esc(p.prop)}</textarea></label>
+    <label>Preço (R$)<input data-field="price" type="number" min="1" max="10000" step=".01" value="${Number(p.price)}"></label>
+    <label>Endereço da foto<input data-field="image" value="${esc(p.image)}" placeholder="assets/product/foto.webp ou https://..."></label>
+    <label>Itens incluídos (um por linha)<textarea data-field="benefits" rows="6">${esc(p.benefits.join("\n"))}</textarea></label>
+    <label class="toggle-product"><input type="checkbox" data-field="active" ${p.active!==false?"checked":""}> Kit disponível para compra</label>
+  </div>
+ </div>`).join("");
+ $$("#productEditors [data-field='image']").forEach(input=>input.addEventListener("change",()=>{
+   const image=input.closest(".product-editor").querySelector("img");
+   const url=input.value.trim();if(url.startsWith("assets/product/")||url.startsWith("https://"))image.src=url;
+ }));
+}
+$("#saveProducts").addEventListener("click",async()=>{
+ const products=$$("#productEditors .product-editor").map(el=>{
+  const get=field=>el.querySelector('[data-field="'+field+'"]');
+  return {id:el.dataset.productId,name:get("name").value.trim(),
+    prop:get("prop").value.trim(),price:Number(get("price").value),
+    image:get("image").value.trim(),benefits:get("benefits").value.split("\n").map(x=>x.trim()).filter(Boolean),
+    active:get("active").checked};
+ });
+ const button=$("#saveProducts");button.disabled=true;$("#productsMsg").textContent="Salvando...";
+ try{await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"products",value:products})});
+   serverSettings.products=products;$("#productsMsg").textContent="Kits salvos no banco. A loja atualiza ao recarregar."}
+ catch(e){$("#productsMsg").textContent="Não foi possível salvar: "+e.message}
+ finally{button.disabled=false}
+});
 const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:15,shippingFlat:0,...(window.STORE_DATA?.pix||{})};
 function loadPix(){
  const c={...pixDefaults,...(serverSettings.pix||{})};
@@ -132,5 +167,5 @@ function renderSeoChecks(c){
 }
 $("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})}).then(()=>{serverSettings.seo=out;renderSeoChecks(out);$("#seoMsg").textContent="Rascunho salvo no servidor."}).catch(e=>$("#seoMsg").textContent=e.message);};
 
-function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();bindStatus()}
+function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();loadProducts();bindStatus()}
 })();
