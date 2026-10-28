@@ -3526,3 +3526,63 @@ h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.tr
     grid-template-rows:320px auto!important;
   }
 }
+
+/* ===== Product photography refresh 2026-10-28 ===== */
+.kit-items-showcase-v2{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:18px!important;
+}
+.kit-items-showcase-v2 .kit-item{
+  display:grid!important;
+  grid-template-rows:auto 1fr!important;
+  min-height:0!important;
+  border-radius:24px!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  box-shadow:0 16px 42px rgba(62,35,24,.08)!important;
+}
+.kit-items-showcase-v2 .kit-item img{
+  position:static!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:3/2!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  min-height:0!important;
+  filter:none!important;
+}
+.kit-items-showcase-v2 .kit-item>div{
+  position:static!important;
+  padding:20px 22px 22px!important;
+  background:#fff!important;
+  color:#261814!important;
+  transform:none!important;
+}
+.kit-items-showcase-v2 .kit-item small{color:#a91f2c!important}
+.kit-items-showcase-v2 .kit-item h3{color:#241713!important;font-size:1.55rem!important}
+.kit-items-showcase-v2 .kit-item p{color:#766a62!important;max-width:48ch!important}
+.product-card-media{
+  aspect-ratio:3/2!important;
+  background:#f5ede4!important;
+}
+.product-card-media>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+.product-card--personal .product-card-media>img{
+  object-fit:contain!important;
+  padding:24px!important;
+}
+@media(max-width:699px){
+  .kit-items-showcase-v2{grid-template-columns:1fr!important;gap:14px!important}
+  .kit-items-showcase-v2 .kit-item{border-radius:20px!important}
+  .kit-items-showcase-v2 .kit-item img{aspect-ratio:3/2!important}
+  .kit-items-showcase-v2 .kit-item>div{padding:17px 18px 20px!important}
+  .product-card-media{aspect-ratio:3/2!important}
+  .product-card-media>img{object-fit:cover!important;padding:0!important}
+  .product-card--personal .product-card-media>img{object-fit:contain!important;padding:16px!important}
+  .hero-product-photo img{aspect-ratio:3/2!important;object-fit:cover!important;object-position:center!important}
+}
