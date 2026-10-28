@@ -28,7 +28,7 @@ const applySeoDraft=()=>{
   }catch{}
 };
 applySeoDraft();
-trackStoreEvent("page_view",{page:"landing"});
+// page_view is recorded by the shared analytics client on every page.
 
 function updateCampaignPrices(){
  const active=PRODUCTS.filter(p=>p.active!==false);
