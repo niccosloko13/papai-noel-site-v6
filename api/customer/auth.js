@@ -22,8 +22,15 @@ module.exports=async function(req,res){
    try{await db().query("INSERT INTO natal_customers(id,name,email,password_hash) VALUES($1,$2,$3,$4)",[id,name.trim(),normalized,stored])}catch(e){if(e.code==="23505")return res.status(409).json({error:"Este e-mail já está cadastrado"});throw e}
    customer={id,name:name.trim(),email:normalized};
   }else if(action==="login"){
+   const key=crypto.createHash("sha256").update(normalized).digest("hex");
+   const attempts=await db().query("SELECT failures,window_start FROM natal_customer_auth_limits WHERE key=$1",[key]);
+   if(attempts.rowCount&&Number(attempts.rows[0].failures)>=8&&new Date(attempts.rows[0].window_start).getTime()>Date.now()-15*60000)return res.status(429).json({error:"Muitas tentativas. Aguarde 15 minutos para tentar novamente."});
    const q=await db().query("SELECT id,name,email,password_hash FROM natal_customers WHERE email=$1",[normalized]);
-   if(!q.rowCount||!checkPassword(password,q.rows[0].password_hash))return res.status(401).json({error:"E-mail ou senha incorretos"});
+   if(!q.rowCount||!checkPassword(password,q.rows[0].password_hash)){
+    await db().query("INSERT INTO natal_customer_auth_limits(key,failures,window_start) VALUES($1,1,now()) ON CONFLICT(key) DO UPDATE SET failures=CASE WHEN natal_customer_auth_limits.window_start < now()-interval '15 minutes' THEN 1 ELSE natal_customer_auth_limits.failures+1 END,window_start=CASE WHEN natal_customer_auth_limits.window_start < now()-interval '15 minutes' THEN now() ELSE natal_customer_auth_limits.window_start END",[key]);
+    return res.status(401).json({error:"E-mail ou senha incorretos"});
+   }
+   await db().query("DELETE FROM natal_customer_auth_limits WHERE key=$1",[key]);
    customer={id:q.rows[0].id,name:q.rows[0].name,email:q.rows[0].email};
   }else return res.status(400).json({error:"Operação inválida"});
   res.setHeader("Set-Cookie",issue(customer.id));
