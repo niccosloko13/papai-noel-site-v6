@@ -8,6 +8,8 @@ if(!pending?.items?.length){location.href="index.html#kits";return}
 const expanded=pending.items.map(i=>({product:products.find(p=>p.id===i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
 if(!expanded.length){location.href="index.html#kits";return}
 const personalized=expanded.some(i=>i.product.id==="personal");
+const primaryItem=expanded.find(i=>i.product.id==="personal")||expanded[0];
+const primaryProduct=primaryItem.product;
 let step=1,currentOrderId=null;
 const $=s=>document.querySelector(s);
 const steps=[...document.querySelectorAll(".checkout-step")];
@@ -23,12 +25,33 @@ function updatePreview(){
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
 function syncMode(){
- const fields=[child.closest("label"),letter.closest("label"),$("#letterPreviewWrap")];
- fields.forEach(el=>el.hidden=!personalized);
+ const personalizationLayout=$("#personalizationLayout");
+ const basicSummary=$("#basicCheckoutSummary");
  child.required=personalized;
+ if(personalizationLayout)personalizationLayout.hidden=!personalized;
+ if(basicSummary)basicSummary.hidden=personalized;
+
  const kick=$('.checkout-step[data-step="1"] .checkout-step-kicker');
  const h=$('.checkout-step[data-step="1"] h1');
- if(!personalized){kick.textContent="PASSO 1 • CONFERÊNCIA";h.textContent="Seu Kit Essencial já vem pronto."}
+ const p=$('.checkout-step[data-step="1"] .checkout-step-title p');
+ const stepOneLabel=document.querySelector('[data-progress-step="1"] b');
+
+ if(personalized){
+   if(kick)kick.textContent="PASSO 1 • PERSONALIZAÇÃO";
+   if(h)h.textContent="Veja a carta antes de concluir.";
+   if(p)p.textContent="Preencha e acompanhe a prévia. Você pode revisar tudo antes de continuar.";
+   if(stepOneLabel)stepOneLabel.textContent="Personalizar";
+ }else{
+   if(kick)kick.textContent="PASSO 1 • SEU KIT";
+   if(h)h.textContent="Seu Kit Essencial já vem pronto.";
+   if(p)p.textContent="Confira rapidamente o que você vai receber antes de seguir para a entrega.";
+   if(stepOneLabel)stepOneLabel.textContent="Conferir kit";
+   $("#basicSummaryImage").src=primaryProduct.image;
+   $("#basicSummaryImage").alt="Kit "+primaryProduct.name+" completo";
+   $("#basicSummaryTitle").textContent="Kit "+primaryProduct.name;
+   $("#basicSummaryText").textContent=primaryProduct.prop;
+   $("#basicSummaryList").innerHTML=(primaryProduct.benefits||[]).map(x=>'<span><i>✓</i>'+x+'</span>').join("");
+ }
 }
 function renderStep(){
  steps.forEach(el=>el.classList.toggle("active",Number(el.dataset.step)===step));
@@ -52,8 +75,23 @@ function validate(){
  return ok;
 }
 function renderReview(){
- $("#reviewChildName").textContent=personalized?(child.value.trim()||"—"):"Kit Essencial";
- $("#reviewMessage").textContent=personalized?(letter.value.trim()||"Mensagem padrão do Papai Noel"):"Sem personalização";
+ $("#reviewKitImage").src=primaryProduct.image;
+ $("#reviewKitImage").alt="Kit "+primaryProduct.name+" completo";
+ $("#reviewKitTitle").textContent="Kit "+primaryProduct.name;
+ $("#reviewKitProp").textContent=primaryProduct.prop;
+ $("#reviewKitItems").innerHTML=(primaryProduct.benefits||[]).map(x=>'<span><i>✓</i>'+x+'</span>').join("");
+
+ const personLabel=$("#reviewPersonLabel");
+ if(personalized){
+   personLabel.textContent="A CARTA SERÁ PREPARADA PARA";
+   $("#reviewChildName").textContent=child.value.trim()||"—";
+   $("#reviewMessage").textContent=letter.value.trim()||"Mensagem padrão do Papai Noel";
+ }else{
+   personLabel.textContent="SEU PEDIDO";
+   $("#reviewChildName").textContent="Kit "+primaryProduct.name;
+   $("#reviewMessage").textContent="Kit pronto para montar a surpresa em casa.";
+ }
+
  $("#reviewAddress").textContent=[$("#address").value,$("#number").value,$("#complement").value].filter(Boolean).join(", ")||"—";
  $("#reviewCustomer").textContent=[$("#customerName").value,$("#phone").value].filter(Boolean).join(" • ")||"—";
  $("#reviewTotal").textContent=money(total());
