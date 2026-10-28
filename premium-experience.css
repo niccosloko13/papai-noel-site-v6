@@ -91,3 +91,14 @@ body.checkout-page .checkout-progress-steps b{font-size:11px!important}
  body.checkout-page .checkout-primary-action{white-space:normal!important;font-size:12px!important}
 }
 @media(prefers-reduced-motion:reduce){body.checkout-page .checkout-step.active,body.checkout-page .natal-letter-full-paper{animation:none!important}.checkout-letter-stage .envelope{transition:none!important}}
+
+/* Reduce non-converting chrome above the hero on narrow iPhones */
+@media(max-width:700px){
+ body .announcement-bar{min-height:27px!important;height:27px!important;padding:4px 10px!important;gap:13px!important;font-size:10px!important;letter-spacing:0!important}
+ body .header-inner{min-height:59px!important;padding-top:7px!important;padding-bottom:7px!important}
+ body .header-actions .header-account-cta{min-height:35px!important;max-width:88px!important;min-width:74px!important;padding:5px 6px!important;font-size:10px!important}
+ body .header-actions .mobile-menu summary{width:35px!important;height:35px!important}
+ body .header-actions .cart-trigger{width:35px!important;height:35px!important;min-width:35px!important;min-height:35px!important}
+ body .brand-copy small{font-size:8px!important}
+ body .brand-copy strong{font-size:12px!important}
+}
