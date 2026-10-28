@@ -494,7 +494,7 @@ function isInViewport(el){if(!el)return false;const r=el.getBoundingClientRect()
 let stickyTick=false;
 function refreshStickyBuyBar(){
   if(!bar)return;
-  const blocked=isInViewport(document.querySelector("#inicio"))||isInViewport(document.querySelector("#kits"))||dialog.open||pixDialog.open||cartDialog.open;
+  const blocked=isInViewport(document.querySelector("#inicio"))||isInViewport(document.querySelector("#kits"))||isInViewport(document.querySelector(".final-cta-story"))||isInViewport(document.querySelector(".site-footer"))||dialog.open||pixDialog.open||cartDialog.open;
   bar.hidden=blocked;
 }
 function scheduleStickyRefresh(){if(stickyTick)return;stickyTick=true;requestAnimationFrame(()=>{stickyTick=false;refreshStickyBuyBar()})}
