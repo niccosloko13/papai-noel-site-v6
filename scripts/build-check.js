@@ -36,7 +36,7 @@ const staticFiles=[
   "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
   "styles.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
-  "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css",
+  "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css",
   "robots.txt","sitemap.xml"
 ];
 const staticDirs=["assets","vendor"];
