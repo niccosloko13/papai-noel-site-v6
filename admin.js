@@ -54,7 +54,9 @@ async function loadServer(){
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
- $("#ordersList").textContent="Pedidos indisponíveis enquanto o servidor não estiver configurado.";
+ $("#ordersList").textContent="Pedidos indisponíveis enquanto o banco não estiver conectado.";
+  loadProducts();
+  $("#productsMsg").textContent="Banco de dados indisponível: é possível visualizar os campos, mas não salvar até configurar DATABASE_URL.";;
  }
 }
 const statusClass=s=>s==="Pago"||s==="Produção"||s==="Enviado"?"paid":"";
