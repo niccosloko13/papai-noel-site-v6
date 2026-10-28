@@ -23,6 +23,6 @@ Configure as variáveis pela interface da Vercel e faça redeploy. Não comite c
 
 As APIs `/api/admin/orders` e `/api/admin/settings` exigem sessão válida e guardam dados no PostgreSQL. As tabelas `natal_orders` e `natal_settings` são criadas na primeira chamada autenticada. Utilize um usuário do banco com privilégios adequados.
 
-**Pendente crítico:** o checkout público ainda grava pedidos apenas no navegador; é necessário criar e testar a API pública de pedidos antes de usar o painel para uma operação real. O editor Pix do admin também ainda não distribui sua configuração para a cobrança pública. Não divulgue o checkout como pronto para aceitar pagamentos.
+**Integração criada:** o checkout agora registra pedidos na API `/api/checkout`, que calcula valores no servidor e gera o Pix a partir da configuração central. A confirmação informada pelo cliente usa `/api/payment-informed` com segredo individual do pedido. O checkout público lê desconto e frete em `/api/checkout-config`. A operação **continua bloqueada** sem banco e Pix configurados e sem testes ponta a ponta no ambiente implantado. A tela de acompanhamento `pedido.html` ainda usa dados locais e precisa de integração com o servidor.
 
 **Segurança adicional pendente:** limitar tentativas de login na borda (Vercel WAF ou serviço equivalente), trilha de auditoria de mudanças e recuperação/rotação de acesso. A senha de desenvolvimento `123` não deve ser usada.
