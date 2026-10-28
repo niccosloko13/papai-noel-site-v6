@@ -4766,3 +4766,84 @@ h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.tr
 @media(prefers-reduced-motion:reduce){
   .pix-wreath,.pix-celebration i,.address-result{animation:none!important}
 }
+
+
+/* ===== Refined navigation ===== */
+.desktop-nav{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  padding:5px!important;
+  border:1px solid rgba(157,32,48,.10)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.58)!important;
+  box-shadow:0 8px 24px rgba(48,25,18,.04)!important;
+}
+.desktop-nav a{
+  padding:8px 13px!important;
+  border-radius:999px!important;
+  color:#594b43!important;
+  font-size:.78rem!important;
+  font-weight:800!important;
+  transition:background .2s ease,color .2s ease,transform .2s ease!important;
+}
+.desktop-nav a:hover{
+  background:#fff!important;
+  color:#9d2030!important;
+  transform:translateY(-1px)!important;
+}
+.mobile-menu{display:none;position:relative}
+.mobile-menu summary{
+  list-style:none;
+  width:44px;height:44px;
+  border:1px solid #e2d6c9;
+  border-radius:14px;
+  background:#fffdf9;
+  display:grid;
+  place-content:center;
+  gap:4px;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(52,31,22,.06);
+}
+.mobile-menu summary::-webkit-details-marker{display:none}
+.mobile-menu summary span{
+  width:17px;height:2px;border-radius:99px;background:#7f2030;display:block;
+  transition:transform .2s ease,opacity .2s ease
+}
+.mobile-menu[open] summary span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.mobile-menu[open] summary span:nth-child(2){opacity:0}
+.mobile-menu[open] summary span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mobile-menu nav{
+  position:absolute;
+  right:0;
+  top:52px;
+  width:min(310px,calc(100vw - 28px));
+  padding:8px;
+  border:1px solid #e5d8ca;
+  border-radius:18px;
+  background:rgba(255,253,249,.98);
+  box-shadow:0 22px 60px rgba(44,24,18,.18);
+  backdrop-filter:blur(16px);
+  z-index:90;
+}
+.mobile-menu nav a{
+  display:grid;
+  grid-template-columns:32px 1fr;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+}
+.mobile-menu nav a+a{border-top:1px solid #eee4d9}
+.mobile-menu nav a:active{background:#f5ede2}
+.mobile-menu nav small{
+  color:#b08b57;font-size:.62rem;font-weight:900;letter-spacing:.08em
+}
+.mobile-menu nav strong{
+  color:#2a1c18;font-size:.86rem
+}
+@media(max-width:900px){
+  .desktop-nav{display:none!important}
+  .mobile-menu{display:block}
+  .header-actions{gap:8px!important}
+}
