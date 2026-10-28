@@ -11,10 +11,11 @@ const demoSave=(key,value)=>localStorage.setItem("natal_demo_"+key,JSON.stringif
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
 function openApp(){login.hidden=true;app.hidden=false;if(demoMode){serverOrders=demoLoad("orders",[]);serverSettings=demoLoad("settings",{});$("#sectionEyebrow").textContent="DEMONSTRAÇÃO";$("#adminDemoBanner").hidden=false;renderAll()}else loadServer()}
 async function checkSession(){
- try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent=demoActive()?"Acesso de teste disponível por 24 horas.":"Configuração de produção pendente."}catch{err.textContent="Não foi possível verificar a sessão."}
+ try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent=demoActive()?"Digite a senha 123 para abrir o painel de testes.":"Configuração de produção pendente."}catch{err.textContent="Não foi possível verificar a sessão."}
 }
 async function logout(){if(demoMode){location.reload();return}try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}finally{location.reload()}}
 checkSession();
+$("#loginPass").addEventListener("input",()=>{if(demoActive())err.textContent=""});
 form.addEventListener("submit",async e=>{
  e.preventDefault();
  const username=$("#loginUser").value.trim();
