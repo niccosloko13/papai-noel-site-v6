@@ -30,6 +30,16 @@ const applySeoDraft=()=>{
 applySeoDraft();
 trackStoreEvent("page_view",{page:"landing"});
 
+function updateCampaignPrices(){
+ const active=PRODUCTS.filter(p=>p.active!==false);
+ const lowest=active.length?Math.min(...active.map(p=>Number(p.price)||Infinity)):null;
+ const hero=document.querySelector("#heroStartingPrice");
+ if(hero&&Number.isFinite(lowest))hero.textContent=money(lowest);
+ const featured=PRODUCTS.find(p=>p.id==="personal");
+ const featuredPix=document.querySelector("#finalFeaturedPixPrice");
+ if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price))+" no Pix";
+}
+
 const grid=document.querySelector("#productGrid");
 const cartDialog=document.querySelector("#cartDialog");
 const cartItemsEl=document.querySelector("#cartItems");
@@ -117,7 +127,7 @@ function renderProducts(){
   }).join("");
   observeProductCards();
 }
-renderProducts();
+renderProducts();updateCampaignPrices();
 
 function renderCart(){
   const cart=getCart();
@@ -497,5 +507,5 @@ fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=
  if(!data||!Array.isArray(data.products)||data.products.length!==2)return;
  PRODUCTS=data.products.filter(p=>p.active!==false).map(p=>({...p,badge:""}));
  currentProduct=PRODUCTS.find(p=>p.id===currentProduct.id)||PRODUCTS[0]||currentProduct;
- renderProducts();renderCart();refreshStickyBuyBar();
+ renderProducts();renderCart();updateCampaignPrices();refreshStickyBuyBar();
 }).catch(()=>{});
