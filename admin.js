@@ -96,10 +96,10 @@ const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discou
 function loadPix(){
  const c={...pixDefaults,...(serverSettings.pix||{})};
  const map={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
- Object.entries(map).forEach(([id,k])=>$("#"+id).value=c[k]??"");
+ Object.entries(map).forEach(([id,k])=>$("#"+id).value=c[k]??"");$("#pixEnabled").checked=!!c.enabled;
 }
 $("#savePix").onclick=()=>{
- const out={enabled:true,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value||0),shippingFlat:Number($("#shippingFlat").value||0)};
+ const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value||0),shippingFlat:Number($("#shippingFlat").value||0)};
  api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})}).then(()=>{serverSettings.pix=out;$("#pixMsg").textContent="Configuração salva no servidor."}).catch(e=>$("#pixMsg").textContent=e.message);
 };
 
