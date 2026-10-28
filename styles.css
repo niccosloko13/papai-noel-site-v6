@@ -7433,3 +7433,26 @@ body[data-checkout-step="1"] .checkout-page-actions{
 @media(prefers-reduced-motion:reduce){
  .product-card,.product-card *, .checkout-page *, .mobile-buy-bar, .hero-cinematic *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
+
+/* Order tracking, support, FAQ and professional footer */
+.delivery-regions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
+.delivery-regions>div{background:#fffaf0;border:1px solid #e5d4b5;border-radius:15px;padding:16px;display:grid;gap:3px}
+.delivery-regions small{font-size:.7rem;font-weight:900;color:#7c5a36}
+.delivery-regions strong{font:400 clamp(1.5rem,3vw,2rem) Georgia,serif;color:#185943}
+.delivery-regions span,.delivery-disclaimer{font-size:.72rem;color:#78685d}
+.delivery-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.delivery-links .btn{min-width:180px;text-align:center}
+.christmas-faq{background:linear-gradient(155deg,#fbf8f0,#f4eadd)}
+.faq-simple{width:min(100%,890px);margin:0 auto;display:grid;gap:9px}
+.faq-simple details{background:#fffdf9;border:1px solid #e4d5bc;border-radius:13px;padding:15px 20px}
+.faq-simple summary{cursor:pointer;font-weight:800;color:#45302a}
+.faq-simple summary:focus-visible{outline:3px solid #b18b4f}
+.faq-simple p{color:#74645b;line-height:1.65;margin:12px 0 0}
+.footer-complete{display:grid!important;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));gap:28px!important;padding:42px max(20px,calc((100vw - 1150px)/2))!important}
+.footer-complete .footer-company{display:grid;align-content:start;gap:10px}
+.footer-complete nav{display:grid!important;align-content:start;gap:12px!important}
+.footer-complete nav strong{font-size:.84rem}
+.footer-complete nav a{font-size:.81rem}
+.footer-complete nav a:hover{text-decoration:underline}
+@media(max-width:700px){.delivery-regions{grid-template-columns:1fr}.delivery-links{display:grid}.footer-complete{grid-template-columns:1fr 1fr!important;gap:22px!important}.footer-company{grid-column:1/-1}}
+@media(max-width:390px){.footer-complete{grid-template-columns:1fr!important}.footer-company{grid-column:auto}}
