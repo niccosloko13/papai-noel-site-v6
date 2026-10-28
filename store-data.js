@@ -31,10 +31,10 @@ window.STORE_DATA = Object.freeze({
       id: "personal",
       name: "Personalizado",
       price: 69.90,
-      prop: "Mais pistas e detalhes personalizados para fazer a visita parecer única.",
+      prop: "Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",
       benefits: ["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],
-      image: "assets/product/kit-personalizado-card.svg",
-      badge: "Mais completo",
+      image: "assets/product/kit-personalizado.webp",
+      badge: "Mais desejado",
       active: true
     }
   ]
