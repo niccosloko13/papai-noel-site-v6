@@ -48,3 +48,45 @@
  }
 }
 @media(prefers-reduced-motion:reduce){#inicio .hero-poster-2026-link{transition:none}}
+
+/* Efeito discreto diretamente sobre o botão vermelho já impresso na arte.
+   O cartaz inteiro continua clicável, sem texto ou selo duplicado. */
+#inicio .hero-poster-button-glint{
+  position:absolute;
+  z-index:3;
+  left:50.5%;
+  top:69.0%;
+  width:45%;
+  height:7.8%;
+  border-radius:999px;
+  overflow:hidden;
+  pointer-events:none;
+  box-shadow:0 0 0 1px rgba(255,216,132,.22),0 0 22px rgba(246,163,75,.18);
+  animation:natalPosterButtonGlow 4.8s ease-in-out infinite;
+}
+#inicio .hero-poster-button-glint::before{
+  content:"";
+  position:absolute;
+  inset:-65% auto -65% -50%;
+  width:32%;
+  transform:skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,245,195,.05),rgba(255,247,220,.35),transparent);
+  animation:natalPosterButtonShine 5.2s ease-in-out 1.2s infinite;
+}
+#inicio .hero-poster-2026-link:active{filter:brightness(1.08)}
+@keyframes natalPosterButtonGlow{
+  0%,100%{box-shadow:0 0 0 1px rgba(255,216,132,.2),0 0 11px rgba(246,163,75,.12)}
+  50%{box-shadow:0 0 0 2px rgba(255,216,132,.42),0 0 29px rgba(246,163,75,.3)}
+}
+@keyframes natalPosterButtonShine{
+  0%,24%{left:-50%;opacity:0}
+  30%{opacity:1}
+  56%,100%{left:128%;opacity:0}
+}
+@media(max-width:700px){
+ #inicio .hero-poster-button-glint{left:50.5%;top:69%;width:45%;height:7.8%}
+}
+@media(prefers-reduced-motion:reduce){
+ #inicio .hero-poster-button-glint,
+ #inicio .hero-poster-button-glint::before{animation:none!important}
+}
