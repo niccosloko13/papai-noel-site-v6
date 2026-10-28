@@ -225,70 +225,100 @@
     </header>
     <div class="checkout-progress" aria-hidden="true"><span id="checkoutProgress"></span></div>
 
-    <aside class="checkout-side" aria-label="Resumo do pedido">
-      <span class="eyebrow">SEU PEDIDO</span>
-      <div class="checkout-side-product">
-        <small>Kit selecionado</small>
-        <strong id="sidePlan">Personalizado</strong>
-      </div>
-      <div class="checkout-side-lines">
-        <div><span>Preço</span><b id="sidePrice">R$ 69,90</b></div>
-        <div><span>Pix</span><b id="sidePix">15% OFF</b></div>
-        <div><span>Frete</span><b id="sideShipping">A calcular</b></div>
-      </div>
-      <div class="checkout-side-total">
-        <span>Total no Pix</span>
-        <strong id="sideTotal">R$ 59,42</strong>
-      </div>
-      <p>Você revisa a personalização antes de concluir. O pagamento só é considerado pago após conferência manual.</p>
-    </aside>
-
-    <section class="checkout-step active" data-step="1">
+    <section class="checkout-step active checkout-step-personal" data-step="1">
       <div class="checkout-step-kicker">PASSO 1 • PERSONALIZAÇÃO</div>
-      <h2>Deixe a surpresa com a cara da sua família.</h2>
-      <div class="checkout-cart-mini" id="checkoutCartMini"></div>
-      <label>Nome da criança<input id="childName" maxlength="40" required placeholder="Ex.: Miguel"></label>
-      <label>Mensagem da carta <span class="field-optional">até 220 caracteres</span>
-        <textarea id="letterText" maxlength="220" rows="4" placeholder="Escreva uma mensagem especial. Se deixar em branco, usamos nossa mensagem padrão."></textarea>
-        <small><span id="letterCount">0</span>/220</small>
-      </label>
-      <div class="letter-preview-wrap" id="letterPreviewWrap">
-        <div class="letter-preview-head">
-          <div><small>PRÉVIA DA CARTA</small><strong>Assim ela será personalizada</strong></div>
-          <span>Atualiza enquanto você escreve</span>
+      <div class="checkout-step-title">
+        <h2>Veja a carta tomando forma.</h2>
+        <p>Preencha e acompanhe a prévia ao lado. Você pode revisar antes de continuar.</p>
+      </div>
+
+      <div class="personalization-layout">
+        <div class="personalization-fields">
+          <label>Nome que vai na carta
+            <input id="childName" maxlength="40" required placeholder="Ex.: Miguel">
+          </label>
+          <label>Mensagem especial <span class="field-optional">até 220 caracteres</span>
+            <textarea id="letterText" maxlength="220" rows="3" placeholder="Deixe em branco para usar nossa mensagem padrão."></textarea>
+            <small><span id="letterCount">0</span>/220</small>
+          </label>
         </div>
-        <div class="letter-preview" aria-live="polite">
-          <div class="letter-preview-stamp">POLO NORTE</div>
-          <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
-          <small class="letter-preview-kicker">Uma mensagem especial do Papai Noel</small>
-          <strong class="letter-preview-greeting" id="previewName">Querido Miguel,</strong>
-          <p id="previewLetter">Você foi muito especial este ano! Continue sendo essa criança incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!</p>
-          <div class="letter-preview-signature"><span>Com carinho,</span><strong>Papai Noel</strong></div>
+
+        <div class="letter-preview-wrap" id="letterPreviewWrap">
+          <div class="letter-preview-head">
+            <div><small>PRÉVIA DA CARTA</small><strong>É assim que a mensagem vai aparecer</strong></div>
+            <span>Atualiza ao vivo</span>
+          </div>
+          <div class="letter-preview" aria-live="polite">
+            <div class="letter-preview-stamp">POLO NORTE</div>
+            <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
+            <small class="letter-preview-kicker">Mensagem especial do Papai Noel</small>
+            <strong class="letter-preview-greeting" id="previewName">Querido Miguel,</strong>
+            <p id="previewLetter">Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!</p>
+            <div class="letter-preview-signature"><span>Com carinho,</span><strong>Papai Noel</strong></div>
+          </div>
+          <p class="letter-preview-note">A quebra das linhas pode variar levemente na impressão final.</p>
         </div>
-        <p class="letter-preview-note">A posição e a quebra das linhas podem variar levemente na impressão final.</p>
       </div>
     </section>
 
-    <section class="checkout-step" data-step="2">
+    <section class="checkout-step checkout-step-delivery" data-step="2">
       <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
-      <h2>Para onde a magia vai?</h2>
-      <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" required></label>
-      <button type="button" class="btn btn-secondary" id="findCep">Buscar CEP</button>
-      <label>Endereço<input id="address" required></label>
-      <div class="field-grid">
-        <label>Número<input id="number" inputmode="numeric" required></label>
-        <label>Complemento<input id="complement"></label>
+      <div class="checkout-step-title">
+        <h2>Onde vamos entregar a surpresa?</h2>
+        <p>Comece pelo CEP. A gente busca o endereço e você só completa o que falta.</p>
       </div>
-      <label>Seu nome<input id="customerName" autocomplete="name" required></label>
-      <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999"><small>Usamos seu WhatsApp para atualizações do pedido.</small></label>
+
+      <div class="cep-search">
+        <label>CEP
+          <input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" required>
+        </label>
+        <button type="button" class="btn btn-secondary" id="findCep">Buscar endereço</button>
+      </div>
+
+      <div class="address-result" id="addressResult" hidden>
+        <div class="address-found">
+          <span aria-hidden="true">✓</span>
+          <div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div>
+        </div>
+        <input id="address" required hidden>
+        <div class="field-grid">
+          <label>Número<input id="number" inputmode="numeric" required placeholder="Ex.: 123"></label>
+          <label>Complemento <span class="field-optional">opcional</span><input id="complement" placeholder="Apto, bloco..."></label>
+        </div>
+      </div>
+
+      <div class="delivery-contact">
+        <label>Nome de quem faz o pedido<input id="customerName" autocomplete="name" required placeholder="Seu nome"></label>
+        <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999"><small>Usado para atualizações do pedido.</small></label>
+      </div>
     </section>
 
-    <section class="checkout-step" data-step="3">
-      <div class="checkout-step-kicker">PASSO 3 • PAGAMENTO</div>
-      <h2>Revise e finalize no Pix.</h2>
-      <div class="order-summary" id="orderSummary"></div>
-      <label class="payment-choice selected"><input type="radio" checked name="payment" value="Pix"><span><strong>Pix</strong><small>15% de desconto</small></span></label>
-      <label class="payment-choice disabled"><input type="radio" disabled><span><strong>Cartão</strong><small>Em manutenção</small></span></label>
+    <section class="checkout-step checkout-step-review" data-step="3">
+      <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
+      <div class="checkout-step-title">
+        <h2>Última conferência antes da magia seguir viagem.</h2>
+        <p>Revise os dados principais. Depois disso, o Pix é gerado.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-person">
+          <span class="review-spark">✦</span>
+          <small>A CARTA SERÁ PREPARADA PARA</small>
+          <strong id="reviewChildName">Miguel</strong>
+          <p id="reviewMessage">Mensagem padrão do Papai Noel</p>
+        </div>
+        <div class="review-grid">
+          <div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div>
+          <div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div>
+        </div>
+        <div class="review-total">
+          <span><small>TOTAL NO PIX</small><b>15% OFF aplicado</b></span>
+          <strong id="reviewTotal">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <label class="payment-choice selected payment-choice-pix"><input type="radio" checked name="payment" value="Pix"><span><strong>Pix</strong><small>Pagamento rápido e conferência manual</small></span><b>✓</b></label>
+      <div class="order-summary" id="orderSummary" hidden></div>
     </section>
 
     <footer class="checkout-actions">
@@ -299,19 +329,32 @@
 </dialog>
 
 <dialog class="pix-dialog" id="pixDialog" aria-labelledby="pixTitle">
-  <section class="pix-panel">
+  <section class="pix-panel pix-panel-special">
     <button class="icon-btn pix-close" type="button" id="closePix" aria-label="Fechar pagamento">×</button>
-    <span class="eyebrow">PAGAMENTO PIX</span>
-    <h2 id="pixTitle">Finalize seu pagamento</h2>
-    <p class="pix-subtitle">Confira o valor e o recebedor antes de pagar.</p>
 
-    <div class="pix-order-meta">
-      <div><small>Pedido</small><strong id="pixOrderId">—</strong></div>
-      <div><small>Valor</small><strong id="pixOrderTotal">—</strong></div>
+    <div class="pix-celebration" aria-hidden="true">
+      <i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i>
     </div>
 
-    <div class="pix-qr-wrap">
-      <div id="pixQrCanvas" class="pix-qr" aria-label="QR Code Pix"></div>
+    <span class="eyebrow">ÚLTIMO PASSO</span>
+    <h2 id="pixTitle">Seu Pix está pronto.</h2>
+    <p class="pix-subtitle" id="pixMagicMessage">A surpresa já está quase a caminho.</p>
+
+    <div class="pix-personal-note">
+      <small>PREPARANDO PARA</small>
+      <strong id="pixChildName">—</strong>
+    </div>
+
+    <div class="pix-qr-stage">
+      <div class="pix-wreath" aria-hidden="true"></div>
+      <div class="pix-qr-wrap">
+        <div id="pixQrCanvas" class="pix-qr" aria-label="QR Code Pix"></div>
+      </div>
+    </div>
+
+    <div class="pix-payment-line">
+      <div><small>Valor</small><strong id="pixOrderTotal">—</strong></div>
+      <div><small>Pedido</small><strong id="pixOrderId">—</strong></div>
     </div>
 
     <div class="pix-recipient">
@@ -319,27 +362,20 @@
       <strong id="pixReceiverLabel">Configure no Admin</strong>
     </div>
 
-    <label class="pix-copy-label">Pix copia e cola
-      <textarea id="pixCopyPaste" rows="4" readonly></textarea>
-    </label>
-
-    <button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button>
+    <details class="pix-copy-box">
+      <summary>Prefere Pix copia e cola? <span>+</span></summary>
+      <label class="pix-copy-label">Código Pix
+        <textarea id="pixCopyPaste" rows="3" readonly></textarea>
+      </label>
+      <button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button>
+    </details>
     <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
 
-    <div class="pix-instructions">
-      <b>Como pagar</b>
-      <ol>
-        <li>Abra o app do seu banco.</li>
-        <li>Escolha Pix e escaneie o QR Code ou cole o código.</li>
-        <li>Confira o recebedor e o valor antes de confirmar.</li>
-      </ol>
-    </div>
-
-    <button class="btn btn-primary" type="button" id="pixPaidButton">Já fiz o Pix</button>
+    <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton">Já fiz o Pix</button>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
     <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
-    <p class="pix-manual-note">A confirmação é manual. Seu pedido só muda para <b>Pago</b> depois que nossa equipe conferir o recebimento.</p>
-    <a class="pix-support-link" href="https://wa.me/5513974100193?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20com%20meu%20pedido%20do%20Kit%20Papai%20Noel%20Passou%20Aqui." target="_blank" rel="noopener">Precisa de ajuda? Fale com o atendimento</a>
+
+    <p class="pix-manual-note">O pagamento é conferido manualmente antes de o pedido mudar para <b>Pago</b>.</p>
   </section>
 </dialog>
 
