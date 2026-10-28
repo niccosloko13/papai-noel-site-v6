@@ -1,8 +1,12 @@
-const {Pool}=require("pg");
-let pool;
+const { neon } = require("@neondatabase/serverless");
 
-const ENV_KEYS=[
+let client = null;
+let clientSource = null;
+
+const ENV_KEYS = [
   "DATABASE_URL",
+  "DATABASE_URL_POOLED",
+  "DATABASE_URL_UNPOOLED",
   "POSTGRES_URL",
   "POSTGRES_URL_NON_POOLING",
   "NEON_DATABASE_URL"
@@ -21,32 +25,42 @@ function databaseStatus(){
   return {
     configured:!!info,
     source:info?.key||null,
-    acceptedEnvKeys:ENV_KEYS
+    acceptedEnvKeys:ENV_KEYS,
+    driver:"@neondatabase/serverless"
   };
 }
 
-function db(){
+function getClient(){
   const info=connectionInfo();
   if(!info){
     const err=new Error("DATABASE_NOT_CONFIGURED");
     err.code="DATABASE_NOT_CONFIGURED";
     throw err;
   }
-  if(!pool){
-    const local=/localhost|127\.0\.0\.1/.test(info.value);
-    pool=new Pool({
-      connectionString:info.value,
-      max:4,
-      idleTimeoutMillis:10000,
-      connectionTimeoutMillis:8000,
-      ssl:local?false:{rejectUnauthorized:true}
-    });
-    pool.on("error",err=>console.error("Postgres pool error",err.code||err.message));
+  if(!client||clientSource!==info.value){
+    client=neon(info.value);
+    clientSource=info.value;
   }
-  return pool;
+  return client;
 }
 
+function db(){
+  return {
+    async query(text,params=[]){
+      const sql=getClient();
+      const result=await sql.query(text,params);
+      const rows=Array.isArray(result)?result:(result?.rows||[]);
+      return {
+        rows,
+        rowCount:Number.isInteger(result?.rowCount)?result.rowCount:rows.length
+      };
+    }
+  };
+}
+
+let initialized=false;
 async function init(){
+  if(initialized)return;
   await db().query(`CREATE TABLE IF NOT EXISTS natal_orders (
     id text PRIMARY KEY,
     created_at timestamptz NOT NULL DEFAULT now(),
@@ -59,6 +73,12 @@ async function init(){
     value jsonb NOT NULL,
     updated_at timestamptz NOT NULL DEFAULT now()
   )`);
+  initialized=true;
 }
 
-module.exports={db,init,databaseStatus};
+async function ping(){
+  const {rows}=await db().query("SELECT now() AS now, current_database() AS database");
+  return rows[0]||null;
+}
+
+module.exports={db,init,ping,databaseStatus};
