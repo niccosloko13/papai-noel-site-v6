@@ -152,12 +152,18 @@ function syncPersonalizationMode(){
     count.textContent="0";
   }
 }
+function pulseLetterName(){
+  previewName.classList.remove("is-writing");
+  void previewName.offsetWidth;
+  previewName.classList.add("is-writing");
+}
 function updateLetterPreview(){
   const n=child.value.trim()||"Miguel";
   const custom=letter.value.trim();
   previewName.textContent="Querido "+n+",";
   previewLetter.textContent=custom||"Você foi muito especial este ano! Continue sendo essa criança incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!";
   count.textContent=letter.value.length;
+  pulseLetterName();
 }
 
 function checkoutExpanded(){return cartExpanded(checkoutItems)}
@@ -195,8 +201,19 @@ function openCheckout(name){
   const p=PRODUCTS.find(p=>p.name===name)||currentProduct;
   openCheckoutWithItems([{id:p.id,qty:1}],{fromCart:false});
 }
+let lastRenderedStep=1;
 function renderStep(){
-  document.querySelectorAll(".checkout-step").forEach(el=>el.classList.toggle("active",Number(el.dataset.step)===step));
+  const goingBack=step<lastRenderedStep;
+  document.querySelectorAll(".checkout-step").forEach(el=>{
+    const active=Number(el.dataset.step)===step;
+    el.classList.toggle("active",active);
+    el.classList.toggle("is-backward",active&&goingBack);
+  });
+  document.querySelectorAll("[data-progress-step]").forEach(el=>{
+    const n=Number(el.dataset.progressStep);
+    el.classList.toggle("is-active",n===step);
+    el.classList.toggle("is-done",n<step);
+  });
   stepLabel.textContent=`Etapa ${step} de 3`;
   progress.style.width=`${step/3*100}%`;
   back.hidden=step===1;
@@ -206,6 +223,7 @@ function renderStep(){
     renderSummary();
     renderReview();
   }
+  lastRenderedStep=step;
 }
 function renderSummary(){
   const cfg=pixConfig();
@@ -307,8 +325,10 @@ async function showPixPayment(order){
   pixCode.value=order.pixPayload;
   pixFeedback.textContent="";
   pixPaidButton.disabled=false;
-  pixPaidButton.textContent="Já fiz o Pix";
+  pixPaidButton.innerHTML='<span>Já fiz o Pix</span><i aria-hidden="true">✦</i>';
   pixPaidButton.classList.remove("is-informed");
+  const celebration=document.querySelector("#paymentCelebrationMessage");
+  if(celebration)celebration.hidden=true;
   sendPaymentWhatsApp.hidden=true;sendPaymentWhatsApp.href="#";
   trackOrderLink.hidden=true;trackOrderLink.href="#";
   if(window.QRCode){
@@ -316,13 +336,16 @@ async function showPixPayment(order){
     new window.QRCode(pixCanvas,{text:order.pixPayload,width:280,height:280,colorDark:"#111111",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});
   }else pixCanvas.textContent="QR Code indisponível. Use o Pix copia e cola.";
   pixDialog.showModal();
+  requestAnimationFrame(()=>pixDialog.classList.add("is-magical"));
 }
 function markPaymentInformed(){
   if(!currentOrderId)return;
   updateOrder(currentOrderId,{status:"Pagamento informado",paymentInformedAt:new Date().toISOString()});
   pixPaidButton.disabled=true;
-  pixPaidButton.textContent="Pagamento informado ✓";
+  pixPaidButton.innerHTML='<span>Pagamento informado ✓</span>';
   pixPaidButton.classList.add("is-informed");
+  const celebration=document.querySelector("#paymentCelebrationMessage");
+  if(celebration)celebration.hidden=false;
   pixFeedback.textContent="Recebemos sua informação. Para nossa equipe localizar o pagamento sem atraso, envie a confirmação pelo WhatsApp.";
   const order=getOrders().find(o=>o.id===currentOrderId);
   if(order){
@@ -365,7 +388,7 @@ next.addEventListener("click",async()=>{
 });
 back.addEventListener("click",()=>{if(step>1){step--;renderStep()}});
 close.addEventListener("click",()=>dialog.close());
-document.querySelector("#closePix").addEventListener("click",()=>pixDialog.close());
+document.querySelector("#closePix").addEventListener("click",()=>{pixDialog.classList.remove("is-magical");pixDialog.close()});
 pixPaidButton.addEventListener("click",markPaymentInformed);
 document.querySelector("#copyPix").addEventListener("click",async()=>{
   try{await navigator.clipboard.writeText(pixCode.value);pixFeedback.textContent="Código Pix copiado ✓"}
