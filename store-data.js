@@ -24,8 +24,7 @@ window.STORE_DATA = Object.freeze({
       price: 39.90,
       prop: "As pistas essenciais para transformar a casa na noite de Natal.",
       benefits: ["10 pares de pegadas (20 unidades)","Adesivo para janela","Guia de aplicação"],
-      image: "assets/product/pegadas.jpg",
-      gallery: ["assets/product/pegadas.jpg","assets/product/adesivo-janela.jpg"],
+      image: "assets/product/kit-essencial-card.svg",
       active: true
     },
     {
@@ -34,9 +33,8 @@ window.STORE_DATA = Object.freeze({
       price: 69.90,
       prop: "Mais pistas e detalhes personalizados para fazer a visita parecer única.",
       benefits: ["18 pares de pegadas (36 unidades)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada"],
-      image: "assets/product/pegadas.jpg",
-      gallery: ["assets/product/pegadas.jpg","assets/product/adesivo-janela.jpg"],
-      badge: "Experiência completa",
+      image: "assets/product/kit-personalizado-card.svg",
+      badge: "Mais completo",
       active: true
     }
   ]
