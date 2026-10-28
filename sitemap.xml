@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://papai-noel-site-v6.vercel.app/</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://papai-noel-site-v6.vercel.app/</loc></url>
+  <url><loc>https://papai-noel-site-v6.vercel.app/entrega-e-prazos.html</loc></url>
+  <url><loc>https://papai-noel-site-v6.vercel.app/trocas-e-devolucoes.html</loc></url>
+  <url><loc>https://papai-noel-site-v6.vercel.app/privacidade.html</loc></url>
+  <url><loc>https://papai-noel-site-v6.vercel.app/termos-de-compra.html</loc></url>
+  <url><loc>https://papai-noel-site-v6.vercel.app/contato.html</loc></url>
+</urlset>
