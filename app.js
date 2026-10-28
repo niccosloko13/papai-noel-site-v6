@@ -43,6 +43,19 @@ const getCart=()=>JSON.parse(localStorage.getItem("natal_cart")||"[]");
 const saveCart=cart=>{localStorage.setItem("natal_cart",JSON.stringify(cart));renderCart()};
 const cartExpanded=cart=>cart.map(i=>({product:productById(i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
 
+const seenProductImpressions=new Set();
+function observeProductCards(){
+ if(!("IntersectionObserver" in window))return;
+ const observer=new IntersectionObserver(entries=>{
+  for(const entry of entries){
+   if(!entry.isIntersecting)continue;
+   const id=entry.target.classList.contains("product-card--basic")?"basic":"personal";
+   if(!seenProductImpressions.has(id)){seenProductImpressions.add(id);trackStoreEvent("view_product",{product_id:id})}
+   observer.unobserve(entry.target);
+  }
+ },{threshold:0.18});
+ grid.querySelectorAll(".product-card").forEach(el=>observer.observe(el));
+}
 function renderProducts(){
   const discount=Number(pixConfig().discount)||0;
   grid.innerHTML=PRODUCTS.map(p=>{
@@ -102,6 +115,7 @@ function renderProducts(){
     </div>
   </article>`;
   }).join("");
+  observeProductCards();
 }
 renderProducts();
 
