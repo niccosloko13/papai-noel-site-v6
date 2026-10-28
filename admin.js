@@ -3,18 +3,19 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const esc=v=>String(v??"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","\x27":"&#39;"}[c]));
+let demoMode=false;
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
-function openApp(){login.hidden=true;app.hidden=false;loadServer()}
+function openApp(){login.hidden=true;app.hidden=false;if(demoMode){serverOrders=[];serverSettings={};$("#sectionEyebrow").textContent="DEMONSTRAÇÃO";$("#adminDemoBanner").hidden=false;renderAll()}else loadServer()}
 async function checkSession(){
  try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent="Painel indisponível até concluir a configuração segura."}catch{err.textContent="Não foi possível verificar a sessão."}
 }
-async function logout(){try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}finally{location.reload()}}
+async function logout(){if(demoMode){location.reload();return}try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}finally{location.reload()}}
 checkSession();
 form.addEventListener("submit",async e=>{
  e.preventDefault();err.textContent="Verificando acesso...";
  try{
  const r=await fetch("/api/admin/auth",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("#loginUser").value.trim(),password:$("#loginPass").value})});
- const data=await r.json();if(!r.ok){err.textContent=data.error||"Acesso não autorizado";return}
+ const data=await r.json();if(!r.ok){if($("#loginUser").value.trim()==="admin"&&$("#loginPass").value==="123"){demoMode=true;$("#loginPass").value="";err.textContent="";openApp();return}err.textContent=data.error||"Acesso não autorizado";return}
  $("#loginPass").value="";err.textContent="";openApp();
  }catch{err.textContent="Não foi possível entrar. Tente novamente."}
 });
@@ -33,6 +34,7 @@ $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
 let serverOrders=[];let serverSettings={};
 const getOrders=()=>serverOrders;
 async function api(path,options={}){
+ if(demoMode)throw Error("Modo demonstração: alterações reais desativadas.");
  const response=await fetch("/api/admin/"+path,{credentials:"same-origin",cache:"no-store",...options});
  const data=await response.json();if(!response.ok)throw Error(data.error||"Erro no servidor");return data;
 }
