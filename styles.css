@@ -2547,3 +2547,184 @@ h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.tr
   .product-card figure{aspect-ratio:4/3}
   .product-photo-strip img{height:78px}
 }
+
+
+/* ===== V9 individual product artwork + premium kit cards ===== */
+.kits-section .product-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px;
+  max-width:1040px;
+  margin-inline:auto;
+  align-items:start;
+}
+.product-card{
+  overflow:hidden;
+  border:1px solid #eadbcf;
+  border-radius:30px;
+  background:#fffdf9;
+  box-shadow:0 24px 60px rgba(67,39,25,.10);
+  transform:none!important;
+}
+.product-card.recommended{
+  border:2px solid #b81f33;
+  box-shadow:0 28px 70px rgba(133,22,39,.16);
+}
+.product-card-media{
+  position:relative;
+  aspect-ratio:6/7;
+  overflow:hidden;
+  margin:0;
+  background:#f4eadf;
+  border-radius:0;
+}
+.product-card-media>img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+}
+.product-card-body{
+  padding:26px 28px 28px;
+  display:grid;
+  gap:15px;
+}
+.product-card-kicker{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:24px;
+}
+.product-card-kicker>span{
+  color:#9b7a67;
+  font-size:.68rem;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.product-card-kicker>b{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:0 11px;
+  border-radius:999px;
+  color:#8e1728;
+  background:#fff0ee;
+  border:1px solid #f2d2ce;
+  font-size:.69rem;
+  font-weight:900;
+  white-space:nowrap;
+}
+.product-card--basic .product-card-kicker>span{color:#9a1a2a}
+.product-card--personal .product-card-kicker>span{color:#0c6848}
+.product-card .product-top{
+  display:block;
+  margin:0;
+}
+.product-card .product-top h3{
+  margin:0;
+  color:#261814;
+  font-size:clamp(1.9rem,3vw,2.45rem);
+  line-height:1.02;
+}
+.product-card .product-prop{
+  margin:0;
+  min-height:48px;
+  color:#76665d;
+  font-size:.96rem;
+  line-height:1.55;
+}
+.product-card .benefits{
+  display:grid;
+  gap:10px;
+  margin:0;
+  padding:16px 18px;
+  border:1px solid #eadfd4;
+  border-radius:17px;
+  background:#fbf7f1;
+}
+.product-card .benefits span{
+  position:relative;
+  display:block;
+  padding-left:22px;
+  color:#3f342e;
+  font-size:.88rem;
+  line-height:1.35;
+}
+.product-card .benefits span:before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  color:#0b6b49;
+  font-weight:950;
+}
+.product-card .price-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:end;
+  margin-top:2px;
+  padding-top:18px;
+  border-top:1px solid #eee1d5;
+}
+.product-card .price-row>div{
+  display:grid;
+  gap:3px;
+}
+.product-card .price-row small{
+  color:#8d7c72;
+  font-size:.72rem;
+}
+.product-card .price-row strong{
+  color:#231713;
+  font-size:1.35rem;
+}
+.product-card .pix-price{
+  padding:8px 11px;
+  border-radius:12px;
+  text-align:right;
+  background:#edf8f3;
+}
+.product-card .pix-price strong{color:#08704d}
+.product-card .product-actions{
+  display:grid;
+  gap:9px;
+}
+.product-card .product-actions .btn{
+  min-height:54px;
+  border-radius:14px;
+}
+.product-card--basic .product-actions .btn-primary{
+  background:linear-gradient(180deg,#bd2135,#9a1728);
+}
+.product-card--personal .product-actions .btn-primary{
+  background:linear-gradient(180deg,#0d6849,#08553b);
+}
+.product-card .product-actions .btn-secondary{
+  background:#fff;
+  border:1px solid #e6d8cb;
+}
+.product-ribbon,
+.product-card>.badge,
+.product-card .product-top>.badge{
+  display:none!important;
+}
+@media(max-width:820px){
+  .kits-section .product-grid{
+    grid-template-columns:1fr;
+    max-width:620px;
+    gap:22px;
+  }
+  .product-card-media{aspect-ratio:5/6;}
+}
+@media(max-width:520px){
+  .product-card{
+    border-radius:22px;
+  }
+  .product-card-media{aspect-ratio:4/5;}
+  .product-card-body{padding:20px 18px 22px;}
+  .product-card .product-top h3{font-size:1.95rem;}
+  .product-card .price-row{grid-template-columns:1fr auto;}
+}
