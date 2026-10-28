@@ -50,7 +50,7 @@ async function api(path,options={}){
 async function loadServer(){
  try{
  const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
- serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();
+ serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
@@ -58,6 +58,17 @@ async function loadServer(){
   loadProducts();
   $("#productsMsg").textContent="Banco de dados indisponível: é possível visualizar os campos, mas não salvar até configurar DATABASE_URL.";;
  }
+}
+async function loadAnalytics(){
+ try{
+  const data=await api("analytics");
+  $("#realVisitors").textContent=data.visitors.toLocaleString("pt-BR");
+  $("#realCheckouts").textContent=data.checkouts.toLocaleString("pt-BR");
+  $("#realConversion").textContent=data.conversionRate===null?"—":data.conversionRate.toLocaleString("pt-BR")+"%";
+  $("#realAbandonment").textContent=data.checkoutAbandonment===null?"—":data.checkoutAbandonment.toLocaleString("pt-BR")+"%";
+  $("#realAnalyticsNote").textContent="Eventos reais coletados desde a ativação. Métricas sujeitas a bloqueadores e visitantes que não permitem o registro.";
+  $("#realCampaigns").innerHTML=(data.campaigns||[]).map(c=>'<div class="seo-check"><span>'+esc(c.source)+'</span><b>'+c.sessions+' sessões • '+c.orders+' pedidos</b></div>').join("")||'<p class="muted">Nenhum evento registrado.</p>';
+ }catch(e){$("#realAnalyticsNote").textContent="Não foi possível carregar métricas: "+e.message}
 }
 const statusClass=s=>s==="Pago"||s==="Produção"||s==="Enviado"?"paid":"";
 const todayKey=()=>new Date().toLocaleDateString("pt-BR");
