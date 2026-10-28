@@ -2,14 +2,16 @@
   "name": "papai-noel-site-v6",
   "private": true,
   "scripts": {
+    "build": "node scripts/build-check.js",
     "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "@neondatabase/config": "^1.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "http-server": "^14.1.1",
     "@axe-core/playwright": "^4.10.2"
-  },
-  "dependencies": {
-    "pg": "^8.16.3"
   }
 }
