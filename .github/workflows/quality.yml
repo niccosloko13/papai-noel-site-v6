@@ -20,16 +20,16 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Check build output and syntax
         run: npm run build
       - name: Test checkout at 390px and 1440px
-        run: npx playwright test tests/checkout-responsive.spec.js tests/customer-ux.spec.js
+        run: npx playwright test tests/checkout-responsive.spec.js tests/customer-ux.spec.js tests/full-site-iphone.spec.js
         env:
           CI: 'true'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: checkout-test-results
+          name: mobile-safari-and-checkout-results
           path: test-results/
           if-no-files-found: ignore
