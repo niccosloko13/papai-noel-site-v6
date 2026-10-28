@@ -1,5 +1,5 @@
 const crypto=require("node:crypto");const {db,init}=require("./_db");const {buildPix}=require("./_pix");
-const catalog={basic:{name:"Essencial",price:39.90},personal:{name:"Personalizado",price:69.90}};
+
 function clean(x,max){return typeof x==="string"?x.trim().slice(0,max):""}
 function safeOrigin(req){const o=req.headers.origin;return !o||o===("https://"+req.headers.host)||o===("http://localhost:"+String(req.headers.host||"").split(":").pop())}
 module.exports=async function(req,res){
@@ -9,6 +9,11 @@ module.exports=async function(req,res){
  try{
  const b=req.body||{};if(JSON.stringify(b).length>8000)return res.status(413).json({error:"Pedido muito grande"});
  const items=Array.isArray(b.items)?b.items:[],ids=items.map(x=>x.id);
+ await init();
+ const productsResponse=await db().query("SELECT value FROM natal_settings WHERE key='products'");
+ const defaults=require("./products").defaults;
+ const products=productsResponse.rows[0]?.value||defaults;
+ const catalog=Object.fromEntries(products.filter(p=>p.active!==false).map(p=>[p.id,p]));
  if(!items.length||items.length>2||new Set(ids).size!==ids.length||items.some(i=>!catalog[i.id]||!Number.isInteger(i.qty)||i.qty<1||i.qty>10))return res.status(400).json({error:"Escolha kits e quantidades válidos"});
  const personal=ids.includes("personal");
  const fields={customerName:clean(b.customerName,90),phone:clean(b.phone,22),cep:clean(b.cep,9),address:clean(b.address,250),number:clean(b.number,20),complement:clean(b.complement,90),childName:personal?clean(b.childName,40):"",letter:personal?clean(b.letter,220):""};
