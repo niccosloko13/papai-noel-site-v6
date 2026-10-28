@@ -20,12 +20,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="conversion-refresh.css?v=20261028-c">
 </head>
 <body>
 <div class="announcement-bar" role="note">
   <span>Edição especial de Natal 2026</span>
   <b>15% OFF no Pix</b>
-  <span>Envio para todo o Brasil</span>
+  <span>Entrega para todo o Brasil</span>
 </div>
 <header class="site-header">
   <div class="header-inner">
@@ -39,7 +40,7 @@
 
     <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="#kits">Kits</a>
-      <a href="#como-fica">Como fica</a><a href="pedido.html">Acompanhar pedido</a><a href="minha-conta.html">Minha conta</a>
+      <a href="#como-fica">Como funciona</a><a href="#entrega">Entrega</a><a class="nav-account-link" href="minha-conta.html"><span aria-hidden="true">♙</span> Área do cliente</a>
       
     </nav>
 
@@ -49,10 +50,10 @@
         <nav aria-label="Menu mobile">
           <a href="#kits"><small>01</small><strong>Escolher meu kit</strong></a>
           <a href="#como-fica"><small>02</small><strong>Ver como fica</strong></a>
-          <a href="#entrega"><small>03</small><strong>Entrega e suporte</strong></a><a href="pedido.html"><small>04</small><strong>Acompanhar pedido</strong></a><a href="minha-conta.html"><small>05</small><strong>Minha conta</strong></a>
+          <a href="#entrega"><small>03</small><strong>Entrega e segurança</strong></a><a href="minha-conta.html"><small>04</small><strong>Área do cliente</strong></a><a href="contato.html"><small>05</small><strong>Atendimento</strong></a>
         </nav>
       </details>
-      <a class="header-cta" href="#kits">
+      <a class="header-account-cta" href="minha-conta.html" aria-label="Entrar na área do cliente">Área do cliente</a><a class="header-cta" href="#kits">
         <span>Escolher meu kit</span>
         <b aria-hidden="true">→</b>
       </a>
@@ -68,13 +69,6 @@
 <main>
   <section class="hero section hero-cinematic" id="inicio">
     <div class="hero-backdrop" aria-hidden="true"></div>
-    <div class="hero-garland" aria-hidden="true"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
-    <div class="hero-ornament hero-ornament-a" aria-hidden="true">✦</div>
-    <div class="hero-ornament hero-ornament-b" aria-hidden="true">✧</div>
-    <div class="hero-lights" aria-hidden="true">
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-    </div>
-    <div class="hero-sparkles" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
     <div class="hero-copy hero-campaign-art">
       <div class="hero-kicker-row">
         <span class="eyebrow">NATAL 2026 • EDIÇÃO ESPECIAL</span>
@@ -96,7 +90,7 @@
 
       <div class="hero-offer-card">
         <div class="hero-offer-main">
-          <small>A experiência começa em</small>
+          <small>Kits a partir de</small>
           <strong>R$ 39,90</strong>
         </div>
         <div class="hero-offer-pix">
@@ -106,7 +100,7 @@
       </div>
 
       <div class="hero-actions hero-actions-campaign">
-        <a class="btn btn-primary btn-holiday" href="#kits"><span>Quero criar essa surpresa</span><b aria-hidden="true">→</b></a>
+        <a class="btn btn-primary btn-holiday" href="#kits"><span>Escolher meu kit</span><b aria-hidden="true">→</b></a>
         <a class="hero-secondary" href="#como-fica">Ver como fica na casa <span aria-hidden="true">↘</span></a>
       </div>
 
@@ -120,10 +114,19 @@
       <picture class="hero-product-photo">
         <img src="assets/product/pegadas-site.webp" alt="Pegadas do Papai Noel aplicadas no piso de uma casa decorada para o Natal" fetchpriority="high">
       </picture>
-      <p class="hero-image-note">Aplicação ilustrativa das pegadas em uma casa decorada.</p>
+      <p class="hero-image-note">Cena ilustrativa de aplicação das pegadas em ambiente residencial.</p>
     </div>
   </section>
 
+
+  <section class="confidence-strip" aria-label="Vantagens e proteção da compra">
+    <div class="confidence-inner">
+      <div class="confidence-item"><span class="confidence-icon" aria-hidden="true">♧</span><div><strong>Compra com proteção de dados</strong><small>Conexão HTTPS e acesso privado</small></div></div>
+      <div class="confidence-item"><span class="confidence-icon" aria-hidden="true">◆</span><div><strong>15% de desconto no Pix</strong><small>Valor exibido antes de pagar</small></div></div>
+      <div class="confidence-item"><span class="confidence-icon" aria-hidden="true">▣</span><div><strong>Envio nacional</strong><small>Prazos por região informados</small></div></div>
+      <div class="confidence-item"><span class="confidence-icon" aria-hidden="true">☏</span><div><strong>Atendimento humano</strong><small>Fale com a equipe no WhatsApp</small></div></div>
+    </div>
+  </section>
 
   <section class="section kits-section" id="kits">
     <div class="section-heading section-heading-stage">
@@ -177,16 +180,16 @@
     <div class="trust-compact-copy">
       <span class="eyebrow">ENTREGA E ACOMPANHAMENTO</span>
       <h2>Sua surpresa tem um caminho até você.</h2>
-      <p>Você acompanha a preparação e o envio pelo número do pedido, com acesso privado. Saiba também quais são os prazos estimados para sua região.</p>
+      <p>Consulte os prazos estimados por região. Suas compras e atualizações ficam reunidas na sua área privada.</p>
       <div class="delivery-regions"><div><small>SP • RJ • PR</small><strong>2 a 4 dias</strong><span>estimativa de entrega</span></div><div><small>Demais estados</small><strong>3 a 5 dias</strong><span>estimativa de entrega</span></div></div>
       <p class="delivery-disclaimer">Prazos estimados sujeitos à confirmação e às condições de transporte.</p>
     </div>
     <div class="trust-compact-items">
       <div><b>01</b><span><strong>Pix com 15% OFF</strong><small>Preço e pedido para conferência antes de concluir.</small></span></div>
-      <div><b>02</b><span><strong>Acompanhe seu pedido</strong><small>Status atualizado conforme a preparação e o envio.</small></span></div>
+      <div><b>02</b><span><strong>Sua área privada</strong><small>Atualizações de compras vinculadas à sua conta.</small></span></div>
       <div><b>03</b><span><strong>Atendimento pelo WhatsApp</strong><small>(13) 97410-0193</small></span></div>
     </div>
-    <div class="delivery-links"><a class="btn btn-primary" href="pedido.html">Acompanhar meu pedido</a><a class="btn btn-secondary" href="minha-conta.html">Minha conta</a><a class="btn btn-secondary" href="entrega-e-prazos.html">Entrega e prazos</a></div>
+    <div class="delivery-links"><a class="btn btn-primary" href="minha-conta.html">Entrar na área do cliente</a><a class="btn btn-secondary" href="entrega-e-prazos.html">Entrega e prazos</a></div>
   </section>
 
   <section class="section christmas-faq" aria-label="Dúvidas frequentes">
@@ -195,7 +198,7 @@
       <details><summary>As pegadas podem ser removidas?</summary><p>Sim, são produzidas em vinil fosco removível. Aplique em superfície lisa, limpa e seca e remova com cuidado. Teste antes em uma área discreta.</p></details>
       <details><summary>O que muda no Kit Personalizado?</summary><p>Além das 21 pegadas, o kit inclui carta e certificado personalizados e uma placa com o nome da criança.</p></details>
       <details><summary>Qual a estimativa de entrega?</summary><p>SP, RJ e PR: de 2 a 4 dias. Demais estados: de 3 a 5 dias. Consulte as condições completas na página de Entrega e prazos.</p></details>
-      <details><summary>Como acompanho a compra?</summary><p>Ao finalizar o pedido, você recebe um acesso privado para consultar as atualizações na área Acompanhar meu pedido.</p></details>
+      <details><summary>Como acompanho a compra?</summary><p>Ao finalizar, você pode criar uma conta e reunir suas compras e atualizações em um ambiente privado.</p></details>
     </div>
   </section>
   <section class="section final-cta final-cta-story">
@@ -419,7 +422,7 @@
       <span aria-hidden="true">✦</span>
     </div>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
-    <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
+    <a class="btn btn-secondary" id="trackOrderLink" href="minha-conta.html" hidden>Ver minha compra na área do cliente</a>
 
     <p class="pix-manual-note">Você poderá acompanhar a atualização do pagamento pelo seu pedido.</p>
   </section>
@@ -427,7 +430,7 @@
 
 <footer class="site-footer footer-complete">
   <div class="footer-company"><strong>Papai Noel Passou Aqui</strong><span>Kits criados para transformar uma noite de Natal em lembrança.</span><small>Atendimento: (13) 97410-0193</small></div>
-  <nav aria-label="Atendimento"><strong>Ajuda</strong><a href="pedido.html">Acompanhar pedido</a><a href="entrega-e-prazos.html">Entrega e prazos</a><a href="contato.html">Atendimento</a></nav>
+  <nav aria-label="Atendimento"><strong>Ajuda</strong><a href="minha-conta.html">Área do cliente</a><a href="entrega-e-prazos.html">Entrega e prazos</a><a href="contato.html">Atendimento</a></nav>
   <nav aria-label="Informações"><strong>Informações</strong><a href="trocas-e-devolucoes.html">Trocas e devoluções</a><a href="privacidade.html">Privacidade</a><a href="termos-de-compra.html">Termos de compra</a><a href="#kits">Escolher meu kit</a></nav>
 </footer>
 
