@@ -3,33 +3,31 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const esc=v=>String(v??"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","\x27":"&#39;"}[c]));
-let demoMode=false;
-const DEMO_EXPIRES=Date.parse("2026-10-29T04:43:07Z");
-const demoActive=()=>Date.now()<DEMO_EXPIRES;
-const demoLoad=(key,fallback)=>{try{return JSON.parse(localStorage.getItem("natal_demo_"+key))??fallback}catch{return fallback}};
-const demoSave=(key,value)=>localStorage.setItem("natal_demo_"+key,JSON.stringify(value));
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
-function openApp(){login.hidden=true;app.hidden=false;if(demoMode){serverOrders=demoLoad("orders",[]);serverSettings=demoLoad("settings",{});$("#sectionEyebrow").textContent="DEMONSTRAÇÃO";$("#adminDemoBanner").hidden=false;renderAll()}else loadServer()}
+function openApp(){login.hidden=true;app.hidden=false;loadServer()}
 async function checkSession(){
- try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent=demoActive()?"Digite a senha 123 para abrir o painel de testes.":"Configuração de produção pendente."}catch{err.textContent="Não foi possível verificar a sessão."}
-}
-async function logout(){if(demoMode){location.reload();return}try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}finally{location.reload()}}
-checkSession();
-$("#loginPass").addEventListener("input",()=>{if(demoActive())err.textContent=""});
-form.addEventListener("submit",async e=>{
- e.preventDefault();
- const username=$("#loginUser").value.trim();
- const password=$("#loginPass").value;
- if(demoActive()&&username==="admin"&&password==="123"){
-  demoMode=true;$("#loginPass").value="";err.textContent="";openApp();return;
- }
- err.textContent="Verificando acesso...";
  try{
- const r=await fetch("/api/admin/auth",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
- const data=await r.json();
- if(!r.ok){err.textContent=data.error||"Acesso não autorizado";return}
- $("#loginPass").value="";err.textContent="";openApp();
- }catch{err.textContent="Não foi possível entrar. Tente novamente."}
+  const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});
+  const data=await r.json();
+  if(r.ok&&data.authenticated)openApp();
+  else if(!data.configured)err.textContent="Acesso ainda não ativado na hospedagem.";
+ }catch{err.textContent="Não foi possível verificar o acesso."}
+}
+async function logout(){
+ try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}
+ finally{location.reload()}
+}
+checkSession();
+form.addEventListener("submit",async e=>{
+ e.preventDefault();err.textContent="Verificando acesso...";
+ const button=form.querySelector('button[type="submit"]');button.disabled=true;
+ try{
+  const r=await fetch("/api/admin/auth",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("#loginUser").value.trim(),password:$("#loginPass").value})});
+  const data=await r.json();
+  if(!r.ok){err.textContent=data.error||"Acesso não autorizado";return}
+  $("#loginPass").value="";err.textContent="";openApp();
+ }catch{err.textContent="Falha de conexão. Tente novamente."}
+ finally{button.disabled=false}
 });
 $("#logoutBtn").onclick=logout;
 
@@ -46,20 +44,6 @@ $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
 let serverOrders=[];let serverSettings={};
 const getOrders=()=>serverOrders;
 async function api(path,options={}){
- if(demoMode){
- if(!demoActive()){location.reload();throw Error("Acesso temporário expirado")}
- if(path==="orders"&&options.method==="PATCH"){
- const {id,status}=JSON.parse(options.body);
- const order=serverOrders.find(o=>o.id===id);
- if(!order)throw Error("Pedido de teste não encontrado");
- order.status=status;order.updatedAt=new Date().toISOString();if(status==="Pago")order.paidAt=order.updatedAt;
- demoSave("orders",serverOrders);return {ok:true};
- }
- if(path==="settings"&&options.method==="PUT"){
- const {key,value}=JSON.parse(options.body);serverSettings[key]=value;demoSave("settings",serverSettings);return {ok:true};
- }
- return {orders:serverOrders,settings:serverSettings};
- }
  const response=await fetch("/api/admin/"+path,{credentials:"same-origin",cache:"no-store",...options});
  const data=await response.json();if(!response.ok)throw Error(data.error||"Erro no servidor");return data;
 }
@@ -105,7 +89,7 @@ function bindStatus(){
  $$("[data-status-id]").forEach(b=>b.onclick=async()=>{
   const next=b.dataset.status,id=b.dataset.statusId;
   if(next==="Pago"&&!confirm("Você conferiu o Pix no banco?"))return;
-  try{await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,status:next})});if(demoMode)renderAll();else await loadServer()}
+  try{await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,status:next})});await loadServer()}
   catch(e){alert("Não foi possível atualizar: "+e.message)}
  });
 }
@@ -127,12 +111,12 @@ function loadPix(){
 }
 $("#savePix").onclick=()=>{
  const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value||0),shippingFlat:Number($("#shippingFlat").value||0)};
- api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})}).then(()=>{serverSettings.pix=out;$("#pixMsg").textContent=demoMode?"Configuração salva somente no teste.":"Configuração salva no servidor."}).catch(e=>$("#pixMsg").textContent=e.message);
+ api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})}).then(()=>{serverSettings.pix=out;$("#pixMsg").textContent="Configuração salva no servidor."}).catch(e=>$("#pixMsg").textContent=e.message);
 };
 
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
 function loadMarketing(){const c={...marketingDefaults,...(serverSettings.marketing||{})};Object.keys(c).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""})}
-$("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketing",value:out})}).then(()=>{serverSettings.marketing=out;$("#marketingMsg").textContent=demoMode?"IDs salvos somente no teste.":"IDs salvos no servidor."}).catch(e=>$("#marketingMsg").textContent=e.message);};
+$("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketing",value:out})}).then(()=>{serverSettings.marketing=out;$("#marketingMsg").textContent="IDs salvos no servidor."}).catch(e=>$("#marketingMsg").textContent=e.message);};
 
 const seoDefaults={title:"Kit Papai Noel Passou Aqui | Natal 2026",description:"Crie uma surpresa de Natal inesquecível com pegadas do Papai Noel, adesivo de janela e opções personalizadas.",image:"assets/product/kit-personalizado.webp"};
 function loadSeo(){const c={...seoDefaults,...(serverSettings.seo||{})};$("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;renderSeoChecks(c)}
@@ -146,18 +130,7 @@ function renderSeoChecks(c){
  ];
  $("#seoChecks").innerHTML=checks.map(([t,ok])=>'<div class="seo-check"><span>'+t+'</span><b class="'+(ok?"ok":"warn")+'">'+(ok?"OK":"Revisar")+'</b></div>').join("");
 }
-$("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})}).then(()=>{serverSettings.seo=out;renderSeoChecks(out);$("#seoMsg").textContent=demoMode?"Rascunho salvo somente no teste.":"Rascunho salvo no servidor."}).catch(e=>$("#seoMsg").textContent=e.message);};
+$("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})}).then(()=>{serverSettings.seo=out;renderSeoChecks(out);$("#seoMsg").textContent="Rascunho salvo no servidor."}).catch(e=>$("#seoMsg").textContent=e.message);};
 
-$("#createDemoOrder")?.addEventListener("click",()=>{
- if(!demoMode||!demoActive())return;
- const id="TESTE-"+Date.now().toString(36).toUpperCase();
- const idProduct=$("#demoKit").value;
- const personal=idProduct==="personal";
- serverOrders.unshift({id,createdAt:new Date().toISOString(),status:"Pagamento informado",
- customerName:"Cliente de teste",phone:"",childName:personal?"Criança de teste":"",
- address:"Endereço fictício",number:"0",total:personal?59.42:33.92,
- items:[{id:idProduct,name:personal?"Personalizado":"Essencial",qty:1}]});
- demoSave("orders",serverOrders);renderAll();
-});
 function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();bindStatus()}
 })();
