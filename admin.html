@@ -49,6 +49,17 @@
         <article class="metric-card"><small>Ticket médio</small><strong id="mTicket">R$ 0,00</strong><span>pedidos pagos</span></article>
         <article class="metric-card"><small>Aguardando</small><strong id="mPending">0</strong><span>precisam de atenção</span></article>
       </div>
+      <div class="panel-card" style="margin:18px 0">
+        <div class="panel-head"><div><small>ANÁLISE REAL · ÚLTIMOS 30 DIAS</small><h2>Conversão da loja</h2></div></div>
+        <div class="metric-grid">
+          <div class="metric-card"><small>Sessões visitantes</small><strong id="realVisitors">—</strong></div>
+          <div class="metric-card"><small>Inícios de checkout</small><strong id="realCheckouts">—</strong></div>
+          <div class="metric-card"><small>Conversão observada</small><strong id="realConversion">—</strong></div>
+          <div class="metric-card"><small>Abandono observado</small><strong id="realAbandonment">—</strong></div>
+        </div>
+        <p class="muted" id="realAnalyticsNote">Carregando medições...</p>
+        <h3>Origem das visitas</h3><div id="realCampaigns"></div>
+      </div>
       <div class="dashboard-grid">
         <article class="panel-card">
           <div class="panel-head"><div><small>ÚLTIMOS PEDIDOS</small><h2>Movimento recente</h2></div><button class="text-btn" data-open-tab="orders">Ver todos</button></div>
@@ -138,5 +149,5 @@
   </main>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261028-product-admin-final"></script>
+<script src="admin.js?v=20261028-analytics-orders"></script>
 </body></html>
