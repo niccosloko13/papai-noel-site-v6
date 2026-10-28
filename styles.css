@@ -7394,3 +7394,42 @@ body[data-checkout-step="1"] .checkout-page-actions{
   .checkout-oneview-product img{width:92px;height:64px}
   .compact-letter-preview .letter-preview{min-height:158px!important}
 }
+
+/* Mobile conversion polish | October 2026 */
+.product-grid{align-items:stretch}
+.product-card{height:100%;display:flex;flex-direction:column;min-width:0}
+.product-card-body{flex:1;display:flex;flex-direction:column}
+.product-buy-block{margin-top:auto}
+.product-card-media{overflow:hidden}
+.product-card-media img{display:block;width:100%;object-fit:cover}
+.product-card .product-prop{max-width:48ch}
+.product-includes-grid{align-content:start}
+.product-card .product-count strong{font-variant-numeric:tabular-nums}
+.product-actions-conversion .btn{min-height:52px}
+.product-cart-link{min-height:42px}
+.product-card .product-specs summary{cursor:pointer}
+.product-card :focus-visible,.mobile-menu summary:focus-visible,.cart-trigger:focus-visible{outline:3px solid #c89c4a;outline-offset:3px}
+.checkout-page input:focus-visible,.checkout-page textarea:focus-visible,.checkout-page button:focus-visible{outline:3px solid #bf913a;outline-offset:2px}
+.checkout-page label{min-width:0}
+.checkout-page input,.checkout-page textarea{max-width:100%}
+.checkout-page-actions{isolation:isolate}
+@media(max-width:760px){
+  .product-grid{gap:17px}
+  .product-card{max-width:100%;margin-inline:auto}
+  .product-card-media{aspect-ratio:1.42}
+  .product-card-media img{height:100%}
+  .product-card-body{gap:10px}
+  .product-card .product-prop{line-height:1.5}
+  .product-card .product-includes-grid{gap:6px 10px}
+  .product-card .product-includes-grid span{line-height:1.35}
+  .product-card .product-actions-conversion .btn{width:100%}
+  .mobile-buy-bar:not([hidden]){z-index:60}
+  .checkout-page-actions{padding-bottom:max(14px,env(safe-area-inset-bottom))}
+  .checkout-page input,.checkout-page textarea{font-size:16px!important}
+  .checkout-page .checkout-progress-steps{min-width:0}
+  .checkout-page .checkout-progress-steps span{min-width:0}
+  .checkout-page .checkout-progress-steps b{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+ .product-card,.product-card *, .checkout-page *, .mobile-buy-bar, .hero-cinematic *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
