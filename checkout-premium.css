@@ -1,0 +1,122 @@
+
+/* PAPAI NOEL PASSOU AQUI — CHRISTMAS CHECKOUT EXPERIENCE v1 */
+body.checkout-page{--natal-forest:#103a2d;--natal-pine:#174b38;--natal-burgundy:#8a2135;--natal-gold:#c8a15b;--natal-cream:#fff8e9;position:relative;min-height:100dvh;background:radial-gradient(circle at 85% 9%,rgba(220,170,90,.24),transparent 30%),linear-gradient(135deg,#0b2d26 0%,#1c4635 38%,#6a2630 100%)!important;color:#2b261f;overflow-x:clip}
+body.checkout-page [hidden]{display:none!important}
+body.checkout-page .natal-atmosphere{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.natal-stars{position:absolute;inset:0;opacity:.6;background-image:radial-gradient(circle,rgba(255,240,193,.8) .9px,transparent 1.6px),radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1.5px);background-size:93px 117px,157px 181px;background-position:14px 37px,43px 65px;animation:natalGlow 12s ease-in-out infinite alternate}
+.natal-fir{position:absolute;width:250px;height:470px;top:115px;opacity:.22;filter:blur(.25px);background:repeating-conic-gradient(from 12deg at 50% 10%,transparent 0 9deg,#d4b16a 10deg 11deg,transparent 12deg 20deg);clip-path:polygon(50% 0,57% 20%,66% 20%,61% 33%,77% 38%,65% 49%,89% 64%,65% 62%,100% 89%,54% 81%,50% 100%,45% 81%,0 89%,35% 62%,11% 64%,35% 49%,23% 38%,39% 33%,34% 20%,43% 20%)}
+.natal-fir-left{left:-116px;transform:rotate(-16deg)}.natal-fir-right{right:-124px;top:10%;transform:rotate(15deg)}
+.natal-ornament{position:absolute;border:1px solid rgba(234,200,133,.42);border-radius:50%;box-shadow:inset -16px -15px 22px rgba(0,0,0,.16),inset 8px 8px 14px rgba(255,255,255,.16),0 0 20px rgba(232,188,104,.13)}
+.natal-ornament:before{content:"";position:absolute;left:50%;bottom:100%;height:120px;border-left:1px solid rgba(226,193,131,.45)}
+.natal-ornament-one{width:46px;height:46px;left:4%;top:24%;background:radial-gradient(circle at 30% 30%,#e5b870,#8c2335 70%)}.natal-ornament-two{width:34px;height:34px;right:4%;top:35%;background:radial-gradient(circle at 30% 30%,#f2d38b,#9d7942 70%)}
+body.checkout-page .checkout-page-header{position:relative!important;z-index:4!important;min-height:70px!important;background:rgba(11,36,30,.82)!important;color:#fff5de!important;border-bottom:1px solid rgba(230,192,114,.22)!important;box-shadow:none!important;backdrop-filter:blur(18px)}
+body.checkout-page .checkout-page-header:after{background:linear-gradient(90deg,transparent,#d6ad60,transparent)!important;height:1px!important}
+.checkout-page-header>div strong{color:#fff2d6!important}.checkout-page-header>div small{color:#ddba79!important}.checkout-page-back{color:#fff6e7!important;border-color:rgba(243,216,165,.3)!important}
+.checkout-page-secure{color:#f4db9f!important;font-size:.72rem!important;letter-spacing:.02em}
+body.checkout-page .checkout-page-main{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,340px) minmax(0,760px);justify-content:center;align-items:start;gap:clamp(20px,4.5vw,72px);min-height:calc(100dvh - 70px);padding:clamp(18px,4vw,52px) 24px 95px!important}
+body.checkout-page .checkout-page-main:before,body.checkout-page .checkout-page-main:after{display:none!important}
+body.checkout-page .checkout-story{color:#fff2db;position:sticky;top:110px;max-width:340px;padding:26px 5px 20px;min-width:0}
+.checkout-story-kicker{display:block;color:#ebc888;font-size:.66rem;letter-spacing:.19em;font-weight:800}
+.checkout-story-star{display:block;color:#d8b677;font-size:26px;margin:18px 0 6px}
+.checkout-story h1{font:400 clamp(2.8rem,4.3vw,4.7rem)/.99 "DM Serif Display",Georgia,serif;letter-spacing:-.04em;margin:0 0 20px;text-wrap:balance}
+.checkout-story h1 em{color:#eed096;font-weight:400}
+.checkout-story p{font-size:.91rem;line-height:1.7;color:#f0e4d1;max-width:33ch;margin:0 0 25px}
+.checkout-story-image{aspect-ratio:1.45;position:relative;overflow:hidden;border-radius:17px;border:1px solid rgba(237,202,126,.48);box-shadow:0 20px 50px rgba(0,0,0,.24)}
+.checkout-story-image img{display:block;width:100%;height:100%;object-fit:cover}
+.checkout-story-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,33,25,.26),transparent 55%)}
+.checkout-story>small{display:block;margin-top:16px;color:#e5c795;letter-spacing:.17em;font-size:.56rem;font-weight:800}
+body.checkout-page .checkout-page-shell{width:100%!important;max-width:760px!important;margin:0!important;position:relative;z-index:2;padding:clamp(18px,2.8vw,32px)!important;border:1px solid rgba(218,172,93,.52);border-radius:28px;background:linear-gradient(155deg,#fffef9 0%,#fff8ed 65%,#f8eddf 100%);box-shadow:0 35px 100px rgba(0,0,0,.23),inset 0 0 0 6px rgba(255,255,255,.55);min-width:0}
+body.checkout-page .checkout-page-shell:before{content:"✦"!important;position:absolute;top:18px;right:26px;color:#c59b56;animation:natalGlow 4s ease-in-out infinite;opacity:.65}
+body.checkout-page .checkout-page-shell:after{display:none!important}
+.checkout-shell-intro{display:grid;gap:5px;margin:0 24px 17px 0;padding-bottom:14px;border-bottom:1px solid #eaddc6}
+.checkout-shell-intro>span{font-size:.6rem;color:#a17e43;font-weight:800;letter-spacing:.18em}
+.checkout-shell-intro>strong{font:400 clamp(1.45rem,2.8vw,2.25rem)/1.11 "DM Serif Display",Georgia,serif;color:#472920;letter-spacing:-.015em}
+.checkout-shell-intro>p{margin:2px 0 0;font-size:.77rem;color:#887366;line-height:1.42}
+body.checkout-page .checkout-page-progress{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;margin:0 0 18px!important;padding:0!important}
+body.checkout-page .checkout-progress{height:4px!important;background:#e6dbca!important;border-radius:99px}
+body.checkout-page .checkout-progress>span{background:linear-gradient(90deg,#8c263b,#d6ac61)!important}
+body.checkout-page .checkout-progress-steps{margin-top:12px}
+body.checkout-page .checkout-progress-steps [data-progress-step] i{border-color:#d8c7a7}
+body.checkout-page .checkout-progress-steps .is-active i{background:#184f3a!important;color:#fff!important;border-color:#184f3a!important}
+body.checkout-page .checkout-step-kicker{color:#9f6b36!important;font-size:.62rem!important;letter-spacing:.14em!important;margin-bottom:10px!important}
+body.checkout-page .checkout-step-title{margin-bottom:18px!important;align-items:center!important}
+body.checkout-page .checkout-step-title h2{font:400 clamp(1.7rem,3vw,2.6rem)/1.08 "DM Serif Display",Georgia,serif!important;color:#512b22!important;letter-spacing:-.03em}
+body.checkout-page .checkout-step-title p{font-size:.82rem!important;color:#826e60!important;max-width:36ch!important;line-height:1.5}
+body.checkout-page .checkout-oneview-product{background:linear-gradient(95deg,#f2e8d8,#fffaf2)!important;border:1px solid #e5d3b5!important;box-shadow:none!important}
+body.checkout-page .checkout-oneview-product img{box-shadow:0 8px 22px rgba(58,30,18,.13)}
+body.checkout-page .compact-fields{background:#fffcf7!important;border-color:#e8d8bf!important;box-shadow:none!important}
+body.checkout-page .compact-letter-preview .letter-preview{border-color:#d5b67f!important;background:radial-gradient(circle at 20% 15%,rgba(226,192,121,.14),transparent 45%),linear-gradient(145deg,#fffaf0,#f6e9d1)!important;box-shadow:0 15px 32px rgba(102,66,32,.12)!important;transform:rotate(-.5deg)}
+body.checkout-page .compact-letter-preview .letter-preview:before{opacity:.6}
+body.checkout-page .checkout-step input:not([type="hidden"]),body.checkout-page .checkout-step textarea{border:1px solid #decdb7!important;background:#fffefa!important;color:#3c2b23!important;transition:border-color .2s,box-shadow .2s!important}
+body.checkout-page .checkout-step input:focus,body.checkout-page .checkout-step textarea:focus{border-color:#b68e4b!important;box-shadow:0 0 0 3px rgba(198,157,91,.2)!important}
+body.checkout-page .checkout-page-actions{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;margin-top:17px!important;position:relative!important}
+.checkout-page-action-buttons{display:flex;gap:10px;align-items:center}
+body.checkout-page .checkout-primary-action{flex:1;min-height:55px!important;border-radius:13px!important;background:linear-gradient(110deg,#14513d,#216b4d)!important;color:#fffdf4!important;box-shadow:0 12px 24px rgba(17,76,50,.2)!important;font-weight:800!important;letter-spacing:.01em}
+body.checkout-page .checkout-primary-action:hover{filter:brightness(1.07)}
+body.checkout-page #checkoutBack{min-height:52px!important}
+.checkout-reassurance{text-align:center;color:#887664;font-size:.68rem;margin-top:11px}
+.checkout-reassurance:first-letter{color:#c6a05c}
+body.checkout-page .cep-auto-search{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;padding:18px!important;border:1px solid #e5d5bc;border-radius:19px;background:linear-gradient(120deg,#f7eddb,#fff9ed);margin-bottom:14px}
+.cep-auto-search>label{display:grid;gap:8px;width:100%;font-weight:800;font-size:.84rem;color:#48332a}
+.cep-field-wrap{position:relative;display:block;width:100%}
+body.checkout-page .cep-field-wrap input{width:100%;padding:14px 52px 14px 15px!important;min-height:56px!important;font-size:1.15rem!important;letter-spacing:.09em;font-weight:800;max-width:100%}
+.cep-field-symbol{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:23px;color:#b48a4f}
+.cep-auto-search>small{font-size:.72rem;line-height:1.45;color:#7f7163}
+.cep-status{font-size:.75rem;font-weight:700;line-height:1.45;min-height:0}
+.cep-status:empty{display:none}
+.cep-status[data-state="loading"]{color:#916728}
+.cep-status[data-state="success"]{color:#1c6a4a}
+.cep-status[data-state="error"]{color:#a12338}
+body.checkout-page .address-result{animation:natalRise .35s ease both}
+body.checkout-page .address-found{background:linear-gradient(120deg,#eaf5e9,#f9fff8)!important;border:1px solid #bbdbc4!important;border-radius:15px!important}
+body.checkout-page .review-kit-showcase{border:1px solid #e4cfad!important;overflow:hidden!important;box-shadow:0 12px 35px rgba(84,56,35,.1)}
+body.checkout-page .review-card{border:1px solid #e2cfad!important;box-shadow:0 12px 34px rgba(90,57,31,.08)}
+body.checkout-page .review-total{background:linear-gradient(110deg,#153e30,#1f694b)!important;color:#fff3de!important;border-radius:12px!important;padding:15px!important}
+body.checkout-page .review-total *{color:inherit!important}
+body.checkout-page .checkout-payment-scene{position:relative;z-index:2}
+body.checkout-page .pix-panel-special{background:radial-gradient(circle at 90% 7%,rgba(221,181,95,.17),transparent 40%),linear-gradient(160deg,#fff9ed,#f2e1c8)!important;box-shadow:0 35px 90px rgba(2,21,16,.35)!important;border:1px solid #cfaa68!important;overflow:hidden!important}
+.pix-scene-top{text-align:center;letter-spacing:.23em;font-size:.57rem;font-weight:800;color:#a47738;margin:0 0 13px}
+body.checkout-page .pix-qr-stage{filter:drop-shadow(0 12px 23px rgba(66,45,30,.15))}
+@keyframes natalRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes natalGlow{from{opacity:.35}to{opacity:.78}}
+@media(max-width:1020px){
+ body.checkout-page .checkout-page-main{grid-template-columns:minmax(0,700px)!important;padding:16px 14px 75px!important}
+ body.checkout-page .checkout-story{display:none!important}
+ body.checkout-page .checkout-page-shell{max-width:700px!important;margin:auto!important}
+}
+@media(max-width:760px){
+ body.checkout-page .checkout-page-header{min-height:61px!important}
+ body.checkout-page .checkout-page-main{min-height:calc(100dvh - 61px);padding:12px 10px 34px!important}
+ body.checkout-page .checkout-page-shell{border-radius:20px!important;padding:16px 13px 15px!important;box-shadow:0 18px 45px rgba(0,0,0,.19)!important}
+ .checkout-shell-intro{margin-bottom:12px;padding-bottom:10px}
+ .checkout-shell-intro>strong{font-size:1.5rem}
+ .checkout-shell-intro>p{font-size:.71rem}
+ body.checkout-page .checkout-page-progress{margin-bottom:10px!important}
+ body.checkout-page .checkout-oneview-product{padding:9px!important}
+ body.checkout-page .checkout-oneview-product strong{font-size:1.25rem!important}
+ body.checkout-page .checkout-oneview{gap:9px!important}
+ body.checkout-page .checkout-personalization-compact{gap:9px!important}
+ body.checkout-page .compact-fields{padding:11px!important}
+ body.checkout-page .compact-letter-preview .letter-preview{min-height:164px!important}
+ body.checkout-page .checkout-step-title{display:block!important;margin-bottom:12px!important}
+ body.checkout-page .checkout-step-title h2{font-size:1.83rem!important;max-width:none!important}
+ body.checkout-page .checkout-step-title p{max-width:unset!important;font-size:.75rem!important;margin-top:6px}
+ body.checkout-page .cep-auto-search{padding:13px!important;border-radius:15px}
+ body.checkout-page .checkout-page-actions{margin-top:12px!important}
+ body.checkout-page .checkout-primary-action{min-height:52px!important}
+ .natal-ornament-one{width:25px;height:25px;left:1%;top:22%}.natal-ornament-two{width:22px;height:22px;right:-1%}
+ .natal-fir{opacity:.1}
+ body.checkout-page .checkout-payment-scene{padding:12px!important}
+}
+@media(max-width:390px){
+ body.checkout-page .checkout-page-main{padding:8px 8px 25px!important}
+ body.checkout-page .checkout-page-shell{padding:13px 11px!important}
+ .checkout-shell-intro>strong{font-size:1.38rem}
+ body.checkout-page .checkout-page-progress{margin-bottom:8px!important}
+ body.checkout-page .checkout-progress-steps b{font-size:.57rem!important}
+ .checkout-reassurance{font-size:.63rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .natal-stars,.checkout-page-shell:before,.checkout-page .checkout-step.active,.checkout-page .address-result{animation:none!important}
+ body.checkout-page *{scroll-behavior:auto!important;transition:none!important}
+}
