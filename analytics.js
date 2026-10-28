@@ -13,4 +13,5 @@
   try{fetch("/api/events",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),keepalive:true,credentials:"omit"}).catch(()=>{})}catch{}
  }
  window.natalAnalytics={track,sessionId:session,attribution:utm};
+ track('page_view');
 })();
