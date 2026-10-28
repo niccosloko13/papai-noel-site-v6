@@ -1,9 +1,9 @@
 const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
   {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["6 pares + 1 pegada solta (13 pegadas)","Adesivo para janela","Carta padrão","Certificado padrão","Guia de aplicação"],image:"assets/product/kit1-site.webp",active:true},
-  {id:"personal",name:"Personalizado",price:69.90,prop:"Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado.webp",badge:"Mais desejado",active:true}
+  {id:"personal",name:"Personalizado",price:69.90,prop:"Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado.webp",active:true}
 ]);
 const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");const currentImages={basic:"assets/product/kit1-site.webp",personal:"assets/product/kit-personalizado.webp"};return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id)&&p.image===currentImages[p.id])?stored:DEFAULT_PRODUCTS};
-let PRODUCTS=getProducts().filter(p=>p.active!==false);
+let PRODUCTS=getProducts().filter(p=>p.active!==false).map(p=>({...p,badge:""}));
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
@@ -45,12 +45,12 @@ const cartExpanded=cart=>cart.map(i=>({product:productById(i.id),qty:Math.max(1,
 function renderProducts(){
   const discount=Number(pixConfig().discount)||0;
   grid.innerHTML=PRODUCTS.map(p=>{
-    const count=p.id==="basic"?"6 pares + 1 pegada solta":"10 pares + 1 pegada solta";
+    const count=p.id==="basic"?"13 pegadas":"21 pegadas";
     const extras=p.benefits.filter((_,i)=>i>0);
     return `
   <article class="product-card product-card--${p.id} ${p.badge?"recommended":""}">
     <figure class="product-card-media">
-      <img src="${p.image}" alt="Kit ${p.name} Papai Noel Passou Aqui" loading="lazy">
+      <img src="${p.image}" alt="Itens do Kit ${p.name} Papai Noel Passou Aqui" loading="lazy" width="660" height="540">
       <div class="product-media-badges">
         <span>KIT ${p.id==="personal"?"2":"1"}</span>
         ${p.badge?`<b>${p.badge}</b>`:""}
@@ -60,7 +60,7 @@ function renderProducts(){
     <div class="product-card-body">
       <div class="product-heading">
         <div>
-          <small>${p.id==="personal"?"EXPERIÊNCIA PERSONALIZADA":"EXPERIÊNCIA ESSENCIAL"}</small>
+          <small>KIT ${p.id==="personal"?"2":"1"} • ${p.id==="personal"?"PERSONALIZADO":"ESSENCIAL"}</small>
           <h3>Kit ${p.name}</h3>
         </div>
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
@@ -70,7 +70,7 @@ function renderProducts(){
 
       <div class="product-count">
         <span aria-hidden="true">✓</span>
-        <div><small>PEGADAS INCLUÍDAS</small><strong>${count}</strong></div>
+        <div><small>PEGADAS PARA CRIAR O CAMINHO</small><strong>${count}</strong></div>
       </div>
 
       <div class="product-includes">
@@ -94,7 +94,7 @@ function renderProducts(){
         </div>
 
         <div class="product-actions product-actions-conversion">
-          <button class="btn btn-primary btn-holiday" data-buy="${p.name}">Escolher este kit</button>
+          <button class="btn btn-primary btn-holiday" data-buy="${p.name}">Quero o Kit ${p.name}</button>
           <button class="product-cart-link" data-add-cart="${p.id}" type="button">+ Adicionar ao carrinho</button>
         </div>
       </div>
