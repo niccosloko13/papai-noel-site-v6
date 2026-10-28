@@ -1,6 +1,6 @@
 const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
-  {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["10 pares de pegadas (20 unidades)","Adesivo para janela","Guia de aplicação"],image:"assets/product/pegadas.jpg",gallery:["assets/product/adesivo-janela.jpg"],active:true},
-  {id:"personal",name:"Personalizado",price:69.90,prop:"Mais pistas e detalhes personalizados para fazer a visita parecer única.",benefits:["18 pares de pegadas (36 unidades)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada"],image:"assets/visuals/kit-personalizado.svg",gallery:["assets/product/pegadas.jpg","assets/product/adesivo-janela.jpg","assets/visuals/placa.svg"],badge:"Mais completo",active:true}
+  {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["10 pares de pegadas (20 unidades)","Adesivo para janela","Guia de aplicação"],image:"assets/product/kit-essencial.webp",active:true},
+  {id:"personal",name:"Personalizado",price:69.90,prop:"Mais pistas e detalhes personalizados para fazer a visita parecer única.",benefits:["18 pares de pegadas (36 unidades)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada"],image:"assets/product/kit-personalizado.webp",badge:"Mais completo",active:true}
 ]);
 const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id))?stored:DEFAULT_PRODUCTS};
 let PRODUCTS=getProducts().filter(p=>p.active!==false);
@@ -27,11 +27,8 @@ function renderProducts(){
   const discount=Number(pixConfig().discount)||0;
   grid.innerHTML=PRODUCTS.map(p=>`
   <article class="product-card product-card--${p.id} ${p.badge?"recommended":""}">
-    <figure class="product-card-media product-media-collage">
-      <div class="product-media-main"><img src="${p.image}" alt="Kit ${p.name} Papai Noel Passou Aqui" loading="lazy"></div>
-      <div class="product-media-side">
-        ${(p.gallery||[]).slice(0,2).map(src=>`<img src="${src}" alt="" aria-hidden="true" loading="lazy">`).join("")}
-      </div>
+    <figure class="product-card-media">
+      <img src="${p.image}" alt="Kit ${p.name} Papai Noel Passou Aqui" loading="lazy">
     </figure>
     <div class="product-card-body">
       <div class="product-card-kicker">
