@@ -351,6 +351,8 @@ document.querySelector("#closeCart").addEventListener("click",()=>cartDialog.clo
 document.querySelector("#cartShop").addEventListener("click",()=>{cartDialog.close();document.querySelector("#kits").scrollIntoView({behavior:"smooth"})});
 document.querySelector("#cartCheckout").addEventListener("click",()=>openCheckoutWithItems(getCart(),{fromCart:true}));
 
+document.querySelectorAll(".mobile-menu nav a").forEach(a=>a.addEventListener("click",()=>{const m=a.closest("details");if(m)m.open=false;}));
+
 child.addEventListener("input",updateLetterPreview);
 letter.addEventListener("input",updateLetterPreview);
 next.addEventListener("click",async()=>{
