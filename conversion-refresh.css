@@ -31,3 +31,61 @@ body .checkout-identity-link:hover{text-decoration:underline}
 @media(max-width:600px){.confidence-strip{padding-inline:8px}.confidence-item{padding:13px 8px;gap:8px}.confidence-icon{width:31px;height:31px;font-size:19px;border-radius:9px}.confidence-item strong{font-size:10px}.confidence-item small{font-size:9px}body .header-account-cta{font-size:10px;min-height:38px}}
 @media(max-width:390px){.confidence-inner{grid-template-columns:1fr 1fr}.confidence-item{padding:10px 6px}.confidence-item strong{font-size:9px}.confidence-item small{font-size:8px}.confidence-icon{width:25px;height:25px;font-size:15px}}
 @media(prefers-reduced-motion:reduce){body .hero-product-photo img{transition:none!important;transform:none!important}}
+
+/* 2026 complete storefront modernization */
+.experience-steps{padding-top:52px!important;padding-bottom:74px!important}
+.experience-intro{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.65fr);align-items:end;gap:25px;padding-bottom:24px;border-bottom:1px solid #dfd0b8}
+.experience-intro h2{font:400 clamp(2.2rem,4.3vw,4rem)/1.04 "DM Serif Display",Georgia,serif;letter-spacing:-.045em;color:#3b261e;margin:10px 0 0;max-width:570px}
+.experience-intro>p{font-size:.94rem;line-height:1.8;max-width:43ch;color:#76675d;margin:0 0 5px}
+.experience-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:23px}
+.experience-list article{position:relative;padding:28px 25px 29px;min-width:0;overflow:hidden;background:linear-gradient(155deg,#fffdf8,#f7efe4);border:1px solid #e3d5c0;border-radius:18px;box-shadow:0 10px 34px #553e2110;transition:transform .25s,box-shadow .25s}
+.experience-list article:hover{transform:translateY(-4px);box-shadow:0 17px 44px #553e2120}
+.experience-number{color:#ae8c58;letter-spacing:.16em;font-size:.67rem;font-weight:900}
+.experience-icon{display:grid;place-items:center;background:#183f30;color:#f5d69a;width:47px;height:47px;border-radius:13px;font:24px Georgia,serif;margin:28px 0 22px}
+.experience-list h3{font:400 1.7rem/1.14 "DM Serif Display",Georgia,serif;color:#342820;margin:0 0 9px}
+.experience-list p{color:#786a5d;line-height:1.7;font-size:.85rem;margin:0;max-width:37ch}
+body .scene-section{padding-top:68px!important}
+body .scene-head h2{letter-spacing:-.045em}
+body .scene-card{transition:transform .28s,box-shadow .28s}
+body .scene-card:hover{transform:translateY(-3px)}
+body .scene-card img{object-position:center}
+body .kits-section .section-heading h2{max-width:680px}
+body .product-card{transition:transform .25s,box-shadow .25s}
+body .product-card:hover{transform:translateY(-3px)}
+body .product-card:focus-within{outline:2px solid #bd9858;outline-offset:2px}
+body .final-cta-story .final-cta-media img{object-fit:cover;object-position:center}
+body .final-cta-story .final-product-card{box-shadow:0 12px 30px #0c231a40}
+body .faq-simple details{transition:background .2s,border-color .2s}
+body .faq-simple details[open]{background:#fff;border-color:#c3ad83}
+body .faq-simple summary{list-style:none;position:relative;padding-right:32px}
+body .faq-simple summary::-webkit-details-marker{display:none}
+body .faq-simple summary:after{content:"+";position:absolute;right:1px;top:-4px;font-size:25px;color:#957141;font-weight:400}
+body .faq-simple details[open] summary:after{content:"−"}
+body .cart-panel{border:1px solid #d5b68a;box-shadow:0 25px 80px #071d173b}
+body .cart-item{border-radius:13px}
+body .cart-dialog::backdrop{background:#04160ebf;backdrop-filter:blur(5px)}
+body .mobile-buy-bar{box-shadow:0 -12px 35px #102b2422;border-top:1px solid #d2c3a8}
+body .footer-complete nav a:focus-visible{outline:2px solid #efcc84}
+body .header-inner{gap:12px}
+body .desktop-nav{gap:clamp(7px,1.1vw,18px)}
+body .desktop-nav>a{font-size:clamp(10px,.9vw,13px)}
+@media(max-width:980px){
+ .experience-steps{padding-top:38px!important;padding-bottom:47px!important}
+ .experience-intro{grid-template-columns:1fr;gap:8px}
+ .experience-intro>p{max-width:66ch}
+ .experience-list{gap:10px}
+ .experience-list article{padding:21px 16px}
+ .experience-icon{margin:23px 0 14px}
+}
+@media(max-width:720px){
+ .experience-intro h2{font-size:2.15rem}
+ .experience-list{grid-template-columns:1fr;gap:9px}
+ .experience-list article{display:grid;grid-template-columns:42px 1fr;column-gap:13px;row-gap:0;padding:15px}
+ .experience-list .experience-number{grid-column:1;grid-row:1;font-size:10px}
+ .experience-list .experience-icon{grid-column:1;grid-row:2/span 2;width:39px;height:39px;font-size:19px;margin:3px 0}
+ .experience-list h3{grid-column:2;grid-row:1/span 2;font-size:1.3rem;margin:0;align-self:end}
+ .experience-list p{grid-column:2;grid-row:3;font-size:.75rem;margin-top:4px}
+ body .scene-section{padding-top:36px!important}
+ body .final-cta-story .final-product-card{max-width:260px}
+}
+@media(prefers-reduced-motion:reduce){.experience-list article,body .scene-card,body .product-card{transition:none!important}.experience-list article:hover,body .scene-card:hover,body .product-card:hover{transform:none!important}}
