@@ -46,8 +46,8 @@ function updatePriceDisplay(){const amount=money(total());$("#stepOneKitPrice").
 function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
 function updatePreview(){
  const n=child.value.trim()||"Miguel";
- previewName.textContent="Querido "+n+",";
- previewLetter.textContent=letter.value.trim()||"Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!";
+ previewName.textContent=personalized?"Querido "+n+",":"Olá, pequena estrela,";
+ previewLetter.textContent=(!personalized||!letter.value.trim())?"Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!":letter.value.trim();
  count.textContent=letter.value.length;
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
