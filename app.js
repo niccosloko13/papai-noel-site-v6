@@ -38,6 +38,7 @@ function renderProducts(){
       <div class="product-top"><h3>Kit ${p.name}</h3></div>
       <p class="product-prop">${p.prop}</p>
       <div class="benefits">${p.benefits.slice(0,6).map(x=>`<span>${x}</span>`).join("")}</div>
+      <details class="product-specs"><summary>Detalhes do kit <span>+</span></summary><div>${p.id==="basic"?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Inclui:</b> adesivo de janela, carta padrão, certificado padrão e guia de aplicação.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`:`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`}</div></details>
       <div class="price-row">
         <div><small>Preço</small><strong>${money(p.price)}</strong></div>
         <div class="pix-price"><small>no Pix • −${discount}%</small><strong>${money(discounted(p.price))}</strong></div>
@@ -124,6 +125,36 @@ let checkoutItems=[{id:currentProduct.id,qty:1}];
 let checkoutFromCart=false;
 let currentOrderId=null;
 
+function checkoutHasPersonalized(){
+  return checkoutExpanded().some(i=>i.product.id==="personal");
+}
+function syncPersonalizationMode(){
+  const personalized=checkoutHasPersonalized();
+  const section=document.querySelector('.checkout-step[data-step="1"]');
+  const heading=section?.querySelector("h2");
+  const nameLabel=child?.closest("label");
+  const letterLabel=letter?.closest("label");
+  const preview=document.querySelector("#letterPreviewWrap");
+  if(heading)heading.textContent=personalized?"Veja sua carta antes de concluir.":"Seu Kit Essencial já vem pronto.";
+  if(nameLabel)nameLabel.hidden=!personalized;
+  if(letterLabel)letterLabel.hidden=!personalized;
+  if(preview)preview.hidden=!personalized;
+  child.required=personalized;
+  if(!personalized){
+    child.removeAttribute("aria-invalid");
+    child.value="";
+    letter.value="";
+    count.textContent="0";
+  }
+}
+function updateLetterPreview(){
+  const n=child.value.trim()||"Miguel";
+  const custom=letter.value.trim();
+  previewName.textContent="Querido "+n+",";
+  previewLetter.textContent=custom||"Você foi muito especial este ano! Continue sendo essa criança incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!";
+  count.textContent=letter.value.length;
+}
+
 function checkoutExpanded(){return cartExpanded(checkoutItems)}
 function checkoutRegularSubtotal(){return checkoutExpanded().reduce((s,i)=>s+i.product.price*i.qty,0)}
 function checkoutPixSubtotal(){return checkoutExpanded().reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)}
@@ -147,6 +178,8 @@ function openCheckoutWithItems(items,{fromCart=false}={}){
   if(first)currentProduct=first;
   renderCheckoutMini();
   renderSummary();
+  syncPersonalizationMode();
+  updateLetterPreview();
   step=1;
   renderStep();
   if(cartDialog.open)cartDialog.close();
@@ -223,7 +256,7 @@ function createOrder(){
     items,plan:items.map(i=>i.qty>1?`${i.qty}x ${i.name}`:i.name).join(", "),
     productPrice:checkoutRegularSubtotal(),discountPercent:Number(cfg.discount)||0,
     shipping:Number(cfg.shippingFlat)||0,total,
-    childName:child.value.trim()||"Miguel",letter:letter.value.trim(),
+    childName:checkoutHasPersonalized()?child.value.trim():"",letter:checkoutHasPersonalized()?letter.value.trim():"",
     customerName:document.querySelector("#customerName").value.trim(),
     phone:document.querySelector("#phone").value.trim(),
     cep:document.querySelector("#cep").value.trim(),address:document.querySelector("#address").value.trim(),
