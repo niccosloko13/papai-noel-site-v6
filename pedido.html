@@ -1,49 +1,44 @@
 <!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F8F5EF">
-<title>Acompanhar pedido • Kit Papai Noel Passou Aqui</title>
-<link rel="stylesheet" href="styles.css">
-<style>
-.order-page{width:min(100% - 32px,720px);margin:auto;padding:34px 0 100px}
-.order-page h1{font-family:Georgia,serif;font-size:clamp(2.2rem,10vw,4rem);line-height:1;margin:.45rem 0 1rem}
-.order-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:20px;margin-top:20px}
-.order-header{display:flex;justify-content:space-between;gap:16px;align-items:start}.order-header small{display:block;color:var(--muted)}.order-header strong{font-size:1.15rem}.order-status-pill{font-size:.75rem;font-weight:900;background:#fff2cf;color:#725000;padding:7px 10px;border-radius:999px;white-space:nowrap}
-.timeline{display:grid;margin-top:24px}.timeline-row{display:grid;grid-template-columns:30px 1fr;gap:12px;min-height:68px}.timeline-mark{position:relative;width:24px;height:24px;border-radius:50%;border:2px solid #d8d0c8;background:#fff;display:grid;place-items:center;font-size:.7rem;font-weight:900}.timeline-row:not(:last-child) .timeline-mark:after{content:"";position:absolute;top:22px;bottom:-46px;width:2px;background:#e0d8d0}.timeline-row.done .timeline-mark{background:var(--green);border-color:var(--green);color:#fff}.timeline-row.done:not(:last-child) .timeline-mark:after{background:var(--green)}.timeline-copy strong{display:block}.timeline-copy small{color:var(--muted)}
-.order-summary-mini{display:grid;gap:8px;border-top:1px solid var(--border);padding-top:18px;margin-top:8px}.order-summary-mini div{display:flex;justify-content:space-between;gap:16px}.order-help{margin-top:18px;display:grid;gap:10px}.not-found{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px}
-</style>
-</head>
-<body>
-<header class="site-header"><a class="brand" href="index.html"><span class="brand-kicker">Kit</span><strong>Papai Noel Passou Aqui</strong></a><a class="header-cta" href="index.html#kits">Comprar</a></header>
-<main class="order-page">
-<span class="eyebrow">ACOMPANHAMENTO</span>
-<h1>Seu pedido, passo a passo.</h1>
-<p class="muted-copy" style="color:var(--muted)">Veja o estágio registrado neste dispositivo e fale com nosso atendimento se precisar de ajuda.</p>
-<div id="orderContent"></div>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#143d30"><title>Acompanhar meu pedido | Papai Noel Passou Aqui</title><link rel="stylesheet" href="styles.css"><style>
+body{background:linear-gradient(140deg,#0e362b,#27503b 55%,#672b39);min-height:100dvh}
+.track-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px max(18px,calc((100vw - 920px)/2));color:#fff4e1}.track-header a{font-weight:700}
+.track-page{width:min(100% - 24px,800px);margin:22px auto 65px;background:#fffaf0;border:1px solid #ddbb79;padding:clamp(20px,4vw,44px);border-radius:24px;box-shadow:0 25px 75px #091e1770}
+.track-page h1{font:400 clamp(2.2rem,6vw,3.7rem)/1.02 Georgia,serif;color:#442820;margin:10px 0}.track-page p{color:#725f51}
+.track-form{display:grid;gap:12px;margin:22px 0}.track-form label{display:grid;gap:5px;font-weight:800;font-size:.85rem}.track-form input{min-height:48px;border:1px solid #d9c6ae;border-radius:10px;padding:12px;background:white;font:inherit;min-width:0}.track-form button{width:100%}
+.track-card{display:grid;gap:20px}.track-summary{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid #e7d8c7;padding-bottom:16px}.track-summary small{display:block;color:#847569}.track-summary strong{overflow-wrap:anywhere}.track-status{color:#14563c;font-weight:800}
+.track-timeline{display:grid;gap:0;margin:15px 0}.track-point{display:grid;grid-template-columns:26px 1fr;gap:12px;min-height:57px}.track-point>span{width:23px;height:23px;border:2px solid #d1c0ac;border-radius:50%;display:grid;place-items:center;font-size:11px}.track-point.complete>span{background:#176a4b;color:white;border-color:#176a4b}.track-point strong{display:block}.track-point small{color:#8b7d71}.track-extra{padding:16px;background:#f7eddb;border-radius:12px;display:grid;gap:8px}.track-extra div{display:flex;justify-content:space-between;gap:12px}.track-actions{display:flex;flex-wrap:wrap;gap:10px}.track-actions a{flex:1;min-width:170px;text-align:center}
+.notice{color:#a12e3e;font-weight:700;font-size:.84rem}.track-refresh{font-size:.75rem;color:#6d756d}
+@media(max-width:460px){.track-page{margin-top:8px;padding:18px 14px;border-radius:16px}.track-header{padding:13px}.track-extra div{display:grid;gap:1px}.track-actions{display:grid}}
+</style></head><body>
+<header class="track-header"><a href="index.html">Papai Noel Passou Aqui</a><a href="contato.html">Atendimento</a></header>
+<main class="track-page"><span class="eyebrow">SUA ÁREA DE ACOMPANHAMENTO</span><h1>Seu Natal, passo a passo.</h1><p>Veja as atualizações do seu pedido em um só lugar. Guarde seu acesso privado para consultar quando quiser.</p>
+<form id="trackForm" class="track-form"><label>Número do pedido<input id="orderId" autocomplete="off" placeholder="NATAL-..." required></label><label>Chave de acesso do pedido<input id="accessKey" autocomplete="off" placeholder="Código privado recebido ao concluir" required></label><button class="btn btn-primary" type="submit">Acompanhar pedido</button><div id="trackError" class="notice" role="status"></div></form>
+<div id="trackResult" hidden></div><p class="track-refresh" id="refreshNotice" hidden>Informações atualizadas automaticamente enquanto esta página estiver aberta.</p>
+<div class="track-actions"><a class="btn btn-secondary" href="index.html#kits">Voltar à loja</a><a class="btn btn-secondary" href="https://wa.me/5513974100193" target="_blank" rel="noopener">Falar no WhatsApp</a></div>
 </main>
 <script>
-const params=new URLSearchParams(location.search);
-const id=params.get("id");
-const orders=JSON.parse(localStorage.getItem("natal_orders")||"[]");
-const order=orders.find(o=>o.id===id)||orders[0];
-const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
-const stages=["Pedido recebido","Pagamento informado","Pago","Em produção","Embalado","Enviado","Entregue"];
-const map={"Aguardando pagamento":0,"Pagamento informado":1,"Pago":2,"Em produção":3,"Embalado":4,"Enviado":5,"Entregue":6};
-const index=order?map[order.status]??0:0;
-const content=document.getElementById("orderContent");
-if(!order){
- content.innerHTML='<div class="not-found"><h2>Pedido não encontrado</h2><p>Abra esta página pelo botão exibido após finalizar seu pedido ou fale com nosso atendimento.</p><a class="btn btn-primary" href="https://wa.me/5513974100193" target="_blank">Falar no WhatsApp</a></div>';
-}else{
- content.innerHTML=`
- <section class="order-card">
-   <div class="order-header"><div><small>Pedido</small><strong>${order.id}</strong></div><span class="order-status-pill">${order.status}</span></div>
-   <div class="timeline">
-     ${stages.map((stage,i)=>`<div class="timeline-row ${i<=index?"done":""}"><span class="timeline-mark">${i<=index?"✓":i+1}</span><div class="timeline-copy"><strong>${stage}</strong><small>${i===0?"Pedido registrado":i===1?"Cliente informou o pagamento":i===2?"Pagamento conferido pela equipe":i===3?"Personalização em preparação":i===4?"Pedido pronto para despacho":i===5?"Pedido em transporte":"Pedido entregue"}</small></div></div>`).join("")}
-   </div>
-   <div class="order-summary-mini"><div><span>Kit</span><b>${order.plan}</b></div><div><span>Criança</span><b>${order.childName||"—"}</b></div><div><span>Total</span><b>${money(order.total)}</b></div></div>
-   <div class="order-help"><a class="btn btn-primary" href="https://wa.me/5513974100193?text=${encodeURIComponent("Olá! Preciso de ajuda com o pedido "+order.id+".")}" target="_blank" rel="noopener">Falar com atendimento</a><a class="btn btn-secondary" href="index.html">Voltar para a loja</a></div>
- </section>`;
+const $=x=>document.querySelector(x),q=new URLSearchParams(location.search),money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
+const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const steps=["Pedido recebido","Pagamento informado","Pagamento confirmado","Em produção","Enviado","Concluído"];
+const statusIndex={"Aguardando pagamento":0,"Pagamento informado":1,"Pago":2,"Produção":3,"Enviado":4,"Concluído":5,"Cancelado":-1};
+let timer;
+async function loadOrder(){
+ const id=$("#orderId").value.trim().toUpperCase(),accessKey=$("#accessKey").value.trim();
+ if(!id||!accessKey)return;
+ try{
+ const r=await fetch("/api/order-status",{method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",body:JSON.stringify({id,accessKey})});
+ const d=await r.json();if(!r.ok)throw Error(d.error||"Não foi possível consultar");
+ const o=d.order;const step=statusIndex[o.status]??0;
+ $("#trackError").textContent="";
+ $("#trackResult").innerHTML='<article class="track-card"><div class="track-summary"><div><small>Pedido</small><strong>'+escapeHtml(o.id)+'</strong></div><div><small>Etapa atual</small><strong class="track-status">'+escapeHtml(o.status)+'</strong></div></div>'+
+ (step===-1?'<p>Este pedido foi cancelado. Fale com o atendimento se precisar de ajuda.</p>':'<div class="track-timeline">'+steps.map((s,i)=>'<div class="track-point '+(i<=step?'complete':'')+'"><span>'+(i<=step?'✓':i+1)+'</span><div><strong>'+s+'</strong><small>'+(i<=step?'Etapa registrada':'Próxima etapa')+'</small></div></div>').join("")+'</div>')+
+ '<div class="track-extra"><div><span>Kit</span><strong>'+escapeHtml((o.items||[]).map(i=>i.name+' ×'+i.qty).join(", "))+'</strong></div><div><span>Entrega</span><strong>'+escapeHtml([o.address,o.number,o.complement].filter(Boolean).join(", "))+'</strong></div><div><span>Total</span><strong>'+money(o.total)+'</strong></div></div></article>';
+ $("#trackResult").hidden=false;$("#trackForm").hidden=true;$("#refreshNotice").hidden=false;
+ }catch(e){$("#trackError").textContent=e.message;clearInterval(timer)}
 }
-</script>
-</body></html>
+$("#trackForm").addEventListener("submit",e=>{e.preventDefault();loadOrder().then(()=>{if(!$("#trackResult").hidden){clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)loadOrder()},30000)}})});
+const saved=(()=>{try{return JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}")}catch{return {}}})();
+$("#orderId").value=q.get("id")||saved.id||"";
+$("#accessKey").value=(q.get("key")||((q.get("id")===saved.id)?saved.accessKey:""))||"";
+if($("#orderId").value&&$("#accessKey").value)$("#trackForm").requestSubmit();
+</script></body></html>
