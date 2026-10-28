@@ -6,12 +6,11 @@ test.describe('Hero product-first mobile',()=>{
   await page.route('**/api/events',r=>r.fulfill({status:202,json:{ok:true}}));
   await page.goto('/index.html');
   const hero=page.locator('#inicio');
-  await expect(hero.locator('.hero-scene-background img')).toBeVisible();
-  await expect(hero.locator('.hero-footprint-callout')).toBeVisible();
-  await expect(hero.locator('.hero-footprint-callout')).toHaveAttribute('href','#como-fica');
-  await expect(hero.locator('.btn-holiday')).toHaveAttribute('href','#kits');
+  await expect(hero.locator('.hero-clean-photo img')).toBeVisible();
+  await expect(hero.locator('.hero-clean-overlay h1')).toBeVisible();
+  await expect(hero.locator('.hero-clean-cta')).toHaveAttribute('href','#kits');
   await expect(hero.locator('#heroStartingPrice')).not.toHaveText('');
-  const styles=await hero.locator('.hero-scene-background').evaluate(el=>getComputedStyle(el));
+  const styles=await hero.locator('.hero-clean-photo').evaluate(el=>getComputedStyle(el));
   const horizontal=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   expect(horizontal).toBeLessThanOrEqual(3);
   const bbox=await hero.boundingBox();expect(bbox.height).toBeLessThan(800);
@@ -20,7 +19,7 @@ test.describe('Hero product-first mobile',()=>{
  test('reduced motion switches off effects',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.goto('/index.html');
-  const animation=await page.locator('.hero-star-one').evaluate(el=>getComputedStyle(el).animationName);
+  const animation=await page.locator('.hero-clean-sparkles i:first-child').evaluate(el=>getComputedStyle(el).animationName);
   expect(animation).toBe('none');
  });
 });
