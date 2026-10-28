@@ -1,0 +1,108 @@
+/* 2026 — single message, photographic product hero; no layered legacy headlines */
+body .hero.hero-clean{
+ --deep:#0c2e24;
+ display:block!important;
+ position:relative!important;
+ width:100%!important;
+ max-width:none!important;
+ min-height:0!important;height:auto!important;
+ padding:0!important;margin:0!important;
+ overflow:hidden!important;
+ isolation:isolate;
+ background:var(--deep)!important;
+ border:0!important;border-radius:0!important;
+}
+body .hero-clean .hero-clean-photo{
+ position:relative!important;
+ height:clamp(420px,40vw,640px)!important;
+ width:100%!important;overflow:hidden!important;
+ background:#123d2c;
+}
+body .hero-clean .hero-clean-photo>img{
+ display:block!important;position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;
+ object-fit:cover!important;object-position:center 42%!important;
+ filter:saturate(1.06) contrast(1.02)!important;
+ max-width:none!important;border:0!important;border-radius:0!important;
+}
+body .hero-clean .hero-clean-photo:after{
+ content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(90deg,rgba(2,21,15,.80),rgba(2,24,17,.56) 38%,rgba(2,22,16,.06) 78%),linear-gradient(0deg,rgba(4,30,22,.35),transparent 60%);
+}
+body .hero-clean .hero-clean-overlay{
+ position:absolute;z-index:3;left:max(24px,calc((100vw - 1180px)/2));bottom:clamp(30px,6vw,95px);
+ max-width:500px!important;min-width:0!important;padding:0!important;
+ color:#fff9ed!important;text-align:left;
+}
+body .hero-clean .hero-clean-eyebrow{
+ display:inline-block;color:#f4d395;font:800 10px/1.4 Manrope,sans-serif;
+ letter-spacing:.18em;margin:0 0 15px;
+}
+body .hero-clean .hero-clean-overlay h1{
+ color:#fff9ed!important;font:400 clamp(45px,5.5vw,83px)/.99 "DM Serif Display",Georgia,serif!important;
+ letter-spacing:-.055em!important;margin:0 0 15px!important;max-width:500px!important;
+ text-shadow:0 3px 15px rgba(0,0,0,.2)!important;
+}
+body .hero-clean .hero-clean-overlay h1 em{color:#f4cf7b;font-style:italic;white-space:normal}
+body .hero-clean .hero-clean-overlay p{
+ color:#f2e6d2;font:500 14px/1.6 Manrope,sans-serif;
+ max-width:40ch!important;margin:0!important;
+}
+body .hero-clean .hero-clean-sparkles{position:absolute;z-index:2;inset:0;pointer-events:none}
+body .hero-clean .hero-clean-sparkles i{position:absolute;color:#ffe5ab;font:normal 19px Georgia,serif;text-shadow:0 0 13px #e8bd69;opacity:.75;animation:heroGentleGlow 4.2s ease-in-out infinite}
+body .hero-clean .hero-clean-sparkles i:nth-child(1){top:17%;right:17%}
+body .hero-clean .hero-clean-sparkles i:nth-child(2){top:38%;right:7%;animation-delay:1.3s}
+body .hero-clean .hero-clean-sparkles i:nth-child(3){top:74%;right:25%;animation-delay:2.8s;font-size:12px}
+@keyframes heroGentleGlow{0%,100%{opacity:.25;transform:scale(.86)}50%{opacity:.85;transform:scale(1.08)}}
+body .hero-clean .hero-clean-offer{
+ position:relative!important;z-index:3;
+ width:100%;padding:17px max(24px,calc((100vw - 1180px)/2))!important;
+ min-height:89px;display:flex!important;align-items:center!important;justify-content:space-between!important;
+ gap:24px!important;background:linear-gradient(100deg,#0d3025,#144735)!important;
+ border-top:1px solid rgba(234,193,122,.4);
+}
+body .hero-clean .hero-clean-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:9px!important;color:#fff8e8!important}
+body .hero-clean .hero-clean-price small{font:700 12px Manrope,sans-serif;color:#e5d2b2}
+body .hero-clean .hero-clean-price strong{font:800 28px Manrope,sans-serif;letter-spacing:-.04em;color:#fff!important;white-space:nowrap}
+body .hero-clean .hero-clean-price>span{font:800 11px Manrope,sans-serif;color:#f7d483;background:#f5db9323;border:1px solid #e0bb7e66;border-radius:20px;padding:6px 10px}
+body .hero-clean .hero-clean-cta{
+ display:flex!important;align-items:center!important;justify-content:center!important;gap:20px!important;
+ min-height:51px!important;padding:12px 22px!important;flex:none;
+ color:white!important;background:linear-gradient(110deg,#b72c3a,#8a1e2c)!important;
+ border:1px solid #d56267;border-radius:12px!important;font:800 14px Manrope,sans-serif!important;
+ box-shadow:0 9px 24px #090d0a28;text-decoration:none!important;
+}
+body .hero-clean .hero-clean-cta:hover{background:#922335!important}
+body .hero-clean .hero-clean-cta:focus-visible{outline:3px solid #f7d586;outline-offset:4px}
+@media(max-width:700px){
+ body .hero.hero-clean{min-height:0!important;padding:0!important}
+ body .hero-clean .hero-clean-photo{height:clamp(375px,103vw,475px)!important}
+ body .hero-clean .hero-clean-photo>img{object-position:55% 37%!important}
+ body .hero-clean .hero-clean-photo:after{
+  background:linear-gradient(0deg,rgba(4,30,22,.92) 0%,rgba(4,30,22,.55) 27%,transparent 63%)!important;
+ }
+ body .hero-clean .hero-clean-overlay{left:17px!important;right:16px!important;bottom:20px!important;max-width:360px!important}
+ body .hero-clean .hero-clean-eyebrow{font-size:9px;margin-bottom:7px;letter-spacing:.13em}
+ body .hero-clean .hero-clean-overlay h1{
+  font-size:clamp(36px,9.8vw,51px)!important;line-height:1!important;
+  max-width:335px!important;margin:0 0 7px!important;letter-spacing:-.048em!important;
+ }
+ body .hero-clean .hero-clean-overlay p{font-size:11px!important;line-height:1.45!important;max-width:34ch!important}
+ body .hero-clean .hero-clean-offer{padding:12px 16px 16px!important;min-height:0!important;display:grid!important;grid-template-columns:1fr!important;gap:12px!important}
+ body .hero-clean .hero-clean-price{justify-content:space-between;gap:5px}
+ body .hero-clean .hero-clean-price small{font-size:10px}
+ body .hero-clean .hero-clean-price strong{font-size:24px}
+ body .hero-clean .hero-clean-price>span{font-size:10px;padding:5px 8px}
+ body .hero-clean .hero-clean-cta{width:100%!important;min-height:48px!important;font-size:13px!important}
+ body .hero-clean .hero-clean-sparkles i:nth-child(1){right:10%;top:13%}
+ body .hero-clean .hero-clean-sparkles i:nth-child(2){right:20%;top:64%}
+ body .hero-clean .hero-clean-sparkles i:nth-child(3){display:none}
+}
+@media(max-width:370px){
+ body .hero-clean .hero-clean-photo{height:370px!important}
+ body .hero-clean .hero-clean-overlay h1{font-size:35px!important}
+ body .hero-clean .hero-clean-price strong{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){
+ body .hero-clean .hero-clean-sparkles i{animation:none!important;transform:none!important}
+}
