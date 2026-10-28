@@ -1,8 +1,8 @@
 const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
   {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["6 pares + 1 pegada solta (13 pegadas)","Adesivo para janela","Carta padrão","Certificado padrão","Guia de aplicação"],image:"assets/product/kit1-site.webp",active:true},
-  {id:"personal",name:"Personalizado",price:69.90,prop:"Mais pistas e detalhes personalizados para fazer a visita parecer única.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado-card.svg",badge:"Mais completo",active:true}
+  {id:"personal",name:"Personalizado",price:69.90,prop:"Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado.webp",badge:"Mais desejado",active:true}
 ]);
-const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");const currentImages={basic:"assets/product/kit1-site.webp",personal:"assets/product/kit-personalizado-card.svg"};return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id)&&p.image===currentImages[p.id])?stored:DEFAULT_PRODUCTS};
+const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");const currentImages={basic:"assets/product/kit1-site.webp",personal:"assets/product/kit-personalizado.webp"};return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id)&&p.image===currentImages[p.id])?stored:DEFAULT_PRODUCTS};
 let PRODUCTS=getProducts().filter(p=>p.active!==false);
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
