@@ -144,10 +144,8 @@ $("#findCep").addEventListener("click",async()=>{
 $("#copyPix").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#pixCopyPaste").value)}catch{$("#pixCopyPaste").select();document.execCommand("copy")}$("#pixCopyFeedback").textContent="Código Pix copiado ✓"});
 $("#pixPaidButton").addEventListener("click",()=>{
  const all=orders(),o=all.find(x=>x.id===currentOrderId);if(o){o.status="Pagamento informado";o.paymentInformedAt=new Date().toISOString();saveOrders(all);
- const msg="Olá! Já fiz o Pix do pedido "+o.id+" no valor de "+money(o.total)+". Nome: "+(o.customerName||"")+". Vou aguardar a conferência.";
- $("#sendPaymentWhatsApp").href="https://wa.me/5513974100193?text="+encodeURIComponent(msg);$("#sendPaymentWhatsApp").hidden=false;
  $("#trackOrderLink").href="pedido.html?id="+encodeURIComponent(o.id);$("#trackOrderLink").hidden=false;}
- $("#pixPaidButton").disabled=true;$("#pixPaidButton").innerHTML="<span>Pagamento informado ✓</span>";$("#pixPaidButton").classList.add("is-informed");$("#paymentCelebrationMessage").hidden=false;
+ $("#pixPaidButton").disabled=true;$("#pixPaidButton").innerHTML="<span>Pagamento registrado ✓</span>";$("#pixPaidButton").classList.add("is-informed");$("#paymentCelebrationMessage").hidden=false;
 });
 syncMode();updatePreview();renderStep();
 })();
