@@ -3,7 +3,7 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
-function openApp(){login.hidden=true;app.hidden=false;renderAll()}
+function openApp(){login.hidden=true;app.hidden=false;loadServer()}
 async function checkSession(){
  try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent="Painel indisponível até concluir a configuração segura."}catch{err.textContent="Não foi possível verificar a sessão."}
 }
@@ -29,8 +29,22 @@ function selectTab(id){
 $$(".nav-item").forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
 $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
 
-const getOrders=()=>JSON.parse(localStorage.getItem("natal_orders")||"[]");
-const saveOrders=o=>localStorage.setItem("natal_orders",JSON.stringify(o));
+let serverOrders=[];let serverSettings={};
+const getOrders=()=>serverOrders;
+async function api(path,options={}){
+ const response=await fetch("/api/admin/"+path,{credentials:"same-origin",cache:"no-store",...options});
+ const data=await response.json();if(!response.ok)throw Error(data.error||"Erro no servidor");return data;
+}
+async function loadServer(){
+ try{
+ const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
+ serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();
+ }catch(e){
+ $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
+ $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
+ $("#ordersList").textContent="Pedidos indisponíveis enquanto o servidor não estiver configurado.";
+ }
+}
 const statusClass=s=>s==="Pago"||s==="Produção"||s==="Enviado"?"paid":"";
 const todayKey=()=>new Date().toLocaleDateString("pt-BR");
 
@@ -60,12 +74,11 @@ function orderRow(o){
  '<a href="https://wa.me/55'+String(o.phone||"").replace(/\D/g,"")+'" target="_blank">WhatsApp</a></div></article>';
 }
 function bindStatus(){
- $$("[data-status-id]").forEach(b=>b.onclick=()=>{
-  const orders=getOrders(),o=orders.find(x=>x.id===b.dataset.statusId);if(!o)return;
-  const next=b.dataset.status;
-  if(next==="Pago"&&!confirm("Confirmar que o Pix entrou na conta?"))return;
-  o.status=next;o.updatedAt=new Date().toISOString();if(next==="Pago")o.paidAt=new Date().toISOString();
-  saveOrders(orders);renderAll();
+ $$("[data-status-id]").forEach(b=>b.onclick=async()=>{
+  const next=b.dataset.status,id=b.dataset.statusId;
+  if(next==="Pago"&&!confirm("Você conferiu o Pix no banco?"))return;
+  try{await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,status:next})});await loadServer()}
+  catch(e){alert("Não foi possível atualizar: "+e.message)}
  });
 }
 function renderOrders(){
@@ -80,7 +93,7 @@ $("#orderSearch").addEventListener("input",renderOrders);$("#orderFilter").addEv
 
 const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:15,shippingFlat:0,...(window.STORE_DATA?.pix||{})};
 function loadPix(){
- const c={...pixDefaults,...JSON.parse(localStorage.getItem("natal_pix_config")||"{}")};
+ const c={...pixDefaults,...(serverSettings.pix||{})};
  const map={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
  Object.entries(map).forEach(([id,k])=>$("#"+id).value=c[k]??"");
 }
@@ -90,11 +103,11 @@ $("#savePix").onclick=()=>{
 };
 
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
-function loadMarketing(){const c={...marketingDefaults,...JSON.parse(localStorage.getItem("natal_marketing_config")||"{}")};Object.keys(c).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""})}
+function loadMarketing(){const c={...marketingDefaults,...(serverSettings.marketing||{})};Object.keys(c).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""})}
 $("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());localStorage.setItem("natal_marketing_config",JSON.stringify(out));$("#marketingMsg").innerHTML='<div class="notice">IDs salvos. Integração de eventos preparada para a loja.</div>'};
 
 const seoDefaults={title:"Kit Papai Noel Passou Aqui | Natal 2026",description:"Crie uma surpresa de Natal inesquecível com pegadas do Papai Noel, adesivo de janela e opções personalizadas.",image:"assets/product/kit-personalizado.webp"};
-function loadSeo(){const c={...seoDefaults,...JSON.parse(localStorage.getItem("natal_seo_config")||"{}")};$("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;renderSeoChecks(c)}
+function loadSeo(){const c={...seoDefaults,...(serverSettings.seo||{})};$("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;renderSeoChecks(c)}
 function renderSeoChecks(c){
  const checks=[
   ["Título entre 30 e 60 caracteres",c.title.length>=30&&c.title.length<=60],
