@@ -10,6 +10,11 @@ test.describe('Hero product-first mobile',()=>{
   await expect(hero.locator('.hero-clean-overlay h1')).toBeVisible();
   await expect(hero.locator('.hero-clean-cta')).toHaveAttribute('href','#kits');
   await expect(hero.locator('#heroStartingPrice')).not.toHaveText('');
+  await expect(hero.locator('.hero-clean-pix')).toContainText('15% OFF');
+  const purchase=await hero.locator('.hero-clean-purchase').boundingBox();
+  const image=await hero.locator('.hero-clean-photo').boundingBox();
+  expect(purchase.y).toBeGreaterThanOrEqual(image.y);
+  expect(purchase.y+purchase.height).toBeLessThanOrEqual(image.y+image.height+2);
   const styles=await hero.locator('.hero-clean-photo').evaluate(el=>getComputedStyle(el));
   const horizontal=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   expect(horizontal).toBeLessThanOrEqual(3);
