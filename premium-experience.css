@@ -1,0 +1,93 @@
+/* Premium Experience — replaces layered legacy hero behavior without altering commerce backend */
+.hero-mobile-edition,.hero-mobile-title,.hero-mobile-hook{display:none}
+body .hero-cinematic .hero-photo-message{position:absolute;right:5%;bottom:30%;z-index:5;pointer-events:none;max-width:390px;text-align:left;color:#fff;filter:drop-shadow(0 4px 18px #0007)}
+.hero-photo-message>span{display:block;font:800 10px/1.4 Manrope,sans-serif;letter-spacing:.16em;color:#ffdc94;margin-bottom:9px}
+.hero-photo-message>strong{display:block;font:400 clamp(29px,3.2vw,54px)/.98 "DM Serif Display",Georgia,serif;text-wrap:balance;color:#fff6e3}
+.hero-photo-message>small{display:block;font:600 12px/1.5 Manrope,sans-serif;color:#fff0d7;margin-top:10px}
+body .hero-cinematic .hero-footprint-callout{right:4%;bottom:16%;max-width:245px;animation:none!important}
+@media(max-width:700px){
+ body .hero.section.hero-cinematic{display:block!important;position:relative!important;isolation:isolate!important;min-height:610px!important;height:auto!important;padding:0 15px 22px!important;background:#0c3026!important;overflow:hidden!important}
+ body .hero-cinematic .hero-scene-background{position:absolute!important;display:block!important;inset:0 0 auto!important;width:100%!important;height:355px!important;min-height:355px!important;max-height:355px!important;z-index:0!important;overflow:hidden!important}
+ body .hero-cinematic .hero-scene-background img{position:absolute!important;display:block!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 40%!important;max-width:none!important;transform:none!important;filter:saturate(1.06) contrast(1.04)!important}
+ body .hero-cinematic:before{position:absolute!important;inset:0!important;z-index:1!important;background:linear-gradient(180deg,transparent 0%,#09281e00 22%,#082b22cf 47%,#082b22 62%,#082b22 100%)!important}
+ body .hero-cinematic:after{display:none!important}
+ body .hero-cinematic .hero-atmosphere{z-index:2!important}
+ body .hero-cinematic .hero-photo-message{top:169px!important;left:17px!important;right:auto!important;bottom:auto!important;z-index:5!important;max-width:245px!important;text-align:left!important;filter:drop-shadow(0 3px 12px #000c)}
+ .hero-photo-message>span{font-size:8px!important;letter-spacing:.12em!important;margin-bottom:5px!important}
+ .hero-photo-message>strong{font-size:clamp(30px,8vw,42px)!important;line-height:1!important}
+ .hero-photo-message>small{font-size:10px!important;margin-top:5px!important}
+ body .hero-cinematic .hero-copy.hero-campaign-art{position:relative!important;z-index:6!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;width:100%!important;max-width:none!important;margin:0!important;padding:340px 0 0!important}
+ body .hero-cinematic .hero-kicker-row,body .hero-cinematic .hero-campaign-title,body .hero-cinematic .hero-story-note,body .hero-cinematic .hero-social-note{display:none!important}
+ body .hero-cinematic .hero-mobile-edition{display:block!important;order:0!important;color:#eacc88!important;font-size:9px!important;font-weight:850!important;letter-spacing:.17em!important;margin:0 0 6px!important}
+ .hero-mobile-edition span{margin:0 4px;color:#f7d484}
+ body .hero-cinematic .hero-mobile-title{display:block!important;order:1!important;font:400 clamp(38px,9.6vw,52px)/1 "DM Serif Display",Georgia,serif!important;color:#fffaf0!important;letter-spacing:-.04em!important;margin:0 0 4px!important}
+ .hero-mobile-title em{color:#f6ce78;font-style:italic}
+ body .hero-cinematic .hero-mobile-hook{display:block!important;order:2!important;color:#eadfca!important;font-size:11px!important;line-height:1.45!important;margin:0 0 11px!important;max-width:42ch}
+ body .hero-cinematic .hero-offer-card{order:3!important;display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;max-width:none!important;margin:0 0 9px!important;padding:7px 11px!important;border-radius:12px!important}
+ body .hero-cinematic .hero-offer-main small{font-size:10px!important}
+ body .hero-cinematic .hero-offer-main strong{font-size:24px!important;line-height:1.08!important}
+ body .hero-cinematic .hero-offer-pix{min-height:35px!important;padding:6px 12px!important}
+ body .hero-cinematic .hero-actions-campaign{order:4!important;display:block!important;width:100%!important;margin:0!important}
+ body .hero-cinematic .hero-actions-campaign .btn-holiday{display:flex!important;width:100%!important;min-height:48px!important;padding:0 17px!important;border-radius:12px!important;background:linear-gradient(110deg,#b62b37,#8c1d2c)!important;color:#fff!important;justify-content:space-between!important}
+ body .hero-cinematic .hero-actions-campaign .hero-secondary{display:none!important}
+ body .hero-cinematic .hero-tiny-trust{order:5!important;display:flex!important;justify-content:center!important;gap:15px!important;width:100%!important;font-size:9px!important;line-height:1.3!important;margin:10px 0 0!important}
+ body .hero-cinematic .hero-footprint-callout{display:none!important}
+ body .hero-cinematic .hero-star{font-size:16px!important;opacity:.65}
+ body .hero-cinematic .hero-glow-one{right:5%;top:2%}
+}
+@media(max-width:390px){body .hero.section.hero-cinematic{min-height:585px!important}body .hero-cinematic .hero-scene-background{height:335px!important;min-height:335px!important;max-height:335px!important}body .hero-cinematic .hero-copy.hero-campaign-art{padding-top:323px!important}body .hero-cinematic .hero-photo-message{top:162px!important}}
+@media(min-width:701px){body .hero-cinematic .hero-photo-message{bottom:17%;right:6%}}
+/* Cinematic checkout, single-activity rhythm */
+body.checkout-page .checkout-page-shell{border:1px solid #cda96c!important;box-shadow:0 24px 68px #061d1840!important}
+body.checkout-page .checkout-page-header{border-bottom:1px solid #bb975e4f!important}
+body.checkout-page .checkout-experience-banner{background:linear-gradient(110deg,#153e2f,#325944)!important}
+body.checkout-page .checkout-step.active{animation:christmasStepIn .32s ease-out both}
+@keyframes christmasStepIn{from{opacity:.55;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+body.checkout-page .checkout-letter-stage{position:relative;display:flex;align-items:center;gap:13px;margin:9px 0 11px;background:linear-gradient(115deg,#183e30,#336049);color:#fff4de;border:1px solid #bda06a;border-radius:15px;padding:13px 14px;overflow:hidden;cursor:pointer;box-shadow:0 11px 27px #152a1c2e}
+.checkout-letter-stage::after{content:"✧";position:absolute;top:-29px;right:6px;color:#f1ce8b24;font:120px Georgia,serif;pointer-events:none}
+.checkout-letter-stage .envelope{display:grid;place-items:center;flex:none;width:59px;height:55px;border-radius:12px;color:#914331;background:#f6e5bd;border:1px solid #e4ba77;font-size:33px;box-shadow:0 5px 14px #0002;transform:rotate(-5deg);transition:transform .25s}
+.checkout-letter-stage:hover .envelope{transform:rotate(0) translateY(-3px)}
+.checkout-letter-stage small{display:block;color:#e7c783;font-size:9px;letter-spacing:.15em;font-weight:800}
+.checkout-letter-stage strong{display:block;font:400 22px/1.12 "DM Serif Display",Georgia,serif;color:#fff6df;margin:4px 0}
+.checkout-letter-stage em{display:block;font-size:11px;font-style:normal;color:#e9d4ad}
+.checkout-letter-stage .arrow{align-self:center;margin-left:auto;color:#f7d697;font-size:23px;z-index:1}
+body.checkout-page .checkout-letter-stage:focus-visible{outline:3px solid #f1ca80;outline-offset:3px}
+body.checkout-page .letter-preview-wrap{background:transparent!important}
+body.checkout-page .letter-preview-head{display:flex!important;align-items:center!important}
+body.checkout-page .letter-preview-head strong{font-size:14px!important}
+body.checkout-page .letter-preview{border:1px solid #debd84!important;background:linear-gradient(160deg,#fffdf6,#f7e9d0)!important}
+body.checkout-page .natal-letter-dialog::backdrop{background:#091910e6!important;backdrop-filter:blur(9px)}
+body.checkout-page .natal-letter-dialog{box-shadow:0 25px 90px #000a!important;border:2px solid #d4ad6b!important}
+body.checkout-page .natal-letter-dialog-inner{background:linear-gradient(155deg,#fff7e4,#fbedd6)!important}
+body.checkout-page .natal-letter-dialog-toolbar{border-bottom:1px solid #e4ce9e;padding-bottom:10px!important}
+body.checkout-page .natal-letter-dialog-toolbar strong{color:#773222!important}
+body.checkout-page .natal-letter-full-paper{transform:none!important;animation:christmasLetterReveal .45s ease-out both}
+@keyframes christmasLetterReveal{from{opacity:.45;transform:translateY(10px) rotate(-1deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+body.checkout-page .checkout-review-postcard{display:grid;grid-template-columns:41px minmax(0,1fr) auto;align-items:center;gap:10px;margin:10px 0;padding:12px;border:1px solid #ddc18c;border-radius:13px;background:linear-gradient(105deg,#fffaf0,#f6e7cd);color:#4c382b}
+.checkout-review-postcard .letter-icon{display:grid;place-items:center;height:42px;border-radius:10px;background:#1f533e;color:#ffdb8a;font-size:22px}
+.checkout-review-postcard strong{display:block;font:400 17px Georgia,serif}
+.checkout-review-postcard small{display:block;color:#866f56;font-size:10px;margin-top:3px}
+.checkout-review-postcard button{border:0;border-radius:9px;background:#194b36;color:white;font-weight:800;font-size:11px;padding:11px;cursor:pointer}
+body.checkout-page .checkout-progress-steps b{font-size:11px!important}
+@media(max-width:760px){
+ body.checkout-page .checkout-page-main{padding:5px 9px 52px!important}
+ body.checkout-page .checkout-page-shell{padding:12px 11px 8px!important;border-radius:18px!important}
+ body.checkout-page .checkout-experience-banner{min-height:39px!important;margin-bottom:7px!important;padding:6px 10px!important}
+ body.checkout-page .checkout-shell-intro{display:none!important}
+ body.checkout-page .checkout-page-progress{margin-bottom:8px!important}
+ body.checkout-page .checkout-letter-stage{padding:10px;margin:8px 0!important;gap:10px;border-radius:12px}
+ body.checkout-page .checkout-letter-stage .envelope{width:44px;height:43px;font-size:27px}
+ body.checkout-page .checkout-letter-stage strong{font-size:18px}
+ body.checkout-page .checkout-letter-stage em{font-size:10px}
+ body.checkout-page .checkout-step-kicker{margin-bottom:7px!important}
+ body.checkout-page .compact-letter-preview .letter-preview{height:100px!important;min-height:100px!important}
+ body.checkout-page .compact-fields{padding:10px!important}
+ body.checkout-page .checkout-step-title h2{font-size:1.48rem!important}
+ body.checkout-page .checkout-review-postcard{grid-template-columns:34px 1fr auto;padding:9px;gap:8px}
+ body.checkout-page .checkout-review-postcard .letter-icon{height:34px;font-size:18px}
+ body.checkout-page .checkout-review-postcard strong{font-size:14px}
+ body.checkout-page .checkout-review-postcard button{padding:9px;font-size:10px}
+ body.checkout-page .checkout-page-action-buttons{gap:7px!important}
+ body.checkout-page .checkout-primary-action{white-space:normal!important;font-size:12px!important}
+}
+@media(prefers-reduced-motion:reduce){body.checkout-page .checkout-step.active,body.checkout-page .natal-letter-full-paper{animation:none!important}.checkout-letter-stage .envelope{transition:none!important}}
