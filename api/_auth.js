@@ -3,8 +3,10 @@ const COOKIE="natal_admin";
 function settings(){
  const secret=process.env.ADMIN_SESSION_SECRET||"";
  const hash=process.env.ADMIN_PASSWORD_SCRYPT||"";
- if(secret.length<32||!hash.includes(":"))return null;
- return {secret,hash,user:process.env.ADMIN_USERNAME||"admin"};
+ const password=process.env.ADMIN_PASSWORD||"";
+ const user=process.env.ADMIN_USERNAME||"";
+ if(secret.length<32||!user||(password.length<8&&!hash.includes(":")))return null;
+ return {secret,hash,password,user};
 }
 function sign(value,secret){return crypto.createHmac("sha256",secret).update(value).digest("base64url")}
 function parse(req){const raw=(req.headers.cookie||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(COOKIE+"="));return raw?raw.slice(COOKIE.length+1):""}
@@ -16,7 +18,16 @@ function valid(req){
  try{const token=JSON.parse(Buffer.from(body,"base64url").toString());return token.sub===cfg.user&&token.exp>Date.now()}catch{return false}
 }
 function cookie(value,maxAge){return `${COOKIE}=${value}; Path=/api/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`}
-function authenticate(password,hash){
+function authenticate(password,hash,privatePassword){
+ if(privatePassword){
+  try{
+   const salt="natal-admin-server-only-v1";
+   const actual=crypto.scryptSync(String(password),salt,64);
+   const expected=crypto.scryptSync(privatePassword,salt,64);
+   return crypto.timingSafeEqual(actual,expected);
+  }catch{return false}
+ }
+
  try{const [salt,digest]=hash.split(":");const expected=Buffer.from(digest,"hex");if(expected.length!==64)return false;const actual=crypto.scryptSync(String(password),salt,64);return crypto.timingSafeEqual(actual,expected)}catch{return false}
 }
 module.exports={settings,valid,cookie,sign,authenticate};
