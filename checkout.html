@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FBF7EF">
+<title>Finalizar pedido • Papai Noel Passou Aqui</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="checkout-page">
+<header class="checkout-page-header">
+  <a href="index.html#kits" class="checkout-page-back" aria-label="Voltar para os kits">←</a>
+  <div><small>EDIÇÃO DE NATAL</small><strong>Papai Noel Passou Aqui</strong></div>
+  <span class="checkout-page-secure">Compra segura</span>
+</header>
+
+<main class="checkout-page-main">
+<section class="checkout-page-shell">
+  <div class="checkout-page-progress">
+    <div class="checkout-progress"><span id="checkoutProgress"></span></div>
+    <div class="checkout-progress-steps">
+      <span data-progress-step="1"><i>1</i><b>Personalizar</b></span>
+      <span data-progress-step="2"><i>2</i><b>Entrega</b></span>
+      <span data-progress-step="3"><i>3</i><b>Revisar e pagar</b></span>
+    </div>
+  </div>
+
+  <section class="checkout-step active checkout-step-personal" data-step="1">
+    <div class="checkout-step-kicker">PASSO 1 • PERSONALIZAÇÃO</div>
+    <div class="checkout-step-title"><h1>Veja a carta antes de concluir.</h1><p>Preencha e acompanhe a prévia. Você pode revisar tudo antes de continuar.</p></div>
+    <div class="personalization-layout">
+      <div class="letter-preview-wrap" id="letterPreviewWrap">
+        <div class="letter-preview-head"><div><small>PRÉVIA DA CARTA</small><strong>É assim que a mensagem vai aparecer</strong></div><span>Atualiza ao vivo</span></div>
+        <div class="letter-preview" aria-live="polite">
+          <div class="letter-seal" aria-hidden="true"><span>PN</span></div>
+          <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
+          <small class="letter-preview-kicker">Mensagem especial do Papai Noel</small>
+          <strong class="letter-preview-greeting" id="previewName">Querido Miguel,</strong>
+          <p id="previewLetter">Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!</p>
+          <div class="letter-preview-signature"><span>Com carinho,</span><strong>Papai Noel</strong></div>
+        </div>
+        <p class="letter-preview-note">A quebra das linhas pode variar levemente na impressão final.</p>
+      </div>
+      <div class="personalization-fields">
+        <label>Nome que vai na carta<input id="childName" maxlength="40" required placeholder="Ex.: Miguel" autocomplete="off"></label>
+        <label>Mensagem especial <span class="field-optional">até 220 caracteres</span><textarea id="letterText" maxlength="220" rows="3" placeholder="Deixe em branco para usar nossa mensagem padrão."></textarea><small><span id="letterCount">0</span>/220</small></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="checkout-step checkout-step-delivery" data-step="2">
+    <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
+    <div class="checkout-step-title"><h1>Onde vamos entregar a surpresa?</h1><p>Comece pelo CEP. A gente encontra o endereço e você só completa o que falta.</p></div>
+    <div class="cep-search">
+      <label>CEP<input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" required></label>
+      <button type="button" class="btn btn-secondary" id="findCep">Buscar endereço</button>
+    </div>
+    <div class="address-result" id="addressResult" hidden>
+      <div class="address-found"><span class="address-check" aria-hidden="true">✓</span><div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div></div>
+      <input id="address" required hidden>
+      <div class="field-grid">
+        <label>Número<input id="number" inputmode="numeric" required placeholder="Ex.: 123"></label>
+        <label>Complemento <span class="field-optional">opcional</span><input id="complement" placeholder="Apto, bloco..."></label>
+      </div>
+    </div>
+    <div class="delivery-contact">
+      <label>Nome de quem faz o pedido<input id="customerName" autocomplete="name" required placeholder="Seu nome"></label>
+      <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999"></label>
+    </div>
+  </section>
+
+  <section class="checkout-step checkout-step-review" data-step="3">
+    <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
+    <div class="checkout-step-title"><h1>Última conferência.</h1><p>Revise nome, entrega e valor antes de gerar o Pix.</p></div>
+    <div class="review-ready" aria-hidden="true"><span>✦</span><strong>Tudo pronto para o Polo Norte</strong><span>✦</span></div>
+    <div class="review-card">
+      <div class="review-person"><span class="review-spark">✦</span><small>A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
+      <div class="review-grid"><div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div><div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div></div>
+      <div class="review-total"><span><small>TOTAL NO PIX</small><b>15% OFF aplicado</b></span><strong id="reviewTotal">R$ 0,00</strong></div>
+    </div>
+  </section>
+
+  <footer class="checkout-page-actions"><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary" id="checkoutNext">Continuar</button></footer>
+</section>
+</main>
+
+<section class="checkout-payment-scene" id="paymentScene" hidden>
+  <div class="pix-panel pix-panel-special">
+    <div class="pix-celebration" aria-hidden="true"><i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i></div>
+    <span class="eyebrow">ÚLTIMO PASSO</span><h2>Seu Pix está pronto.</h2><p class="pix-subtitle" id="pixMagicMessage">A surpresa já está quase a caminho.</p>
+    <div class="pix-personal-note"><small>PREPARANDO PARA</small><strong id="pixChildName">—</strong></div>
+    <div class="pix-qr-stage"><div class="pix-wreath" aria-hidden="true"></div><div class="pix-qr-wrap"><div id="pixQrCanvas" class="pix-qr"></div></div></div>
+    <div class="pix-payment-line"><div><small>Valor</small><strong id="pixOrderTotal">—</strong></div><div><small>Pedido</small><strong id="pixOrderId">—</strong></div></div>
+    <div class="pix-recipient"><small>Recebedor</small><strong id="pixReceiverLabel">—</strong></div>
+    <details class="pix-copy-box"><summary>Pix copia e cola <span>+</span></summary><label class="pix-copy-label">Código Pix<textarea id="pixCopyPaste" rows="3" readonly></textarea></label><button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button></details>
+    <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
+    <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton"><span>Já fiz o Pix</span><i aria-hidden="true">✦</i></button>
+    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><span>✦</span><div><small>PAGAMENTO INFORMADO</small><strong>Agora é com a gente.</strong></div><span>✦</span></div>
+    <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
+    <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
+  </div>
+</section>
+
+<script src="store-data.js"></script>
+<script src="vendor/qrcode.min.js"></script>
+<script src="pix.js"></script>
+<script src="checkout-page.js"></script>
+</body></html>
