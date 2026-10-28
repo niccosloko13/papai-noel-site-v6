@@ -126,6 +126,7 @@ async function createOrder(){
  const data=await response.json();
  if(!response.ok)throw Error(data.error||"Não foi possível iniciar o pagamento");
  currentClaim=data.claim;
+ try{localStorage.setItem("natal_customer_order_access",JSON.stringify({id:data.id,accessKey:data.claim}))}catch{}
  currentReceiver=data.receiverName;
  const order={...request,id:data.id,total:data.total,pixPayload:data.pixPayload,discountPercent:data.discountPercent};
  if(pending.fromCart)localStorage.setItem("natal_cart","[]");
@@ -134,6 +135,9 @@ async function createOrder(){
 }
 function showPayment(order){
  currentOrderId=order.id;
+ const tracking=$("#trackOrderLink");
+ tracking.href="pedido.html?id="+encodeURIComponent(order.id);
+ tracking.hidden=false;
  document.querySelector(".checkout-page-main").hidden=true;
  $("#paymentScene").hidden=false;
  $("#pixOrderId").textContent=order.id;$("#pixOrderTotal").textContent=money(order.total);
@@ -212,6 +216,7 @@ $("#pixPaidButton").addEventListener("click",async()=>{
   const response=await fetch("/api/payment-informed",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:currentOrderId,claim:currentClaim})});
   const data=await response.json();if(!response.ok)throw Error(data.error||"Não foi possível registrar");
   trackStoreEvent("payment_informed",{order_id:currentOrderId});
+  $("#trackOrderLink").hidden=false;
   b.innerHTML="<span>Pagamento informado ✓</span>";b.classList.add("is-informed");
   $("#paymentCelebrationMessage").hidden=false;
  }catch(e){b.disabled=false;alert(e.message)}
