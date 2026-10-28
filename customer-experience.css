@@ -185,3 +185,36 @@
 @media(max-width:360px){.cx-nav a{font-size:10px;padding:9px 3px}.cx-brand-copy strong{font-size:13px}}
 
 .cx-nav a[aria-current=page]{color:#fff!important;font-weight:800}
+
+/* iPhone account polish: shorter journey to the login form */
+@media(max-width:700px){
+ .cx-page .cx-header-inner{padding:12px 15px 10px!important;gap:5px!important}
+ .cx-page .cx-nav{margin-top:2px;gap:4px}
+ .cx-page .cx-nav a{font-size:12px!important;border-radius:9px;padding:9px 12px!important}
+ .cx-page .cx-nav a[aria-current=page]{background:#ffffff20!important}
+ .cx-page .cx-shell{padding:20px 14px 40px!important}
+ .cx-page .cx-crumb{font-size:9px!important;letter-spacing:.12em!important}
+ .cx-page .cx-headline{font-size:clamp(29px,7.2vw,37px)!important;line-height:1.08!important;letter-spacing:-.04em!important;margin:12px 0 10px!important;max-width:370px!important}
+ .cx-page .cx-lead{font-size:12px!important;line-height:1.55!important}
+ .cx-page .cx-auth-layout{margin-top:14px!important;gap:12px!important}
+ .cx-page .cx-auth-visual{min-height:126px!important;height:126px!important;max-height:126px!important;border-radius:14px!important}
+ .cx-page .cx-auth-visual img{object-position:center 36%!important}
+ .cx-page .cx-auth-visual:after{background:linear-gradient(90deg,#092d27bd,#092d2733)!important}
+ .cx-page .cx-visual-content{inset:0 14px!important;display:flex;flex-direction:column;justify-content:center}
+ .cx-page .cx-visual-content small{font-size:9px!important;line-height:1.2!important;letter-spacing:.1em!important}
+ .cx-page .cx-visual-content h2{font-size:clamp(20px,5.4vw,25px)!important;line-height:1.12!important;max-width:270px!important;margin:7px 0 0!important}
+ .cx-page .cx-auth-area{padding:14px!important;border-radius:14px!important}
+ .cx-page .cx-tabs{margin-bottom:16px!important}
+ .cx-page .cx-tab{padding:12px 6px!important;font-size:13px!important}
+ .cx-page .cx-form h2{font-size:26px!important}
+ .cx-page .cx-form-intro{font-size:12px!important}
+ .cx-page .cx-form label{font-size:12px!important}
+ .cx-page .cx-form input,.cx-page .cx-claim input{font-size:16px!important}
+ .cx-page .cx-auth-foot{margin-top:17px!important;padding-top:12px!important}
+ .cx-page .cx-footer{line-height:1.5!important}
+}
+@media(max-width:390px){
+ .cx-page .cx-nav a{font-size:11px!important;padding:9px 10px!important}
+ .cx-page .cx-headline{font-size:29px!important}
+ .cx-page .cx-auth-visual{height:114px!important;min-height:114px!important;max-height:114px!important}
+}
