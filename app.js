@@ -509,3 +509,35 @@ fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=
  currentProduct=PRODUCTS.find(p=>p.id===currentProduct.id)||PRODUCTS[0]||currentProduct;
  renderProducts();renderCart();updateCampaignPrices();refreshStickyBuyBar();
 }).catch(()=>{});
+
+
+// Photo gallery: mobile swipe, keyboard-accessible arrows and active slide indicator.
+(function initSceneGallery(){
+ const gallery=document.querySelector("#sceneGallery");
+ if(!gallery)return;
+ const cards=Array.from(gallery.querySelectorAll(".scene-card"));
+ const dots=Array.from(document.querySelectorAll(".scene-carousel-dots span"));
+ const prev=document.querySelector("#scenePrev"),next=document.querySelector("#sceneNext");
+ if(!cards.length)return;
+ function currentIndex(){
+  const left=gallery.scrollLeft;
+  return cards.reduce((best,card,i)=>Math.abs(card.offsetLeft-gallery.offsetLeft-left)<Math.abs(cards[best].offsetLeft-gallery.offsetLeft-left)?i:best,0);
+ }
+ function sync(){
+  const index=currentIndex();
+  dots.forEach((dot,i)=>dot.classList.toggle("is-active",i===index));
+  if(prev)prev.disabled=index===0;
+  if(next)next.disabled=index===cards.length-1;
+ }
+ function go(delta){
+  const index=Math.min(cards.length-1,Math.max(0,currentIndex()+delta));
+  gallery.scrollTo({left:cards[index].offsetLeft-gallery.offsetLeft,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
+  dots.forEach((dot,i)=>dot.classList.toggle("is-active",i===index));
+ }
+ prev?.addEventListener("click",()=>go(-1));
+ next?.addEventListener("click",()=>go(1));
+ gallery.addEventListener("scroll",sync,{passive:true});
+ gallery.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();go(e.key==="ArrowRight"?1:-1)}});
+ window.addEventListener("resize",sync,{passive:true});
+ sync();
+})();
