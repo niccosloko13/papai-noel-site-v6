@@ -101,7 +101,7 @@
       <small id="cepHelp">O endereço aparece sozinho ao completar os 8 números.</small>
       <div id="cepStatus" class="cep-status" role="status" aria-live="polite"></div>
     </div>
-    <div class="address-result" id="addressResult" hidden>
+    <div class="address-result" id="addressResult" hidden><div id="deliveryEstimate" class="delivery-estimate" role="status"></div>
       <div class="address-found"><span class="address-check" aria-hidden="true">✓</span><div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div></div>
       <input id="address" required hidden>
       <div class="field-grid">
@@ -155,6 +155,7 @@
     <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><span>✦</span><div><small>PAGAMENTO INFORMADO</small><strong>Agora é com a gente.</strong></div><span>✦</span></div>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
     <a class="btn btn-secondary" id="trackOrderLink" href="#" hidden>Acompanhar meu pedido</a>
+    <a class="btn btn-secondary" href="minha-conta.html" id="createCustomerAccount">Criar minha conta e guardar pedidos</a>
   </div>
 </section>
 
@@ -162,5 +163,5 @@
 <script src="store-data.js"></script>
 <script src="vendor/qrcode.min.js"></script>
 <script src="pix.js"></script>
-<script src="checkout-page.js?v=20261028-events"></script>
+<script src="checkout-page.js?v=20261028-customer-tracking"></script>
 </body></html>
