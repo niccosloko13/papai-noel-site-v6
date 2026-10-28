@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin.css?v=20261028-product-admin">
 </head>
 <body>
 <div class="admin-login" id="adminLogin">
@@ -28,6 +28,7 @@
     <nav>
       <button class="nav-item active" data-tab="dashboard">Visão geral</button>
       <button class="nav-item" data-tab="orders">Pedidos</button>
+      <button class="nav-item" data-tab="products">Produtos</button>
       <button class="nav-item" data-tab="pix">Pix</button>
       <button class="nav-item" data-tab="marketing">Anúncios</button>
       <button class="nav-item" data-tab="seo">SEO</button>
@@ -78,6 +79,13 @@
       </div>
     </section>
 
+    <section class="admin-panel" id="products">
+      <div class="panel-card">
+        <div class="panel-head"><div><small>CATÁLOGO</small><h2>Seus kits</h2><p class="muted">Edite fotos por endereço de imagem HTTPS ou caminho publicado no site. Alterações são salvas no banco central.</p></div></div>
+        <div class="product-edit-grid" id="productEditors"></div>
+        <div class="product-edit-footer"><button type="button" class="btn primary" id="saveProducts">Salvar alterações dos kits</button><span role="status" id="productsMsg"></span></div>
+      </div>
+    </section>
     <section class="admin-panel" id="pix">
       <div class="settings-grid">
         <article class="panel-card">
@@ -130,5 +138,5 @@
   </main>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261028-env-diagnostics"></script>
+<script src="admin.js?v=20261028-product-admin"></script>
 </body></html>
