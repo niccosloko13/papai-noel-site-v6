@@ -1,11 +1,22 @@
 const crypto = require("node:crypto");
 const COOKIE="natal_admin";
+function configurationStatus(){
+ const missing=[];
+ if(!(process.env.ADMIN_USERNAME||"").trim())missing.push("ADMIN_USERNAME");
+ if(!process.env.ADMIN_PASSWORD&&!process.env.ADMIN_PASSWORD_SCRYPT)missing.push("ADMIN_PASSWORD");
+ if(!(process.env.ADMIN_SESSION_SECRET||""))missing.push("ADMIN_SESSION_SECRET");
+ const invalid=[];
+ if(process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD.length<8)invalid.push("ADMIN_PASSWORD");
+ if(process.env.ADMIN_SESSION_SECRET&&process.env.ADMIN_SESSION_SECRET.length<32)invalid.push("ADMIN_SESSION_SECRET");
+ if(!process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD_SCRYPT&&!/^[0-9a-f]+:[0-9a-f]{128}$/i.test(process.env.ADMIN_PASSWORD_SCRYPT))invalid.push("ADMIN_PASSWORD_SCRYPT");
+ return {configured:missing.length===0&&invalid.length===0,missing,invalid};
+}
 function settings(){
  const secret=process.env.ADMIN_SESSION_SECRET||"";
  const hash=process.env.ADMIN_PASSWORD_SCRYPT||"";
  const password=process.env.ADMIN_PASSWORD||"";
  const user=process.env.ADMIN_USERNAME||"";
- if(secret.length<32||!user||(password.length<8&&!hash.includes(":")))return null;
+ if(!configurationStatus().configured)return null;
  return {secret,hash,password,user};
 }
 function sign(value,secret){return crypto.createHmac("sha256",secret).update(value).digest("base64url")}
@@ -30,4 +41,4 @@ function authenticate(password,hash,privatePassword){
 
  try{const [salt,digest]=hash.split(":");const expected=Buffer.from(digest,"hex");if(expected.length!==64)return false;const actual=crypto.scryptSync(String(password),salt,64);return crypto.timingSafeEqual(actual,expected)}catch{return false}
 }
-module.exports={settings,valid,cookie,sign,authenticate};
+module.exports={settings,configurationStatus,valid,cookie,sign,authenticate};
