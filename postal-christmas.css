@@ -1,0 +1,84 @@
+/* Natal 2026 — carta postal de despacho. Informações reais, visual de fantasia. */
+#entrega.postal-section{width:100%!important;max-width:none!important;margin:0!important;padding:clamp(55px,7vw,100px) 20px!important;background:radial-gradient(circle at 80% 0%,#d8ae6a22,transparent 40%),linear-gradient(145deg,#0c2d23,#174635 55%,#08281f)!important;overflow:hidden;isolation:isolate;position:relative}
+#entrega .postal-stage{position:relative;max-width:1100px;margin:0 auto;padding:15px}
+#entrega .postal-paper{position:relative;isolation:isolate;overflow:hidden;max-width:100%;padding:30px clamp(24px,4vw,55px) 29px;background:linear-gradient(120deg,rgba(255,255,255,.23),transparent 30%),repeating-linear-gradient(0deg,rgba(103,74,38,.015) 0 1px,transparent 1px 4px),#f7e9d0;border:1px solid #d6b681;border-radius:13px;box-shadow:0 6px 0 #ad8351,0 25px 76px #00150d88;color:#3e3025}
+#entrega .postal-paper::before{content:"";position:absolute;z-index:-1;inset:12px;border:1px solid #bb97648a;border-radius:5px;pointer-events:none}
+#entrega .postal-edge{position:absolute;inset:0 0 auto;height:8px;background:repeating-linear-gradient(120deg,#8c2530 0 15px,#fff6e1 15px 30px,#1d5541 30px 45px,#fff6e1 45px 60px);opacity:.85}
+#entrega .postal-topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:7px 0 15px}
+#entrega .postal-origin-label{color:#8b633c;font-size:10px;font-weight:900;letter-spacing:.19em}
+#entrega .postal-stamp-mark{display:block;width:57px;height:57px;flex:none;filter:drop-shadow(0 3px 5px #5d2c1a49);transform:rotate(8deg)}
+#entrega .postal-stamp-mark svg{width:100%;height:100%}
+#entrega .postal-heading{display:grid;grid-template-columns:minmax(0,1fr) 205px;gap:18px;align-items:center}
+#entrega .postal-edition{color:#a13a40;font-size:11px;font-weight:900;letter-spacing:.15em}
+#entrega .postal-heading h2{color:#38271f!important;font:400 clamp(2.3rem,5vw,4.1rem)/1.04 "DM Serif Display",Georgia,serif!important;letter-spacing:-.047em;margin:10px 0 12px;max-width:690px}
+#entrega .postal-heading h2 em{font-style:italic;color:#8b2938}
+#entrega .postal-heading p{max-width:49ch;color:#685442;font-size:14px;line-height:1.6;margin:0}
+#entrega .postal-art{max-width:205px;justify-self:end;opacity:.95}
+#entrega .postal-art svg{width:100%;display:block}
+#entrega .postal-route{display:flex;align-items:center;gap:15px;margin:27px 0 22px;padding:14px 0;border-top:1px solid #cba576;border-bottom:1px solid #cba576}
+#entrega .postal-route-end{display:grid;gap:4px;flex:0 1 auto;min-width:0}
+#entrega .postal-route-end>span{color:#977047;font-size:9px;font-weight:900;letter-spacing:.18em}
+#entrega .postal-route-end strong{color:#315844;font-size:16px;font-weight:850;line-height:1.3}
+#entrega .postal-route-line{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:35px;flex:1;color:#b0894e}
+#entrega .postal-route-line span{flex:1;height:1px;background:repeating-linear-gradient(90deg,#b0894e 0 6px,transparent 6px 12px)}
+#entrega .postal-route-line svg{width:25px;height:25px}
+#entrega .postal-deadlines{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:16px}
+#entrega .postal-deadline{position:relative;display:grid;gap:5px;padding:18px 22px;background:#fff9ecb5;border:1px solid #d3b182;border-radius:9px;box-shadow:inset 0 0 0 4px #fae8c778}
+#entrega .postal-deadline::before{content:"";position:absolute;top:0;left:14px;right:14px;height:2px;background:linear-gradient(90deg,transparent,#b58b4f,transparent)}
+#entrega .postal-deadline small{font-size:11px;font-weight:850;letter-spacing:.11em;color:#815a3e}
+#entrega .postal-deadline strong{font:400 clamp(1.7rem,3vw,2.5rem)/1.12 "DM Serif Display",Georgia,serif;color:#8b2938}
+#entrega .postal-deadline>span{font-size:12px;color:#756454}
+#entrega .postal-bottomline{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:19px;padding-right:110px}
+#entrega .postal-bottomline p{margin:0;color:#705e4d;font-size:11px;line-height:1.5;max-width:52ch}
+#entrega .postal-bottomline a{font-size:11px;font-weight:850;color:#7b2732;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+#entrega .postal-bottomline a:hover{color:#315844}
+#entrega .postal-bottomline a:focus-visible{outline:2px solid #8b2938;outline-offset:4px}
+#entrega .postal-ink-stamp{position:absolute;right:33px;bottom:21px;transform:rotate(-13deg);display:grid;align-content:center;text-align:center;width:83px;height:83px;border:3px double #923c42a6;border-radius:50%;color:#923c42b8;letter-spacing:.1em;pointer-events:none}
+#entrega .postal-ink-stamp::before{content:"";position:absolute;inset:5px;border:1px dashed currentColor;border-radius:50%}
+#entrega .postal-ink-stamp span{font-size:9px;font-weight:900}
+#entrega .postal-ink-stamp strong{font-size:15px}
+#entrega .postal-flourish{position:absolute;z-index:-1;width:185px;height:185px;background:radial-gradient(circle,#edc77b3d,transparent 66%);pointer-events:none}
+#entrega .postal-flourish-top{top:-40px;right:-50px}
+#entrega .postal-flourish-bottom{bottom:-45px;left:-65px}
+@media(max-width:750px){
+ #entrega.postal-section{padding:36px 12px!important}
+ #entrega .postal-stage{padding:7px}
+ #entrega .postal-paper{padding:20px 18px 24px;border-radius:9px}
+ #entrega .postal-paper::before{inset:8px}
+ #entrega .postal-topline{margin:6px 0 5px}
+ #entrega .postal-origin-label{font-size:8px;letter-spacing:.11em}
+ #entrega .postal-stamp-mark{width:47px;height:47px}
+ #entrega .postal-heading{grid-template-columns:1fr 96px;gap:4px;align-items:start}
+ #entrega .postal-edition{font-size:9px;letter-spacing:.08em}
+ #entrega .postal-heading h2{font-size:clamp(29px,8.1vw,39px)!important;line-height:1.03;margin:8px 0}
+ #entrega .postal-heading p{font-size:11px;line-height:1.5}
+ #entrega .postal-art{max-width:96px;margin-top:8px}
+ #entrega .postal-route{margin:20px 0 14px;padding:10px 0;gap:8px}
+ #entrega .postal-route-end strong{font-size:11px}
+ #entrega .postal-route-end>span{font-size:8px}
+ #entrega .postal-route-line svg{width:20px;height:20px}
+ #entrega .postal-deadlines{gap:8px;margin-bottom:12px}
+ #entrega .postal-deadline{padding:13px 10px 12px}
+ #entrega .postal-deadline small{font-size:9px;letter-spacing:.06em}
+ #entrega .postal-deadline strong{font-size:clamp(22px,5.8vw,29px)}
+ #entrega .postal-deadline>span{font-size:10px}
+ #entrega .postal-bottomline{display:grid;gap:8px;padding-right:72px;margin-top:11px}
+ #entrega .postal-bottomline p{font-size:10px}
+ #entrega .postal-bottomline a{font-size:11px}
+ #entrega .postal-ink-stamp{width:63px;height:63px;right:18px;bottom:20px;border-width:2px}
+ #entrega .postal-ink-stamp span{font-size:7px}
+ #entrega .postal-ink-stamp strong{font-size:11px}
+}
+@media(max-width:390px){
+ #entrega .postal-heading{grid-template-columns:1fr 68px}
+ #entrega .postal-art{width:68px}
+ #entrega .postal-heading h2{font-size:29px!important}
+ #entrega .postal-route-end strong{font-size:10px}
+ #entrega .postal-deadline strong{font-size:22px}
+}
+@media(prefers-reduced-motion:no-preference){
+ #entrega .postal-paper{animation:postalReveal .55s ease-out both}
+ #entrega .postal-stamp-mark{animation:postalStampSet .7s .2s ease-out both}
+ @keyframes postalReveal{from{opacity:.8;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes postalStampSet{from{opacity:.35;transform:scale(1.17) rotate(-4deg)}to{opacity:1;transform:scale(1) rotate(8deg)}}
+}
