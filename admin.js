@@ -50,7 +50,7 @@ async function api(path,options={}){
 async function loadServer(){
  try{
  const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
- serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();
+ serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();loadCheckoutHealth();
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
@@ -59,6 +59,15 @@ async function loadServer(){
   $("#productsMsg").textContent="Banco de dados indisponível: é possível visualizar os campos, mas não salvar até configurar DATABASE_URL.";;
  }
 }
+async function loadCheckoutHealth(){
+ const el=$("#checkoutHealthResult");if(!el)return;
+ el.textContent="Verificando Neon e configuração Pix...";
+ try{
+  const r=await api("checkout-health");
+  el.textContent="Neon: "+(r.neon?.ok?"conectado ✓":"indisponível")+" · Pix: "+(r.pix?.configured?"configurado ✓":"incompleto")+" · QR/BR Code: "+(r.pix?.brCodeValid?"válido ✓":"não validado")+(r.checkout?.ready?" · Pronto para receber pedidos":" · Requer atenção");
+ }catch(e){el.textContent="Falha no diagnóstico: "+e.message}
+}
+$("#checkCheckoutHealth")?.addEventListener("click",loadCheckoutHealth);
 async function loadSummary(){
  try{
   const x=await api("summary");
