@@ -6,12 +6,13 @@ const root=path.resolve(__dirname,"..");
 const dist=path.join(root,"dist");
 
 const required=[
-  "index.html","checkout.html","admin.html","pedido.html","contato.html",
-  "app.js","checkout-page.js","admin.js","store-data.js","pix.js",
+  "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
   "styles.css","admin.css","checkout-premium.css",
   "robots.txt","sitemap.xml",
   "api/_db.js","api/checkout.js","api/admin/auth.js",
-  "api/admin/orders.js","api/admin/settings.js"
+  "api/admin/orders.js","api/admin/settings.js",
+  "api/order-status.js","api/events.js","api/admin/analytics.js","api/_customer.js","api/customer/auth.js","api/customer/orders.js"
 ];
 
 for(const rel of required){
@@ -32,8 +33,8 @@ fs.rmSync(dist,{recursive:true,force:true});
 fs.mkdirSync(dist,{recursive:true});
 
 const staticFiles=[
-  "index.html","checkout.html","admin.html","pedido.html","contato.html",
-  "app.js","checkout-page.js","admin.js","store-data.js","pix.js",
+  "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
   "styles.css","admin.css","checkout-premium.css",
   "robots.txt","sitemap.xml"
 ];
