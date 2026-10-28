@@ -37,7 +37,7 @@
   <main class="admin-main">
     <header class="admin-topbar">
       <div><small id="sectionEyebrow">PAINEL</small><h1 id="sectionTitle">Visão geral</h1></div>
-      <div class="topbar-actions"><span class="live-dot">● operação ativa</span><button class="btn ghost" id="logoutBtn">Sair</button></div>
+      <div class="topbar-actions"><span class="live-dot">Acesso restrito</span><button class="btn ghost" id="logoutBtn">Sair</button></div>
     </header>
 
     <section class="admin-panel active" id="dashboard">
@@ -81,6 +81,7 @@
       <div class="settings-grid">
         <article class="panel-card">
           <small>RECEBIMENTO</small><h2>Configuração Pix</h2>
+          <label><input id="pixEnabled" type="checkbox"> Ativar Pix</label>
           <label>Chave Pix<input id="pixKey" placeholder="CPF, CNPJ, e-mail, telefone ou aleatória"></label>
           <label>Nome exibido ao cliente<input id="displayName"></label>
           <label>Nome do recebedor no BR Code<input id="receiverName" maxlength="25"></label>
