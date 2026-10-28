@@ -37,6 +37,7 @@ function renderProducts(){
       </div>
       <div class="product-top"><h3>Kit ${p.name}</h3></div>
       <p class="product-prop">${p.prop}</p>
+      <div class="product-quick-spec">${p.id==="basic"?"13 pegadas • 22 × 8 cm • vinil removível":"21 pegadas • 22 × 8 cm • itens personalizados"}</div>
       <div class="benefits">${p.benefits.slice(0,6).map(x=>`<span>${x}</span>`).join("")}</div>
       <details class="product-specs"><summary>Detalhes do kit <span>+</span></summary><div>${p.id==="basic"?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Inclui:</b> adesivo de janela, carta padrão, certificado padrão e guia de aplicação.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`:`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`}</div></details>
       <div class="price-row">
