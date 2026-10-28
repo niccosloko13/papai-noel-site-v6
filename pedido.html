@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F8F5EF">
+<title>Acompanhar pedido • Kit Papai Noel Passou Aqui</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.order-page{width:min(100% - 32px,720px);margin:auto;padding:34px 0 100px}
+.order-page h1{font-family:Georgia,serif;font-size:clamp(2.2rem,10vw,4rem);line-height:1;margin:.45rem 0 1rem}
+.order-card{background:#fff;border:1px solid var(--border);border-radius:24px;padding:20px;margin-top:20px}
+.order-header{display:flex;justify-content:space-between;gap:16px;align-items:start}.order-header small{display:block;color:var(--muted)}.order-header strong{font-size:1.15rem}.order-status-pill{font-size:.75rem;font-weight:900;background:#fff2cf;color:#725000;padding:7px 10px;border-radius:999px;white-space:nowrap}
+.timeline{display:grid;margin-top:24px}.timeline-row{display:grid;grid-template-columns:30px 1fr;gap:12px;min-height:68px}.timeline-mark{position:relative;width:24px;height:24px;border-radius:50%;border:2px solid #d8d0c8;background:#fff;display:grid;place-items:center;font-size:.7rem;font-weight:900}.timeline-row:not(:last-child) .timeline-mark:after{content:"";position:absolute;top:22px;bottom:-46px;width:2px;background:#e0d8d0}.timeline-row.done .timeline-mark{background:var(--green);border-color:var(--green);color:#fff}.timeline-row.done:not(:last-child) .timeline-mark:after{background:var(--green)}.timeline-copy strong{display:block}.timeline-copy small{color:var(--muted)}
+.order-summary-mini{display:grid;gap:8px;border-top:1px solid var(--border);padding-top:18px;margin-top:8px}.order-summary-mini div{display:flex;justify-content:space-between;gap:16px}.order-help{margin-top:18px;display:grid;gap:10px}.not-found{background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px}
+</style>
+</head>
+<body>
+<header class="site-header"><a class="brand" href="index.html"><span class="brand-kicker">Kit</span><strong>Papai Noel Passou Aqui</strong></a><a class="header-cta" href="index.html#kits">Comprar</a></header>
+<main class="order-page">
+<span class="eyebrow">ACOMPANHAMENTO</span>
+<h1>Seu pedido, passo a passo.</h1>
+<p class="muted-copy" style="color:var(--muted)">Veja o estágio registrado neste dispositivo e fale com nosso atendimento se precisar de ajuda.</p>
+<div id="orderContent"></div>
+</main>
+<script>
+const params=new URLSearchParams(location.search);
+const id=params.get("id");
+const orders=JSON.parse(localStorage.getItem("natal_orders")||"[]");
+const order=orders.find(o=>o.id===id)||orders[0];
+const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
+const stages=["Pedido recebido","Pagamento informado","Pago","Em produção","Embalado","Enviado","Entregue"];
+const map={"Aguardando pagamento":0,"Pagamento informado":1,"Pago":2,"Em produção":3,"Embalado":4,"Enviado":5,"Entregue":6};
+const index=order?map[order.status]??0:0;
+const content=document.getElementById("orderContent");
+if(!order){
+ content.innerHTML='<div class="not-found"><h2>Pedido não encontrado</h2><p>Abra esta página pelo botão exibido após finalizar seu pedido ou fale com nosso atendimento.</p><a class="btn btn-primary" href="https://wa.me/5513974100193" target="_blank">Falar no WhatsApp</a></div>';
+}else{
+ content.innerHTML=`
+ <section class="order-card">
+   <div class="order-header"><div><small>Pedido</small><strong>${order.id}</strong></div><span class="order-status-pill">${order.status}</span></div>
+   <div class="timeline">
+     ${stages.map((stage,i)=>`<div class="timeline-row ${i<=index?"done":""}"><span class="timeline-mark">${i<=index?"✓":i+1}</span><div class="timeline-copy"><strong>${stage}</strong><small>${i===0?"Pedido registrado":i===1?"Cliente informou o pagamento":i===2?"Pagamento conferido pela equipe":i===3?"Personalização em preparação":i===4?"Pedido pronto para despacho":i===5?"Pedido em transporte":"Pedido entregue"}</small></div></div>`).join("")}
+   </div>
+   <div class="order-summary-mini"><div><span>Kit</span><b>${order.plan}</b></div><div><span>Criança</span><b>${order.childName||"—"}</b></div><div><span>Total</span><b>${money(order.total)}</b></div></div>
+   <div class="order-help"><a class="btn btn-primary" href="https://wa.me/5513974100193?text=${encodeURIComponent("Olá! Preciso de ajuda com o pedido "+order.id+".")}" target="_blank" rel="noopener">Falar com atendimento</a><a class="btn btn-secondary" href="index.html">Voltar para a loja</a></div>
+ </section>`;
+}
+</script>
+</body></html>

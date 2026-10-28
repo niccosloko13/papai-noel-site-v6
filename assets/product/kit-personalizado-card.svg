@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1400" viewBox="0 0 1200 1400">
+<defs>
+  <clipPath id="hero"><rect x="52" y="175" width="1096" height="720" rx="42"/></clipPath>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#063b2c"/><stop offset="1" stop-color="#0d6546"/></linearGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffaf2"/><stop offset="1" stop-color="#f4e5d2"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-opacity=".18"/></filter>
+</defs>
+<rect width="1200" height="1400" rx="52" fill="url(#paper)"/>
+<rect x="28" y="28" width="1144" height="132" rx="34" fill="url(#bg)"/>
+<text x="70" y="87" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="34">KIT 2</text>
+<text x="70" y="132" fill="#f9db8b" font-family="Georgia,serif" font-weight="700" font-size="54">Personalizado</text>
+<rect x="790" y="57" width="330" height="75" rx="38" fill="#b51f33"/>
+<text x="955" y="88" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="30">36 PEGADAS</text>
+<text x="955" y="120" text-anchor="middle" fill="#fff1e8" font-family="Arial,sans-serif" font-size="24">18 pares</text>
+<g clip-path="url(#hero)">
+  <image href="../visuals/kit-personalizado.svg" x="52" y="175" width="1096" height="720" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="52" y="175" width="1096" height="720" fill="none" stroke="#ead3bc" stroke-width="5"/>
+</g>
+<g filter="url(#shadow)">
+  <rect x="52" y="930" width="1096" height="390" rx="38" fill="#fff"/>
+</g>
+<text x="92" y="995" fill="#2c1c17" font-family="Georgia,serif" font-weight="700" font-size="48">O que vem no Kit Personalizado</text>
+<circle cx="105" cy="1060" r="17" fill="#0c6a49"/><text x="105" y="1069" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1071" fill="#3b2d27" font-family="Arial,sans-serif" font-size="29">18 pares de pegadas (36 unidades)</text>
+<circle cx="105" cy="1120" r="17" fill="#0c6a49"/><text x="105" y="1129" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1131" fill="#3b2d27" font-family="Arial,sans-serif" font-size="29">Adesivo para janela</text>
+<circle cx="105" cy="1180" r="17" fill="#0c6a49"/><text x="105" y="1189" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1191" fill="#3b2d27" font-family="Arial,sans-serif" font-size="29">Placa com nome + certificado</text>
+<circle cx="105" cy="1240" r="17" fill="#0c6a49"/><text x="105" y="1249" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1251" fill="#3b2d27" font-family="Arial,sans-serif" font-size="29">Carta personalizada do Papai Noel</text>
+<text x="92" y="1300" fill="#8a6f61" font-family="Arial,sans-serif" font-size="24">Visual do produto • mockup de apresentação</text>
+</svg>

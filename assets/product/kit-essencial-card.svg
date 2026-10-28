@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1400" viewBox="0 0 1200 1400">
+<defs>
+  <clipPath id="hero"><rect x="52" y="175" width="1096" height="720" rx="42"/></clipPath>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8f1424"/><stop offset="1" stop-color="#b62235"/></linearGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffaf2"/><stop offset="1" stop-color="#f4e5d2"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-opacity=".18"/></filter>
+</defs>
+<rect width="1200" height="1400" rx="52" fill="url(#paper)"/>
+<rect x="28" y="28" width="1144" height="132" rx="34" fill="url(#bg)"/>
+<text x="70" y="87" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="34">KIT 1</text>
+<text x="70" y="132" fill="#f9db8b" font-family="Georgia,serif" font-weight="700" font-size="54">Essencial</text>
+<rect x="790" y="57" width="330" height="75" rx="38" fill="#0a5b3e"/>
+<text x="955" y="88" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="30">20 PEGADAS</text>
+<text x="955" y="120" text-anchor="middle" fill="#dff4e8" font-family="Arial,sans-serif" font-size="24">10 pares</text>
+<g clip-path="url(#hero)">
+  <image href="pegadas.jpg" x="52" y="175" width="1096" height="720" preserveAspectRatio="xMidYMid slice"/>
+</g>
+<rect x="52" y="175" width="1096" height="720" rx="42" fill="none" stroke="#ead3bc" stroke-width="5"/>
+<g filter="url(#shadow)">
+  <rect x="52" y="930" width="1096" height="390" rx="38" fill="#fff"/>
+</g>
+<text x="92" y="995" fill="#2c1c17" font-family="Georgia,serif" font-weight="700" font-size="48">O que vem no Kit Essencial</text>
+<circle cx="105" cy="1065" r="17" fill="#0c6a49"/><text x="105" y="1074" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1076" fill="#3b2d27" font-family="Arial,sans-serif" font-size="31">10 pares de pegadas (20 unidades)</text>
+<circle cx="105" cy="1135" r="17" fill="#0c6a49"/><text x="105" y="1144" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1146" fill="#3b2d27" font-family="Arial,sans-serif" font-size="31">Adesivo para janela</text>
+<circle cx="105" cy="1205" r="17" fill="#0c6a49"/><text x="105" y="1214" text-anchor="middle" fill="#fff" font-size="23" font-family="Arial">✓</text>
+<text x="145" y="1216" fill="#3b2d27" font-family="Arial,sans-serif" font-size="31">Guia de aplicação</text>
+<text x="92" y="1285" fill="#8a6f61" font-family="Arial,sans-serif" font-size="24">Visual do produto • mockup de apresentação</text>
+</svg>

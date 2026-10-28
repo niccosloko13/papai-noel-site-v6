@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin • Papai Noel Passou Aqui</title>
+<style>
+:root{--bg:#f5f3ef;--surface:#fff;--ink:#241c18;--muted:#746a63;--green:#126e46;--red:#9d1c1c;--border:#e4ddd5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--border);padding:14px 16px;display:flex;justify-content:space-between;align-items:center}header strong{font-size:1rem}
+.wrap{width:min(100% - 24px,1180px);margin:auto;padding:20px 0 60px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.tab{border:1px solid var(--border);background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;white-space:nowrap}.tab.active{background:var(--ink);color:#fff}.panel{display:none}.panel.active{display:block}
+.grid{display:grid;gap:14px}.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}.card h2,.card h3{margin-top:0}.muted{color:var(--muted);font-size:.9rem}.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.kpi{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px}.kpi b{display:block;font-size:1.4rem;margin-top:4px}
+label{display:grid;gap:6px;font-weight:800;margin-top:12px}input,select,textarea{width:100%;min-height:48px;border:1px solid var(--border);border-radius:12px;padding:11px;background:#fff}textarea{min-height:90px}.two{display:grid;gap:10px}.btn{min-height:46px;border:0;border-radius:12px;padding:0 14px;font-weight:900;cursor:pointer}.primary{background:var(--green);color:#fff}.secondary{background:#fff;border:1px solid var(--border)}.danger{background:#fdeceb;color:#9d1c1c}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.order,.product-row{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px}.order-head,.product-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.status{font-size:.72rem;font-weight:900;border-radius:999px;padding:5px 8px;background:#fff2cf;color:#7a5100}.status.paid{background:#e7f5ec;color:#126e46}.order-meta{display:grid;gap:4px;margin-top:10px;color:var(--muted);font-size:.88rem}.order-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{margin-top:12px;padding:12px;border-radius:12px;background:#fff5dd;color:#765000;border:1px solid #ecd08c;font-size:.86rem}.success{background:#eaf6ee;color:#165f3d;border-color:#b8dfc6}
+.product-preview{display:flex;gap:12px;align-items:center}.product-preview img{width:76px;height:94px;object-fit:cover;border-radius:12px;background:#eee}.product-info{display:grid;gap:3px}.product-info small{color:var(--muted)}.toggle{display:flex;align-items:center;gap:8px;margin-top:12px}.toggle input{width:20px;height:20px;min-height:0}
+@media(min-width:760px){.grid.cols2{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><strong>🎄 Admin Natal</strong><a href="index.html">Ver loja</a></header>
+<main class="wrap">
+  <div class="tabs">
+    <button class="tab active" data-tab="dashboard">Dashboard</button>
+    <button class="tab" data-tab="produtos">Produtos</button>
+    <button class="tab" data-tab="pedidos">Pedidos</button>
+    <button class="tab" data-tab="pix">Pix</button>
+  </div>
+
+  <section class="panel active" id="dashboard">
+    <div class="kpis">
+      <div class="kpi"><span>Pedidos</span><b id="kOrders">0</b></div>
+      <div class="kpi"><span>Aguardando</span><b id="kPending">0</b></div>
+      <div class="kpi"><span>Informados</span><b id="kInformed">0</b></div>
+      <div class="kpi"><span>Pagos</span><b id="kPaid">0</b></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>Operação segura</h2><p class="muted">Confirme como pago somente depois de verificar a entrada do Pix na conta bancária.</p><div class="notice">Modo atual: demonstração local. Pedidos feitos em outro celular/computador não aparecem neste Admin sem um backend de pedidos. O pagamento Pix continua manual.</div></div>
+  </section>
+
+  <section class="panel" id="produtos">
+    <div class="grid cols2">
+      <div>
+        <div id="productsList"></div>
+        <button class="btn primary" id="newProduct">+ Novo produto</button>
+      </div>
+      <form class="card" id="productForm">
+        <h2 id="productFormTitle">Editar produto</h2>
+        <input type="hidden" id="productId">
+        <label>Nome<input id="productName" required></label>
+        <div class="two">
+          <label>Preço (R$)<input id="productPrice" type="number" min="0" step=".01" required></label>
+          <label>Badge<input id="productBadge" placeholder="Ex.: Mais escolhido"></label>
+        </div>
+        <label>Proposição curta<input id="productProp" placeholder="Uma frase de venda"></label>
+        <label>Itens inclusos<textarea id="productBenefits" placeholder="Um item por linha"></textarea></label>
+        <label>Imagem<input id="productImage" placeholder="assets/visuals/kit-basico.svg"></label>
+        <div class="toggle"><input id="productActive" type="checkbox"><label for="productActive" style="margin:0">Produto ativo</label></div>
+        <div class="actions"><button class="btn primary" type="submit">Salvar produto</button><button class="btn secondary" type="button" id="duplicateProduct">Duplicar</button><button class="btn danger" type="button" id="deleteProduct">Excluir</button></div>
+        <div id="productMsg"></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel" id="pedidos"><div id="orders"></div></section>
+
+  <section class="panel" id="pix">
+    <div class="grid cols2">
+      <div class="card">
+        <h2>Configuração Pix</h2>
+        <p class="muted">Esses dados aparecem na cobrança. A confirmação continua manual.</p>
+        <label>Chave Pix<input id="pixKey" placeholder="CPF, CNPJ, e-mail, telefone ou chave aleatória"></label>
+        <label>Nome exibido ao cliente<input id="displayName" placeholder="Nome da sua empresa"></label>
+        <label>Nome do recebedor no BR Code<input id="receiverName" maxlength="25" placeholder="NOME EMPRESA"></label>
+        <label>Cidade do recebedor<input id="pixCity" maxlength="15" placeholder="SAO PAULO"></label>
+        <div class="two"><label>Desconto Pix (%)<input id="pixDiscount" type="number" min="0" max="50" step=".1"></label><label>Frete fixo (R$)<input id="shippingFlat" type="number" min="0" step=".01"></label></div>
+        <div class="actions"><button class="btn primary" id="savePix">Salvar Pix</button></div><div id="pixMsg"></div>
+      </div>
+      <div class="card"><h3>Como funciona</h3><ol class="muted"><li>O checkout cria um pedido único.</li><li>O QR Code recebe valor e identificador do pedido.</li><li>O cliente informa que pagou.</li><li>Você confere no banco e confirma manualmente.</li></ol><div class="notice">Este Admin usa localStorage nesta fase. Antes de publicar em produção, proteja a área administrativa com autenticação e backend.</div></div>
+    </div>
+  </section>
+</main>
+<script src="store-data.js"></script>
+<script>
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
+{id:"basic",name:"Básico",price:39.90,prop:"Para criar a surpresa essencial.",benefits:["10 pegadas adesivas","Adesivo para janela","Guia rápido de aplicação"],image:"assets/visuals/kit-basico.svg",active:true},
+{id:"personal",name:"Personalizado",price:69.90,prop:"A experiência que faz a visita parecer real.",benefits:["20 pegadas adesivas","Adesivo para janela","Placa com nome da criança","Certificado personalizado"],image:"assets/visuals/kit-personalizado.svg",badge:"Mais escolhido",active:true},
+{id:"premium",name:"Premium",price:99.90,prop:"A experiência completa para presentear.",benefits:["30 pegadas adesivas","Adesivo para janela","Placa personalizada","Certificado oficial","Guia mágico","Embalagem especial"],image:"assets/visuals/kit-premium.svg",active:true}
+]);
+const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:15,shippingFlat:Number(window.STORE_DATA?.shipping?.flatRate||0),enabled:false,...(window.STORE_DATA?.pix||{})};
+const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0);
+const getProducts=()=>JSON.parse(localStorage.getItem("natal_products")||"null")||DEFAULT_PRODUCTS;
+const saveProducts=p=>localStorage.setItem("natal_products",JSON.stringify(p));
+let selectedProductId=null;
+
+const cfg={...pixDefaults,...JSON.parse(localStorage.getItem("natal_pix_config")||"{}")};
+const pixIds={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
+Object.entries(pixIds).forEach(([id,key])=>document.getElementById(id).value=cfg[key]??"");
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active")});
+
+document.getElementById("savePix").onclick=()=>{const out={enabled:true};Object.entries(pixIds).forEach(([id,key])=>{const el=document.getElementById(id);out[key]=el.type==="number"?Number(el.value):el.value.trim()});localStorage.setItem("natal_pix_config",JSON.stringify(out));document.getElementById("pixMsg").innerHTML='<div class="notice success">Configuração Pix salva neste navegador.</div>'};
+
+function editProduct(id){
+ const p=getProducts().find(x=>x.id===id);if(!p)return;selectedProductId=id;
+ productId.value=p.id;productName.value=p.name;productPrice.value=p.price;productBadge.value=p.badge||"";productProp.value=p.prop||"";productBenefits.value=(p.benefits||[]).join("\n");productImage.value=p.image||"";productActive.checked=p.active!==false;productFormTitle.textContent="Editar "+p.name;
+}
+function renderProducts(){
+ const products=getProducts();
+ productsList.innerHTML=products.map(p=>`<article class="product-row"><div class="product-head"><div class="product-preview"><img src="${p.image}" alt=""><div class="product-info"><b>${p.name}</b><span>${money(p.price)}</span><small>${p.active===false?"Inativo":"Ativo"} ${p.badge?"• "+p.badge:""}</small></div></div><button class="btn secondary" onclick="editProduct('${p.id}')">Editar</button></div></article>`).join("");
+ if(!selectedProductId&&products[0])editProduct(products[0].id);
+}
+productForm.onsubmit=e=>{e.preventDefault();const products=getProducts();let id=productId.value||("product-"+Date.now());const data={id,name:productName.value.trim(),price:Number(productPrice.value),badge:productBadge.value.trim(),prop:productProp.value.trim(),benefits:productBenefits.value.split("\n").map(x=>x.trim()).filter(Boolean),image:productImage.value.trim(),active:productActive.checked};const i=products.findIndex(x=>x.id===id);if(i>=0)products[i]=data;else products.push(data);saveProducts(products);selectedProductId=id;renderProducts();productMsg.innerHTML='<div class="notice success">Produto salvo.</div>'};
+newProduct.onclick=()=>{selectedProductId=null;productForm.reset();productId.value="";productActive.checked=true;productFormTitle.textContent="Novo produto"};
+duplicateProduct.onclick=()=>{if(!selectedProductId)return;const products=getProducts();const p=products.find(x=>x.id===selectedProductId);if(!p)return;const copy={...p,id:"product-"+Date.now(),name:p.name+" cópia",badge:""};products.push(copy);saveProducts(products);selectedProductId=copy.id;renderProducts()};
+deleteProduct.onclick=()=>{if(!selectedProductId||!confirm("Excluir este produto?"))return;const products=getProducts().filter(x=>x.id!==selectedProductId);saveProducts(products);selectedProductId=null;renderProducts()};
+
+function setStatus(id,status){const orders=JSON.parse(localStorage.getItem("natal_orders")||"[]");const o=orders.find(x=>x.id===id);if(!o)return;o.status=status;o.updatedAt=new Date().toISOString();if(status==="Pago")o.paidAt=new Date().toISOString();localStorage.setItem("natal_orders",JSON.stringify(orders));renderOrders()}
+function renderOrders(){const orders=JSON.parse(localStorage.getItem("natal_orders")||"[]");kOrders.textContent=orders.length;kPending.textContent=orders.filter(o=>o.status==="Aguardando pagamento").length;kInformed.textContent=orders.filter(o=>o.status==="Pagamento informado").length;kPaid.textContent=orders.filter(o=>o.status==="Pago").length;document.getElementById("orders").innerHTML=orders.length?orders.map(o=>`<article class="order"><div class="order-head"><div><b>${o.id}</b><div class="muted">${new Date(o.createdAt).toLocaleString("pt-BR")}</div></div><span class="status ${o.status==="Pago"?"paid":""}">${o.status}</span></div><div class="order-meta"><span>${o.customerName||"Cliente"} • ${o.phone||""}</span><span>Kit ${o.plan} • Criança: ${o.childName}</span><span>Total: <b>${money(o.total)}</b> • TXID: ${o.txid||"—"}</span></div><div class="order-actions">${o.status==="Pagamento informado"?`<button class="btn primary" onclick="if(confirm('Você confirmou no banco que este Pix foi recebido?')) setStatus('${o.id}','Pago')">Confirmar pagamento</button>`:""}<a class="btn secondary" href="https://wa.me/55${String(o.phone||"").replace(/\D/g,"")}" target="_blank">WhatsApp</a></div></article>`).join(""):'<div class="card">Nenhum pedido ainda.</div>'}
+window.editProduct=editProduct;window.setStatus=setStatus;renderProducts();renderOrders();
+</script>
+</body></html>
