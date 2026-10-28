@@ -123,3 +123,88 @@ body .hero-cinematic .hero-social-note span{color:#efbd5c!important;letter-spaci
  body .hero-cinematic .hero-tiny-trust{font-size:9px!important}
 }
 @media(prefers-reduced-motion:reduce){body .hero-cinematic *{animation:none!important;transition:none!important}}
+
+/* Hero Magia v3 — movement and unmistakable product focus */
+@keyframes natalStarBlink{0%,100%{opacity:.28;transform:scale(.82) rotate(-8deg)}48%{opacity:1;transform:scale(1.15) rotate(7deg)}}
+@keyframes natalFootHalo{0%,100%{box-shadow:0 0 0 0 rgba(246,200,98,.32),0 0 22px #e2a74455}60%{box-shadow:0 0 0 13px rgba(246,200,98,0),0 0 30px #e2a74477}}
+@keyframes natalUnderline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes natalHeroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes natalFloating{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+body .hero-cinematic .hero-atmosphere{position:absolute!important;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+body .hero-cinematic .hero-glow{position:absolute;width:240px;height:240px;border-radius:50%;filter:blur(58px);opacity:.26;background:#f3b957}
+body .hero-cinematic .hero-glow-one{right:9%;top:8%}
+body .hero-cinematic .hero-glow-two{right:24%;bottom:8%;width:150px;height:150px;opacity:.16}
+body .hero-cinematic .hero-star{position:absolute;color:#f8d37c;text-shadow:0 0 15px rgba(255,211,124,.76);font-size:24px;animation:natalStarBlink 4s ease-in-out infinite}
+body .hero-cinematic .hero-star-one{top:17%;left:62%}
+body .hero-cinematic .hero-star-two{top:33%;right:9%;font-size:32px;animation-delay:-1.6s}
+body .hero-cinematic .hero-star-three{bottom:19%;right:34%;font-size:15px;animation-delay:-2.3s}
+body .hero-cinematic .hero-star-four{bottom:11%;right:8%;font-size:22px;animation-delay:-.8s}
+body .hero-cinematic .hero-shimmer-label{box-shadow:0 0 0 1px rgba(244,202,123,.18),0 0 30px rgba(236,184,81,.16)!important}
+body .hero-cinematic .hero-animated-accent{position:relative;display:inline-block;isolation:isolate}
+body .hero-cinematic .hero-animated-accent:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;border-radius:20px;background:linear-gradient(90deg,#da8d2e,#f8d783,#e79b37);transform-origin:left center;animation:natalUnderline 1.2s .2s both}
+body .hero-cinematic .hero-footprint-callout{
+ position:absolute;z-index:4;right:clamp(20px,6vw,110px);bottom:clamp(37px,7vw,97px);
+ display:flex;align-items:center;gap:12px;color:#fff9e6;
+ background:linear-gradient(110deg,rgba(14,49,37,.91),rgba(14,49,37,.71));
+ border:1px solid rgba(241,205,132,.83);border-radius:18px;padding:13px 18px;
+ max-width:280px;box-shadow:0 14px 45px rgba(0,0,0,.38);
+ backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+ animation:natalFloating 5s ease-in-out infinite;
+}
+body .hero-cinematic .hero-footprint-callout:hover{background:rgba(24,75,53,.94);border-color:#f9d47e}
+body .hero-cinematic .hero-footprint-callout:focus-visible{outline:3px solid #ffe29b;outline-offset:4px}
+body .hero-cinematic .hero-footprint-marker{
+ display:grid;place-items:center;flex:none;width:38px;height:38px;border:1px solid #e9bf74;border-radius:50%;color:#ffdb88;
+ font-size:23px;animation:natalFootHalo 3s ease-in-out infinite;
+}
+body .hero-cinematic .hero-footprint-text{display:grid;gap:3px}
+body .hero-cinematic .hero-footprint-text small{color:#f0cc8b;font-size:9px!important;letter-spacing:.10em!important;font-weight:800}
+body .hero-cinematic .hero-footprint-text strong{font:400 21px/1.08 Georgia,serif;color:#fffaf0}
+body .hero-cinematic .hero-footprint-text em{font-style:normal;font-size:10px;color:#dfc89f}
+body .hero-cinematic .hero-kicker-row{animation:natalHeroIn .7s both}
+body .hero-cinematic .hero-story-note{animation:natalHeroIn .8s .13s both}
+body .hero-cinematic .hero-actions-campaign{animation:natalHeroIn .8s .28s both}
+body .hero-cinematic .hero-offer-card{animation:natalHeroIn .8s .3s both}
+@media(min-width:701px) and (max-width:1100px){
+ body .hero-cinematic .hero-footprint-callout{right:20px;bottom:27px;max-width:230px}
+ body .hero-cinematic .hero-footprint-text strong{font-size:18px}
+}
+@media(max-width:700px){
+ body .hero.section.hero-cinematic{min-height:660px!important;min-height:min(725px,calc(100svh + 20px))!important;padding:19px 15px 23px!important}
+ body .hero-cinematic .hero-scene-background img{object-position:58% 10%!important}
+ body .hero-cinematic:before{background:linear-gradient(0deg,rgba(3,29,24,.99) 0%,rgba(4,30,25,.96) 28%,rgba(4,31,25,.85) 47%,rgba(4,27,23,.18) 78%,rgba(4,23,20,.03) 100%)!important}
+ body .hero-cinematic .hero-footprint-callout{
+  top:clamp(24px,5vh,46px);bottom:auto;right:12px;max-width:185px;
+  padding:8px 10px;border-radius:13px;gap:8px;
+  animation:none!important;
+ }
+ body .hero-cinematic .hero-footprint-marker{width:29px;height:29px;font-size:17px}
+ body .hero-cinematic .hero-footprint-text small{font-size:7px!important;letter-spacing:.045em!important}
+ body .hero-cinematic .hero-footprint-text strong{font-size:15px}
+ body .hero-cinematic .hero-footprint-text em{font-size:9px}
+ body .hero-cinematic .hero-glow{width:120px;height:120px;filter:blur(35px)}
+ body .hero-cinematic .hero-star-one{left:10%;top:15%}
+ body .hero-cinematic .hero-star-two{right:15%;top:34%;font-size:16px}
+ body .hero-cinematic .hero-star-three{right:12%;bottom:51%}
+ body .hero-cinematic .hero-star-four{display:none}
+ body .hero-cinematic .hero-campaign-title{font-size:clamp(39px,10.2vw,54px)!important;line-height:.83!important}
+ body .hero-cinematic .hero-story-note{margin:11px 0 5px!important}
+ body .hero-cinematic .hero-story-note p{font-size:11px!important;line-height:1.4!important}
+ body .hero-cinematic .hero-tiny-trust{font-size:9px!important;gap:5px 10px!important;margin:5px 0!important}
+ body .hero-cinematic .hero-actions-campaign .btn-holiday{min-height:46px!important}
+ body .hero-cinematic .hero-kicker-row{margin-bottom:8px!important}
+ body .hero-cinematic .hero-offer-card{padding:7px 10px!important}
+ body .hero-cinematic .hero-social-note{margin-top:6px!important}
+}
+@media(max-width:370px){
+ body .hero-cinematic .hero-footprint-callout{max-width:163px;top:20px}
+ body .hero-cinematic .hero-campaign-title{font-size:38px!important}
+ body .hero.section.hero-cinematic{min-height:685px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body .hero-cinematic .hero-animated-accent:after{animation:none!important;transform:none!important}
+ body .hero-cinematic .hero-footprint-marker{animation:none!important;box-shadow:none!important}
+ body .hero-cinematic .hero-star{animation:none!important;opacity:.7!important}
+ body .hero-cinematic .hero-footprint-callout{animation:none!important}
+ body .hero-cinematic .hero-kicker-row,body .hero-cinematic .hero-story-note,body .hero-cinematic .hero-actions-campaign,body .hero-cinematic .hero-offer-card{animation:none!important}
+}
