@@ -132,10 +132,12 @@ function syncPersonalizationMode(){
   const personalized=checkoutHasPersonalized();
   const section=document.querySelector('.checkout-step[data-step="1"]');
   const heading=section?.querySelector("h2");
+  const kicker=section?.querySelector(".checkout-step-kicker");
   const nameLabel=child?.closest("label");
   const letterLabel=letter?.closest("label");
   const preview=document.querySelector("#letterPreviewWrap");
   if(heading)heading.textContent=personalized?"Veja sua carta antes de concluir.":"Seu Kit Essencial já vem pronto.";
+  if(kicker)kicker.textContent=personalized?"PASSO 1 • PERSONALIZAÇÃO":"PASSO 1 • CONFERÊNCIA";
   if(nameLabel)nameLabel.hidden=!personalized;
   if(letterLabel)letterLabel.hidden=!personalized;
   if(preview)preview.hidden=!personalized;
