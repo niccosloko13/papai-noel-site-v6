@@ -7,6 +7,7 @@ concurrency:
 on:
   push:
     branches:
+      - main
       - feat/mobile-commerce-rebuild
   pull_request:
     branches:
