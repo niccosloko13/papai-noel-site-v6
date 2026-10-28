@@ -14,7 +14,7 @@
   <form class="login-card" id="loginForm">
     <span class="login-badge">ÁREA RESTRITA</span>
     <h1>Painel de Natal</h1>
-    <p>Gerencie vendas, pagamentos, campanhas e SEO em um só lugar.</p>
+    <p>Gerencie vendas, pagamentos, campanhas e SEO em um só lugar.</p><small>Teste temporário: admin / 123 até 29/10 às 01h43, apenas dados de demonstração.</small>
     <label>Usuário<input id="loginUser" autocomplete="username" value="admin"></label>
     <label>Senha<input id="loginPass" type="password" autocomplete="current-password" placeholder="••••"></label>
     <button class="btn primary" type="submit">Entrar no painel</button>
@@ -36,7 +36,7 @@
   </aside>
 
   <main class="admin-main">
-    <div id="adminDemoBanner" hidden role="status" style="background:#fff1ce;color:#5d3c10;padding:13px 18px;border-radius:12px;margin:16px 0;font-size:14px;font-weight:700">MODO DEMONSTRAÇÃO — dados reais não disponíveis. Alterações, pagamentos e configurações estão desativados.</div>
+    <div id="adminDemoBanner" hidden role="status" style="background:#fff1ce;color:#5d3c10;padding:13px 18px;border-radius:12px;margin:16px 0;font-size:14px;font-weight:700">MODO DEMONSTRAÇÃO — dados reais não disponíveis. Você pode criar pedidos de teste, alterar status e salvar configurações fictícias neste navegador. Nenhuma alteração afeta vendas reais. Disponível até 29/10/2026 às 01h43 (Brasília).</div>
     <header class="admin-topbar">
       <div><small id="sectionEyebrow">PAINEL</small><h1 id="sectionTitle">Visão geral</h1></div>
       <div class="topbar-actions"><span class="live-dot">Acesso restrito</span><button class="btn ghost" id="logoutBtn">Sair</button></div>
@@ -75,7 +75,7 @@
             <select id="orderFilter"><option value="all">Todos</option><option>Aguardando pagamento</option><option>Pagamento informado</option><option>Pago</option><option>Produção</option><option>Enviado</option></select>
           </div>
         </div>
-        <div id="ordersList"></div>
+        <div id="demoOrderActions" style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><select id="demoKit" aria-label="Kit para pedido de teste"><option value="basic">Kit Essencial</option><option value="personal">Kit Personalizado</option></select><button class="btn ghost" type="button" id="createDemoOrder">Criar pedido de teste</button></div><div id="ordersList"></div>
       </div>
     </section>
 
