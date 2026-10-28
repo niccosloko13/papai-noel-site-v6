@@ -13,6 +13,7 @@ async function initCustomers(){
  customer_id text NOT NULL REFERENCES natal_customers(id), order_id text NOT NULL REFERENCES natal_orders(id),
  created_at timestamptz DEFAULT now(), PRIMARY KEY(customer_id,order_id)
  )`);
+ await db().query(`CREATE TABLE IF NOT EXISTS natal_customer_auth_limits (key text PRIMARY KEY, failures integer NOT NULL DEFAULT 0, window_start timestamptz NOT NULL DEFAULT now())`);
 }
 function sign(body){return crypto.createHmac("sha256",secret()).update(body).digest("base64url")}
 function cookie(value,age){return `${COOKIE}=${value}; Path=/api/customer; HttpOnly; Secure; SameSite=Lax; Max-Age=${age}`}
