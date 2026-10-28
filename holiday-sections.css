@@ -1,0 +1,105 @@
+/* Natal 2026 — narrative continuity after the approved hero.
+   Fewer sections, alternating jewel-tone scenes, unobtrusive motion. */
+body{background:#102f26!important}
+body #kits.section.kits-section{
+ position:relative!important;isolation:isolate;
+ background:radial-gradient(circle at 86% 4%,rgba(238,193,111,.20),transparent 30%),
+ linear-gradient(155deg,#143e30 0%,#0e3027 72%,#0b281f 100%)!important;
+ padding-top:clamp(46px,6vw,86px)!important;padding-bottom:clamp(48px,6vw,90px)!important;
+ overflow:hidden;
+}
+body #kits.section.kits-section::before,body #como-fica.section.scene-section::before{
+ content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+ background-image:radial-gradient(circle,rgba(246,210,141,.23) 1px,transparent 1.8px);
+ background-size:62px 62px;
+ mask-image:linear-gradient(90deg,transparent,black 40%,black 70%,transparent);
+ opacity:.3;
+}
+body #kits .section-heading .eyebrow{color:#f1c877!important}
+body #kits .section-heading h2{color:#fff9e8!important;text-shadow:0 5px 24px #02191166}
+body #kits .section-heading p{color:#e2d7bf!important;max-width:43ch;margin-inline:auto}
+body #kits .product-grid{position:relative;z-index:2}
+body #kits .product-card{
+ background:#fff9ee!important;border-color:#dfc8a7!important;
+ box-shadow:0 20px 55px #03190f4f!important;
+ transform:translateY(0);transition:transform .32s ease,box-shadow .32s ease!important;
+}
+body #kits .product-card:hover{transform:translateY(-5px);box-shadow:0 30px 72px #0006!important}
+body #kits .product-card.recommended{outline:2px solid #e8c477;outline-offset:3px}
+body #kits .product-card .btn,body #kits .product-card button{transition:transform .2s ease,filter .2s ease}
+body #kits .product-card .btn:hover,body #kits .product-card button:hover{transform:translateY(-2px);filter:brightness(1.07)}
+body #como-fica.section.scene-section{
+ position:relative;isolation:isolate;
+ width:100%!important;max-width:none!important;margin:0!important;
+ padding:clamp(50px,7vw,100px) max(20px,calc((100vw - 1180px)/2))!important;
+ background:radial-gradient(ellipse at 88% 10%,#f5c38d24,transparent 30%),
+ linear-gradient(155deg,#5d192a,#411625 68%,#331722)!important;
+ overflow:hidden;
+}
+body #como-fica .scene-head .eyebrow{color:#f4cd84!important}
+body #como-fica .scene-head h2{color:#fff5e6!important}
+body #como-fica .scene-head p{color:#ecdace!important}
+body #como-fica .scene-card{
+ border:1px solid #d8ad7773!important;border-radius:19px!important;
+ background:#fffaf1!important;box-shadow:0 16px 45px #19050a66!important;
+ transition:transform .3s ease,box-shadow .3s ease!important;
+}
+body #como-fica .scene-card:hover{transform:translateY(-4px);box-shadow:0 25px 52px #19050a88!important}
+body #como-fica .scene-card img{transition:transform .55s ease;transform-origin:center}
+body #como-fica .scene-card:hover img{transform:scale(1.035)}
+body #entrega.section.trust-compact{
+ width:min(1180px,calc(100% - 40px))!important;margin:45px auto!important;
+ background:linear-gradient(120deg,#f1e1c1,#fff9ed)!important;
+ border:1px solid #eccb8f!important;border-radius:23px!important;
+ box-shadow:0 16px 50px #040f0b4d!important;
+}
+body #entrega .trust-compact-copy .eyebrow{color:#8d2931!important}
+body #entrega .trust-compact-copy h2{color:#34251e!important}
+body #entrega .trust-compact-copy p{color:#6a5546!important}
+body #entrega .delivery-regions>div{background:#fffaf3!important;border:1px solid #ddbc8c!important}
+body #duvidas.section.christmas-faq{
+ background:radial-gradient(ellipse at 8% 10%,#b78b4b27,transparent 35%),
+ linear-gradient(145deg,#10382b,#0b251e)!important;
+ padding:clamp(50px,7vw,95px) 20px!important;
+}
+body #duvidas .section-heading .eyebrow{color:#f3cb86!important}
+body #duvidas .section-heading h2{color:#fff3df!important}
+body #duvidas .faq-simple details{
+ background:rgba(255,250,236,.96)!important;border:1px solid #d8bb88!important;
+ box-shadow:0 8px 18px #07180f26!important;
+ transition:background .22s ease,transform .22s ease;
+}
+body #duvidas .faq-simple details[open]{background:#fffefa!important;transform:translateY(-2px)}
+body .final-cta.final-cta-story{border:1px solid #cda76f88!important;box-shadow:0 21px 58px #0318105b!important}
+body .final-cta.final-cta-story .final-cta-copy{
+ background:linear-gradient(155deg,#f5e7ce,#fff6e8)!important;
+}
+body .final-cta.final-cta-story .final-cta-copy h2{color:#3b281d!important}
+body .final-cta.final-cta-story .final-cta-copy p{color:#665548!important}
+body .final-cta.final-cta-story .btn-primary{transition:transform .25s ease,box-shadow .25s ease}
+body .final-cta.final-cta-story .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 30px #38141440}
+/* One ambient star between visual chapters; no animated emoji or floating overlays. */
+body #kits .section-heading:after{
+ content:"";display:block;width:58px;height:2px;border-radius:5px;
+ margin:20px auto 0;background:linear-gradient(90deg,transparent,#f1ce87,transparent);
+ animation:holidayGlimmer 4.5s ease-in-out infinite;
+}
+@keyframes holidayGlimmer{0%,100%{opacity:.55;transform:scaleX(.8)}50%{opacity:1;transform:scaleX(1.15)}}
+@media(max-width:700px){
+ body #kits.section.kits-section{padding:43px 14px 58px!important}
+ body #kits .section-heading h2{font-size:clamp(2.3rem,9.1vw,3.4rem)!important}
+ body #como-fica.section.scene-section{padding:48px 14px 54px!important}
+ body #como-fica .scene-head h2{font-size:clamp(2.5rem,10vw,3.7rem)!important}
+ body #entrega.section.trust-compact{width:calc(100% - 28px)!important;margin:22px auto 35px!important;padding:21px 15px!important}
+ body #duvidas.section.christmas-faq{padding:46px 14px 58px!important}
+ body #duvidas .section-heading h2{font-size:clamp(2.5rem,9vw,3.8rem)!important}
+ body .final-cta.final-cta-story{margin-top:27px!important;margin-bottom:30px!important}
+}
+@media(hover:none){
+ body #kits .product-card:hover,body #como-fica .scene-card:hover,body .final-cta.final-cta-story .btn-primary:hover{transform:none!important}
+ body #como-fica .scene-card:hover img{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ body #kits .section-heading:after{animation:none!important}
+ body #kits .product-card,body #como-fica .scene-card,body #como-fica .scene-card img{transition:none!important;transform:none!important}
+}
