@@ -1,16 +1,51 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#123d2e"><title>Minha conta e pedidos | Papai Noel Passou Aqui</title><link rel="stylesheet" href="styles.css"><style>
-body{min-height:100dvh;background:radial-gradient(circle at 20% 0,rgba(215,176,91,.19),transparent 30%),linear-gradient(120deg,#0c3428,#194a38 55%,#742c3a);color:#392c24}.account-header{padding:18px max(16px,calc((100vw - 1000px)/2));color:#fff2dc;display:flex;justify-content:space-between;align-items:center;gap:10px}.account-header strong{font:400 1.35rem Georgia,serif}.account-main{width:min(100% - 24px,870px);margin:26px auto 60px;padding:clamp(19px,4vw,42px);border:1px solid #dbb87b;border-radius:26px;background:#fffaf0;box-shadow:0 28px 70px #081b1760}.account-main h1{font:400 clamp(2.3rem,6vw,3.8rem)/1.04 Georgia,serif;color:#4a2825;margin:8px 0 12px}.account-main p{color:#706155;line-height:1.65}.account-forms{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:23px}.account-panel{border:1px solid #e1d1b9;border-radius:17px;background:#fffefa;padding:20px;display:grid;align-content:start;gap:10px}.account-panel h2{font:400 1.65rem Georgia,serif;margin:0}.account-panel label{display:grid;gap:5px;font-size:.8rem;font-weight:800}.account-panel input{width:100%;min-height:46px;padding:10px 12px;border:1px solid #dacbb5;border-radius:10px;font:inherit}.account-panel .btn{width:100%;margin-top:5px}.account-note{font-size:.78rem;color:#78685c}.account-error{color:#ac2635;font-weight:700}.account-dashboard{display:grid;gap:18px}.account-headline{display:flex;justify-content:space-between;gap:10px;align-items:center}.account-list{display:grid;gap:12px}.account-order{border:1px solid #e1d1b9;padding:17px;border-radius:14px;background:#fffdf7;display:grid;gap:10px}.account-order strong{color:#194e3a}.account-order-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.account-order small{color:#7b6a5c}.account-actions{display:flex;gap:10px;flex-wrap:wrap}.account-actions a,.account-actions button{flex:1;min-width:150px;text-align:center}.account-guide{padding:12px;background:#f1e6d5;border-radius:12px;font-size:.78rem}@media(max-width:650px){.account-forms{grid-template-columns:1fr}.account-main{margin:12px auto;padding:17px;border-radius:18px}.account-header strong{font-size:1.13rem}.account-panel{padding:15px}.account-actions{display:grid}}
-.account-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.account-stages span{font-size:.66rem;background:#eee5d8;color:#7d7169;border-radius:8px;padding:7px 8px}.account-stages span.done{background:#e6f2e7;color:#166348;font-weight:800}.account-order-detail{padding:11px;background:#f8efe2;border-radius:9px}.account-order-detail summary{cursor:pointer;font-weight:800;color:#235b43;font-size:.78rem}.account-order-detail div{font-size:.78rem;line-height:1.6;padding-top:5px;overflow-wrap:anywhere}@media(max-width:460px){.account-stages{grid-template-columns:repeat(2,minmax(0,1fr))}}</style></head><body><header class="account-header"><a href="index.html"><strong>Papai Noel Passou Aqui</strong></a><a href="pedido.html">Acompanhar pedido</a></header><main class="account-main"><span class="eyebrow">SUA ÁREA DE NATAL</span><h1>Suas surpresas, em um só lugar.</h1><p>Crie sua conta para guardar e acompanhar pedidos sem precisar solicitar atualizações à equipe.</p>
-<div id="authArea" class="account-forms">
-<form id="loginForm" class="account-panel"><h2>Entrar</h2><label>E-mail<input id="loginEmail" type="email" autocomplete="email" required></label><label>Senha<input id="loginPassword" type="password" autocomplete="current-password" required></label><button type="submit" class="btn btn-primary">Entrar na minha conta</button><span id="loginError" class="account-error" role="status"></span></form>
-<form id="registerForm" class="account-panel"><h2>Criar minha conta</h2><label>Seu nome<input id="registerName" autocomplete="name" required minlength="2"></label><label>E-mail<input id="registerEmail" type="email" autocomplete="email" required></label><label>Senha (mínimo 10 caracteres)<input id="registerPassword" type="password" autocomplete="new-password" required minlength="10"></label><button class="btn btn-primary" type="submit">Criar acesso</button><span class="account-note">Cadastro gratuito por e-mail. Seu WhatsApp é utilizado para o atendimento, não como senha.</span><span id="registerError" class="account-error" role="status"></span></form>
-</div>
-<div id="accountDashboard" class="account-dashboard" hidden><div class="account-headline"><div><h2 id="welcomeName"></h2><p>Atualizações reais do seu pedido.</p></div><button id="logout" class="btn btn-secondary" type="button">Sair</button></div>
-<div class="account-panel"><h2>Meus pedidos</h2><div id="accountOrders" class="account-list"></div><div class="account-guide">Tem um pedido novo? Vincule usando o número e a chave privada entregues no checkout.</div>
-<form id="claimForm" class="account-panel"><label>Número do pedido<input id="claimOrderId" required placeholder="NATAL-..."></label><label>Chave privada do pedido<input id="claimKey" required placeholder="Código privado"></label><button class="btn btn-primary">Adicionar aos meus pedidos</button><span id="claimError" role="status" class="account-error"></span></form></div>
-</div>
-<div class="account-actions" style="margin-top:20px"><a href="https://wa.me/5513974100193?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20minha%20conta" rel="noopener" target="_blank" class="btn btn-secondary">Preciso de ajuda pelo WhatsApp</a><a href="entrega-e-prazos.html" class="btn btn-secondary">Entrega e prazos</a></div>
-</main><script>
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#102f28"><title>Minha conta e pedidos | Papai Noel Passou Aqui</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="customer-experience.css?v=20261028-premium"></head>
+<body class="cx-page">
+<header class="cx-header"><div class="cx-header-inner">
+  <a class="cx-brand" href="index.html"><span class="cx-brand-mark" aria-hidden="true">✦</span><span class="cx-brand-copy"><strong>Papai Noel Passou Aqui</strong><small>A MAGIA ESTÁ NOS DETALHES</small></span></a>
+  <nav class="cx-nav" aria-label="Menu"><a href="index.html">Loja</a><a href="pedido.html">Acompanhar</a><a href="minha-conta.html" aria-current="page">Minha conta</a></nav>
+</div></header>
+<main class="cx-shell">
+  <div class="cx-crumb">ÁREA DO CLIENTE <span aria-hidden="true">/</span> NATAL 2026</div>
+  <h1 class="cx-headline">Um lugar para acompanhar <span class="cx-accent">cada surpresa.</span></h1>
+  <p class="cx-lead">Seus pedidos, personalizações e atualizações organizados de forma simples. Você continua podendo comprar sem cadastro.</p>
+  <div id="authArea" class="cx-auth-layout">
+    <aside class="cx-auth-visual"><img src="assets/product/kit-personalizado.webp" alt="Kit Personalizado Papai Noel Passou Aqui com itens para a surpresa de Natal" loading="lazy"><div class="cx-visual-content"><small>EXCLUSIVO PARA SUA FAMÍLIA</small><h2>O encanto continua depois do pedido.</h2><p>Veja cada etapa da preparação e guarde seus pedidos em um único lugar.</p></div></aside>
+    <section class="cx-auth-area" aria-label="Acesso à conta">
+      <div class="cx-tabs" role="tablist" aria-label="Escolha como acessar">
+        <button class="cx-tab" id="loginTab" type="button" role="tab" aria-selected="true" aria-controls="loginForm">Entrar</button>
+        <button class="cx-tab" id="registerTab" type="button" role="tab" aria-selected="false" aria-controls="registerForm">Criar conta</button>
+      </div>
+      <form id="loginForm" class="cx-form" role="tabpanel" aria-labelledby="loginTab"><h2>Bem-vindo de volta.</h2><p class="cx-form-intro">Entre para acompanhar seus pedidos.</p>
+        <label>E-mail<input id="loginEmail" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" required></label>
+        <label>Senha<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Sua senha" required></label>
+        <button class="cx-btn" type="submit">Entrar na minha conta <span aria-hidden="true">→</span></button>
+        <span id="loginError" class="cx-status" role="status"></span>
+      </form>
+      <form id="registerForm" class="cx-form" role="tabpanel" aria-labelledby="registerTab" hidden><h2>Guarde suas memórias.</h2><p class="cx-form-intro">Uma conta gratuita para acompanhar tudo.</p>
+        <label>Como podemos te chamar?<input id="registerName" autocomplete="name" placeholder="Seu nome" minlength="2" required></label>
+        <label>Seu e-mail<input id="registerEmail" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" required></label>
+        <label>Crie uma senha<input id="registerPassword" type="password" autocomplete="new-password" placeholder="No mínimo 10 caracteres" minlength="10" required></label>
+        <button class="cx-btn" type="submit">Criar minha conta <span aria-hidden="true">→</span></button>
+        <span id="registerError" class="cx-status" role="status"></span>
+        <p class="cx-help">Não enviaremos código por SMS ou WhatsApp. Seu cadastro usa e-mail e senha.</p>
+      </form>
+      <div class="cx-auth-foot"><span>Já fez uma compra?</span><a class="cx-mini-link" href="pedido.html">Acompanhar sem entrar</a></div>
+    </section>
+  </div>
+  <section id="accountDashboard" class="cx-dashboard" hidden>
+    <div class="cx-dashboard-intro"><div><span class="cx-kicker">SUA CONTA</span><h2 id="welcomeName"></h2><p>Seus pedidos são atualizados conforme o andamento registrado.</p></div><button id="logout" class="cx-btn cx-btn-outline" type="button">Sair da conta</button></div>
+    <div class="cx-workspace">
+      <section class="cx-panel-main" aria-label="Seus pedidos"><div class="cx-section-title"><h3>Meus pedidos</h3><a class="cx-mini-link" href="index.html#kits">Ver kits</a></div><div id="accountOrders" class="cx-list" aria-live="polite"></div></section>
+      <aside class="cx-side">
+        <div class="cx-side-note"><small>ACOMPANHAMENTO</small><h3>Seu Natal em boas mãos.</h3><p>Aqui você consulta a etapa registrada para cada compra, da confirmação à conclusão.</p><a href="entrega-e-prazos.html">Entenda os prazos →</a></div>
+        <form id="claimForm" class="cx-claim"><span class="cx-kicker">JÁ TEM UM PEDIDO?</span><h3>Adicionar uma compra</h3><p class="cx-help">Use o número e a chave privada gerados no checkout.</p><label>Número do pedido<input id="claimOrderId" required autocomplete="off" placeholder="NATAL-..."></label><label>Chave de acesso<input id="claimKey" required autocomplete="off" placeholder="Código privado do pedido"></label><button class="cx-btn" type="submit">Vincular pedido</button><span id="claimError" class="cx-status" role="status"></span></form>
+      </aside>
+    </div>
+  </section>
+</main>
+<footer class="cx-footer"><span>© Papai Noel Passou Aqui · Atendimento (13) 97410-0193</span><div><a href="entrega-e-prazos.html">Entrega</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5513974100193" target="_blank" rel="noopener">WhatsApp</a></div></footer>
+<script>
 const $=s=>document.querySelector(s);const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function api(path,options={}){const r=await fetch("/api/customer/"+path,{credentials:"same-origin",cache:"no-store",...options});const d=await r.json();if(!r.ok)throw Error(d.error||"Não foi possível continuar");return d}
@@ -49,4 +84,16 @@ $("#registerForm").onsubmit=e=>{e.preventDefault();signIn("register")};
 $("#logout").onclick=async()=>{await api("auth",{method:"DELETE"});location.reload()};
 $("#claimForm").onsubmit=async e=>{e.preventDefault();const el=$("#claimError");el.textContent="Vinculando...";try{await api("orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:$("#claimOrderId").value.trim().toUpperCase(),accessKey:$("#claimKey").value.trim()})});el.textContent="Pedido adicionado à sua conta.";$("#claimKey").value="";await loadOrders()}catch(ex){el.textContent=ex.message}};
 api("auth").then(d=>{if(d.authenticated&&d.customer)showCustomer(d.customer)}).catch(()=>{});
+
+function chooseAuthTab(which){
+ const register=which==="register";
+ $("#loginForm").hidden=register;$("#registerForm").hidden=!register;
+ $("#loginTab").setAttribute("aria-selected",String(!register));
+ $("#registerTab").setAttribute("aria-selected",String(register));
+ if(location.hash==="#criar-conta"&&!register)history.replaceState(null,"",location.pathname);
+}
+$("#loginTab").addEventListener("click",()=>chooseAuthTab("login"));
+$("#registerTab").addEventListener("click",()=>chooseAuthTab("register"));
+if(location.hash==="#criar-conta")chooseAuthTab("register");
+
 </script></body></html>
