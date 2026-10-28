@@ -171,6 +171,7 @@ function clearCepResult(){
  confirmedCep="";
  $("#address").value="";$("#addressFoundText").textContent="";
  $("#addressResult").hidden=true;
+ $("#deliveryEstimate").textContent="";
 }
 async function lookupCep(raw){
  if(cepRequest)cepRequest.abort();
@@ -186,6 +187,7 @@ async function lookupCep(raw){
   const address=[data.logradouro,data.bairro,data.localidade,data.uf].filter(Boolean).join(" • ");
   if(!data.localidade||!data.uf||!address)throw Error("INCOMPLETE");
   $("#address").value=address;$("#addressFoundText").textContent=address;
+  $("#deliveryEstimate").textContent=["SP","RJ","PR"].includes(data.uf)?"Entrega estimada: 2 a 4 dias para "+data.uf+".":"Entrega estimada: 3 a 5 dias para "+data.uf+".";
   $("#addressResult").hidden=false;confirmedCep=raw;
   setCepStatus("Endereço encontrado. Complete apenas o número e o complemento.","success");
  }catch(error){
