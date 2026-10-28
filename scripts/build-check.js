@@ -53,10 +53,10 @@ for(const rel of ["hero-clean.css","premium-experience.css","checkout-premium.cs
 // Fail deployment if any local stylesheet requested by an HTML page is absent from dist.
 for(const rel of staticFiles.filter(x=>x.endsWith(".html"))){
  const html=fs.readFileSync(path.join(dist,rel),"utf8");
- for(const match of html.matchAll(/<link\\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/gi)){
+ for(const match of html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/gi)){
   const url=match[1].split("?")[0];
-  if(/^(?:https?:)?\\/\\//.test(url)||url.startsWith("data:"))continue;
-  const local=url.replace(/^\\//,"");
+  if(/^(?:https?:)?\/\//.test(url)||url.startsWith("data:"))continue;
+  const local=url.replace(/^\//,"");
   if(!fs.existsSync(path.join(dist,local)))throw new Error(rel+" references missing stylesheet "+local);
  }
 }
