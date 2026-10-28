@@ -120,3 +120,9 @@ body.checkout-page .pix-qr-stage{filter:drop-shadow(0 12px 23px rgba(66,45,30,.1
  .natal-stars,.checkout-page-shell:before,.checkout-page .checkout-step.active,.checkout-page .address-result{animation:none!important}
  body.checkout-page *{scroll-behavior:auto!important;transition:none!important}
 }
+
+/* Display guarantees for payment transition and footer layout. */
+body.checkout-page .checkout-page-main[hidden],body.checkout-page .checkout-payment-scene[hidden]{display:none!important}
+body.checkout-page .checkout-page-actions{display:block!important;width:100%!important}
+body.checkout-page .checkout-page-action-buttons{display:flex!important;width:100%;align-items:center;gap:10px}
+body.checkout-page .checkout-primary-action{min-width:0}
