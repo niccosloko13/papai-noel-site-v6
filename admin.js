@@ -50,7 +50,7 @@ async function api(path,options={}){
 async function loadServer(){
  try{
  const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
- serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();
+ serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
@@ -58,6 +58,20 @@ async function loadServer(){
   loadProducts();
   $("#productsMsg").textContent="Banco de dados indisponível: é possível visualizar os campos, mas não salvar até configurar DATABASE_URL.";;
  }
+}
+async function loadSummary(){
+ try{
+  const x=await api("summary");
+  $("#mRevenue").textContent=money(x.revenue);
+  $("#mRevenueSub").textContent=x.paid+" pedidos pagos";
+  $("#mOrders").textContent=x.orders.toLocaleString("pt-BR");
+  $("#mOrdersSub").textContent=x.today+" hoje";
+  $("#mTicket").textContent=money(x.ticketAverage);
+  $("#mPending").textContent=x.awaiting.toLocaleString("pt-BR");
+  $("#mMonth").textContent=x.month.toLocaleString("pt-BR");
+  $("#mBasic").textContent=x.basic.toLocaleString("pt-BR");
+  $("#mPersonal").textContent=x.personal.toLocaleString("pt-BR");
+ }catch(e){$("#mRevenueSub").textContent="Falha ao carregar resumo: "+e.message}
 }
 async function loadAnalytics(){
  try{
