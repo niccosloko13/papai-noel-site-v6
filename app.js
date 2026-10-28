@@ -25,31 +25,63 @@ const cartExpanded=cart=>cart.map(i=>({product:productById(i.id),qty:Math.max(1,
 
 function renderProducts(){
   const discount=Number(pixConfig().discount)||0;
-  grid.innerHTML=PRODUCTS.map(p=>`
+  grid.innerHTML=PRODUCTS.map(p=>{
+    const count=p.id==="basic"?"6 pares + 1 pegada solta":"10 pares + 1 pegada solta";
+    const extras=p.benefits.filter((_,i)=>i>0);
+    return `
   <article class="product-card product-card--${p.id} ${p.badge?"recommended":""}">
     <figure class="product-card-media">
       <img src="${p.image}" alt="Kit ${p.name} Papai Noel Passou Aqui" loading="lazy">
-    </figure>
-    <div class="product-card-body">
-      <div class="product-card-kicker">
-        <span>${p.id==="personal"?"KIT 2":"KIT 1"}</span>
+      <div class="product-media-badges">
+        <span>KIT ${p.id==="personal"?"2":"1"}</span>
         ${p.badge?`<b>${p.badge}</b>`:""}
       </div>
-      <div class="product-top"><h3>Kit ${p.name}</h3></div>
-      <p class="product-prop">${p.prop}</p>
-      <div class="product-quick-spec">${p.id==="basic"?"13 pegadas • 22 × 8 cm • vinil removível":"21 pegadas • 22 × 8 cm • itens personalizados"}</div>
-      <div class="benefits">${p.benefits.slice(0,6).map(x=>`<span>${x}</span>`).join("")}</div>
-      <details class="product-specs"><summary>Detalhes do kit <span>+</span></summary><div>${p.id==="basic"?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Inclui:</b> adesivo de janela, carta padrão, certificado padrão e guia de aplicação.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`:`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm, vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Uso:</b> aplicar em piso liso, seco e limpo. Evite superfície porosa, molhada ou recém-pintada.</p>`}</div></details>
-      <div class="price-row">
-        <div><small>Preço</small><strong>${money(p.price)}</strong></div>
-        <div class="pix-price"><small>no Pix • −${discount}%</small><strong>${money(discounted(p.price))}</strong></div>
+    </figure>
+
+    <div class="product-card-body">
+      <div class="product-heading">
+        <div>
+          <small>${p.id==="personal"?"EXPERIÊNCIA PERSONALIZADA":"EXPERIÊNCIA ESSENCIAL"}</small>
+          <h3>Kit ${p.name}</h3>
+        </div>
+        ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
       </div>
-      <div class="product-actions">
-        <button class="btn btn-primary btn-holiday" data-add-cart="${p.id}">Adicionar ao carrinho</button>
-        <button class="btn btn-secondary" data-buy="${p.name}">Escolher este kit</button>
+
+      <p class="product-prop">${p.prop}</p>
+
+      <div class="product-count">
+        <span aria-hidden="true">✓</span>
+        <div><small>PEGADAS INCLUÍDAS</small><strong>${count}</strong></div>
+      </div>
+
+      <div class="product-includes">
+        <small>O KIT TAMBÉM INCLUI</small>
+        <div class="product-includes-grid">
+          ${extras.map(x=>`<span><i aria-hidden="true">✓</i>${x}</span>`).join("")}
+        </div>
+      </div>
+
+      <details class="product-specs">
+        <summary>Medidas, material e cuidados <span>+</span></summary>
+        <div>${p.id==="basic"
+          ?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Inclui:</b> adesivo de janela, carta padrão, certificado padrão e guia de aplicação.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
+          :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
+      </details>
+
+      <div class="product-buy-block">
+        <div class="price-row">
+          <div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div>
+          <div class="pix-price"><small>PIX • ${discount}% OFF</small><strong>${money(discounted(p.price))}</strong></div>
+        </div>
+
+        <div class="product-actions product-actions-conversion">
+          <button class="btn btn-primary btn-holiday" data-buy="${p.name}">Escolher este kit</button>
+          <button class="product-cart-link" data-add-cart="${p.id}" type="button">+ Adicionar ao carrinho</button>
+        </div>
       </div>
     </div>
-  </article>`).join("");
+  </article>`;
+  }).join("");
 }
 renderProducts();
 
