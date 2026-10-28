@@ -319,16 +319,8 @@ document.querySelector("#closeCart").addEventListener("click",()=>cartDialog.clo
 document.querySelector("#cartShop").addEventListener("click",()=>{cartDialog.close();document.querySelector("#kits").scrollIntoView({behavior:"smooth"})});
 document.querySelector("#cartCheckout").addEventListener("click",()=>openCheckoutWithItems(getCart(),{fromCart:true}));
 
-child.addEventListener("input",()=>{
-  const n=child.value.trim()||"Miguel";
-  previewName.textContent=`Na casa do ${n}`;
-  if(!letter.value.trim())previewLetter.textContent=`Querido ${n}, continue sendo essa criança incrível. Com carinho, Papai Noel.`;
-});
-letter.addEventListener("input",()=>{
-  count.textContent=letter.value.length;
-  const n=child.value.trim()||"Miguel";
-  previewLetter.textContent=letter.value.trim()||`Querido ${n}, continue sendo essa criança incrível. Com carinho, Papai Noel.`;
-});
+child.addEventListener("input",updateLetterPreview);
+letter.addEventListener("input",updateLetterPreview);
 next.addEventListener("click",async()=>{
   if(!validateStep())return;
   if(step<3){step++;renderStep();return}
