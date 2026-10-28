@@ -106,3 +106,8 @@ body .hero-clean .hero-clean-cta:focus-visible{outline:3px solid #f7d586;outline
 @media(prefers-reduced-motion:reduce){
  body .hero-clean .hero-clean-sparkles i{animation:none!important;transform:none!important}
 }
+
+/* neutralize earlier cinematic pseudo-layers */
+body .hero.hero-clean:before,body .hero.hero-clean:after{display:none!important;content:none!important}
+body .hero.hero-clean .hero-clean-photo:before{display:none!important}
+body .hero.hero-clean h1{overflow-wrap:normal!important}
