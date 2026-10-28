@@ -123,7 +123,7 @@ test('Kit Essencial não pede personalização inexistente', async ({ page }) =>
   await expect(page.locator('#childName')).toBeHidden();
   await expect(page.locator('#letterText')).toBeHidden();
   await expect(page.locator('#letterPreviewWrap')).toBeHidden();
-  await expect(page.locator('.checkout-step-kicker')).toContainText('CONFERÊNCIA');
+  await expect(page.locator('.checkout-step[data-step="1"] .checkout-step-kicker')).toContainText('CONFERÊNCIA');
 });
 
 test('CTA fixo não cobre kits nem checkout', async ({ page }) => {
