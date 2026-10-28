@@ -11,6 +11,7 @@ const discounted=value=>Math.round(value*(1-(Number(pixConfig().discount)||0)/10
 const productById=id=>PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id);
 
 const trackStoreEvent=(name,data={})=>{
+  window.natalAnalytics?.track(name,data);
   try{
     const events=JSON.parse(localStorage.getItem("natal_events")||"[]");
     const params=new URLSearchParams(location.search);
