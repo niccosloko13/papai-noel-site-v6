@@ -19,7 +19,28 @@ const steps=[...document.querySelectorAll(".checkout-step")];
 const child=$("#childName"),letter=$("#letterText"),previewName=$("#previewName"),previewLetter=$("#previewLetter"),count=$("#letterCount");
 const next=$("#checkoutNext"),back=$("#checkoutBack"),progress=$("#checkoutProgress");
 const letterExpand=$("#letterExpand");
-letterExpand?.addEventListener("click",()=>{const expanded=letterExpand.getAttribute("aria-expanded")==="true";letterExpand.setAttribute("aria-expanded",String(!expanded));$("#letterPreviewWrap").classList.toggle("is-expanded",!expanded);letterExpand.querySelector(".letter-expand-label").textContent=expanded?"Ampliar carta":"Reduzir carta";});
+const letterDialog=$("#letterDialog");
+function showLetterDialog(){
+ updatePreview();
+ const paper=$("#letterPreviewPaper").cloneNode(true);
+ paper.removeAttribute("id");
+ paper.querySelectorAll("[id]").forEach(el=>el.removeAttribute("id"));
+ paper.classList.add("natal-letter-full-paper");
+ $("#letterDialogContent").replaceChildren(paper);
+ letterDialog.showModal();
+ document.body.classList.add("letter-dialog-open");
+}
+function closeLetterDialog(){
+ if(letterDialog.open)letterDialog.close();
+ document.body.classList.remove("letter-dialog-open");
+}
+letterExpand?.addEventListener("click",showLetterDialog);
+$("#basicLetterTrigger")?.addEventListener("click",showLetterDialog);
+$("#reviewLetterTrigger")?.addEventListener("click",showLetterDialog);
+$("#closeLetterDialog")?.addEventListener("click",closeLetterDialog);
+$("#letterDialogDone")?.addEventListener("click",closeLetterDialog);
+letterDialog?.addEventListener("close",()=>document.body.classList.remove("letter-dialog-open"));
+letterDialog?.addEventListener("click",e=>{if(e.target===letterDialog)closeLetterDialog()});
 function updatePriceDisplay(){const amount=money(total());$("#stepOneKitPrice").textContent=amount;$("#checkoutFooterTotal").textContent=amount;$("#checkoutFooterPrice").hidden=step===3;}
 
 function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
@@ -71,8 +92,8 @@ function renderStep(){
  document.body.dataset.checkoutStep=String(step);
  back.hidden=step===1;
  next.textContent=step===3?"Gerar meu Pix":step===1?"Continuar para entrega":"Conferir minha surpresa";
- const titles=["Vamos preparar a surpresa?","Para onde vai essa magia?","Tudo pronto para emocionar."];
- const descriptions=["Os detalhes que tornam esse Natal único.","O endereço aparece sozinho ao digitar o CEP.","Confira a surpresa antes de finalizar."];
+ const titles=["Seu kit de Natal","O endereço da surpresa","Confira antes do Pix"];
+ const descriptions=["Uma surpresa especial começa aqui.","Vamos encontrar seu endereço.","Todos os detalhes reunidos."];
  $("#checkoutMomentTitle").textContent=titles[step-1];
  $("#checkoutMomentText").textContent=descriptions[step-1];
  if(step===3)renderReview();
