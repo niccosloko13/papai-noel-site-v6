@@ -10,7 +10,7 @@ async function checkSession(){
   const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});
   const data=await r.json();
   if(r.ok&&data.authenticated)openApp();
-  else if(!data.configured)err.textContent="Acesso ainda não ativado na hospedagem.";
+  else if(!data.configured)err.textContent="Configuração pendente na Vercel: "+[...(data.missing||[]),...(data.invalid||[]).map(x=>x+" (inválida)")].join(", ");
  }catch{err.textContent="Não foi possível verificar o acesso."}
 }
 async function logout(){
@@ -24,7 +24,7 @@ form.addEventListener("submit",async e=>{
  try{
   const r=await fetch("/api/admin/auth",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("#loginUser").value.trim(),password:$("#loginPass").value})});
   const data=await r.json();
-  if(!r.ok){err.textContent=data.error||"Acesso não autorizado";return}
+  if(!r.ok){err.textContent=r.status===503?("Verifique na Vercel: "+[...(data.missing||[]),...(data.invalid||[]).map(x=>x+" (inválida)")].join(", ")):data.error||"Acesso não autorizado";return}
   $("#loginPass").value="";err.textContent="";openApp();
  }catch{err.textContent="Falha de conexão. Tente novamente."}
  finally{button.disabled=false}
