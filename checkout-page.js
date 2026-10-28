@@ -129,6 +129,10 @@ async function createOrder(){
  if(!response.ok)throw Error(data.error||"Não foi possível iniciar o pagamento");
  currentClaim=data.claim;
  try{localStorage.setItem("natal_customer_order_access",JSON.stringify({id:data.id,accessKey:data.claim}))}catch{}
+ fetch("/api/customer/auth",{credentials:"same-origin",cache:"no-store"}).then(r=>r.ok?r.json():null).then(customer=>{
+  if(!customer?.authenticated)return;
+  return fetch("/api/customer/orders",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:data.id,accessKey:data.claim})});
+ }).catch(()=>{});
  currentReceiver=data.receiverName;
  const order={...request,id:data.id,total:data.total,pixPayload:data.pixPayload,discountPercent:data.discountPercent};
  if(pending.fromCart)localStorage.setItem("natal_cart","[]");
