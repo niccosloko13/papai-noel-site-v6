@@ -75,7 +75,7 @@ function validate(){
  const active=$('.checkout-step[data-step="'+step+'"]');
  active.querySelectorAll("[required]").forEach(el=>{
   if(el.hidden||el.closest("[hidden]"))return;
-  if(!el.value.trim()){el.setAttribute("aria-invalid","true");ok=false}else el.removeAttribute("aria-invalid");
+  if(!el.value.trim()||!el.checkValidity()){el.setAttribute("aria-invalid","true");ok=false}else el.removeAttribute("aria-invalid");
  });
  return ok;
 }
@@ -134,6 +134,14 @@ function showPayment(order){
 child.addEventListener("input",updatePreview);letter.addEventListener("input",updatePreview);
 next.addEventListener("click",()=>{if(!validate())return;if(step<3){step++;renderStep();return}const o=createOrder();if(o)showPayment(o)});
 back.addEventListener("click",()=>{if(step>1){step--;renderStep()}});
+$("#cep").addEventListener("input",()=>{
+ $("#address").value="";
+ $("#addressResult").hidden=true;
+ const btn=$("#findCep");
+ btn.classList.remove("is-found");
+ const label=btn.querySelector("span:last-child");
+ if(label)label.textContent="Buscar endereço";
+});
 $("#findCep").addEventListener("click",async()=>{
  const raw=$("#cep").value.replace(/\D/g,"");if(raw.length!==8)return alert("Digite um CEP válido.");
  const b=$("#findCep"),label=b.querySelector("span:last-child");b.disabled=true;if(label)label.textContent="Buscando...";
