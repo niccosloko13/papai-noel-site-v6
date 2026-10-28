@@ -69,7 +69,18 @@ async function showCustomer(customer){
  $("#authArea").hidden=true;$("#accountDashboard").hidden=false;$("#welcomeName").textContent="Olá, "+customer.name;
  await loadOrders();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{if(!document.hidden)loadOrders()},30000);
  const last=(()=>{try{return JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}")}catch{return {}}})();
- if(last.id&&last.accessKey){$("#claimOrderId").value=last.id;$("#claimKey").value=last.accessKey}
+ if(last.id&&last.accessKey){
+  $("#claimOrderId").value=last.id;$("#claimKey").value=last.accessKey;
+  if(!sessionStorage.getItem("natal_auto_link_"+last.id)){
+   try{
+    await api("orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:last.id,accessKey:last.accessKey})});
+    sessionStorage.setItem("natal_auto_link_"+last.id,"1");
+    $("#claimError").textContent="Sua última compra já está nesta conta.";
+    $("#claimKey").value="";
+    await loadOrders();
+   }catch(error){$("#claimError").textContent="Você pode adicionar sua compra usando os dados abaixo."}
+  }
+ }
 }
 async function signIn(action){
  const pre=action==="register"?"register":"login";
