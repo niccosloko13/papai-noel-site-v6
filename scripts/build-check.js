@@ -36,6 +36,7 @@ const staticFiles=[
   "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js",
   "styles.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
+  "hero-rebuild.css","premium-experience.css","hero-clean.css",
   "robots.txt","sitemap.xml"
 ];
 const staticDirs=["assets","vendor"];
@@ -47,6 +48,8 @@ for(const rel of staticDirs){
   fs.cpSync(path.join(root,rel),path.join(dist,rel),{recursive:true});
 }
 
+for(const rel of staticFiles){if(!fs.existsSync(path.join(dist,rel)))throw new Error("Build output missing "+rel);}
+for(const rel of ["hero-clean.css","premium-experience.css","checkout-premium.css"]){if(!fs.statSync(path.join(dist,rel)).size)throw new Error("Empty stylesheet "+rel);}
 if(!fs.existsSync(path.join(dist,"index.html")))throw new Error("dist/index.html was not generated");
 
 console.log("Build passed.");
