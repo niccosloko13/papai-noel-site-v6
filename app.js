@@ -348,7 +348,7 @@ function updateOrder(id,patch){
 function createOrder(){
   const cfg=pixConfig();
   if(!cfg.key||!cfg.receiverName){
-    alert("O Pix ainda não foi configurado. Abra admin.html e preencha a chave e o nome do recebedor.");
+    alert("Pagamento por Pix temporariamente indisponível. Fale com nosso atendimento para concluir a compra.");
     return null;
   }
   const id=`NATAL-${Date.now().toString().slice(-7)}`;
