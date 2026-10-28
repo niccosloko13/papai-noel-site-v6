@@ -12,7 +12,7 @@ const required=[
   "robots.txt","sitemap.xml",
   "api/_db.js","api/checkout.js","api/admin/auth.js",
   "api/admin/orders.js","api/admin/settings.js",
-  "api/order-status.js","api/events.js","api/admin/analytics.js","api/_customer.js","api/customer/auth.js","api/customer/orders.js"
+  "api/order-status.js","api/events.js","api/admin/analytics.js","api/admin/summary.js","api/_customer.js","api/customer/auth.js","api/customer/orders.js"
 ];
 
 for(const rel of required){
