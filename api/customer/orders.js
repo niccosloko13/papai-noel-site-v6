@@ -16,6 +16,6 @@ module.exports=async function(req,res){
    return res.json({ok:true});
   }
   const {rows}=await db().query(`SELECT o.id,o.status,o.created_at,o.updated_at,o.data FROM natal_customer_orders c JOIN natal_orders o ON o.id=c.order_id WHERE c.customer_id=$1 ORDER BY o.created_at DESC LIMIT 100`,[customerId]);
-  return res.json({orders:rows.map(r=>({id:r.id,status:r.status,createdAt:r.created_at,updatedAt:r.updated_at,items:r.data.items||[],total:r.data.total,childName:r.data.childName||"",address:r.data.address||"",number:r.data.number||"",complement:r.data.complement||""}))});
+  return res.json({orders:rows.map(r=>({id:r.id,status:r.status,createdAt:r.created_at,updatedAt:r.updated_at,items:r.data.items||[],total:r.data.total,childName:r.data.childName||"",letter:r.data.letter||"",customerName:r.data.customerName||"",phone:r.data.phone||"",cep:r.data.cep||"",address:r.data.address||"",number:r.data.number||"",complement:r.data.complement||""}))});
  }catch(e){console.error("Customer orders",e.code||e.message);return res.status(503).json({error:"Não foi possível carregar seus pedidos"})}
 };
