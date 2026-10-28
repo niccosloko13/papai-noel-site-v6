@@ -75,7 +75,7 @@ const todayKey=()=>new Date().toLocaleDateString("pt-BR");
 
 function metrics(){
  const orders=getOrders();
- const paid=orders.filter(o=>["Pago","Produção","Enviado"].includes(o.status));
+ const paid=orders.filter(o=>["Pago","Produção","Enviado","Concluído"].includes(o.status));
  const informed=orders.filter(o=>o.status==="Pagamento informado");
  const revenue=paid.reduce((s,o)=>s+Number(o.total||0),0);
  const today=orders.filter(o=>new Date(o.createdAt).toLocaleDateString("pt-BR")===todayKey());
@@ -90,13 +90,27 @@ function metrics(){
 
 function kitLabel(o){return esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name).join(", ")||o.plan||"Kit")}
 function orderRow(o){
- return '<article class="order-row"><div class="order-top"><div><b>'+esc(o.id)+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+esc(o.status||"—")+'</span></div>'+
+ const id=esc(o.id),status=esc(o.status||"—"),contact=String(o.phone||"").replace(/\D/g,"");
+ const details='<details class="order-detail"><summary>Ver dados completos do pedido</summary>'+
+ '<div class="order-detail-grid">'+
+ '<div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div>'+
+ '<div><small>WHATSAPP</small><strong>'+esc(o.phone||"—")+'</strong></div>'+
+ '<div><small>PERSONALIZAÇÃO</small><strong>'+esc(o.childName||"Sem personalização")+'</strong></div>'+
+ '<div><small>MENSAGEM</small><p>'+esc(o.letter||"Mensagem padrão")+'</p></div>'+
+ '<div><small>ENDEREÇO</small><p>'+esc([o.address,o.number,o.complement].filter(Boolean).join(", "))+'</p></div>'+
+ '<div><small>CEP</small><strong>'+esc(o.cep||"—")+'</strong></div>'+
+ '<div><small>ITENS</small><p>'+esc((o.items||[]).map(i=>i.qty+"× "+i.name+" — "+money(i.unitPrice)).join(" • "))+'</p></div>'+
+ '<div><small>VALOR FINAL</small><strong>'+money(o.total)+'</strong></div>'+
+ '</div></details>';
+ return '<article class="order-row"><div class="order-top"><div><b>'+id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+status+'</span></div>'+
  '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>KIT</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL</small><strong>'+money(o.total)+'</strong></div></div>'+
- '<div class="order-actions">'+
- (o.status==="Pagamento informado"?'<button class="pay" data-status-id="'+o.id+'" data-status="Pago">Confirmar pagamento</button>':'')+
- (["Pago"].includes(o.status)?'<button data-status-id="'+o.id+'" data-status="Produção">Enviar para produção</button>':'')+
- (o.status==="Produção"?'<button data-status-id="'+o.id+'" data-status="Enviado">Marcar como enviado</button>':'')+
- '<a href="https://wa.me/55'+String(o.phone||"").replace(/\D/g,"")+'" target="_blank">WhatsApp</a></div></article>';
+ details+'<div class="order-actions">'+
+ (o.status==="Pagamento informado"?'<button class="pay" data-status-id="'+id+'" data-status="Pago">Confirmar pagamento</button>':'')+
+ (o.status==="Pago"?'<button data-status-id="'+id+'" data-status="Produção">Iniciar produção</button>':'')+
+ (o.status==="Produção"?'<button data-status-id="'+id+'" data-status="Enviado">Marcar como enviado</button>':'')+
+ (o.status==="Enviado"?'<button data-status-id="'+id+'" data-status="Concluído">Concluir pedido</button>':'')+
+ (!["Concluído","Cancelado"].includes(o.status)?'<button data-status-id="'+id+'" data-status="Cancelado">Cancelar pedido</button>':'')+
+ (contact?'<a href="https://wa.me/55'+contact+'" target="_blank" rel="noopener">WhatsApp</a>':'')+'</div></article>';
 }
 function bindStatus(){
  $$("[data-status-id]").forEach(b=>b.onclick=async()=>{
