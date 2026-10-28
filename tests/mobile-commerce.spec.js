@@ -65,7 +65,7 @@ test('compra completa do Kit Personalizado: carta, CEP, revisão e Pix', async (
   await page.goto('/');
 
   await page.getByRole('button',{name:'Escolher este kit'}).nth(1).click();
-  await expect(page.locator('#checkoutDialog')).toBeVisible();
+  await expect(page).toHaveURL(/checkout\.html/);
   await expect(page.locator('#checkoutCartMini')).toHaveCount(0);
   await expect(page.locator('#letterPreviewWrap')).toBeVisible();
 
@@ -95,7 +95,7 @@ test('compra completa do Kit Personalizado: carta, CEP, revisão e Pix', async (
   await expect(page.locator('#reviewTotal')).toContainText('59,42');
 
   await page.locator('#checkoutNext').click();
-  await expect(page.locator('#pixDialog')).toBeVisible();
+  await expect(page.locator('#paymentScene')).toBeVisible();
   await expect(page.locator('#pixChildName')).toHaveText('Miguel');
   await expect(page.locator('#pixQrCanvas > *').first()).toBeVisible();
   await expect(page.locator('#pixCopyPaste')).not.toHaveValue('');
@@ -105,8 +105,9 @@ test('checkout desktop mostra formulário e prévia juntos numa única tela', as
   await page.setViewportSize({width:1440,height:900});
   await page.goto('/');
   await page.getByRole('button',{name:'Escolher este kit'}).nth(1).click();
+  await expect(page).toHaveURL(/checkout\.html/);
   const metrics=await page.evaluate(()=>{
-    const shell=document.querySelector('.checkout-shell').getBoundingClientRect();
+    const shell=document.querySelector('.checkout-page-shell').getBoundingClientRect();
     const fields=document.querySelector('.personalization-fields').getBoundingClientRect();
     const preview=document.querySelector('.letter-preview-wrap').getBoundingClientRect();
     return {shellH:shell.height,viewport:innerHeight,fieldsTop:fields.top,previewTop:preview.top,fieldsRight:fields.right,previewLeft:preview.left};
@@ -120,6 +121,7 @@ test('Kit Essencial não pede personalização inexistente', async ({ page }) =>
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');
   await page.getByRole('button',{name:'Escolher este kit'}).first().click();
+  await expect(page).toHaveURL(/checkout\.html/);
   await expect(page.locator('#childName')).toBeHidden();
   await expect(page.locator('#letterText')).toBeHidden();
   await expect(page.locator('#letterPreviewWrap')).toBeHidden();
