@@ -2,6 +2,7 @@
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
+const esc=v=>String(v??"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","\x27":"&#39;"}[c]));
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
 function openApp(){login.hidden=true;app.hidden=false;loadServer()}
 async function checkSession(){
@@ -63,10 +64,10 @@ function metrics(){
  $("#recentOrders").innerHTML=orders.slice(0,5).map(orderRow).join("")||'<p class="muted">Nenhum pedido ainda.</p>';
 }
 
-function kitLabel(o){return (o.items||[]).map(i=>(i.qty||1)+"× "+i.name).join(", ")||o.plan||"Kit"}
+function kitLabel(o){return esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name).join(", ")||o.plan||"Kit")}
 function orderRow(o){
- return '<article class="order-row"><div class="order-top"><div><b>'+o.id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+(o.status||"—")+'</span></div>'+
- '<div class="order-meta"><div><small>CLIENTE</small><strong>'+(o.customerName||"—")+'</strong></div><div><small>KIT</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL</small><strong>'+money(o.total)+'</strong></div></div>'+
+ return '<article class="order-row"><div class="order-top"><div><b>'+esc(o.id)+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+esc(o.status||"—")+'</span></div>'+
+ '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>KIT</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL</small><strong>'+money(o.total)+'</strong></div></div>'+
  '<div class="order-actions">'+
  (o.status==="Pagamento informado"?'<button class="pay" data-status-id="'+o.id+'" data-status="Pago">Confirmar pagamento</button>':'')+
  (["Pago"].includes(o.status)?'<button data-status-id="'+o.id+'" data-status="Produção">Enviar para produção</button>':'')+
