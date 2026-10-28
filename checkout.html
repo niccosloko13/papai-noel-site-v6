@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="checkout-premium.css?v=20261028-b">
+<link rel="stylesheet" href="checkout-premium.css?v=20261028-mobile-v2">
 </head>
 <body class="checkout-page">
 <div class="natal-atmosphere" aria-hidden="true"><div class="natal-stars"></div><div class="natal-fir natal-fir-left"></div><div class="natal-fir natal-fir-right"></div><span class="natal-ornament natal-ornament-one"></span><span class="natal-ornament natal-ornament-two"></span></div>
@@ -31,7 +31,7 @@
 </aside>
 <section class="checkout-page-shell">
   <div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
-  <div class="checkout-page-progress">
+  <div class="checkout-page-progress" aria-label="Etapas do pedido">
     <div class="checkout-progress"><span id="checkoutProgress"></span></div>
     <div class="checkout-progress-steps">
       <span data-progress-step="1"><i>1</i><b>Personalizar</b></span>
@@ -49,7 +49,7 @@
         <div>
           <small>SEU KIT</small>
           <strong id="stepOneKitTitle">Kit Personalizado</strong>
-          <span id="stepOneKitShort">Uma surpresa feita para quem vai viver esse Natal.</span>
+          <span id="stepOneKitShort">Uma surpresa feita para quem vai viver esse Natal.</span><span class="checkout-product-value"><strong id="stepOneKitPrice">R$ 59,42</strong><small>no Pix</small></span>
         </div>
       </div>
 
@@ -76,9 +76,9 @@
         <div class="letter-preview-wrap compact-letter-preview" id="letterPreviewWrap">
           <div class="letter-preview-head">
             <div><small>PRÉVIA</small><strong>Assim vai ficar a carta</strong></div>
-            <span>ao vivo</span>
+            <button type="button" class="letter-expand" id="letterExpand" aria-expanded="false" aria-controls="letterPreviewPaper"><span class="letter-expand-label">Ampliar carta</span><span aria-hidden="true">↗</span></button>
           </div>
-          <div class="letter-preview" aria-live="polite">
+          <div class="letter-preview" id="letterPreviewPaper" aria-live="polite">
             <div class="letter-seal" aria-hidden="true"><span>PN</span></div>
             <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
             <small class="letter-preview-kicker">Mensagem especial do Papai Noel</small>
@@ -137,7 +137,7 @@
     </div>
   </section>
 
-  <footer class="checkout-page-actions"><div class="checkout-page-action-buttons"><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary checkout-primary-action" id="checkoutNext">Continuar</button></div><div class="checkout-reassurance">✦ Você pode conferir tudo antes de pagar</div></footer>
+  <footer class="checkout-page-actions"><div class="checkout-page-action-buttons"><div class="checkout-footer-price" id="checkoutFooterPrice" aria-live="polite"><small>NO PIX</small><strong id="checkoutFooterTotal">—</strong></div><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary checkout-primary-action" id="checkoutNext">Continuar</button></div><div class="checkout-reassurance">✦ Você pode conferir tudo antes de pagar</div></footer>
 </section>
 </main>
 
