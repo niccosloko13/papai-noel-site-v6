@@ -25,6 +25,10 @@ function updatePreview(){
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
 function syncMode(){
+ $("#stepOneKitImage").src=primaryProduct.image;
+ $("#stepOneKitImage").alt="Kit "+primaryProduct.name+" completo";
+ $("#stepOneKitTitle").textContent="Kit "+primaryProduct.name;
+ $("#stepOneKitShort").textContent=primaryProduct.prop;
  const personalizationLayout=$("#personalizationLayout");
  const basicSummary=$("#basicCheckoutSummary");
  child.required=personalized;
@@ -46,8 +50,6 @@ function syncMode(){
    if(h)h.textContent="Seu Kit Essencial já vem pronto.";
    if(p)p.textContent="Confira rapidamente o que você vai receber antes de seguir para a entrega.";
    if(stepOneLabel)stepOneLabel.textContent="Conferir kit";
-   $("#basicSummaryImage").src=primaryProduct.image;
-   $("#basicSummaryImage").alt="Kit "+primaryProduct.name+" completo";
    $("#basicSummaryTitle").textContent="Kit "+primaryProduct.name;
    $("#basicSummaryText").textContent=primaryProduct.prop;
    $("#basicSummaryList").innerHTML=(primaryProduct.benefits||[]).map(x=>'<span><i>✓</i>'+x+'</span>').join("");
@@ -60,6 +62,7 @@ function renderStep(){
    el.classList.toggle("is-active",n===step);el.classList.toggle("is-done",n<step);
  });
  progress.style.width=(step/3*100)+"%";
+ document.body.dataset.checkoutStep=String(step);
  back.hidden=step===1;
  next.textContent=step===3?"Gerar meu Pix":"Continuar";
  if(step===3)renderReview();
@@ -130,7 +133,7 @@ next.addEventListener("click",()=>{if(!validate())return;if(step<3){step++;rende
 back.addEventListener("click",()=>{if(step>1){step--;renderStep()}});
 $("#findCep").addEventListener("click",async()=>{
  const raw=$("#cep").value.replace(/\D/g,"");if(raw.length!==8)return alert("Digite um CEP válido.");
- const b=$("#findCep"),old=b.textContent;b.disabled=true;b.textContent="Buscando...";
+ const b=$("#findCep"),label=b.querySelector("span:last-child");b.disabled=true;if(label)label.textContent="Buscando...";
  try{const r=await fetch("https://viacep.com.br/ws/"+raw+"/json/");const d=await r.json();if(d.erro)throw 0;
  const value=[d.logradouro,d.bairro,d.localidade,d.uf].filter(Boolean).join(" • ");$("#address").value=value;$("#addressFoundText").textContent=value;$("#addressResult").hidden=false;$("#number").focus()}
  catch{alert("Não foi possível consultar o CEP agora.")}finally{b.disabled=false;b.textContent=old}
