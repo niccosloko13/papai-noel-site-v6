@@ -10,6 +10,25 @@ const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat
 const discounted=value=>Math.round(value*(1-(Number(pixConfig().discount)||0)/100)*100)/100;
 const productById=id=>PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id);
 
+const trackStoreEvent=(name,data={})=>{
+  try{
+    const events=JSON.parse(localStorage.getItem("natal_events")||"[]");
+    const params=new URLSearchParams(location.search);
+    events.push({name,at:new Date().toISOString(),path:location.pathname,utm_source:params.get("utm_source")||"",utm_medium:params.get("utm_medium")||"",utm_campaign:params.get("utm_campaign")||"",utm_content:params.get("utm_content")||"",...data});
+    localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)));
+  }catch{}
+};
+const applySeoDraft=()=>{
+  try{
+    const c=JSON.parse(localStorage.getItem("natal_seo_config")||"null");if(!c)return;
+    if(c.title)document.title=c.title;
+    if(c.description){let m=document.querySelector('meta[name="description"]');if(m)m.setAttribute("content",c.description)}
+    if(c.image){let og=document.querySelector('meta[property="og:image"]');if(!og){og=document.createElement("meta");og.setAttribute("property","og:image");document.head.appendChild(og)}og.setAttribute("content",c.image)}
+  }catch{}
+};
+applySeoDraft();
+trackStoreEvent("page_view",{page:"landing"});
+
 const grid=document.querySelector("#productGrid");
 const cartDialog=document.querySelector("#cartDialog");
 const cartItemsEl=document.querySelector("#cartItems");
@@ -121,6 +140,7 @@ function addToCart(id){
   if(found)found.qty=Math.min(9,(Number(found.qty)||1)+1);
   else cart.push({id,qty:1});
   saveCart(cart);
+  trackStoreEvent("add_to_cart",{product_id:id});
   cartDialog.showModal();
 }
 function changeCartQty(id,delta){
@@ -218,6 +238,7 @@ function renderCheckoutMini(){
 function openCheckoutWithItems(items,{fromCart=false}={}){
   const normalized=(items&&items.length?items:[{id:currentProduct.id,qty:1}]).map(i=>({id:i.id,qty:Math.max(1,Number(i.qty)||1)}));
   localStorage.setItem("natal_checkout_pending",JSON.stringify({items:normalized,fromCart,createdAt:Date.now()}));
+  trackStoreEvent("begin_checkout",{items:normalized});
   window.location.href="checkout.html";
 }
 function openCheckout(name){
