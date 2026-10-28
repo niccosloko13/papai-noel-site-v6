@@ -72,6 +72,7 @@ function renderStep(){
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function validate(){
+ if(step===2&&(!$("#address").value||$("#addressResult").hidden)){alert("Busque o CEP para confirmar seu endereço.");return false}
  let ok=true;
  const active=$('.checkout-step[data-step="'+step+'"]');
  active.querySelectorAll("[required]").forEach(el=>{
