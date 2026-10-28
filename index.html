@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="conversion-refresh.css?v=hero-familia-20261028">
-  <link rel="stylesheet" href="premium-experience.css?v=20261028-hero-checkout-v3"><link rel="stylesheet" href="hero-poster-2026.css?v=2"><link rel="stylesheet" href="holiday-sections.css?v=20261028-b"><link rel="stylesheet" href="postal-christmas.css?v=1">
+  <link rel="stylesheet" href="premium-experience.css?v=20261028-hero-checkout-v3"><link rel="stylesheet" href="hero-poster-2026.css?v=2"><link rel="stylesheet" href="holiday-sections.css?v=20261028-b"><link rel="stylesheet" href="mobile-shopping.css?v=20261028-1"><link rel="stylesheet" href="postal-christmas.css?v=1">
 </head>
 <body>
 <div class="announcement-bar" role="note">
@@ -85,8 +85,8 @@
   <section class="section kits-section" id="kits">
     <div class="section-heading section-heading-stage">
       <span class="eyebrow">ESCOLHA SEU KIT</span>
-      <h2>A magia começa com um kit.</h2>
-      <p>Escolha a surpresa ideal para sua família.</p>
+      <h2>Escolha sua surpresa.</h2>
+      <p>Dois kits. A mesma magia.</p>
     </div>
     <div class="product-grid" id="productGrid" tabindex="0" role="region" aria-label="Kits disponíveis"></div>
   </section>
@@ -94,11 +94,12 @@
   <section class="section scene-section" id="como-fica">
     <div class="scene-head">
       <span class="eyebrow">COMO FICA EM CASA</span>
-      <h2>Detalhes pequenos.<br>Uma memória gigante.</h2>
-      <p>Veja como os detalhes transformam a casa.</p>
+      <h2>Veja a magia acontecer.</h2>
+      <p>Deslize para descobrir cada detalhe.</p>
     </div>
 
-    <div class="scene-grid">
+    <div class="scene-carousel-header"><span>03 detalhes da surpresa</span><div class="scene-carousel-controls"><button type="button" id="scenePrev" aria-label="Foto anterior">←</button><button type="button" id="sceneNext" aria-label="Próxima foto">→</button></div></div>
+    <div class="scene-grid" id="sceneGallery" role="region" aria-label="Fotos de como fica o kit na casa" tabindex="0">
       <article class="scene-card scene-card-main">
         <img src="assets/product/pegadas-site.webp" alt="Pegadas do Papai Noel formando um caminho pelo piso até a árvore de Natal">
         <div class="scene-copy">
@@ -123,8 +124,7 @@
         </div>
       </article>
     </div>
-
-
+    <div class="scene-carousel-dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span></div>
   </section>
 
   <section class="section postal-section" id="entrega" aria-labelledby="postal-title">
