@@ -4,8 +4,8 @@ let client = null;
 let clientSource = null;
 
 const ENV_KEYS = [
-  "DATABASE_URL",
   "DATABASE_URL_POOLED",
+  "DATABASE_URL",
   "DATABASE_URL_UNPOOLED",
   "POSTGRES_URL",
   "POSTGRES_URL_NON_POOLING",
