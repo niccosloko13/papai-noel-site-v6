@@ -50,3 +50,35 @@ test.describe('Desktop — consistência de seções',()=>{
   expect(overflow).toBeLessThanOrEqual(3);
  });
 });
+
+test.describe('iPhone — fixes reported by customer screenshots',()=>{
+ test.use({...devices['iPhone 13'],browserName:'webkit'});
+ test('header CTA and footer text are readable; sticky bar avoids footer',async({page})=>{
+  await page.route('**/api/events',route=>route.fulfill({status:202,json:{ok:true}}));
+  await page.route('**/api/products',route=>route.fulfill({status:503,json:{error:'fallback'}}));
+  await page.goto('/index.html');
+  const login=page.locator('.header-account-cta');
+  await expect(login).toBeVisible();
+  const contrast=await login.evaluate(el=>{
+    const cs=getComputedStyle(el);
+    return {foreground:cs.color,background:cs.backgroundColor,opacity:cs.opacity};
+  });
+  expect(contrast.foreground).toBe('rgb(255, 249, 237)');
+  expect(contrast.background).toBe('rgb(23, 78, 59)');
+  const headings=await page.locator('.footer-complete nav strong').evaluateAll(nodes=>nodes.map(el=>getComputedStyle(el).color));
+  expect(headings.length).toBeGreaterThanOrEqual(2);
+  expect(headings.every(v=>v==='rgb(247, 231, 189)')).toBeTruthy();
+  await page.locator('.site-footer').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  await expect(page.locator('#mobileBuyBar')).toBeHidden();
+ });
+ test('account login is reached without oversized opening artwork',async({page})=>{
+  await page.route('**/api/customer/auth',r=>r.fulfill({json:{authenticated:false}}));
+  await page.goto('/minha-conta.html');
+  const art=await page.locator('.cx-auth-visual').boundingBox();
+  expect(art.height).toBeLessThanOrEqual(130);
+  const login=await page.locator('#loginForm').boundingBox();
+  expect(login.y).toBeLessThan(840);
+  await expect(page.locator('#loginForm input[type="email"]')).toBeVisible();
+ });
+});
