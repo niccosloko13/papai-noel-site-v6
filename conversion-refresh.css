@@ -89,3 +89,36 @@ body .desktop-nav>a{font-size:clamp(10px,.9vw,13px)}
  body .final-cta-story .final-product-card{max-width:260px}
 }
 @media(prefers-reduced-motion:reduce){.experience-list article,body .scene-card,body .product-card{transition:none!important}.experience-list article:hover,body .scene-card:hover,body .product-card:hover{transform:none!important}}
+
+/* iPhone Safari 390px QA fixes and conversion polish */
+@media(max-width:860px){
+ body .header-inner{min-width:0;max-width:100%;display:flex;align-items:center;gap:8px;padding-inline:12px}
+ body .header-inner .brand{min-width:0;flex:1 1 auto}
+ body .header-inner .brand-copy{min-width:0}
+ body .header-inner .brand-copy strong{font-size:clamp(.76rem,3vw,.99rem);white-space:normal;overflow-wrap:normal}
+ body .header-actions{flex:0 0 auto;display:flex;align-items:center;gap:6px!important;min-width:0}
+ body .header-actions .header-cta{display:none!important}
+ body .header-actions .header-account-cta{display:inline-flex;max-width:110px;min-height:39px;white-space:normal;text-align:center;line-height:1.12;padding:7px 9px}
+ body .header-actions .cart-trigger{flex:none;width:39px;min-width:39px;min-height:39px;padding:0}
+ body .header-actions .mobile-menu summary{width:39px;height:39px;border-radius:11px}
+ body .desktop-nav{display:none!important}
+}
+@media(max-width:410px){
+ body .header-inner{padding-inline:9px;gap:6px}
+ body .brand-copy strong{font-size:.73rem!important}
+ body .brand-copy small{font-size:.45rem!important}
+ body .header-actions .header-account-cta{max-width:79px;padding-inline:5px;font-size:9px}
+ body .header-actions .cart-trigger,body .header-actions .mobile-menu summary{width:34px;min-width:34px;min-height:36px;height:36px}
+ body .header-actions{gap:4px!important}
+ body .hero-campaign-title{font-size:clamp(2.9rem,11vw,4.2rem)!important;max-width:100%!important;overflow-wrap:normal}
+ body .hero-copy{min-width:0;max-width:100%!important}
+ body .hero-story-note p{font-size:.88rem}
+ body .hero-actions{display:grid!important;grid-template-columns:1fr;align-items:stretch;gap:10px}
+ body .hero-actions>a{width:100%;max-width:none;text-align:center;justify-content:center}
+ body .hero-media{min-width:0}
+ body .scene-card{min-width:0}
+}
+body .hero-product-photo img{background:#183a2e}
+body .product-card,body .experience-list article,body .scene-card{contain:layout style}
+body .product-card a:focus-visible,body .product-card button:focus-visible{outline:3px solid #bf985f;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
