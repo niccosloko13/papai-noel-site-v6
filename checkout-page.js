@@ -12,7 +12,7 @@ const personalized=expanded.some(i=>i.product.id==="personal");
 const primaryItem=expanded.find(i=>i.product.id==="personal")||expanded[0];
 const primaryProduct=primaryItem.product;
 const trackStoreEvent=(name,data={})=>{window.natalAnalytics?.track(name,data);try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
-trackStoreEvent("checkout_view",{product_id:primaryProduct.id});
+trackStoreEvent("begin_checkout",{product_id:primaryProduct.id});
 let step=1,currentOrderId=null,currentClaim=null,currentReceiver="";
 const $=s=>document.querySelector(s);
 const steps=[...document.querySelectorAll(".checkout-step")];
