@@ -216,18 +216,9 @@ function renderCheckoutMini(){
     </div>`).join("");
 }
 function openCheckoutWithItems(items,{fromCart=false}={}){
-  checkoutItems=items.length?items:[{id:currentProduct.id,qty:1}];
-  checkoutFromCart=fromCart;
-  const first=productById(checkoutItems[0].id);
-  if(first)currentProduct=first;
-  renderCheckoutMini();
-  renderSummary();
-  syncPersonalizationMode();
-  updateLetterPreview();
-  step=1;
-  renderStep();
-  if(cartDialog.open)cartDialog.close();
-  dialog.showModal();
+  const normalized=(items&&items.length?items:[{id:currentProduct.id,qty:1}]).map(i=>({id:i.id,qty:Math.max(1,Number(i.qty)||1)}));
+  localStorage.setItem("natal_checkout_pending",JSON.stringify({items:normalized,fromCart,createdAt:Date.now()}));
+  window.location.href="checkout.html";
 }
 function openCheckout(name){
   const p=PRODUCTS.find(p=>p.name===name)||currentProduct;
