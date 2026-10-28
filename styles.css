@@ -4847,3 +4847,27 @@ h1,h2,h3,.brand-copy strong,.product-card h3,.checkout-step h2,.final-cta h2,.tr
   .mobile-menu{display:block}
   .header-actions{gap:8px!important}
 }
+
+
+/* ===== QA fixes from real browser run ===== */
+.brand-copy small{
+  color:#76552f!important;
+}
+.field-optional{
+  color:#62554d!important;
+}
+.personalization-fields label>small{
+  color:#62554d!important;
+}
+.checkout-step label[hidden],
+#letterPreviewWrap[hidden]{
+  display:none!important;
+}
+@media(max-width:699px){
+  .microtrust-refined{
+    overflow:visible!important;
+    flex-wrap:wrap!important;
+    white-space:normal!important;
+    row-gap:7px!important;
+  }
+}
