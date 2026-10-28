@@ -62,7 +62,7 @@ async function loadOrders(){
    (step<0?'<p>Este pedido foi cancelado. Contate o atendimento para mais informações.</p>':'<div class="account-stages">'+phases.map((label,i)=>'<span class="'+(i<=step?"done":"")+'">'+(i<=step?"✓ ":"")+label+'</span>').join("")+'</div>')+
    '<details class="account-order-detail"><summary>Ver detalhes da compra</summary><div><strong>Nome da criança:</strong> '+esc(o.childName||"Não personalizado")+'</div><div><strong>Mensagem:</strong> '+esc(o.letter||"Padrão")+'</div><div><strong>Entrega:</strong> '+esc([o.address,o.number,o.complement,o.cep].filter(Boolean).join(", "))+'</div><div><strong>Contato:</strong> '+esc(o.phone||"")+'</div></details>'+
    '<div class="account-order-row"><span>'+money(o.total)+'</span><small>Atualizado: '+new Date(o.updatedAt).toLocaleString("pt-BR")+'</small></div></article>';
- }).join(""):'<p>Você ainda não vinculou pedidos a esta conta.</p>';
+ }).join("") :'<div class="cx-empty"><span class="cx-kicker">AINDA NÃO HÁ PEDIDOS</span><h4>Seu próximo Natal começa aqui.</h4><p>Escolha um kit ou vincule uma compra que já fez usando o número do pedido.</p><a href="index.html#kits" class="cx-btn">Explorar os kits →</a></div>';
  }catch(e){$("#accountOrders").textContent=e.message}
 }
 async function showCustomer(customer){
