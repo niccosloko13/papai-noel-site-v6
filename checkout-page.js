@@ -18,6 +18,9 @@ const $=s=>document.querySelector(s);
 const steps=[...document.querySelectorAll(".checkout-step")];
 const child=$("#childName"),letter=$("#letterText"),previewName=$("#previewName"),previewLetter=$("#previewLetter"),count=$("#letterCount");
 const next=$("#checkoutNext"),back=$("#checkoutBack"),progress=$("#checkoutProgress");
+const letterExpand=$("#letterExpand");
+letterExpand?.addEventListener("click",()=>{const expanded=letterExpand.getAttribute("aria-expanded")==="true";letterExpand.setAttribute("aria-expanded",String(!expanded));$("#letterPreviewWrap").classList.toggle("is-expanded",!expanded);letterExpand.querySelector(".letter-expand-label").textContent=expanded?"Ampliar carta":"Reduzir carta";});
+function updatePriceDisplay(){const amount=money(total());$("#stepOneKitPrice").textContent=amount;$("#checkoutFooterTotal").textContent=amount;$("#checkoutFooterPrice").hidden=step===3;}
 
 function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
 function updatePreview(){
@@ -25,6 +28,7 @@ function updatePreview(){
  previewName.textContent="Querido "+n+",";
  previewLetter.textContent=letter.value.trim()||"Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!";
  count.textContent=letter.value.length;
+ if(letterExpand?.getAttribute("aria-expanded")==="true")$("#letterPreviewPaper").scrollIntoView({block:"nearest",behavior:"instant"});
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
 function syncMode(){
@@ -73,6 +77,7 @@ function renderStep(){
  $("#checkoutMomentTitle").textContent=titles[step-1];
  $("#checkoutMomentText").textContent=descriptions[step-1];
  if(step===3)renderReview();
+ updatePriceDisplay();
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function validate(){
@@ -215,14 +220,14 @@ $("#pixPaidButton").addEventListener("click",async()=>{
 fetch("/api/checkout-config",{cache:"no-store"}).then(async r=>{
  const data=await r.json();if(!r.ok)throw Error(data.error||"Configuração indisponível");
  publicPixConfig=data;
- if(step===3)renderReview();
+ if(step===3)renderReview();updatePriceDisplay();
 }).catch(()=>{publicPixConfig={enabled:false,discount:15,shippingFlat:0}});
-syncMode();updatePreview();renderStep();
+syncMode();updatePreview();renderStep();updatePriceDisplay();
 fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
  if(!data||!Array.isArray(data.products))return;
  for(const product of products){const latest=data.products.find(p=>p.id===product.id);if(latest)Object.assign(product,latest)}
  if(!primaryProduct.active){alert("Este kit está temporariamente indisponível.");location.href="index.html#kits";return}
- syncMode();if(step===3)renderReview();
+ syncMode();updatePriceDisplay();if(step===3)renderReview();
 }).catch(()=>{});
 
 })();
