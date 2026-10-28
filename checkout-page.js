@@ -142,12 +142,12 @@ async function createOrder(){
 function showPayment(order){
  currentOrderId=order.id;
  const tracking=$("#trackOrderLink");
- tracking.href="pedido.html?id="+encodeURIComponent(order.id);
+ tracking.href="minha-conta.html";
  tracking.hidden=false;
  document.querySelector(".checkout-page-main").hidden=true;
  $("#paymentScene").hidden=false;
  $("#pixOrderId").textContent=order.id;$("#pixOrderTotal").textContent=money(order.total);
- $("#pixReceiverLabel").textContent=currentReceiver||"Recebedor Pix";
+ $("#pixReceiverLabel").textContent=currentReceiver||"Recebedor informado no código Pix";
  $("#pixChildName").textContent=order.childName||order.customerName||"Seu pedido";
  $("#pixMagicMessage").textContent=order.childName?("A surpresa de "+order.childName+" já está quase a caminho."):"Seu pedido já está quase a caminho.";
  $("#pixCopyPaste").value=order.pixPayload;
