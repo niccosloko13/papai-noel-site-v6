@@ -1,30 +1,30 @@
 const {test,expect,devices}=require('@playwright/test');
-test.describe('Hero product-first mobile',()=>{
+test.describe('Hero Natal 2026 — arte aprovada',()=>{
  test.use({...devices['iPhone 13'],browserName:'webkit'});
- test('family, footprints, live prices and CTA remain visible and accessible',async({page},testInfo)=>{
-  await page.route('**/api/products',r=>r.fulfill({status:503,json:{error:'fallback'}}));
+ test('cartaz completo visível, clicável e sem corte no iPhone',async({page},testInfo)=>{
   await page.route('**/api/events',r=>r.fulfill({status:202,json:{ok:true}}));
   await page.goto('/index.html');
   const hero=page.locator('#inicio');
-  await expect(hero.locator('.hero-clean-photo img')).toBeVisible();
-  await expect(hero.locator('.hero-clean-overlay h1')).toBeVisible();
-  await expect(hero.locator('.hero-clean-cta')).toHaveAttribute('href','#kits');
-  await expect(hero.locator('#heroStartingPrice')).not.toHaveText('');
-  await expect(hero.locator('.hero-clean-pix')).toContainText('15% OFF');
-  const purchase=await hero.locator('.hero-clean-purchase').boundingBox();
-  const image=await hero.locator('.hero-clean-photo').boundingBox();
-  expect(purchase.y).toBeGreaterThanOrEqual(image.y);
-  expect(purchase.y+purchase.height).toBeLessThanOrEqual(image.y+image.height+2);
-  const styles=await hero.locator('.hero-clean-photo').evaluate(el=>getComputedStyle(el));
-  const horizontal=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
-  expect(horizontal).toBeLessThanOrEqual(3);
-  const bbox=await hero.boundingBox();expect(bbox.height).toBeLessThan(800);
-  await testInfo.attach('hero-iphone-13.png',{body:await hero.screenshot(),contentType:'image/png'});
+  const img=hero.locator('.hero-poster-2026-art');
+  await expect(img).toBeVisible();
+  await expect(hero.locator('.hero-poster-2026-link')).toHaveAttribute('href','#kits');
+  const dimensions=await img.evaluate(el=>({naturalWidth:el.naturalWidth,naturalHeight:el.naturalHeight,displayWidth:el.getBoundingClientRect().width,displayHeight:el.getBoundingClientRect().height}));
+  expect(dimensions.naturalWidth).toBeGreaterThan(900);
+  expect(dimensions.naturalHeight).toBeGreaterThan(1400);
+  expect(Math.abs(dimensions.displayWidth/dimensions.displayHeight-2/3)).toBeLessThan(.025);
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(3);
+  await testInfo.attach('hero-aprovado-iphone.png',{body:await hero.screenshot(),contentType:'image/png'});
+  await hero.locator('.hero-poster-2026-link').click();
+  await expect(page).toHaveURL(/#kits$/);
  });
- test('reduced motion switches off effects',async({page})=>{
-  await page.emulateMedia({reducedMotion:'reduce'});
+ test('cartaz adaptado no desktop sem distorcer proporção',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});
   await page.goto('/index.html');
-  const animation=await page.locator('.hero-clean-sparkles i:first-child').evaluate(el=>getComputedStyle(el).animationName);
-  expect(animation).toBe('none');
+  const img=page.locator('#inicio .hero-poster-2026-art');
+  await expect(img).toBeVisible();
+  const b=await img.boundingBox();
+  expect(b.width).toBeGreaterThan(400);
+  expect(Math.abs(b.width/b.height-2/3)).toBeLessThan(.025);
  });
 });
