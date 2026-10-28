@@ -2,19 +2,20 @@
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
-const SESSION_KEY="natal_admin_session";
-const LOGIN_USER="admin";
-const LOGIN_PASS="123";
-
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
 function openApp(){login.hidden=true;app.hidden=false;renderAll()}
-function logout(){sessionStorage.removeItem(SESSION_KEY);location.reload()}
-if(sessionStorage.getItem(SESSION_KEY)==="1")openApp();
-form.addEventListener("submit",e=>{
- e.preventDefault();
- if($("#loginUser").value.trim()===LOGIN_USER&&$("#loginPass").value===LOGIN_PASS){
-   sessionStorage.setItem(SESSION_KEY,"1");openApp();
- }else err.textContent="Usuário ou senha incorretos.";
+async function checkSession(){
+ try{const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});const d=await r.json();if(r.ok&&d.authenticated)openApp();else if(!d.configured)err.textContent="Painel indisponível até concluir a configuração segura."}catch{err.textContent="Não foi possível verificar a sessão."}
+}
+async function logout(){try{await fetch("/api/admin/auth",{method:"DELETE",credentials:"same-origin"})}finally{location.reload()}}
+checkSession();
+form.addEventListener("submit",async e=>{
+ e.preventDefault();err.textContent="Verificando acesso...";
+ try{
+ const r=await fetch("/api/admin/auth",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:$("#loginUser").value.trim(),password:$("#loginPass").value})});
+ const data=await r.json();if(!r.ok){err.textContent=data.error||"Acesso não autorizado";return}
+ $("#loginPass").value="";err.textContent="";openApp();
+ }catch{err.textContent="Não foi possível entrar. Tente novamente."}
 });
 $("#logoutBtn").onclick=logout;
 
