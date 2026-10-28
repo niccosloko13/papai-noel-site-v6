@@ -82,7 +82,7 @@ function renderStep(){
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function validate(){
- if(step===2&&(!$("#address").value||$("#addressResult").hidden||confirmedCep!==cepInput.value.replace(/\\D/g,""))){setCepStatus("Informe um CEP válido e aguarde o endereço aparecer.","error");$("#cep").focus();return false}
+ if(step===2&&(!$("#address").value||$("#addressResult").hidden||confirmedCep!==cepInput.value.replace(/\D/g,""))){setCepStatus("Informe um CEP válido e aguarde o endereço aparecer.","error");$("#cep").focus();return false}
  let ok=true;
  const active=$('.checkout-step[data-step="'+step+'"]');
  active.querySelectorAll("[required]").forEach(el=>{
@@ -182,20 +182,20 @@ async function lookupCep(raw){
   if(!response.ok)throw Error("NETWORK");
   const data=await response.json();
   if(data.erro)throw Error("NOT_FOUND");
-  if(raw!==cepInput.value.replace(/\\D/g,""))return;
+  if(raw!==cepInput.value.replace(/\D/g,""))return;
   const address=[data.logradouro,data.bairro,data.localidade,data.uf].filter(Boolean).join(" • ");
   if(!data.localidade||!data.uf||!address)throw Error("INCOMPLETE");
   $("#address").value=address;$("#addressFoundText").textContent=address;
   $("#addressResult").hidden=false;confirmedCep=raw;
   setCepStatus("Endereço encontrado. Complete apenas o número e o complemento.","success");
  }catch(error){
-  if(error.name==="AbortError"||raw!==cepInput.value.replace(/\\D/g,""))return;
+  if(error.name==="AbortError"||raw!==cepInput.value.replace(/\D/g,""))return;
   clearCepResult();
   setCepStatus(error.message==="NOT_FOUND"?"CEP não encontrado. Confira os números.":"Não conseguimos consultar esse CEP. Corrija ou tente novamente.","error");
  }finally{if(cepRequest===controller)cepRequest=null}
 }
 function handleCepInput(){
- const raw=cepInput.value.replace(/\\D/g,"").slice(0,8);
+ const raw=cepInput.value.replace(/\D/g,"").slice(0,8);
  cepInput.value=raw.length>5?raw.slice(0,5)+"-"+raw.slice(5):raw;
  clearTimeout(cepTimer);
  if(cepRequest){cepRequest.abort();cepRequest=null}
@@ -207,7 +207,7 @@ function handleCepInput(){
 }
 cepInput.addEventListener("input",handleCepInput);
 cepInput.addEventListener("change",()=>{
- const raw=cepInput.value.replace(/\\D/g,"");
+ const raw=cepInput.value.replace(/\D/g,"");
  if(raw.length===8&&confirmedCep!==raw){clearTimeout(cepTimer);lookupCep(raw)}
 });
 if(cepInput.value)handleCepInput();
