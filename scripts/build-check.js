@@ -3,9 +3,13 @@ const path=require("node:path");
 const cp=require("node:child_process");
 
 const root=path.resolve(__dirname,"..");
+const dist=path.join(root,"dist");
+
 const required=[
-  "index.html","checkout.html","admin.html",
-  "app.js","checkout-page.js","admin.js","store-data.js",
+  "index.html","checkout.html","admin.html","pedido.html","contato.html",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js",
+  "styles.css","admin.css","checkout-premium.css",
+  "robots.txt","sitemap.xml",
   "api/_db.js","api/checkout.js","api/admin/auth.js",
   "api/admin/orders.js","api/admin/settings.js"
 ];
@@ -24,4 +28,27 @@ const pkg=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8"));
 if(!pkg.dependencies?.["@neondatabase/serverless"])throw new Error("Missing @neondatabase/serverless dependency");
 if(!pkg.dependencies?.["@neondatabase/config"])throw new Error("Missing @neondatabase/config dependency");
 
-console.log("Build check passed:",required.length,"required files,",jsFiles.length,"JavaScript files syntax-checked.");
+fs.rmSync(dist,{recursive:true,force:true});
+fs.mkdirSync(dist,{recursive:true});
+
+const staticFiles=[
+  "index.html","checkout.html","admin.html","pedido.html","contato.html",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js",
+  "styles.css","admin.css","checkout-premium.css",
+  "robots.txt","sitemap.xml"
+];
+const staticDirs=["assets","vendor"];
+
+for(const rel of staticFiles){
+  fs.copyFileSync(path.join(root,rel),path.join(dist,rel));
+}
+for(const rel of staticDirs){
+  fs.cpSync(path.join(root,rel),path.join(dist,rel),{recursive:true});
+}
+
+if(!fs.existsSync(path.join(dist,"index.html")))throw new Error("dist/index.html was not generated");
+
+console.log("Build passed.");
+console.log("Static output:",dist);
+console.log("Files validated:",required.length);
+console.log("JavaScript syntax checked:",jsFiles.length);
