@@ -11,7 +11,7 @@ if(!expanded.length){location.href="index.html#kits";return}
 const personalized=expanded.some(i=>i.product.id==="personal");
 const primaryItem=expanded.find(i=>i.product.id==="personal")||expanded[0];
 const primaryProduct=primaryItem.product;
-const trackStoreEvent=(name,data={})=>{try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
+const trackStoreEvent=(name,data={})=>{window.natalAnalytics?.track(name,data);try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
 trackStoreEvent("checkout_view",{product_id:primaryProduct.id});
 let step=1,currentOrderId=null,currentClaim=null,currentReceiver="";
 const $=s=>document.querySelector(s);
@@ -76,6 +76,8 @@ function renderStep(){
  $("#checkoutMomentTitle").textContent=titles[step-1];
  $("#checkoutMomentText").textContent=descriptions[step-1];
  if(step===3)renderReview();
+ if(step===2)trackStoreEvent("begin_checkout",{product_id:primaryProduct.id});
+ if(step===3)trackStoreEvent("shipping_info",{product_id:primaryProduct.id});
  updatePriceDisplay();
  window.scrollTo({top:0,behavior:"smooth"});
 }
