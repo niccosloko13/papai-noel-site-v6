@@ -62,7 +62,7 @@ function syncMode(){
  $("#stepOneKitImage").src=primaryProduct.image;
  $("#stepOneKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#stepOneKitTitle").textContent="Kit "+primaryProduct.name;
- $("#stepOneKitShort").textContent=primaryProduct.prop;
+ $("#stepOneKitShort").textContent=personalized&&primaryProduct.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":primaryProduct.prop;
  const personalizationLayout=$("#personalizationLayout");
  const basicSummary=$("#basicCheckoutSummary");
  child.required=personalized;
@@ -123,7 +123,7 @@ function renderReview(){
  $("#reviewKitImage").src=primaryProduct.image;
  $("#reviewKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#reviewKitTitle").textContent="Kit "+primaryProduct.name;
- $("#reviewKitProp").textContent=primaryProduct.prop;
+ $("#reviewKitProp").textContent=personalized&&primaryProduct.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":primaryProduct.prop;
  $("#reviewKitItems").innerHTML=(primaryProduct.benefits||[]).map(x=>'<span><i>✓</i>'+x+'</span>').join("");
 
  const personLabel=$("#reviewPersonLabel");
