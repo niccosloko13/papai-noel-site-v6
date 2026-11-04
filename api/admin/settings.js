@@ -20,7 +20,18 @@ module.exports=async function(req,res){
   if(value.some(p=>typeof p.name!=="string"||!p.name.trim()||p.name.length>45||typeof p.prop!=="string"||p.prop.length>350||!Number.isFinite(p.price)||p.price<1||p.price>10000||!validImage(p.image)||!Array.isArray(p.benefits)||p.benefits.length>12||p.benefits.some(b=>typeof b!=="string"||b.length>150)||typeof p.active!=="boolean"))return res.status(400).json({error:"Dados de produto inválidos"});
   safe=value.map(p=>({id:p.id,name:p.name.trim(),price:Math.round(p.price*100)/100,prop:p.prop.trim(),image:p.image,benefits:p.benefits,active:p.active}));
  }else safe=Object.fromEntries(Object.entries(value).filter(([k])=>allowed[key].includes(k)));
- if(key==="pix"&&(Number(safe.discount)<0||Number(safe.discount)>50||Number(safe.shippingFlat)<0))return res.status(400).json({error:"Valores inválidos"});
+ if(key==="pix"){
+  safe.enabled=safe.enabled===true;
+  for(const f of ["key","displayName","receiverName","city"])safe[f]=typeof safe[f]==="string"?safe[f].trim():"";
+  safe.discount=Number(safe.discount);
+  safe.shippingFlat=Number(safe.shippingFlat);
+  const keyOk=!safe.key||(/^[0-9]{11}$/.test(safe.key)||/^[0-9]{14}$/.test(safe.key)||/^\+?[0-9]{10,15}$/.test(safe.key)||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safe.key)||/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(safe.key));
+  if(!keyOk||safe.key.length>77||safe.displayName.length>90||safe.receiverName.length>25||safe.city.length>15
+   ||!Number.isFinite(safe.discount)||safe.discount<0||safe.discount>50
+   ||!Number.isFinite(safe.shippingFlat)||safe.shippingFlat<0||safe.shippingFlat>1000
+   ||(safe.enabled&&(!safe.key||!safe.receiverName||!safe.city)))
+   return res.status(400).json({error:"Confira a chave Pix, os dados do recebedor, o desconto e o frete."});
+ }
  await db().query("INSERT INTO natal_settings(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=EXCLUDED.value,updated_at=now()",[key,JSON.stringify(safe)]);
  return res.json({ok:true});
  }catch(e){
