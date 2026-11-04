@@ -269,7 +269,7 @@ async function loadAdsAnalytics(){
  }catch(e){note.textContent="Métricas indisponíveis: "+e.message}
 }
 $("#refreshMarketingAnalytics")?.addEventListener("click",loadAdsAnalytics);
-const seoDefaults={title:"Papai Noel Passou Aqui | Kits de Natal 2026",description:"Transforme o Natal das crianças com pegadas do Papai Noel, lareira decorativa, carta e kits personalizados. Escolha seu kit e prepare uma surpresa em casa.",image:"assets/product/kit-personalizado.webp"};
+const seoDefaults={title:"Papai Noel Passou Aqui | Kits de Natal 2026",description:"Transforme o Natal das crianças com pegadas do Papai Noel, lareira decorativa, carta do Papai Noel e adesivo de janela. Escolha seu kit e prepare uma surpresa em casa.",image:"assets/product/kit-personalizado.webp"};
 function loadSeo(){
  const c={...seoDefaults,...(serverSettings.seo||{})};
  $("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;
