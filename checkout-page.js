@@ -19,7 +19,7 @@ const primaryProduct=primaryItem.product;
 const trackStoreEvent=(name,data={})=>{window.natalAnalytics?.track(name,data);try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
 trackStoreEvent("begin_checkout",{product_id:primaryProduct.id});
 trackStoreEvent("view_product",{product_id:primaryProduct.id});
-let step=1,currentOrderId=null,currentClaim=null,currentReceiver="";
+let step=1,currentOrderId=null,currentClaim=null,currentReceiver="",pixExpiresAt=null,pixTimer=null;
 const $=s=>document.querySelector(s);
 const steps=[...document.querySelectorAll(".checkout-step")];
 const child=$("#childName"),letter=$("#letterText"),previewName=$("#previewName"),previewLetter=$("#previewLetter"),count=$("#letterCount");
@@ -162,27 +162,56 @@ async function createOrder(){
   return fetch("/api/customer/orders",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:data.id,accessKey:data.claim})});
  }).catch(()=>{});
  currentReceiver=data.receiverName;
- const order={...request,id:data.id,total:data.total,pixPayload:data.pixPayload,discountPercent:data.discountPercent};
+ const order={...request,id:data.id,total:data.total,pixPayload:data.pixPayload,discountPercent:data.discountPercent,expiresAt:data.expiresAt};
  if(pending.fromCart)localStorage.setItem("natal_cart","[]");
  trackStoreEvent("order_created",{order_id:order.id,total:order.total,product_id:primaryProduct.id});
  return order;
 }
+function refreshPixTimer(){
+ const remaining=pixExpiresAt?Math.max(0,Math.ceil((pixExpiresAt-Date.now())/1000)):0;
+ const m=String(Math.floor(remaining/60)).padStart(2,"0"),s=String(remaining%60).padStart(2,"0");
+ const counter=$("#pixTimer"),note=$("#pixExpiryNote"),button=$("#pixPaidButton"),copy=$("#copyPix");
+ if(counter)counter.textContent=m+":"+s;
+ if(!remaining){
+  clearInterval(pixTimer);pixTimer=null;
+  if(note)note.textContent="O prazo para informar pagamento deste pedido terminou. Se você pagou, entre em contato com o atendimento antes de fazer outro pedido.";
+  if(button)button.disabled=true;
+  if(copy)copy.disabled=true;
+  $("#pixCopyPaste").readOnly=true;
+  $("#paymentScene").classList.add("pix-expired");
+ }
+}
 function showPayment(order){
  currentOrderId=order.id;
+ pixExpiresAt=Date.parse(order.expiresAt||"")||Date.now()+3600000;
  const tracking=$("#trackOrderLink");
- tracking.href="minha-conta.html";
- tracking.hidden=false;
+ if(tracking){tracking.href="minha-conta.html";tracking.hidden=false}
  document.querySelector(".checkout-page-main").hidden=true;
  $("#paymentScene").hidden=false;
- $("#pixOrderId").textContent=order.id;$("#pixOrderTotal").textContent=money(order.total);
+ $("#pixOrderId").textContent=order.id;
+ $("#pixOrderTotal").textContent=money(order.total);
  $("#pixReceiverLabel").textContent=currentReceiver||"Recebedor informado no código Pix";
- $("#pixChildName").textContent=order.childName||order.customerName||"Seu pedido";
- $("#pixMagicMessage").textContent=order.childName?("A surpresa de "+order.childName+" já está quase a caminho."):"Seu pedido já está quase a caminho.";
- $("#pixCopyPaste").value=order.pixPayload;
- const canvas=$("#pixQrCanvas");canvas.innerHTML="";
- if(window.QRCode)new window.QRCode(canvas,{text:order.pixPayload,width:280,height:280,colorDark:"#111111",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});else canvas.textContent="QR indisponível neste navegador. Utilize o Pix copia e cola acima.";
+ const message=$("#pixMagicMessage");
+ if(message)message.textContent=order.childName?"A surpresa de "+order.childName+" está quase pronta. Copie o Pix abaixo para finalizar.":"Sua surpresa está quase pronta. Copie o Pix abaixo para finalizar.";
+ const personalization=$("#pixChildName");if(personalization)personalization.textContent=order.childName||order.customerName||"Seu pedido";
+ const field=$("#pixCopyPaste");
+ field.value=order.pixPayload||"";
+ const canvas=$("#pixQrCanvas");canvas.replaceChildren();
+ if(!order.pixPayload){canvas.textContent="Código Pix indisponível. Não efetue pagamento.";return}
+ try{
+  if(typeof window.QRCode!=="function")throw new Error("Biblioteca do QR indisponível");
+  new window.QRCode(canvas,{text:order.pixPayload,width:248,height:248,colorDark:"#151f19",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.L});
+  if(!canvas.querySelector("canvas,img"))throw new Error("QR sem imagem");
+ }catch(err){
+  console.error("Falha ao criar QR Pix:",err.message);
+  canvas.textContent="QR Code não disponível neste aparelho. Use o código Pix copia e cola acima.";
+ }
+ if(pixTimer)clearInterval(pixTimer);
+ refreshPixTimer();
+ pixTimer=setInterval(refreshPixTimer,1000);
  window.scrollTo({top:0,behavior:"smooth"});
 }
+
 child.addEventListener("input",updatePreview);letter.addEventListener("input",updatePreview);
 next.addEventListener("click",async()=>{
  if(!validate())return;
@@ -255,6 +284,7 @@ $("#copyPix").addEventListener("click",async()=>{
  if(copied){button.textContent="Código copiado ✓"}
 });
 $("#pixPaidButton").addEventListener("click",async()=>{
+ if(pixExpiresAt&&Date.now()>=pixExpiresAt){refreshPixTimer();return}
  const b=$("#pixPaidButton");b.disabled=true;
  try{
   const response=await fetch("/api/payment-informed",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:currentOrderId,claim:currentClaim})});
