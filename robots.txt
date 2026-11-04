@@ -4,4 +4,6 @@ Disallow: /admin.html
 Disallow: /checkout.html
 Disallow: /pedido.html
 Disallow: /minha-conta.html
-Sitemap: https://papai-noel-site-v6.vercel.app/sitemap.xml
+Disallow: /pagamento-pedido.html
+Disallow: /admin.html
+Sitemap: https://papainoelpassouaqui.com.br/sitemap.xml
