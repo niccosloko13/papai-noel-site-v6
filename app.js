@@ -90,7 +90,7 @@ function renderProducts(){
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
       </div>
 
-      <p class="product-prop">${p.prop}</p>
+      <p class="product-prop">${p.id==="personal"&&p.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":p.prop}</p>
 
       <div class="product-count">
         <span aria-hidden="true">✓</span>
