@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:53.90,discountIncluded:true,prop:"Lareira decorativa com 7 pegadas, carta padrão e adesivo de janela.",benefits:["1 lareira decorativa de papelão","7 pegadas adesivas (3 pares + 1 solta)","1 carta padrão","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:59.90,discountIncluded:true,prop:"Lareira decorativa com 7 pegadas, carta padrão e adesivo de janela.",benefits:["1 lareira decorativa de papelão","7 pegadas adesivas (3 pares + 1 solta)","1 carta padrão","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
