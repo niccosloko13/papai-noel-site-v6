@@ -14,6 +14,11 @@ module.exports=async function(req,res){
   const computed=crypto.createHash("sha256").update(accessKey).digest("hex");
   if(stored.length!==computed.length||!crypto.timingSafeEqual(Buffer.from(stored),Buffer.from(computed)))return res.status(403).json({error:"Acesso não autorizado"});
   const o=r.data;
-  return res.status(200).json({order:{id,status:r.status,createdAt:r.created_at,updatedAt:r.updated_at,items:o.items||[],customerName:o.customerName||"",childName:o.childName||"",address:o.address||"",number:o.number||"",complement:o.complement||"",cep:o.cep||"",phone:o.phone||"",total:o.total,discountPercent:o.discountPercent,shipping:o.shipping}});
+  let status=r.status;
+  if(status==="Aguardando pagamento"&&o.expiresAt&&Date.parse(o.expiresAt)<=Date.now()){
+   await db().query("UPDATE natal_orders SET status='Expirado',updated_at=now() WHERE id=$1 AND status='Aguardando pagamento'",[id]);
+   status="Expirado";
+  }
+  return res.status(200).json({order:{id,status,createdAt:r.created_at,updatedAt:r.updated_at,items:o.items||[],customerName:o.customerName||"",childName:o.childName||"",address:o.address||"",number:o.number||"",complement:o.complement||"",cep:o.cep||"",phone:o.phone||"",total:o.total,discountPercent:o.discountPercent,shipping:o.shipping}});
  }catch(e){console.error("order tracking error",e.code||e.message);return res.status(503).json({error:"Acompanhamento temporariamente indisponível"})}
 };
