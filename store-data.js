@@ -30,7 +30,7 @@ window.STORE_DATA = Object.freeze({
                 "Carta padrão do Papai Noel",
                 "Adesivo de janela Papai Noel Passou Aqui"
           ],
-          "image": "assets/product/kit1-site.webp",
+          "image": "assets/hero-lareira-familia-natal-2026.avif",
           "active": true
     },
     {
