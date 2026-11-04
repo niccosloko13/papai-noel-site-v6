@@ -347,3 +347,22 @@ body.letter-dialog-open{overflow:hidden}
  body.checkout-page .review-person{padding-bottom:8px!important}
  body.checkout-page .checkout-details-disclosure .basic-summary-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* Pix mobile: QR inteiro, sem cortes e sem scroll horizontal. */
+body.checkout-page .pix-panel-special,body.checkout-page .checkout-payment-scene{max-width:100%;min-width:0}
+body.checkout-page .pix-qr-stage,body.checkout-page .pix-qr-wrap{max-width:100%;min-width:0}
+body.checkout-page #pixQrCanvas{display:flex;align-items:center;justify-content:center;max-width:100%;overflow:visible}
+body.checkout-page #pixQrCanvas img,body.checkout-page #pixQrCanvas canvas{
+ width:min(280px,100%)!important;height:auto!important;max-width:100%!important;
+ aspect-ratio:1/1;object-fit:contain;image-rendering:auto;
+}
+body.checkout-page #pixCopyPaste{width:100%;max-width:100%;overflow-wrap:anywhere;word-break:break-all;min-width:0}
+body.checkout-page .pix-payment-line{min-width:0}
+body.checkout-page .pix-payment-line>div{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){
+ body.checkout-page .pix-panel-special{width:calc(100% - 20px)!important;margin-inline:auto!important;padding:22px 14px!important}
+ body.checkout-page .pix-qr-wrap{padding:8px!important;width:min(320px,100%)!important;margin-inline:auto}
+ body.checkout-page #pixQrCanvas{width:min(280px,100%);margin-inline:auto}
+ body.checkout-page #pixQrCanvas img,body.checkout-page #pixQrCanvas canvas{width:100%!important}
+ body.checkout-page .pix-paid-special{max-width:100%;min-height:50px}
+}
