@@ -141,3 +141,13 @@ body.checkout-page .checkout-progress-steps b{font-size:11px!important}
 @media(max-width:600px){
   .checkout-page .checkout-page-header .checkout-page-secure{display:none!important}
 }
+
+/* Kit contents are the purchase decision: precise and clearly readable on mobile. */
+.product-fireplace-guarantee{display:flex;align-items:center;gap:9px;margin:11px 0 13px;padding:10px 12px;background:#eaf4eb;color:#17543d;border:1px solid #c5ddc9;border-radius:11px;font-size:12px;font-weight:850;line-height:1.4;letter-spacing:.015em}
+.product-fireplace-guarantee span{font-size:18px;color:#b58745;flex:none}
+.product-includes{background:#fffdf7;border:1px solid #e9dcca;padding:14px;border-radius:14px}
+.product-includes>small{display:block;margin-bottom:10px;color:#80542f;font-size:10px;font-weight:900;letter-spacing:.055em}
+.product-includes-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+.product-includes-grid span{display:flex!important;align-items:flex-start!important;gap:8px!important;color:#273d31!important;font-size:12px!important;line-height:1.5!important;min-width:0;overflow-wrap:anywhere}
+.product-includes-grid span i{flex:none;color:#168052;font-weight:900;font-style:normal}
+@media(max-width:600px){.product-includes{padding:12px!important}.product-includes-grid{gap:8px!important}.product-fireplace-guarantee{font-size:11px!important}}
