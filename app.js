@@ -1,11 +1,11 @@
 const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:53.90,discountIncluded:true,prop:"Lareira decorativa com 13 pegadas, carta padrão e adesivo de janela.",benefits:["1 lareira decorativa de papelão","13 pegadas adesivas (6 pares + 1 solta)","1 carta padrão","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
-const getProducts=()=>DEFAULT_PRODUCTS;
+const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
 const discounted=(value,id)=>id==='basic'?Math.round(value*100)/100:Math.round(value*(1-(Number(pixConfig().discount)||0)/100)*100)/100;
-const productById=id=>PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id);
+const productById=id=>id==="basic"?(PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id)):null;
 
 const trackStoreEvent=(name,data={})=>{
   window.natalAnalytics?.track(name,data);
@@ -86,7 +86,8 @@ function renderProducts(){
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
       </div>
 
-      <p class="product-prop">${p.prop}</p>\n      <div class="product-fireplace-guarantee"><span aria-hidden="true">✦</span> LAREIRA DECORATIVA INCLUSA NOS DOIS KITS</div>
+      <p class="product-prop">${p.prop}</p>
+      <div class="product-fireplace-guarantee"><span aria-hidden="true">✦</span> LAREIRA DECORATIVA INCLUSA NESTE KIT</div>
 
       <div class="product-count">
         <span aria-hidden="true">✓</span>
@@ -157,6 +158,7 @@ function renderCart(){
 renderCart();
 
 function addToCart(id){
+  if(id!=="basic")return;
   const cart=getCart();
   const found=cart.find(i=>i.id===id);
   if(found)found.qty=Math.min(9,(Number(found.qty)||1)+1);
@@ -258,13 +260,13 @@ function renderCheckoutMini(){
     </div>`).join("");
 }
 function openCheckoutWithItems(items,{fromCart=false}={}){
-  const normalized=(items&&items.length?items:[{id:currentProduct.id,qty:1}]).map(i=>({id:i.id,qty:Math.max(1,Number(i.qty)||1)}));
+  const normalized=[{id:"basic",qty:Math.max(1,Number(items?.find(i=>i.id==="basic")?.qty)||1)}];
   localStorage.setItem("natal_checkout_pending",JSON.stringify({items:normalized,fromCart,createdAt:Date.now()}));
   trackStoreEvent("begin_checkout",{items:normalized});
   window.location.href="checkout.html";
 }
 function openCheckout(name){
-  const p=PRODUCTS.find(p=>p.name===name)||currentProduct;
+  const p=PRODUCTS[0]||currentProduct;
   openCheckoutWithItems([{id:p.id,qty:1}],{fromCart:false});
 }
 let lastRenderedStep=1;
