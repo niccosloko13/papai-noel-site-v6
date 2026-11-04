@@ -22,7 +22,7 @@ window.STORE_DATA = Object.freeze({
     {
       "id": "basic",
       "name": "Lareira Especial de Natal",
-      "price": 53.9,
+      "price": 59.9,
       "discountIncluded": true,
       "prop": "Lareira decorativa + 7 pegadas adesivas, carta padrão e adesivo de janela. Tudo para montar a surpresa em casa.",
       "benefits": [
