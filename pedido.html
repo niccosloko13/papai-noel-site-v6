@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#102f28"><title>Acompanhe seu pedido | Papai Noel Passou Aqui</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="customer-experience.css?v=20261028-premium"></head><body class="cx-page">
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#102f28"><title>Acompanhe seu pedido | Papai Noel Passou Aqui</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="customer-experience.css?v=20261104-premium-orders-v1"></head><body class="cx-page">
 <header class="cx-header"><div class="cx-header-inner"><a class="cx-brand" href="index.html"><span class="cx-brand-mark" aria-hidden="true">✦</span><span class="cx-brand-copy"><strong>Papai Noel Passou Aqui</strong><small>A MAGIA ESTÁ NOS DETALHES</small></span></a><nav class="cx-nav" aria-label="Menu"><a href="index.html">Loja</a><a href="pedido.html" aria-current="page">Acompanhar</a><a href="minha-conta.html">Minha conta</a></nav></div></header>
 <main class="cx-shell"><div class="cx-track-layout"><section>
   <span class="cx-crumb">ACOMPANHAMENTO <span aria-hidden="true">/</span> SEU PEDIDO</span>
@@ -13,7 +13,7 @@
   </form>
   <div id="trackResult" aria-live="polite" hidden></div>
   <p id="refreshNotice" class="cx-help" hidden>Informações sincronizadas com a loja. Atualização automática a cada 30 segundos enquanto a página estiver aberta.</p>
-  <div class="cx-info-actions"><a class="cx-btn cx-btn-outline" href="minha-conta.html">Minha conta</a><a class="cx-btn cx-btn-outline" href="https://wa.me/5513974100193" target="_blank" rel="noopener">Falar com atendimento</a></div>
+  <div class="cx-info-actions"><a class="cx-btn cx-btn-outline" href="minha-conta.html">Minha conta</a><a class="cx-btn cx-btn-outline" href="https://wa.me/5513996589014" target="_blank" rel="noopener">Falar com atendimento</a></div>
 </section>
 <aside class="cx-track-aside"><img src="assets/product/kit1-site.webp" alt="Kit de Natal com pegadas e carta" loading="lazy"><div><span class="cx-kicker">DO PRIMEIRO PASSO À ENTREGA</span><h2>O melhor do Natal é a expectativa.</h2><p>Estamos organizando cada surpresa para que esse momento seja especial.</p></div></aside>
 </div></main>
@@ -22,7 +22,7 @@
 const $=x=>document.querySelector(x),q=new URLSearchParams(location.search),money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const steps=["Pedido recebido","Pagamento informado","Pagamento confirmado","Em produção","Enviado","Concluído"];
-const statusIndex={"Aguardando pagamento":0,"Pagamento informado":1,"Pago":2,"Produção":3,"Enviado":4,"Concluído":5,"Cancelado":-1};
+const statusIndex={"Aguardando pagamento":0,"Pagamento informado":1,"Pago":2,"Produção":3,"Enviado":4,"Concluído":5,"Cancelado":-1,"Expirado":-1};
 let timer;
 async function loadOrder(){
  const id=$("#orderId").value.trim().toUpperCase(),accessKey=$("#accessKey").value.trim();
@@ -33,7 +33,9 @@ async function loadOrder(){
  const o=d.order;const step=statusIndex[o.status]??0;
  $("#trackError").textContent="";
  $("#trackResult").innerHTML='<article class="track-card"><div class="track-summary"><div><small>Pedido</small><strong>'+escapeHtml(o.id)+'</strong></div><div><small>Etapa atual</small><strong class="track-status">'+escapeHtml(o.status)+'</strong></div></div>'+
- (step===-1?'<p>Este pedido foi cancelado. Fale com o atendimento se precisar de ajuda.</p>':'<div class="track-timeline">'+steps.map((s,i)=>'<div class="track-point '+(i<=step?'complete':'')+'"><span>'+(i<=step?'✓':i+1)+'</span><div><strong>'+s+'</strong><small>'+(i<=step?'Etapa registrada':'Próxima etapa')+'</small></div></div>').join("")+'</div>')+
+ (step===-1?'<p>Este pedido foi encerrado ou expirou. Se você já fez o Pix, fale com o atendimento antes de criar outra compra.</p>':'<div class="track-timeline">'+steps.map((s,i)=>'<div class="track-point '+(i<=step?'complete':'')+'"><span>'+(i<=step?'✓':i+1)+'</span><div><strong>'+s+'</strong><small>'+(i<=step?'Etapa registrada':'Próxima etapa')+'</small></div></div>').join("")+'</div>')+
+ (o.status==="Aguardando pagamento"?'<a class="cx-btn cx-pay-now" style="width:100%;margin:12px 0" href="pagamento-pedido.html?id='+encodeURIComponent(o.id)+'">Continuar pagamento Pix →</a>':'')+
+ (o.status==="Expirado"?'<p class="cx-order-warning">O prazo para pagar este pedido terminou. Se você já transferiu, entre em contato antes de criar outra compra.</p>':'')+
  '<div class="track-extra"><div><span>Kit</span><strong>'+escapeHtml((o.items||[]).map(i=>i.name+' ×'+i.qty).join(", "))+'</strong></div><div><span>Entrega</span><strong>'+escapeHtml([o.address,o.number,o.complement].filter(Boolean).join(", "))+'</strong></div><div><span>Total</span><strong>'+money(o.total)+'</strong></div></div></article>';
  $("#trackResult").hidden=false;$("#trackForm").hidden=true;$("#refreshNotice").hidden=false;
  }catch(e){$("#trackError").textContent=e.message;clearInterval(timer)}
