@@ -6,7 +6,7 @@ function configurationStatus(){
  if(!process.env.ADMIN_PASSWORD&&!process.env.ADMIN_PASSWORD_SCRYPT)missing.push("ADMIN_PASSWORD");
  if(!(process.env.ADMIN_SESSION_SECRET||""))missing.push("ADMIN_SESSION_SECRET");
  const invalid=[];
- if(process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD.length<8)invalid.push("ADMIN_PASSWORD");
+ if(process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD.length<7)invalid.push("ADMIN_PASSWORD");
  if(process.env.ADMIN_SESSION_SECRET&&process.env.ADMIN_SESSION_SECRET.length<32)invalid.push("ADMIN_SESSION_SECRET");
  if(!process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD_SCRYPT&&!/^[0-9a-f]+:[0-9a-f]{128}$/i.test(process.env.ADMIN_PASSWORD_SCRYPT))invalid.push("ADMIN_PASSWORD_SCRYPT");
  return {configured:missing.length===0&&invalid.length===0,missing,invalid};
