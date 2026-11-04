@@ -551,3 +551,12 @@ body.checkout-page .pix-redesign .pix-final-actions .pix-paid-special{max-width:
   max-height:none!important;aspect-ratio:1/1!important;
  }
 }
+
+/* Personalized kit — full contents visible before the buyer types a name. */
+.checkout-personal-includes{margin:12px 0 16px;padding:14px 16px;background:#fff9ef;border:1px solid #e5cfad;border-radius:14px;box-shadow:0 8px 25px rgba(54,37,14,.04)}
+.checkout-personal-includes[hidden]{display:none!important}
+.checkout-item-kicker{display:block;margin-bottom:11px;color:#81552d;font-size:11px;letter-spacing:.045em;font-weight:900}
+.checkout-item-list{display:grid;gap:8px}
+.checkout-item-list>span{display:flex;gap:9px;align-items:flex-start;color:#234134;font-size:12px;line-height:1.55}
+.checkout-item-list>span i{color:#18734c;font-style:normal;font-weight:900}
+@media(max-width:600px){.checkout-personal-includes{padding:12px}.checkout-item-list{gap:8px}}
