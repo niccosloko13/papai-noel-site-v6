@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="conversion-refresh.css?v=20261028-c">
-<link rel="stylesheet" href="checkout-premium.css?v=20261104-pix-mobile"><link rel="stylesheet" href="premium-experience.css?v=20261104-contrast-fix">
+<link rel="stylesheet" href="checkout-premium.css?v=20261104-payment-redesign"><link rel="stylesheet" href="premium-experience.css?v=20261104-contrast-fix">
 </head>
 <body class="checkout-page">
 <div class="natal-atmosphere" aria-hidden="true"><div class="natal-stars"></div><div class="natal-fir natal-fir-left"></div><div class="natal-fir natal-fir-right"></div><span class="natal-ornament natal-ornament-one"></span><span class="natal-ornament natal-ornament-two"></span></div>
@@ -154,20 +154,32 @@
 </dialog>
 
 <section class="checkout-payment-scene" id="paymentScene" hidden>
-  <div class="pix-panel pix-panel-special"><div class="pix-scene-top" aria-hidden="true">✦ &nbsp; NOITE DE NATAL &nbsp; ✦</div>
-    <div class="pix-celebration" aria-hidden="true"><i>✦</i><i>❄</i><i>✧</i><i>❄</i><i>✦</i><i>✧</i></div>
-    <span class="eyebrow">ÚLTIMO PASSO</span><h2>Seu Pix está pronto.</h2><p class="pix-subtitle" id="pixMagicMessage">A surpresa já está quase a caminho.</p>
-    <div class="pix-personal-note"><small>PREPARANDO PARA</small><strong id="pixChildName">—</strong></div>
-    <div class="pix-qr-stage"><div class="pix-wreath" aria-hidden="true"></div><div class="pix-qr-wrap"><div id="pixQrCanvas" class="pix-qr"></div></div></div>
-    <div class="pix-payment-line"><div><small>Valor</small><strong id="pixOrderTotal">—</strong></div><div><small>Pedido</small><strong id="pixOrderId">—</strong></div></div>
-    <div class="pix-recipient"><small>Recebedor</small><strong id="pixReceiverLabel">—</strong></div>
-    <details class="pix-copy-box"><summary>Pix copia e cola <span>+</span></summary><label class="pix-copy-label">Código Pix<textarea id="pixCopyPaste" rows="3" readonly></textarea></label><button class="btn btn-secondary" type="button" id="copyPix">Copiar código Pix</button></details>
-    <div class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite"></div>
-    <button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton"><span>Já fiz o Pix</span><i aria-hidden="true">✦</i></button>
-    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><span>✦</span><div><small>AVISO RECEBIDO</small><strong>Vamos conferir o pagamento.</strong></div><span>✦</span></div>
+  <div class="pix-panel pix-panel-special pix-redesign">
+    <div class="pix-topline"><span class="pix-step-kicker">ETAPA FINAL · PAGAMENTO PIX</span><span class="pix-security-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.3 8.4 8 10 4.7-1.6 8-5 8-10V6l-8-4Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8 12 2.6 2.6 5-5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg> Página protegida por HTTPS</span></div>
+    <div class="pix-headline"><div><span class="pix-kicker">É quase Natal!</span><h2>Finalize sua compra com Pix</h2><p id="pixMagicMessage">Seu pedido está pronto. Escolha como prefere pagar.</p></div>
+      <img class="pix-brand-logo" src="https://www.bcb.gov.br/content/estabilidadefinanceira/piximg/logo_pix.png" alt="Pix, meio de pagamento" loading="lazy" onerror="this.hidden=true">
+    </div>
+    <div class="pix-order-summary"><div><small>VALOR DO PEDIDO</small><strong id="pixOrderTotal">—</strong></div><div><small>Nº DO PEDIDO</small><strong id="pixOrderId">—</strong></div></div>
+    <div class="pix-payment-methods">
+      <section class="pix-copy-section" aria-labelledby="pixCopyTitle">
+        <div class="pix-method-heading"><span class="pix-method-number">1</span><div><h3 id="pixCopyTitle">Pix copia e cola</h3><p>Copie o código e cole na área Pix do aplicativo do seu banco.</p></div></div>
+        <label class="pix-code-label" for="pixCopyPaste">Código Pix gerado para este pedido</label>
+        <textarea id="pixCopyPaste" rows="4" readonly spellcheck="false" aria-describedby="pixCopyFeedback" placeholder="Preparando seu código Pix…"></textarea>
+        <button class="pix-main-copy-btn" type="button" id="copyPix"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="2"/></svg> Copiar código Pix</button>
+        <p class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite" role="status"></p>
+      </section>
+      <section class="pix-qr-section" aria-labelledby="pixQrTitle">
+        <div class="pix-method-heading"><span class="pix-method-number">2</span><div><h3 id="pixQrTitle">Escanear QR Code</h3><p>Para pagar usando outro aparelho.</p></div></div>
+        <div class="pix-qr-wrap"><div id="pixQrCanvas" class="pix-qr" aria-label="QR Code para pagamento Pix"></div></div>
+      </section>
+    </div>
+    <div class="pix-recipient-reassurance"><div><small>CONFIRA NO SEU BANCO ANTES DE PAGAR</small><strong id="pixReceiverLabel">—</strong></div><p>O aplicativo do banco deve mostrar o mesmo recebedor e valor informados acima. Se houver diferença, não confirme a transferência.</p></div>
+    <div class="pix-trust-row" aria-label="Informações sobre o pedido"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.3 8.4 8 10 4.7-1.6 8-5 8-10V6l-8-4Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Conexão HTTPS</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3zM7 7V4h10v3M3 12h18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Pedido registrado</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Acompanhe seu pedido</span></div>
+    <div class="pix-final-actions"><button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton">Já fiz o Pix · avisar pagamento</button>
+    <small>Este botão apenas informa o pagamento. A equipe confirma o recebimento após conferência bancária.</small></div>
+    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><div><small>AVISO RECEBIDO</small><strong>Vamos conferir o pagamento.</strong></div></div>
     <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
-    <a class="btn btn-secondary" id="trackOrderLink" href="minha-conta.html" hidden>Ver minha compra na área do cliente</a>
-    <a class="btn btn-secondary" href="minha-conta.html#criar-conta" id="createCustomerAccount">Criar acesso e guardar minha compra</a>
+    <div class="pix-after-links"><a class="btn btn-secondary" id="trackOrderLink" href="minha-conta.html" hidden>Acompanhar pedido</a><a class="btn btn-secondary" href="minha-conta.html#criar-conta" id="createCustomerAccount">Criar acesso à área do cliente</a></div>
   </div>
 </section>
 
