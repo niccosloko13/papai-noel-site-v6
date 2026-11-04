@@ -104,7 +104,7 @@ function renderProducts(){
       <details class="product-specs">
         <summary>Ver medidas, materiais e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
-          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
+          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (7 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
           :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Lareira incluída:</b> papelão decorativo para montagem, sem fogo real.</p><p><b>Material das pegadas:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
       </details>
 
