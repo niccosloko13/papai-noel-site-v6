@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css?v=20261028-product-admin">
+<link rel="stylesheet" href="admin.css?v=20261104-pix-mobile">
 </head>
 <body>
 <div class="admin-login" id="adminLogin">
@@ -112,7 +112,7 @@
           <label>Nome do recebedor no BR Code<input id="receiverName" maxlength="25"></label>
           <label>Cidade<input id="pixCity" maxlength="15"></label>
           <div class="two"><label>Desconto Pix (%)<input id="pixDiscount" type="number" min="0" max="50" step=".1"></label><label>Frete fixo (R$)<input id="shippingFlat" type="number" min="0" step=".01"></label></div>
-          <button class="btn primary" id="savePix">Salvar configuração</button><div id="pixMsg"></div>
+          <button class="btn primary" id="savePix">Salvar configuração</button><div id="pixMsg" role="status" aria-live="polite"></div>
         </article>
         <article class="panel-card dark-card"><small>PROCESSO</small><h2>Pagamento e pedido</h2><p>O cliente vê apenas a cobrança. A confirmação e mudança de status ficam aqui no painel.</p><ul><li>Pagamento informado</li><li>Conferir entrada no banco</li><li>Marcar como pago</li><li>Mover para produção e envio</li></ul></article>
       </div>
@@ -154,5 +154,5 @@
   </main>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261028-diagnostics"></script>
+<script src="admin.js?v=20261104-pix-readback"></script>
 </body></html>
