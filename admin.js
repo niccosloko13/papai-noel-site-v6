@@ -264,7 +264,7 @@ async function loadAdsAnalytics(){
   $("#adsOrders").textContent=Number(x.ordersCreated||0).toLocaleString("pt-BR");
   $("#adsNotices").textContent=Number(x.paymentNotices||0).toLocaleString("pt-BR");
   const rows=x.campaigns||[];
-  $("#adsSourceRows").innerHTML=rows.length?rows.map(y=>"<tr><td>"+esc(y.source)+"</td><td>"+Number(y.sessions||0).toLocaleString("pt-BR")+"</td><td>"+Number(y.orders||0).toLocaleString("pt-BR")+"</td></tr>").join(""):'<tr><td colspan="3">Sem dados registrados ainda.</td></tr>';
+  $("#adsSourceRows").innerHTML=rows.length?rows.map(y=>"<tr><td>"+esc(y.source)+"</td><td>"+esc(y.campaign||"—")+"</td><td>"+esc(y.creative||"—")+"</td><td>"+Number(y.sessions||0).toLocaleString("pt-BR")+"</td><td>"+Number(y.orders||0).toLocaleString("pt-BR")+"</td></tr>").join(""):'<tr><td colspan="5">Sem dados registrados ainda.</td></tr>';
   note.textContent="Eventos internos observados nos últimos 30 dias. Não representam gastos, cliques ou conversões oficiais das plataformas.";
  }catch(e){note.textContent="Métricas indisponíveis: "+e.message}
 }
