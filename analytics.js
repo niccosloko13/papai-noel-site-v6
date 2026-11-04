@@ -3,7 +3,7 @@
  let session="";
  try{session=sessionStorage.getItem(storageKey)||"";if(!session){session=(crypto.randomUUID?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(24))).map(x=>x.toString(16).padStart(2,"0")).join(""));sessionStorage.setItem(storageKey,session)}}catch{return}
  const p=new URLSearchParams(location.search);
- const fields=["utm_source","utm_medium","utm_campaign"];
+ const fields=["utm_source","utm_medium","utm_campaign","utm_content"];
  let stored={};try{stored=JSON.parse(sessionStorage.getItem("natal_attribution")||"{}")}catch{}
  const utm=Object.fromEntries(fields.map(k=>[k,p.get(k)||stored[k]||""]));
  try{sessionStorage.setItem("natal_attribution",JSON.stringify(utm))}catch{}
