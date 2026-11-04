@@ -2,12 +2,12 @@ const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
   {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["6 pares + 1 pegada solta (13 pegadas)","Adesivo para janela","Carta padrão","Certificado padrão","Guia de aplicação"],image:"assets/product/kit1-site.webp",active:true},
   {id:"personal",name:"Personalizado",price:69.90,prop:"Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado.webp",active:true}
 ]);
-const getProducts=()=>{const stored=JSON.parse(localStorage.getItem("natal_products")||"null");const currentImages={basic:"assets/product/kit1-site.webp",personal:"assets/product/kit-personalizado.webp"};return Array.isArray(stored)&&stored.length===2&&stored.every(p=>["basic","personal"].includes(p.id)&&p.image===currentImages[p.id])?stored:DEFAULT_PRODUCTS};
+const getProducts=()=>DEFAULT_PRODUCTS;
 let PRODUCTS=getProducts().filter(p=>p.active!==false).map(p=>({...p,badge:""}));
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
-const discounted=value=>Math.round(value*(1-(Number(pixConfig().discount)||0)/100)*100)/100;
+const discounted=(value,id)=>id==='basic'?Math.round(value*100)/100:Math.round(value*(1-(Number(pixConfig().discount)||0)/100)*100)/100;
 const productById=id=>PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id);
 
 const trackStoreEvent=(name,data={})=>{
@@ -37,7 +37,7 @@ function updateCampaignPrices(){
  if(hero&&Number.isFinite(lowest))hero.textContent=money(lowest);
  const featured=PRODUCTS.find(p=>p.id==="personal");
  const featuredPix=document.querySelector("#finalFeaturedPixPrice");
- if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price))+" no Pix";
+ if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price,featured.id))+" no Pix";
 }
 
 const grid=document.querySelector("#productGrid");
@@ -84,7 +84,7 @@ function renderProducts(){
     <div class="product-card-body">
       <div class="product-heading">
         <div>
-          <small>KIT ${p.id==="personal"?"2":"1"} • ${p.id==="personal"?"PERSONALIZADO":"ESSENCIAL"}</small>
+          <small>KIT ${p.id==="personal"?"2":"1"} • ${p.id==="personal"?"PERSONALIZADO":"LAREIRA ESPECIAL"}</small>
           <h3>Kit ${p.name}</h3>
         </div>
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
@@ -107,14 +107,14 @@ function renderProducts(){
       <details class="product-specs">
         <summary>Medidas, material e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
-          ?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Inclui:</b> adesivo de janela, carta padrão, certificado padrão e guia de aplicação.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
+          ?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 13 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
           :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
       </details>
 
       <div class="product-buy-block">
         <div class="price-row">
           <div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div>
-          <div class="pix-price"><small>PIX • ${discount}% OFF</small><strong>${money(discounted(p.price))}</strong></div>
+          <div class="pix-price"><small>${p.discountIncluded?"OFERTA DE NATAL • DESCONTO JÁ INCLUÍDO":`PIX • ${discount}% OFF`}</small><strong>${money(discounted(p.price,p.id))}</strong></div>
         </div>
 
         <div class="product-actions product-actions-conversion">
@@ -146,14 +146,14 @@ function renderCart(){
             <span>${qty}</span>
             <button type="button" data-cart-plus="${p.id}" aria-label="Aumentar quantidade">+</button>
           </div>
-          <div class="cart-item-price"><small>Pix</small><b>${money(discounted(p.price)*qty)}</b></div>
+          <div class="cart-item-price"><small>Pix</small><b>${money(discounted(p.price,p.id)*qty)}</b></div>
         </div>
       </div>
     </article>`).join("");
   cartEmpty.hidden=items.length>0;
   cartFooter.hidden=items.length===0;
   const regular=items.reduce((s,i)=>s+i.product.price*i.qty,0);
-  const pix=items.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0);
+  const pix=items.reduce((s,i)=>s+discounted(i.product.price,i.product.id)*i.qty,0);
   cartSavings.textContent=money(regular-pix);
   cartTotal.textContent=money(pix);
 }
@@ -245,7 +245,7 @@ function updateLetterPreview(){
 
 function checkoutExpanded(){return cartExpanded(checkoutItems)}
 function checkoutRegularSubtotal(){return checkoutExpanded().reduce((s,i)=>s+i.product.price*i.qty,0)}
-function checkoutPixSubtotal(){return checkoutExpanded().reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)}
+function checkoutPixSubtotal(){return checkoutExpanded().reduce((s,i)=>s+discounted(i.product.price,i.product.id)*i.qty,0)}
 function checkoutTotal(){
   const shipping=Number(pixConfig().shippingFlat)||0;
   return Math.round((checkoutPixSubtotal()+shipping)*100)/100;
@@ -257,7 +257,7 @@ function renderCheckoutMini(){
     <div class="checkout-mini-item">
       <img src="${i.product.image}" alt="">
       <div><small>${i.qty}× Kit</small><strong>${i.product.name}</strong></div>
-      <b>${money(discounted(i.product.price)*i.qty)}</b>
+      <b>${money(discounted(i.product.price,i.product.id)*i.qty)}</b>
     </div>`).join("");
 }
 function openCheckoutWithItems(items,{fromCart=false}={}){
@@ -365,7 +365,7 @@ function createOrder(){
   const txid=id.replace(/[^A-Za-z0-9]/g,"").slice(0,25);
   const total=checkoutTotal();
   const payload=window.NatalPix.buildPixPayload({key:cfg.key,receiverName:cfg.receiverName,city:cfg.city,amount:total,txid});
-  const items=checkoutExpanded().map(i=>({id:i.product.id,name:i.product.name,qty:i.qty,unitPrice:i.product.price,pixUnit:discounted(i.product.price)}));
+  const items=checkoutExpanded().map(i=>({id:i.product.id,name:i.product.name,qty:i.qty,unitPrice:i.product.price,pixUnit:discounted(i.product.price,i.product.id)}));
   const order={
     id,txid,pixPayload:payload,createdAt:new Date().toISOString(),status:"Aguardando pagamento",
     items,plan:items.map(i=>i.qty>1?`${i.qty}x ${i.name}`:i.name).join(", "),
