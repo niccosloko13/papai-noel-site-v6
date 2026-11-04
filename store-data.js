@@ -24,10 +24,10 @@ window.STORE_DATA = Object.freeze({
       "name": "Lareira Especial de Natal",
       "price": 53.9,
       "discountIncluded": true,
-      "prop": "Lareira decorativa + 13 pegadas adesivas, carta padrão e adesivo de janela. Tudo para montar a surpresa em casa.",
+      "prop": "Lareira decorativa + 7 pegadas adesivas, carta padrão e adesivo de janela. Tudo para montar a surpresa em casa.",
       "benefits": [
         "1 lareira decorativa de papelão para montar (fogo ilustrativo, sem aquecimento)",
-        "13 pegadas adesivas (6 pares + 1 solta), 22 × 8 cm cada",
+        "7 pegadas adesivas (3 pares + 1 solta), 22 × 8 cm cada",
         "1 carta padrão do Papai Noel",
         "1 adesivo de janela Papai Noel Passou Aqui"
       ],
