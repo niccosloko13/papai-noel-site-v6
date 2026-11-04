@@ -218,3 +218,65 @@
  .cx-page .cx-headline{font-size:29px!important}
  .cx-page .cx-auth-visual{height:114px!important;min-height:114px!important;max-height:114px!important}
 }
+
+/* Customer area 2026 — readable mobile order dashboard and warmer Christmas look */
+.cx-page{background:radial-gradient(circle at 95% 15%,#fae9cd 0,transparent 33%),#f8f3ea}
+.cx-shell{max-width:1080px}
+.cx-page .cx-headline{max-width:800px}
+.cx-quick-order{margin-top:24px;display:flex;align-items:center;gap:18px;padding:18px 20px;border:1px solid #d8bd8a;border-radius:18px;background:linear-gradient(105deg,#fff4df,#fffdf7);box-shadow:0 9px 30px #5a3f2112}
+.cx-quick-icon{height:44px;width:44px;flex:0 0 44px;border-radius:13px;background:#194e38;color:#f3d79c;display:grid;place-items:center;font-size:24px}
+.cx-quick-order>div:nth-child(2){flex:1;min-width:0}
+.cx-quick-order h2{font:400 clamp(21px,3vw,27px)/1.13 Georgia,serif;margin:6px 0;color:#173b30}
+.cx-quick-order p{font-size:12px;color:#736a5e;margin:0;line-height:1.5}
+.cx-quick-order .cx-btn{flex:0 0 auto;font-size:12px;background:#842b39;border-color:#842b39;max-width:100%}
+.cx-dashboard-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.cx-dashboard-stats>div{padding:17px 19px;display:grid;gap:5px;background:#fffdfa;border:1px solid #e3d8c6;border-radius:15px}
+.cx-dashboard-stats small{font-size:10px;letter-spacing:.06em;font-weight:800;color:#806c5a}
+.cx-dashboard-stats strong{font-size:25px;color:#16563f}
+.cx-dashboard-intro{border:0;padding:18px 20px;border-radius:17px;background:linear-gradient(110deg,#123c2f,#27583d);color:#fff7e6}
+.cx-dashboard-intro h2{color:#fff7e6}.cx-dashboard-intro p{color:#e2dccf}
+.cx-dashboard-intro .cx-btn-outline{color:#fff;background:#ffffff18;border-color:#ffffff50}
+.cx-premium-order{gap:14px;padding:20px!important;background:#fffdf8!important;border-color:#decdb4!important;border-radius:18px!important;box-shadow:0 10px 35px #2e201710}
+.cx-order-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.cx-order-top small{font-size:10px;font-weight:800;letter-spacing:.06em;color:#866d51}
+.cx-order-top h4{font:400 clamp(19px,3vw,25px)/1.2 Georgia,serif;margin:6px 0 0;color:#1b3e30}
+.cx-order-badge{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border-radius:999px;font-weight:800;font-size:10px;flex-shrink:0;max-width:155px;text-align:center}
+.cx-order-badge.awaiting{background:#fff0d5;color:#865515;border:1px solid #edcf9f}
+.cx-order-badge.active{background:#e5f2e9;color:#156141;border:1px solid #cee5d6}
+.cx-order-badge.ended{background:#f8e7e4;color:#943c44;border:1px solid #e8c6c0}
+.cx-order-info{display:grid;grid-template-columns:1fr 1fr;background:#f3f4eb;border-radius:12px;padding:13px;gap:14px}
+.cx-order-info div{display:grid;gap:4px}
+.cx-order-info small{font-size:10px;font-weight:800;color:#7a6f61}
+.cx-order-info strong{font-size:17px;color:#174c39}
+.cx-progress-track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin-top:3px}
+.cx-progress-track span{height:6px;background:#e7dfd3;border-radius:999px}
+.cx-progress-track span.done{background:#21704e}
+.cx-stage-description{margin:0;color:#5a725e;font-size:11px!important;font-weight:750}
+.cx-order-warning{font-size:12px!important;color:#8d4447;margin:0}
+.cx-order-actions{display:grid;gap:12px}
+.cx-order-actions .account-order-detail{border:1px solid #e8dccb;border-radius:11px;padding:10px 12px;background:#fbf7ef}
+.cx-order-actions .account-order-detail summary{font-size:12px}
+.cx-order-actions .cx-btn{width:100%;min-height:43px}
+.cx-order-actions .cx-pay-now{background:#8b293d;border-color:#8b293d;color:white;box-shadow:0 4px 10px #8b293d20}
+.cx-update-time{font-size:10px;color:#928577}
+.cx-side-note{display:grid;gap:7px}
+.cx-side-note a{overflow-wrap:anywhere}
+@media(max-width:700px){
+ .cx-page .cx-shell{padding-inline:12px!important}
+ .cx-page .cx-headline{max-width:none!important}
+ .cx-quick-order{padding:14px;display:grid;grid-template-columns:38px 1fr;gap:10px;border-radius:15px;margin-top:17px}
+ .cx-quick-icon{width:38px;height:38px;grid-row:1;grid-column:1}
+ .cx-quick-order>div:nth-child(2){grid-column:2}
+ .cx-quick-order .cx-btn{grid-column:1/-1;width:100%;min-height:44px}
+ .cx-dashboard-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .cx-dashboard-stats>div{padding:10px;min-width:0}
+ .cx-dashboard-stats small{font-size:9px;overflow-wrap:anywhere}
+ .cx-dashboard-stats strong{font-size:22px}
+ .cx-dashboard-intro{padding:16px;flex-direction:column;gap:12px}
+ .cx-dashboard-intro .cx-btn{min-height:39px;width:auto}
+ .cx-premium-order{padding:14px!important}
+ .cx-order-top{flex-wrap:wrap}
+ .cx-order-badge{max-width:100%}
+ .cx-order-info strong{font-size:15px}
+ .cx-quick-order h2{font-size:20px}
+}
