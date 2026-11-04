@@ -304,7 +304,7 @@ function renderSummary(){
   summary.innerHTML=`
     <div class="summary-row"><span>Kits</span><b>${money(regular)}</b></div>
     <div class="summary-products">${checkoutExpanded().map(i=>`<span>${i.qty}× Kit ${i.product.name}</span>`).join("")}</div>
-    <div class="summary-row discount"><span>Desconto Pix ${Number(cfg.discount)||0}%</span><b>− ${money(regular-productPix)}</b></div>
+    <div class="summary-row discount"><span>${checkoutExpanded().every(i=>i.product.discountIncluded)?"Desconto já incluído na oferta":`Desconto Pix ${Number(cfg.discount)||0}%`}</span><b>− ${money(regular-productPix)}</b></div>
     <div class="summary-row"><span>Frete</span><b>${shipping===0?"Grátis":money(shipping)}</b></div>
     <div class="summary-row total"><span>Total no Pix</span><b>${money(total)}</b></div>`;
   const sidePlan=document.querySelector("#sidePlan");
