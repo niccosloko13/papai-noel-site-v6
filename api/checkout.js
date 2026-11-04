@@ -28,7 +28,7 @@ module.exports=async function(req,res){
  const claim=crypto.randomBytes(32).toString("hex");
  const expiresAt=new Date(Date.now()+60*60*1000).toISOString();
  const payload=buildPix({key:config.key,receiverName:config.receiverName,city:config.city||"SAO PAULO",amount:total,txid:id.replace("-","")});
- const order={id,createdAt:new Date().toISOString(),expiresAt,status:"Aguardando pagamento",items:items.map(i=>({id:i.id,name:catalog[i.id].name,qty:i.qty,unitPrice:catalog[i.id].price})),total,discountPercent:items.every(i=>catalog[i.id].discountIncluded)?0:disc,shipping, ...fields,pixPayload:payload,paymentClaimHash:crypto.createHash("sha256").update(claim).digest("hex")};
+ const order={id,createdAt:new Date().toISOString(),expiresAt,status:"Aguardando pagamento",items:items.map(i=>({id:i.id,name:catalog[i.id].name,qty:i.qty,unitPrice:catalog[i.id].price})),total,discountPercent:items.every(i=>catalog[i.id].discountIncluded)?0:disc,shipping, ...fields,pixPayload:payload,paymentReceiverName:config.displayName||config.receiverName,paymentClaimHash:crypto.createHash("sha256").update(claim).digest("hex")};
  await db().query("INSERT INTO natal_orders(id,status,data) VALUES($1,$2,$3)",[id,order.status,JSON.stringify(order)]);
  return res.status(201).json({id,total,pixPayload:payload,discountPercent:items.every(i=>catalog[i.id].discountIncluded)?0:disc,receiverName:config.displayName||config.receiverName,claim,expiresAt});
  }catch(e){console.error("checkout submit",e.code||e.message);return res.status(503).json({error:"Não foi possível criar o pedido no momento"})}
