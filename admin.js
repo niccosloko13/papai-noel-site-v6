@@ -36,7 +36,7 @@ function selectTab(id){
  $$(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
  $$(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
  $("#sectionEyebrow").textContent=titles[id][0];$("#sectionTitle").textContent=titles[id][1];
- if(id==="orders")renderOrders();
+ if(id==="orders")renderOrders();if(id==="marketing")loadAdsAnalytics();
 }
 $$(".nav-item").forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
 $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
@@ -213,22 +213,98 @@ $("#savePix").onclick=async()=>{
 };
 
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
-function loadMarketing(){const c={...marketingDefaults,...(serverSettings.marketing||{})};Object.keys(c).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""})}
-$("#saveMarketing").onclick=()=>{const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketing",value:out})}).then(()=>{serverSettings.marketing=out;$("#marketingMsg").textContent="IDs salvos no servidor."}).catch(e=>$("#marketingMsg").textContent=e.message);};
-
-const seoDefaults={title:"Kit Papai Noel Passou Aqui | Natal 2026",description:"Crie uma surpresa de Natal inesquecível com pegadas do Papai Noel, adesivo de janela e opções personalizadas.",image:"assets/product/kit-personalizado.webp"};
-function loadSeo(){const c={...seoDefaults,...(serverSettings.seo||{})};$("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;renderSeoChecks(c)}
-function renderSeoChecks(c){
- const checks=[
-  ["Título entre 30 e 60 caracteres",c.title.length>=30&&c.title.length<=60],
-  ["Descrição entre 120 e 160 caracteres",c.description.length>=120&&c.description.length<=160],
-  ["Imagem social definida",!!c.image],
-  ["Página em HTTPS",location.protocol==="https:"],
-  ["Viewport mobile",true]
- ];
- $("#seoChecks").innerHTML=checks.map(([t,ok])=>'<div class="seo-check"><span>'+t+'</span><b class="'+(ok?"ok":"warn")+'">'+(ok?"OK":"Revisar")+'</b></div>').join("");
+function loadMarketing(){
+ const c={...marketingDefaults,...(serverSettings.marketing||{})};
+ Object.keys(marketingDefaults).forEach(k=>{const el=$("#"+k);if(el)el.value=c[k]||""});
+ updateUtm();
 }
-$("#saveSeo").onclick=()=>{const out={title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()};api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})}).then(()=>{serverSettings.seo=out;renderSeoChecks(out);$("#seoMsg").textContent="Rascunho salvo no servidor."}).catch(e=>$("#seoMsg").textContent=e.message);};
+function marketingValidation(x){
+ if(x.metaPixel&&!/^\d{7,25}$/.test(x.metaPixel))return "Meta Pixel: informe apenas o ID numérico.";
+ if(x.ga4&&!/^G-[A-Z0-9]{5,20}$/i.test(x.ga4))return "GA4: use o formato G-XXXXXXXX.";
+ if(x.googleAds&&!/^AW-\d{7,20}$/i.test(x.googleAds))return "Google Ads: use o formato AW-123456789.";
+ if(x.tiktokPixel&&!/^[A-Za-z0-9]{8,45}$/.test(x.tiktokPixel))return "TikTok: confira o ID do pixel.";
+ return "";
+}
+$("#saveMarketing").onclick=async()=>{
+ const out={};Object.keys(marketingDefaults).forEach(k=>out[k]=$("#"+k).value.trim());
+ const msg=$("#marketingMsg"),error=marketingValidation(out),button=$("#saveMarketing");
+ if(error){msg.textContent=error;msg.dataset.state="error";return}
+ button.disabled=true;button.textContent="Salvando...";
+ try{
+  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketing",value:out})});
+  const fresh=await api("settings");const saved=fresh.settings?.marketing;
+  if(!saved||Object.keys(out).some(k=>(saved[k]||"")!==out[k]))throw Error("A gravação ainda não foi confirmada.");
+  serverSettings.marketing=saved;msg.dataset.state="success";msg.textContent="IDs salvos e conferidos. Conexões externas ainda dependem de validação técnica.";
+ }catch(e){msg.dataset.state="error";msg.textContent=e.message}
+ finally{button.disabled=false;button.textContent="Salvar IDs de integração"}
+};
+function updateUtm(){
+ const base=location.origin+"/";
+ const dest=$("#utmDestination")?.value||"basic";
+ const url=new URL(dest==="home"?"":("checkout.html?kit="+encodeURIComponent(dest)),base);
+ for(const [k,id] of [["utm_source","utmSource"],["utm_medium","utmMedium"],["utm_campaign","utmCampaign"],["utm_content","utmContent"]]){
+  const value=($("#"+id)?.value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9_-]+/g,"_").slice(0,65);
+  if(value)url.searchParams.set(k,value);
+ }
+ if($("#utmOutput"))$("#utmOutput").value=url.toString();
+}
+["utmDestination","utmSource","utmMedium","utmCampaign","utmContent"].forEach(id=>$("#"+id)?.addEventListener("input",updateUtm));
+$("#copyUtm")?.addEventListener("click",async()=>{
+ updateUtm();const value=$("#utmOutput").value;
+ try{await navigator.clipboard.writeText(value);$("#utmMsg").textContent="Link copiado para o anúncio."}
+ catch{$("#utmOutput").focus();$("#utmOutput").select();$("#utmMsg").textContent="Selecione e copie o link acima."}
+});
+async function loadAdsAnalytics(){
+ const note=$("#adsAnalyticsNote");if(!note)return;
+ note.textContent="Consultando eventos registrados nos últimos 30 dias...";
+ try{
+  const x=await api("analytics");
+  $("#adsVisits").textContent=Number(x.visitors||0).toLocaleString("pt-BR");
+  $("#adsCheckouts").textContent=Number(x.checkouts||0).toLocaleString("pt-BR");
+  $("#adsOrders").textContent=Number(x.ordersCreated||0).toLocaleString("pt-BR");
+  $("#adsNotices").textContent=Number(x.paymentNotices||0).toLocaleString("pt-BR");
+  const rows=x.campaigns||[];
+  $("#adsSourceRows").innerHTML=rows.length?rows.map(y=>"<tr><td>"+esc(y.source)+"</td><td>"+Number(y.sessions||0).toLocaleString("pt-BR")+"</td><td>"+Number(y.orders||0).toLocaleString("pt-BR")+"</td></tr>").join(""):'<tr><td colspan="3">Sem dados registrados ainda.</td></tr>';
+  note.textContent="Eventos internos observados nos últimos 30 dias. Não representam gastos, cliques ou conversões oficiais das plataformas.";
+ }catch(e){note.textContent="Métricas indisponíveis: "+e.message}
+}
+$("#refreshMarketingAnalytics")?.addEventListener("click",loadAdsAnalytics);
+const seoDefaults={title:"Papai Noel Passou Aqui | Kits de Natal 2026",description:"Transforme o Natal das crianças com pegadas do Papai Noel, lareira decorativa, carta e kits personalizados. Escolha seu kit e prepare uma surpresa em casa.",image:"assets/product/kit-personalizado.webp"};
+function loadSeo(){
+ const c={...seoDefaults,...(serverSettings.seo||{})};
+ $("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;
+ renderSeoChecks(c);
+}
+function seoCurrent(){return {title:$("#seoTitle").value.trim(),description:$("#seoDescription").value.trim(),image:$("#seoImage").value.trim()}}
+function renderSeoChecks(c){
+ const titleLength=c.title.length,descLength=c.description.length;
+ $("#seoTitleCount").textContent=titleLength+"/60";
+ $("#seoDescriptionCount").textContent=descLength+"/160";
+ $("#seoPreviewTitle").textContent=c.title||"Título da página";
+ $("#seoPreviewDescription").textContent=c.description||"Descrição da loja";
+ const validImage=/^(assets\/[a-z0-9/_-]+\.(?:webp|png|jpg|jpeg|avif)|https:\/\/[^\s"'<>]+)$/i.test(c.image)&&!c.image.includes("..");
+ const checks=[
+  ["Título entre 30 e 60 caracteres",titleLength>=30&&titleLength<=60],
+  ["Descrição entre 120 e 160 caracteres",descLength>=120&&descLength<=160],
+  ["Caminho da imagem válido",validImage],
+  ["Página em HTTPS",location.protocol==="https:"],
+  ["Prévia mobile configurada",!!document.querySelector('meta[name="viewport"]')]
+ ];
+ $("#seoChecks").innerHTML=checks.map(([t,ok])=>'<div class="seo-check"><span>'+t+'</span><b class="'+(ok?"ok":"warn")+'">'+(ok?"OK":"Revisar")+"</b></div>").join("");
+}
+["seoTitle","seoDescription","seoImage"].forEach(id=>$("#"+id)?.addEventListener("input",()=>renderSeoChecks(seoCurrent())));
+$("#saveSeo").onclick=async()=>{
+ const out=seoCurrent(),button=$("#saveSeo"),message=$("#seoMsg");
+ if(out.title.length<30||out.description.length<120||out.image.includes("..")){message.textContent="Revise título, descrição e caminho da imagem antes de salvar.";return}
+ button.disabled=true;button.textContent="Salvando...";
+ try{
+  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"seo",value:out})});
+  const fresh=await api("settings");const saved=fresh.settings?.seo;
+  if(!saved||saved.title!==out.title||saved.description!==out.description||saved.image!==out.image)throw Error("Não foi possível confirmar a gravação.");
+  serverSettings.seo=saved;renderSeoChecks(saved);message.textContent="Rascunho confirmado no servidor. Publicação no HTML continua separada.";
+ }catch(e){message.textContent="Falha ao salvar: "+e.message}
+ finally{button.disabled=false;button.textContent="Salvar rascunho de SEO"}
+};
 
 function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();loadProducts();bindStatus()}
 })();
