@@ -1,9 +1,6 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[
-  {id:"basic",name:"Essencial",price:39.90,prop:"As pistas essenciais para transformar a casa na noite de Natal.",benefits:["6 pares + 1 pegada solta (13 pegadas)","Adesivo para janela","Carta padrão","Certificado padrão","Guia de aplicação"],image:"assets/product/kit1-site.webp",active:true},
-  {id:"personal",name:"Personalizado",price:69.90,prop:"Tudo do Essencial, com mais pegadas e a experiência personalizada com o nome da criança.",benefits:["10 pares + 1 pegada solta (21 pegadas)","Adesivo para janela","Placa com nome da criança","Certificado personalizado","Carta personalizada","Guia de aplicação"],image:"assets/product/kit-personalizado.webp",active:true}
-]);
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:53.90,discountIncluded:true,prop:"Lareira decorativa com 13 pegadas, carta padrão e adesivo de janela.",benefits:["1 lareira decorativa de papelão","13 pegadas adesivas (6 pares + 1 solta)","1 carta padrão","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS;
-let PRODUCTS=getProducts().filter(p=>p.active!==false).map(p=>({...p,badge:""}));
+let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
@@ -35,7 +32,7 @@ function updateCampaignPrices(){
  const lowest=active.length?Math.min(...active.map(p=>Number(p.price)||Infinity)):null;
  const hero=document.querySelector("#heroStartingPrice");
  if(hero&&Number.isFinite(lowest))hero.textContent=money(lowest);
- const featured=PRODUCTS.find(p=>p.id==="personal");
+ const featured=PRODUCTS.find(p=>p.id==="basic");
  const featuredPix=document.querySelector("#finalFeaturedPixPrice");
  if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price,featured.id))+" no Pix";
 }
@@ -51,7 +48,7 @@ const cartSavings=document.querySelector("#cartSavings");
 
 const getCart=()=>JSON.parse(localStorage.getItem("natal_cart")||"[]");
 const saveCart=cart=>{localStorage.setItem("natal_cart",JSON.stringify(cart));renderCart()};
-const cartExpanded=cart=>cart.map(i=>({product:productById(i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
+const cartExpanded=cart=>cart.filter(i=>i.id==="basic").map(i=>({product:productById(i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
 
 const seenProductImpressions=new Set();
 function observeProductCards(){
@@ -59,7 +56,7 @@ function observeProductCards(){
  const observer=new IntersectionObserver(entries=>{
   for(const entry of entries){
    if(!entry.isIntersecting)continue;
-   const id=entry.target.classList.contains("product-card--basic")?"basic":"personal";
+   const id="basic";
    if(!seenProductImpressions.has(id)){seenProductImpressions.add(id);trackStoreEvent("view_product",{product_id:id})}
    observer.unobserve(entry.target);
   }
@@ -200,7 +197,7 @@ const pixPaidButton=document.querySelector("#pixPaidButton");
 const sendPaymentWhatsApp=document.querySelector("#sendPaymentWhatsApp");
 const trackOrderLink=document.querySelector("#trackOrderLink");
 let step=1;
-let currentProduct=PRODUCTS.find(p=>p.id==="personal")||PRODUCTS[0]||DEFAULT_PRODUCTS[1];
+let currentProduct=PRODUCTS[0]||DEFAULT_PRODUCTS[0];
 let checkoutItems=[{id:currentProduct.id,qty:1}];
 let checkoutFromCart=false;
 let currentOrderId=null;
@@ -489,7 +486,7 @@ document.querySelector("#findCep").addEventListener("click",async()=>{
 
 const bar=document.querySelector("#mobileBuyBar");
 const barStrong=bar?.querySelector("strong");
-if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price))} no Pix`;
+if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price,currentProduct.id))} no Pix`;
 function isInViewport(el){if(!el)return false;const r=el.getBoundingClientRect();return r.bottom>0&&r.top<window.innerHeight}
 let stickyTick=false;
 function refreshStickyBuyBar(){
@@ -504,8 +501,8 @@ refreshStickyBuyBar();
 
 /* Product changes are loaded from the same server catalog used to price orders. */
 fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
- if(!data||!Array.isArray(data.products)||data.products.length!==2)return;
- PRODUCTS=data.products.filter(p=>p.active!==false).map(p=>({...p,badge:""}));
+ if(!data||!Array.isArray(data.products)||!data.products.some(p=>p.id==="basic"))return;
+ PRODUCTS=data.products.filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
  currentProduct=PRODUCTS.find(p=>p.id===currentProduct.id)||PRODUCTS[0]||currentProduct;
  renderProducts();renderCart();updateCampaignPrices();refreshStickyBuyBar();
 }).catch(()=>{});
