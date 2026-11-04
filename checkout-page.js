@@ -177,7 +177,7 @@ function refreshPixTimer(){
   if(note)note.textContent="O prazo para informar pagamento deste pedido terminou. Se você pagou, entre em contato com o atendimento antes de fazer outro pedido.";
   if(button)button.disabled=true;
   if(copy)copy.disabled=true;
-  $("#pixCopyPaste").readOnly=true;
+  $("#pixCopyPaste").style.pointerEvents="none";
   $("#paymentScene").classList.add("pix-expired");
  }
 }
@@ -283,6 +283,7 @@ $("#copyPix").addEventListener("click",async()=>{
  feedback.textContent=copied?"Código Pix copiado. Agora cole no aplicativo do seu banco.":"Selecione o código acima e copie manualmente.";
  if(copied){button.textContent="Código copiado ✓"}
 });
+$("#pixCopyPaste").addEventListener("click",()=>{$("#copyPix").click()});
 $("#pixPaidButton").addEventListener("click",async()=>{
  if(pixExpiresAt&&Date.now()>=pixExpiresAt){refreshPixTimer();return}
  const b=$("#pixPaidButton");b.disabled=true;
