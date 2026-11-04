@@ -428,3 +428,52 @@ body.checkout-page .pix-redesign .pix-after-links a{font-size:12px}
  body.checkout-page .pix-redesign .pix-trust-row{justify-content:flex-start}
  body.checkout-page .pix-redesign .pix-main-copy-btn{min-height:52px}
 }
+
+/* Natal encantado: checkout Pix compacto, vertical e mobile-first. */
+body.checkout-page .pix-redesign{max-width:600px!important;width:calc(100% - 20px)!important;margin:14px auto!important;padding:18px 18px 22px!important;border-radius:22px!important;background:radial-gradient(circle at 85% 0%,#fff0cf 0,transparent 35%),radial-gradient(circle at 0 100%,#ffe9df,transparent 34%),#fffaf1!important;border:1px solid #d9b573!important;box-shadow:0 24px 65px rgba(3,30,22,.3)!important}
+body.checkout-page .pix-redesign .pix-topline{padding-bottom:10px!important}
+body.checkout-page .pix-redesign .pix-headline{padding:15px 0 10px!important}
+body.checkout-page .pix-redesign .pix-headline h2{font-size:clamp(26px,5.2vw,35px)!important;line-height:1.12!important}
+body.checkout-page .pix-redesign .pix-headline p{font-size:12px!important}
+body.checkout-page .pix-redesign .pix-brand-logo{width:55px!important}
+body.checkout-page .pix-redesign .pix-order-summary{padding:12px 14px!important;border-radius:14px!important;gap:8px!important}
+body.checkout-page .pix-redesign .pix-order-summary strong{font-size:23px!important}
+body.checkout-page .pix-redesign #pixOrderId{font-size:12px!important}
+body.checkout-page .pix-redesign .pix-payment-methods{display:flex!important;flex-direction:column!important;gap:12px!important;margin:12px 0!important}
+body.checkout-page .pix-redesign .pix-copy-section{border:1px solid #d9e5d7!important;background:#fff!important;padding:15px!important;box-shadow:0 7px 20px rgba(16,67,45,.06)!important}
+body.checkout-page .pix-redesign .pix-qr-section{padding:14px!important;background:rgba(255,255,255,.76)!important;align-items:center!important}
+body.checkout-page .pix-redesign .pix-method-heading{margin:0 0 12px!important;align-self:stretch}
+body.checkout-page .pix-redesign .pix-method-heading h3{font-family:Manrope,system-ui,sans-serif!important;font-size:15px!important}
+body.checkout-page .pix-redesign .pix-code-label{font-size:11px!important}
+body.checkout-page .pix-redesign #pixCopyPaste{min-height:65px!important;height:65px!important;resize:none!important;cursor:pointer!important;background:#f1f7f0!important;border:1px dashed #6aa789!important;font-size:11px!important}
+body.checkout-page .pix-redesign .pix-main-copy-btn{min-height:43px!important;width:100%!important;margin-top:9px!important;border-radius:10px!important;font-size:13px!important;box-shadow:none!important}
+body.checkout-page .pix-redesign .pix-qr-wrap{width:262px!important;max-width:100%!important;aspect-ratio:auto!important;padding:9px!important;background:#fff!important;border:1px solid #e8decf!important;border-radius:12px!important;margin:0 auto!important}
+body.checkout-page .pix-redesign #pixQrCanvas{width:244px!important;max-width:100%!important;height:auto!important;aspect-ratio:1/1!important;margin:auto!important}
+body.checkout-page .pix-redesign #pixQrCanvas canvas,body.checkout-page .pix-redesign #pixQrCanvas img{width:100%!important;height:100%!important;aspect-ratio:1/1!important;display:block!important;opacity:1!important;visibility:visible!important;object-fit:contain!important}
+body.checkout-page .pix-redesign .pix-expiry-banner{display:flex;gap:12px;align-items:center;margin-top:12px;padding:11px 13px;border-radius:12px;border:1px solid #edc98a;background:#fff5dd;color:#765023;text-align:left}
+body.checkout-page .pix-redesign .pix-expiry-banner>span{font-size:24px;flex:0 0 auto}
+body.checkout-page .pix-redesign .pix-expiry-banner strong{display:block;font-size:13px;color:#754620}
+body.checkout-page .pix-redesign .pix-expiry-banner #pixTimer{font-variant-numeric:tabular-nums;color:#a12337;font-weight:900}
+body.checkout-page .pix-redesign .pix-expiry-banner small{display:block;font-size:10px;line-height:1.5;color:#805f38;margin-top:4px}
+body.checkout-page .pix-redesign .pix-snow-decoration,body.checkout-page .pix-redesign .pix-garland{color:#cda76d;text-align:center;letter-spacing:17px;white-space:nowrap;overflow:hidden;font-size:14px;opacity:.8;margin:12px 0 2px}
+body.checkout-page .pix-redesign .pix-recipient-reassurance{padding:12px!important}
+body.checkout-page .pix-redesign .pix-trust-row{margin:12px 0!important;padding:10px 0!important}
+body.checkout-page .pix-redesign .pix-final-actions{max-width:320px!important;margin:8px auto!important}
+body.checkout-page .pix-redesign .pix-final-actions .pix-paid-special{min-height:43px!important;font-size:12px!important;max-width:320px!important;border-radius:10px!important}
+body.checkout-page .pix-redesign .pix-after-links{gap:7px!important}
+body.checkout-page .pix-redesign .pix-after-links a{font-size:11px!important;min-height:39px!important}
+body.checkout-page .pix-expired .pix-expiry-banner{background:#fff0ed!important;border-color:#dba098!important}
+body.checkout-page .pix-expired .pix-main-copy-btn{opacity:.55;cursor:not-allowed}
+body.checkout-page .pix-redesign .pix-qr-section:after{content:"Confira o valor e o nome do recebedor no aplicativo bancário.";display:block;color:#766c5d;font:500 11px/1.5 Manrope,system-ui,sans-serif;text-align:center;margin:9px 0 0}
+@media(max-width:450px){
+ body.checkout-page .pix-redesign{width:calc(100% - 12px)!important;padding:14px 12px 18px!important;border-radius:16px!important}
+ body.checkout-page .pix-redesign .pix-headline h2{font-size:27px!important}
+ body.checkout-page .pix-redesign .pix-topline{flex-wrap:wrap;gap:6px!important}
+ body.checkout-page .pix-redesign .pix-topline span{font-size:9px!important}
+ body.checkout-page .pix-redesign .pix-order-summary{grid-template-columns:1fr 1fr!important}
+ body.checkout-page .pix-redesign .pix-order-summary strong{font-size:21px!important}
+ body.checkout-page .pix-redesign .pix-copy-section{padding:12px!important}
+ body.checkout-page .pix-redesign .pix-qr-section{padding:12px!important}
+ body.checkout-page .pix-redesign .pix-qr-wrap{max-width:262px!important;width:min(262px,100%)!important}
+ body.checkout-page .pix-redesign .pix-trust-row{gap:7px 12px!important}
+}
