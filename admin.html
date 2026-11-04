@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css?v=20261104-pix-mobile">
+<link rel="stylesheet" href="admin.css?v=20261104-marketing-seo-v2">
 </head>
 <body>
 <div class="admin-login" id="adminLogin">
@@ -119,40 +119,63 @@
     </section>
 
     <section class="admin-panel" id="marketing">
-      <div class="settings-grid">
+      <div class="admin-section-lead"><div><small>ANÚNCIOS · PRONTO PARA TRÁFEGO</small><p>Confira as fontes de medição e gere links para cada criativo. Salvar um ID não ativa sozinho o pixel.</p></div></div>
+      <div class="settings-grid marketing-grid">
         <article class="panel-card">
-          <small>TRACKING</small><h2>Métricas de anúncios</h2>
-          <label>Meta Pixel ID<input id="metaPixel" placeholder="Ex.: 1234567890"></label>
-          <label>Google Analytics 4<input id="ga4" placeholder="Ex.: G-XXXXXXXXXX"></label>
-          <label>TikTok Pixel ID<input id="tiktokPixel"></label>
-          <label>Google Ads ID<input id="googleAds"></label>
-          <button class="btn primary" id="saveMarketing">Salvar IDs</button><div id="marketingMsg"></div>
+          <small>INTEGRAÇÕES</small><h2>Pixels e mensuração</h2>
+          <p class="muted">Insira somente IDs reais das suas contas. As integrações externas precisam de implementação e verificação antes de serem marcadas como ativas.</p>
+          <label>Meta Pixel ID<input id="metaPixel" inputmode="numeric" autocomplete="off" placeholder="Ex.: 123456789012345"></label>
+          <label>Google Analytics 4 · Measurement ID<input id="ga4" autocomplete="off" placeholder="Ex.: G-XXXXXXXXXX"></label>
+          <label>TikTok Pixel ID<input id="tiktokPixel" autocomplete="off" placeholder="ID do Pixel"></label>
+          <label>Google Ads · ID de conversão<input id="googleAds" autocomplete="off" placeholder="Ex.: AW-123456789"></label>
+          <button class="btn primary" id="saveMarketing" type="button">Salvar IDs de integração</button>
+          <p id="marketingMsg" class="admin-feedback" role="status" aria-live="polite"></p>
+          <div class="admin-notice">Os eventos internos são registrados pela loja. <strong>Purchase não deve disparar apenas porque o cliente clicou em “Já fiz o Pix”.</strong></div>
         </article>
         <article class="panel-card">
-          <small>CAMPANHAS</small><h2>Parâmetros e leitura</h2>
-          <p class="muted">Use UTMs nos anúncios para separar Meta, TikTok, Google e criativos. O painel preserva os campos para integrar os eventos depois.</p>
-          <div class="mini-metrics"><div><span>Eventos recomendados</span><b>ViewContent · AddToCart · InitiateCheckout · Purchase</b></div><div><span>UTMs</span><b>source · medium · campaign · content</b></div></div>
+          <small>LINKS DE CAMPANHA</small><h2>Gerador de URL com UTM</h2>
+          <p class="muted">Use uma URL diferente para cada criativo. Assim identificamos a origem e o desempenho dentro do painel.</p>
+          <label>Destino<select id="utmDestination"><option value="basic">Checkout · Lareira Especial</option><option value="personal">Checkout · Personalizado</option><option value="home">Página inicial</option></select></label>
+          <div class="two">
+            <label>Origem<select id="utmSource"><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="google">Google</option><option value="tiktok">TikTok</option></select></label>
+            <label>Meio<select id="utmMedium"><option value="paid_social">Tráfego pago</option><option value="cpc">CPC</option><option value="organic_social">Orgânico</option></select></label>
+          </div>
+          <label>Campanha<input id="utmCampaign" value="natal_2026" maxlength="60" placeholder="natal_2026"></label>
+          <label>Criativo / variação<input id="utmContent" value="criativo_01" maxlength="60" placeholder="video_01 ou imagem_02"></label>
+          <label>Link pronto para copiar<textarea id="utmOutput" rows="3" readonly aria-label="Link UTM gerado"></textarea></label>
+          <button type="button" class="btn primary" id="copyUtm">Copiar link do anúncio</button>
+          <p id="utmMsg" class="admin-feedback" role="status" aria-live="polite"></p>
         </article>
       </div>
+      <article class="panel-card admin-full-card">
+        <div class="panel-head"><div><small>DADOS DA LOJA · ÚLTIMOS 30 DIAS</small><h2>Funil observado</h2></div><button type="button" class="btn ghost" id="refreshMarketingAnalytics">Atualizar métricas</button></div>
+        <div class="admin-mini-stats"><div><small>Visitas</small><strong id="adsVisits">—</strong></div><div><small>Checkouts iniciados</small><strong id="adsCheckouts">—</strong></div><div><small>Pedidos criados</small><strong id="adsOrders">—</strong></div><div><small>Pagamentos informados</small><strong id="adsNotices">—</strong></div></div>
+        <p class="muted" id="adsAnalyticsNote">Métricas internas, não são resultados oficiais do Gerenciador de Anúncios nem comprovam pagamento.</p>
+        <div class="admin-table-scroll"><table class="admin-data-table"><thead><tr><th>Origem</th><th>Sessões</th><th>Pedidos</th></tr></thead><tbody id="adsSourceRows"><tr><td colspan="3">Carregando…</td></tr></tbody></table></div>
+      </article>
     </section>
 
     <section class="admin-panel" id="seo">
-      <div class="settings-grid">
+      <div class="admin-section-lead"><div><small>BUSCA ORGÂNICA · NATAL 2026</small><p>Texto objetivo, prévia de pesquisa e informações comerciais consistentes com a loja.</p></div></div>
+      <div class="settings-grid seo-grid">
         <article class="panel-card">
-          <small>SEO</small><h2>Identidade de busca</h2>
-          <label>Título da página<input id="seoTitle" maxlength="60"></label>
-          <label>Meta description<textarea id="seoDescription" maxlength="160"></textarea></label>
-          <label>Imagem social / Open Graph<input id="seoImage" placeholder="assets/..."></label>
-          <button class="btn primary" id="saveSeo">Salvar rascunho de SEO</button><div id="seoMsg"></div>
+          <small>IDENTIDADE DE BUSCA</small><h2>Como o site aparece no Google</h2>
+          <label>Título da página <span class="field-count" id="seoTitleCount"></span><input id="seoTitle" maxlength="60"></label>
+          <label>Meta description <span class="field-count" id="seoDescriptionCount"></span><textarea id="seoDescription" maxlength="160" rows="4"></textarea></label>
+          <label>Imagem social / Open Graph<input id="seoImage" placeholder="assets/product/kit-personalizado.webp"></label>
+          <div class="seo-serp-preview"><small>PRÉVIA ILUSTRATIVA · RESULTADO DE BUSCA</small><strong id="seoPreviewTitle"></strong><span>papai-noel-site-v6.vercel.app</span><p id="seoPreviewDescription"></p></div>
+          <button class="btn primary" id="saveSeo" type="button">Salvar rascunho de SEO</button><p id="seoMsg" role="status" aria-live="polite"></p>
+          <p class="muted">Este botão salva o rascunho no painel; não altera automaticamente o HTML público nem garante indexação.</p>
         </article>
         <article class="panel-card">
-          <small>CHECKLIST</small><h2>Saúde SEO</h2>
+          <small>VALIDAÇÃO</small><h2>Checklist SEO</h2>
           <div class="seo-checks" id="seoChecks"></div>
+          <div class="admin-notice"><strong>Dados do responsável comercial</strong><p>PRISMARQ COMUNICACAO VISUAL LTDA<br>CNPJ 64.013.879/0001-99<br>Rua José Bonifácio, 203 · Galpão 1 · Centro<br>São Bernardo do Campo · SP · CEP 09721-160</p><small>Dados cadastrais fornecidos para conferência. Não devem ser confundidos com o nome da loja ou criar avaliações falsas.</small></div>
         </article>
       </div>
     </section>
   </main>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261104-pix-readback"></script>
+<script src="admin.js?v=20261104-marketing-seo-v2"></script>
 </body></html>
