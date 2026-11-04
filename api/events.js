@@ -12,9 +12,11 @@ async function initEvents(){
  utm_source text NOT NULL DEFAULT '',
  utm_medium text NOT NULL DEFAULT '',
  utm_campaign text NOT NULL DEFAULT '',
+ utm_content text NOT NULL DEFAULT '',
  product_id text NOT NULL DEFAULT '',
  order_id text NOT NULL DEFAULT ''
  )`);
+ await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS utm_content text NOT NULL DEFAULT ''");
 }
 const clean=(v,max=90)=>typeof v==="string"?v.trim().slice(0,max):"";
 module.exports=async function(req,res){
@@ -26,7 +28,7 @@ module.exports=async function(req,res){
  if(!TYPES.includes(event)||!/^[a-zA-Z0-9_-]{16,64}$/.test(sid)||JSON.stringify(b).length>2200)return res.status(400).json({error:"Evento inválido"});
  try{
  await initEvents();
- await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,utm_source,utm_medium,utm_campaign,product_id,order_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",[sid,event,clean(b.page,150),clean(b.origin,150),clean(b.utm_source),clean(b.utm_medium),clean(b.utm_campaign),clean(b.product_id,50),clean(b.order_id,40)]);
+ await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,utm_source,utm_medium,utm_campaign,utm_content,product_id,order_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",[sid,event,clean(b.page,150),clean(b.origin,150),clean(b.utm_source),clean(b.utm_medium),clean(b.utm_campaign),clean(b.utm_content),clean(b.product_id,50),clean(b.order_id,40)]);
  return res.status(202).json({ok:true});
  }catch(e){console.error("analytics collect",e.code||e.message);return res.status(503).json({error:"Telemetria indisponível"})}
 };
