@@ -151,3 +151,8 @@ body.checkout-page .checkout-progress-steps b{font-size:11px!important}
 .product-includes-grid span{display:flex!important;align-items:flex-start!important;gap:8px!important;color:#273d31!important;font-size:12px!important;line-height:1.5!important;min-width:0;overflow-wrap:anywhere}
 .product-includes-grid span i{flex:none;color:#168052;font-weight:900;font-style:normal}
 @media(max-width:600px){.product-includes{padding:12px!important}.product-includes-grid{gap:8px!important}.product-fireplace-guarantee{font-size:11px!important}}
+
+/* One-kit storefront: avoid half-empty two-column product shelf. */
+#productGrid.product-grid{display:grid!important;grid-template-columns:minmax(0,580px)!important;justify-content:center!important;max-width:100%!important;margin-inline:auto!important}
+#productGrid .product-card{width:100%!important;min-width:0!important}
+@media(max-width:650px){#productGrid.product-grid{grid-template-columns:minmax(0,1fr)!important}}
