@@ -69,8 +69,7 @@ function observeProductCards(){
 function renderProducts(){
   const discount=Number(pixConfig().discount)||0;
   grid.innerHTML=PRODUCTS.map(p=>{
-    const count=p.id==="basic"?"13 pegadas":"21 pegadas";
-    const extras=p.benefits.filter((_,i)=>i>0);
+    const count=p.id==="basic"?"13 pegadas • 6 pares + 1 solta":"21 pegadas • 10 pares + 1 solta";
     return `
   <article class="product-card product-card--${p.id} ${p.badge?"recommended":""}">
     <figure class="product-card-media">
@@ -90,7 +89,7 @@ function renderProducts(){
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
       </div>
 
-      <p class="product-prop">${p.id==="personal"&&p.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":p.prop}</p>
+      <p class="product-prop">${p.prop}</p>\n      <div class="product-fireplace-guarantee"><span aria-hidden="true">✦</span> LAREIRA DECORATIVA INCLUSA NOS DOIS KITS</div>
 
       <div class="product-count">
         <span aria-hidden="true">✓</span>
@@ -98,7 +97,7 @@ function renderProducts(){
       </div>
 
       <div class="product-includes">
-        <small>O QUE VOCÊ RECEBE NESTE KIT</small>
+        <small>✦ TUDO O QUE VEM NA EMBALAGEM</small>
         <div class="product-includes-grid">
           ${p.benefits.map(x=>`<span><i aria-hidden="true">✓</i>${x}</span>`).join("")}
         </div>
@@ -108,7 +107,7 @@ function renderProducts(){
         <summary>Ver medidas, materiais e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
           ?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 13 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
-          :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
+          :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Lareira incluída:</b> papelão decorativo para montagem, sem fogo real.</p><p><b>Material das pegadas:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
       </details>
 
       <div class="product-buy-block">
