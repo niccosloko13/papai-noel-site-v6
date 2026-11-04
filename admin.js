@@ -194,9 +194,22 @@ function loadPix(){
  const map={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
  Object.entries(map).forEach(([id,k])=>$("#"+id).value=c[k]??"");$("#pixEnabled").checked=!!c.enabled;
 }
-$("#savePix").onclick=()=>{
- const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value||0),shippingFlat:Number($("#shippingFlat").value||0)};
- api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})}).then(()=>{serverSettings.pix=out;$("#pixMsg").textContent="Configuração salva no servidor."}).catch(e=>$("#pixMsg").textContent=e.message);
+$("#savePix").onclick=async()=>{
+ const button=$("#savePix"),message=$("#pixMsg");
+ const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value),shippingFlat:Number($("#shippingFlat").value)};
+ message.dataset.state="";message.textContent="";
+ if(out.enabled&&(!out.key||!out.receiverName||!out.city)){message.dataset.state="error";message.textContent="Preencha chave Pix, nome do recebedor e cidade antes de ativar.";return}
+ if(!Number.isFinite(out.discount)||out.discount<0||out.discount>50||!Number.isFinite(out.shippingFlat)||out.shippingFlat<0||out.shippingFlat>1000){message.dataset.state="error";message.textContent="Confira desconto (0 a 50%) e frete (0 a R$ 1.000).";return}
+ button.disabled=true;button.textContent="Salvando...";message.textContent="Conferindo configuração...";
+ try{
+  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})});
+  const readBack=await api("settings");
+  const saved=readBack.settings?.pix;
+  if(!saved||saved.enabled!==out.enabled||saved.key!==out.key||Number(saved.discount)!==out.discount)throw Error("Salvo, mas não foi possível confirmar a configuração; atualize e confira.");
+  serverSettings.pix=saved;loadPix();
+  message.dataset.state="success";message.textContent="Configuração conferida no servidor. A validação bancária do recebedor ainda depende do app do banco.";
+ }catch(e){message.dataset.state="error";message.textContent="Não foi possível confirmar: "+e.message}
+ finally{button.disabled=false;button.textContent="Salvar configuração"}
 };
 
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
