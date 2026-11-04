@@ -19,13 +19,19 @@ window.STORE_DATA = Object.freeze({
   },
   products: [
     {
-      id: "basic",
-      name: "Essencial",
-      price: 39.90,
-      prop: "As pistas essenciais para transformar a casa na noite de Natal.",
-      benefits: ["6 pares + 1 pegada solta (13 pegadas)","Adesivo para janela","Carta padrão","Certificado padrão","Guia de aplicação"],
-      image: "assets/product/kit1-site.webp",
-      active: true
+          "id": "basic",
+          "name": "Lareira Especial de Natal",
+          "price": 53.9,
+          "discountIncluded": true,
+          "prop": "Uma lareira decorativa de papelão para criar o cenário do Papai Noel em casa, com pegadas, carta e adesivo de janela.",
+          "benefits": [
+                "Lareira decorativa de papelão (montagem simples; fogo ilustrativo)",
+                "13 pegadas adesivas (6 pares + 1 solta), 22 × 8 cm cada",
+                "Carta padrão do Papai Noel",
+                "Adesivo de janela Papai Noel Passou Aqui"
+          ],
+          "image": "assets/product/kit1-site.webp",
+          "active": true
     },
     {
       id: "personal",
