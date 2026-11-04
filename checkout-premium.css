@@ -537,3 +537,17 @@ body.checkout-page .pix-redesign .pix-final-actions .pix-paid-special{max-width:
  body.checkout-page .pix-redesign #pixQrCanvas img,
  body.checkout-page .pix-redesign #pixQrCanvas canvas{width:206px!important;height:206px!important;}
 }
+
+/* Additional guard for 320px phones: shrink both dimensions together. */
+@media(max-width:450px){
+ body.checkout-page .pix-redesign #pixQrCanvas {
+  width:min(206px,100%)!important;
+  height:auto!important;max-height:none!important;
+  aspect-ratio:1/1!important;
+ }
+ body.checkout-page .pix-redesign #pixQrCanvas img,
+ body.checkout-page .pix-redesign #pixQrCanvas canvas {
+  width:100%!important;height:auto!important;
+  max-height:none!important;aspect-ratio:1/1!important;
+ }
+}
