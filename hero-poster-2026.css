@@ -39,3 +39,8 @@
  #inicio .natal-hero-product span{text-align:left;font-size:12px}
  #inicio .natal-hero-benefits{margin-top:22px}
 }
+
+/* Mobile: foto principal inteira e sem miniatura repetida. */
+#inicio .natal-hero-photo-note{margin:10px 0 0;font-size:11px;color:rgba(255,255,255,.66);line-height:1.45;text-align:center}
+#inicio .natal-hero-media{padding-bottom:0}
+@media(max-width:760px){#inicio .natal-hero-media{padding-bottom:0!important}#inicio .natal-hero-main-photo{max-height:none;width:100%;height:auto;object-fit:contain}#inicio .natal-hero-photo-note{text-align:center;margin:8px 0 0}}
