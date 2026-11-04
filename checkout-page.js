@@ -62,12 +62,18 @@ function syncMode(){
  $("#stepOneKitImage").src=primaryProduct.image;
  $("#stepOneKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#stepOneKitTitle").textContent="Kit "+primaryProduct.name;
- $("#stepOneKitShort").textContent=personalized&&primaryProduct.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":primaryProduct.prop;
+ $("#stepOneKitShort").textContent=primaryProduct.prop;
  const personalizationLayout=$("#personalizationLayout");
  const basicSummary=$("#basicCheckoutSummary");
  child.required=personalized;
  if(personalizationLayout)personalizationLayout.hidden=!personalized;
  if(basicSummary)basicSummary.hidden=personalized;
+ const personalIncludes=$("#personalCheckoutIncludes");
+ if(personalIncludes)personalIncludes.hidden=!personalized;
+ if(personalized&&$("#personalCheckoutList")){
+  const list=$("#personalCheckoutList");
+  list.replaceChildren(...(primaryProduct.benefits||[]).map(item=>{const line=document.createElement("span");const check=document.createElement("i");check.textContent="✓";line.append(check,document.createTextNode(item));return line}));
+ }
 
  const kick=$('.checkout-step[data-step="1"] .checkout-step-kicker');
  const h=$('.checkout-step[data-step="1"] h1');
@@ -123,7 +129,7 @@ function renderReview(){
  $("#reviewKitImage").src=primaryProduct.image;
  $("#reviewKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#reviewKitTitle").textContent="Kit "+primaryProduct.name;
- $("#reviewKitProp").textContent=personalized&&primaryProduct.prop?.includes("Tudo do Essencial")?"21 pegadas e itens personalizados: carta, certificado e placa com o nome da criança.":primaryProduct.prop;
+ $("#reviewKitProp").textContent=primaryProduct.prop;
  $("#reviewKitItems").innerHTML=(primaryProduct.benefits||[]).map(x=>'<span><i>✓</i>'+x+'</span>').join("");
 
  const personLabel=$("#reviewPersonLabel");
