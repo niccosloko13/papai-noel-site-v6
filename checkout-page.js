@@ -6,15 +6,15 @@ const cfg=()=>publicPixConfig||{discount:15,shippingFlat:0,enabled:false};
 const discounted=(v,id)=>id==="basic"?Math.round(v*100)/100:Math.round(v*(1-(Number(cfg().discount)||0)/100)*100)/100;
 const params=new URLSearchParams(location.search);
 const campaignKit=params.get("kit");
-const directKit=["basic","personal"].includes(campaignKit)?campaignKit:null;
+const directKit=campaignKit==="basic"?"basic":null;
 let savedPending=null;
 try{savedPending=JSON.parse(localStorage.getItem("natal_checkout_pending")||"null")}catch{}
-const pending=directKit?{items:[{id:directKit,qty:1}],fromCart:false,fromCampaign:true}:savedPending;
+const pending=directKit?{items:[{id:directKit,qty:1}],fromCart:false,fromCampaign:true}:campaignKit?null:savedPending;
 if(!pending?.items?.length){location.href="index.html#kits";return}
-const expanded=pending.items.map(i=>({product:products.find(p=>p.id===i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
+const expanded=pending.items.filter(i=>i.id==="basic").map(i=>({product:products.find(p=>p.id===i.id),qty:Math.max(1,Number(i.qty)||1)})).filter(i=>i.product);
 if(!expanded.length){location.href="index.html#kits";return}
-const personalized=expanded.some(i=>i.product.id==="personal");
-const primaryItem=expanded.find(i=>i.product.id==="personal")||expanded[0];
+const personalized=false;
+const primaryItem=expanded[0];
 const primaryProduct=primaryItem.product;
 const trackStoreEvent=(name,data={})=>{window.natalAnalytics?.track(name,data);try{const events=JSON.parse(localStorage.getItem("natal_events")||"[]");events.push({name,at:new Date().toISOString(),path:location.pathname,...data});localStorage.setItem("natal_events",JSON.stringify(events.slice(-600)))}catch{}};
 trackStoreEvent("begin_checkout",{product_id:primaryProduct.id});
