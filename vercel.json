@@ -3,5 +3,29 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.papainoelpassouaqui.com.br"
+        }
+      ],
+      "destination": "https://papainoelpassouaqui.com.br/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "papai-noel-site-v6.vercel.app"
+        }
+      ],
+      "destination": "https://papainoelpassouaqui.com.br/:path*",
+      "permanent": true
+    }
+  ]
 }
