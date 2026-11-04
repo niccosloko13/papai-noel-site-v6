@@ -113,12 +113,13 @@ function renderProducts(){
 
       <div class="product-buy-block">
         <div class="price-row">
-          <div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div>
-          <div class="pix-price"><small>${p.discountIncluded?"OFERTA DE NATAL • DESCONTO JÁ INCLUÍDO":`PIX • ${discount}% OFF`}</small><strong>${money(discounted(p.price,p.id))}</strong></div>
+          ${p.discountIncluded
+            ?`<div class="pix-price"><small>PREÇO FINAL • 15% JÁ INCLUÍDO</small><strong>${money(p.price)}</strong></div>`
+            :`<div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div><div class="pix-price"><small>PIX • ${discount}% OFF</small><strong>${money(discounted(p.price,p.id))}</strong></div>`}
         </div>
 
         <div class="product-actions product-actions-conversion">
-          <button class="btn btn-primary btn-holiday" data-buy="${p.name}">Quero o Kit ${p.name}</button>
+          <button class="btn btn-primary btn-holiday" data-buy="${p.name}">${p.id==="basic"?"Garantir minha lareira":`Quero o Kit ${p.name}`}</button>
           <button class="product-cart-link" data-add-cart="${p.id}" type="button">+ Adicionar ao carrinho</button>
         </div>
       </div>
