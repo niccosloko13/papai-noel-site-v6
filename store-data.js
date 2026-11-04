@@ -33,23 +33,6 @@ window.STORE_DATA = Object.freeze({
       ],
       "image": "assets/hero-lareira-familia-natal-2026.avif",
       "active": true
-    },
-    {
-      "id": "personal",
-      "name": "Personalizado",
-      "price": 69.9,
-      "prop": "Também inclui a lareira! São 21 pegadas adesivas, carta e certificado personalizados, placa com nome e adesivo de janela.",
-      "benefits": [
-        "1 lareira decorativa de papelão para montar (fogo ilustrativo, sem aquecimento)",
-        "21 pegadas adesivas (10 pares + 1 solta), 22 × 8 cm cada",
-        "1 adesivo de janela Papai Noel Passou Aqui",
-        "1 carta personalizada com nome da criança",
-        "1 certificado personalizado",
-        "1 placa personalizada com nome da criança",
-        "1 guia de aplicação"
-      ],
-      "image": "assets/product/kit-personalizado.webp",
-      "active": true
     }
   ]
 });
