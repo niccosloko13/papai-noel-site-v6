@@ -98,14 +98,14 @@ function renderProducts(){
       </div>
 
       <div class="product-includes">
-        <small>O KIT TAMBÉM INCLUI</small>
+        <small>O QUE VOCÊ RECEBE NESTE KIT</small>
         <div class="product-includes-grid">
-          ${extras.map(x=>`<span><i aria-hidden="true">✓</i>${x}</span>`).join("")}
+          ${p.benefits.map(x=>`<span><i aria-hidden="true">✓</i>${x}</span>`).join("")}
         </div>
       </div>
 
       <details class="product-specs">
-        <summary>Medidas, material e cuidados <span>+</span></summary>
+        <summary>Ver medidas, materiais e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
           ?`<p><b>Pegadas:</b> 6 pares + 1 solta (13 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 13 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
           :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Material:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
