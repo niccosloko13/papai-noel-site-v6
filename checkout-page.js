@@ -3,7 +3,7 @@ const products=window.STORE_DATA?.products||[];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 let publicPixConfig=null;
 const cfg=()=>publicPixConfig||{discount:15,shippingFlat:0,enabled:false};
-const discounted=v=>Math.round(v*(1-(Number(cfg().discount)||0)/100)*100)/100;
+const discounted=(v,id)=>id==="basic"?Math.round(v*100)/100:Math.round(v*(1-(Number(cfg().discount)||0)/100)*100)/100;
 const params=new URLSearchParams(location.search);
 const campaignKit=params.get("kit");
 const directKit=["basic","personal"].includes(campaignKit)?campaignKit:null;
@@ -50,7 +50,7 @@ letterDialog?.addEventListener("close",()=>document.body.classList.remove("lette
 letterDialog?.addEventListener("click",e=>{if(e.target===letterDialog)closeLetterDialog()});
 function updatePriceDisplay(){const amount=money(total());$("#stepOneKitPrice").textContent=amount;$("#checkoutFooterTotal").textContent=amount;$("#checkoutFooterPrice").hidden=step===3;}
 
-function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
+function total(){return expanded.reduce((s,i)=>s+discounted(i.product.price,i.product.id)*i.qty,0)+(Number(cfg().shippingFlat)||0)}
 function updatePreview(){
  const n=child.value.trim()||"sua criança";
  previewName.textContent=personalized?(child.value.trim()?"Querido "+n+",":"Querida criança,"):"Olá, minha pequena estrela,";
@@ -81,7 +81,7 @@ function syncMode(){
    if(stepOneLabel)stepOneLabel.textContent="Personalizar";
  }else{
    if(kick)kick.textContent="PASSO 1 • SEU KIT";
-   if(h)h.textContent="Seu Kit Essencial já vem pronto.";
+   if(h)h.textContent="Seu Kit Lareira Especial já vem pronto.";
    if(p)p.textContent="Confira rapidamente o que você vai receber antes de seguir para a entrega.";
    if(stepOneLabel)stepOneLabel.textContent="Conferir kit";
    $("#basicSummaryTitle").textContent="Kit "+primaryProduct.name;
@@ -265,7 +265,7 @@ fetch("/api/checkout-config",{cache:"no-store"}).then(async r=>{
 syncMode();updatePreview();renderStep();updatePriceDisplay();
 fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
  if(!data||!Array.isArray(data.products))return;
- for(const product of products){const latest=data.products.find(p=>p.id===product.id);if(latest)Object.assign(product,latest)}
+ for(const product of products){const latest=data.products.find(p=>p.id===product.id);if(latest&&product.id!=="basic")Object.assign(product,latest)}
  if(!primaryProduct.active){alert("Este kit está temporariamente indisponível.");location.href="index.html#kits";return}
  syncMode();updatePriceDisplay();if(step===3)renderReview();
 }).catch(()=>{});
