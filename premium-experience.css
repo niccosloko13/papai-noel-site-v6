@@ -102,3 +102,42 @@ body.checkout-page .checkout-progress-steps b{font-size:11px!important}
  body .brand-copy small{font-size:8px!important}
  body .brand-copy strong{font-size:12px!important}
 }
+
+
+/* 2026-11-04 — Contraste real de navegação (desktop/tablet/mobile). */
+@media (min-width: 1000px) {
+  .site-header .desktop-nav .nav-account-link {
+    display:inline-flex!important;align-items:center;justify-content:center;gap:7px;
+    color:#712136!important;background:#fff5e6!important;
+    border:1px solid #c89856!important;border-radius:999px!important;
+    text-shadow:none!important;opacity:1!important;
+    padding:9px 14px!important;font-weight:800!important;
+  }
+  .site-header .desktop-nav .nav-account-link:hover,
+  .site-header .desktop-nav .nav-account-link:focus-visible {
+    color:#fff!important;background:#842138!important;border-color:#842138!important;
+  }
+}
+.site-header .header-account-cta {
+  color:#fff!important;background:#174e3b!important;border-color:#174e3b!important;
+  text-shadow:none!important;opacity:1!important;
+}
+.site-header a:focus-visible,.checkout-page-header a:focus-visible{outline:3px solid #b88743!important;outline-offset:3px}
+/* Checkout: fundo escuro com controles realmente legíveis. */
+.checkout-page .checkout-page-header .checkout-page-back {
+  display:grid!important;place-items:center!important;
+  background:#fff9ed!important;color:#173c30!important;
+  border:1px solid #d7b671!important;text-shadow:none!important;
+  font-size:1.45rem!important;font-weight:900!important;
+}
+.checkout-page .checkout-page-header .checkout-page-back:hover {
+  background:#f2dba6!important;color:#112d23!important;
+}
+.checkout-page .checkout-page-header .checkout-page-secure {
+  background:#eaf6ee!important;color:#174936!important;
+  border:1px solid #b0d8c0!important;text-shadow:none!important;
+  font-size:12px!important;font-weight:800!important;
+}
+@media(max-width:600px){
+  .checkout-page .checkout-page-header .checkout-page-secure{display:none!important}
+}
