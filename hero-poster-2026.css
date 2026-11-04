@@ -28,3 +28,14 @@
 @media(max-width:760px){#inicio.hero-poster-2026{padding:28px 16px 14px!important}#inicio .natal-hero-inner{grid-template-columns:1fr;gap:25px}#inicio .natal-hero-copy{order:1}#inicio .natal-hero-media{order:0;padding:0 0 26px 16px}#inicio .natal-hero-main-photo{height:clamp(270px,75vw,440px);border-radius:14px}#inicio .natal-hero-product{width:38%;padding:5px}#inicio .natal-hero-product img{height:90px}#inicio .natal-hero-product span{font-size:10px}#inicio .natal-hero-copy h1{font-size:clamp(42px,10vw,62px);margin-bottom:15px}#inicio .natal-hero-copy p{font-size:15px;margin-bottom:20px}#inicio .natal-hero-eyebrow{margin-bottom:10px}#inicio .natal-hero-actions{width:100%}#inicio .natal-hero-primary,#inicio .natal-hero-secondary{flex:1;min-width:170px}#inicio .natal-hero-benefits{grid-template-columns:repeat(2,1fr);margin-top:28px;gap:16px 8px}}
 @media(max-width:400px){#inicio .natal-hero-primary,#inicio .natal-hero-secondary{width:100%;flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){#inicio .natal-hero-primary,#inicio .natal-hero-secondary{transition:none}}
+
+/* Foto principal de 2026: enquadramento integral, sem cortar criancas ou produtos. */
+#inicio .natal-hero-main-photo{height:auto;max-height:570px;aspect-ratio:auto;object-fit:contain;object-position:center;background:#183328}
+@media(max-width:760px){
+ #inicio .natal-hero-media{padding:0!important}
+ #inicio .natal-hero-main-photo{width:100%;height:auto;max-height:460px;object-fit:contain;border-radius:14px}
+ #inicio .natal-hero-product{position:relative;left:auto;bottom:auto;width:100%;max-width:none;margin-top:10px;padding:8px;display:flex;align-items:center;gap:10px}
+ #inicio .natal-hero-product img{width:84px;height:70px;flex:none;object-fit:contain;background:#f4efe7}
+ #inicio .natal-hero-product span{text-align:left;font-size:12px}
+ #inicio .natal-hero-benefits{margin-top:22px}
+}
