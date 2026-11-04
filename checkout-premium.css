@@ -366,3 +366,65 @@ body.checkout-page .pix-payment-line>div{min-width:0;overflow-wrap:anywhere}
  body.checkout-page #pixQrCanvas img,body.checkout-page #pixQrCanvas canvas{width:100%!important}
  body.checkout-page .pix-paid-special{max-width:100%;min-height:50px}
 }
+
+/* Pix checkout 2026: legível, direto e com aparência confiável. */
+body.checkout-page .pix-redesign{position:relative!important;width:min(940px,calc(100% - 28px))!important;max-width:940px!important;margin:28px auto!important;padding:clamp(20px,3.8vw,38px)!important;border-radius:24px!important;background:#fffaf4!important;color:#20302a!important;box-shadow:0 24px 75px rgba(0,0,0,.23)!important;border:1px solid #e3d5bf!important;overflow:hidden!important}
+body.checkout-page .pix-redesign:before{content:none!important}
+body.checkout-page .pix-redesign .pix-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:17px;border-bottom:1px solid #eadfce}
+body.checkout-page .pix-redesign .pix-step-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:#925137}
+body.checkout-page .pix-redesign .pix-security-top{display:inline-flex;align-items:center;gap:6px;color:#176748;font-size:11px;font-weight:800}
+body.checkout-page .pix-redesign .pix-security-top svg{width:18px;height:18px;flex:none}
+body.checkout-page .pix-redesign .pix-headline{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 0 20px;text-align:left}
+body.checkout-page .pix-redesign .pix-headline h2{font-family:"DM Serif Display",Georgia,serif!important;font-weight:400!important;font-size:clamp(29px,4vw,42px)!important;color:#1b3529!important;margin:4px 0 8px!important;line-height:1.12!important;text-align:left!important}
+body.checkout-page .pix-redesign .pix-headline p{margin:0!important;color:#5e665f!important;font-size:14px!important;line-height:1.5!important}
+body.checkout-page .pix-redesign .pix-kicker{font-size:12px;color:#a13444;letter-spacing:.03em;font-weight:800}
+body.checkout-page .pix-redesign .pix-brand-logo{width:84px;height:auto;max-height:62px;object-fit:contain}
+body.checkout-page .pix-redesign .pix-order-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px;border-radius:16px;background:#edf4ed;border:1px solid #d6e5d5}
+body.checkout-page .pix-redesign .pix-order-summary>div{display:grid;gap:5px;min-width:0}
+body.checkout-page .pix-redesign .pix-order-summary small{color:#41624f;font-size:10px;font-weight:800;letter-spacing:.07em}
+body.checkout-page .pix-redesign .pix-order-summary strong{color:#163a29;font-size:clamp(17px,3vw,27px)!important;line-height:1.2!important;overflow-wrap:anywhere}
+body.checkout-page .pix-redesign #pixOrderId{font-size:clamp(13px,2vw,17px)!important}
+body.checkout-page .pix-redesign .pix-payment-methods{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:16px;margin:20px 0 16px;align-items:stretch}
+body.checkout-page .pix-redesign .pix-copy-section,body.checkout-page .pix-redesign .pix-qr-section{min-width:0;padding:22px;border-radius:16px;background:#fff;border:1px solid #e4dacb;text-align:left}
+body.checkout-page .pix-redesign .pix-method-heading{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;text-align:left}
+body.checkout-page .pix-redesign .pix-method-number{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#e8f2e9;color:#156345;font-weight:900;font-size:14px}
+body.checkout-page .pix-redesign .pix-method-heading h3{font:800 16px/1.3 Manrope,system-ui,sans-serif;color:#223b2c;margin:0 0 4px}
+body.checkout-page .pix-redesign .pix-method-heading p{font:400 12px/1.5 Manrope,system-ui,sans-serif;color:#6b736d;margin:0}
+body.checkout-page .pix-redesign .pix-code-label{display:block;font-size:11px;font-weight:800;color:#536256;margin-bottom:7px}
+body.checkout-page .pix-redesign #pixCopyPaste{display:block!important;box-sizing:border-box;width:100%!important;min-width:0!important;max-width:100%!important;min-height:112px!important;height:112px!important;border:1px solid #cbdacf!important;background:#f7faf7!important;color:#1c3328!important;border-radius:12px!important;padding:12px!important;font:500 12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace!important;letter-spacing:0;word-break:break-all;overflow-wrap:anywhere;resize:none!important}
+body.checkout-page .pix-redesign .pix-main-copy-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px;border:0;border-radius:12px;background:#16704f;color:#fff;font:800 15px Manrope,system-ui,sans-serif;cursor:pointer;box-shadow:0 6px 15px rgba(22,112,79,.15)}
+body.checkout-page .pix-redesign .pix-main-copy-btn:hover{background:#10593f}
+body.checkout-page .pix-redesign .pix-main-copy-btn:focus-visible{outline:3px solid #d4aa60;outline-offset:3px}
+body.checkout-page .pix-redesign .pix-main-copy-btn svg{width:20px;height:20px}
+body.checkout-page .pix-redesign .pix-copy-feedback{min-height:18px;color:#136244;font-size:12px;margin:8px 0 0;line-height:1.4}
+body.checkout-page .pix-redesign .pix-qr-section{display:flex;flex-direction:column;align-items:stretch}
+body.checkout-page .pix-redesign .pix-qr-wrap{width:100%!important;max-width:300px!important;min-width:0!important;min-height:0!important;height:auto!important;aspect-ratio:1/1;margin:auto!important;padding:10px!important;border:1px solid #e5e5e5!important;background:white!important;border-radius:12px!important;box-shadow:none!important;display:flex!important;align-items:center;justify-content:center}
+body.checkout-page .pix-redesign #pixQrCanvas{width:100%!important;max-width:280px!important;height:auto!important;aspect-ratio:1/1;display:grid;place-items:center}
+body.checkout-page .pix-redesign #pixQrCanvas canvas,body.checkout-page .pix-redesign #pixQrCanvas img{display:block;max-width:100%!important;width:100%!important;height:auto!important;aspect-ratio:1/1}
+body.checkout-page .pix-redesign .pix-recipient-reassurance{background:#fffbf2;border:1px solid #ebdcc0;border-radius:14px;padding:15px 18px}
+body.checkout-page .pix-redesign .pix-recipient-reassurance small{display:block;color:#885c3f;letter-spacing:.04em;font-size:10px;font-weight:900}
+body.checkout-page .pix-redesign .pix-recipient-reassurance strong{display:block;color:#202f28;font-size:15px;margin:6px 0;overflow-wrap:anywhere}
+body.checkout-page .pix-redesign .pix-recipient-reassurance p{font-size:12px;line-height:1.55;color:#665e50;margin:0}
+body.checkout-page .pix-redesign .pix-trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin:20px 0;padding:14px 0;border-top:1px solid #eee5d7;border-bottom:1px solid #eee5d7}
+body.checkout-page .pix-redesign .pix-trust-row span{display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:750;color:#435e4b}
+body.checkout-page .pix-redesign .pix-trust-row svg{width:18px;height:18px}
+body.checkout-page .pix-redesign .pix-final-actions{display:grid;gap:9px;justify-items:center;margin:16px auto 14px;max-width:460px}
+body.checkout-page .pix-redesign .pix-final-actions .pix-paid-special{display:block!important;width:100%!important;min-height:52px!important;border-radius:12px!important;font-size:14px!important;background:#7d2735!important;color:white!important}
+body.checkout-page .pix-redesign .pix-final-actions small{display:block;max-width:360px;text-align:center;color:#677267;font-size:11px;line-height:1.5}
+body.checkout-page .pix-redesign .pix-after-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+body.checkout-page .pix-redesign .pix-after-links a{font-size:12px}
+@media(max-width:700px){
+ body.checkout-page .pix-redesign{width:calc(100% - 16px)!important;margin:10px auto!important;padding:18px 14px!important;border-radius:18px!important}
+ body.checkout-page .pix-redesign .pix-topline{align-items:flex-start}
+ body.checkout-page .pix-redesign .pix-security-top{font-size:10px}
+ body.checkout-page .pix-redesign .pix-headline{padding:16px 0;gap:8px}
+ body.checkout-page .pix-redesign .pix-headline h2{font-size:30px!important}
+ body.checkout-page .pix-redesign .pix-brand-logo{width:55px}
+ body.checkout-page .pix-redesign .pix-order-summary{padding:12px;gap:8px}
+ body.checkout-page .pix-redesign .pix-order-summary strong{font-size:22px!important}
+ body.checkout-page .pix-redesign .pix-payment-methods{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+ body.checkout-page .pix-redesign .pix-copy-section,body.checkout-page .pix-redesign .pix-qr-section{padding:15px}
+ body.checkout-page .pix-redesign .pix-qr-wrap{width:min(290px,100%)!important}
+ body.checkout-page .pix-redesign .pix-trust-row{justify-content:flex-start}
+ body.checkout-page .pix-redesign .pix-main-copy-btn{min-height:52px}
+}
