@@ -15,7 +15,7 @@ function tick(){if(!deadline)return;const rem=Math.max(0,Math.ceil((deadline-Dat
 async function init(){
  if(!/^NATAL-[A-F0-9]{12}$/.test(id)){expireUI("Número do pedido inválido. Abra o pagamento pela Área do Cliente.");$("#loadMessage").hidden=true;return}
  try{
- const r=await fetch("/api/order-payment",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,accessKey:access})});
+ const r=await fetch("/api/customer/payment",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,accessKey:access})});
  const d=await r.json();if(!r.ok)throw Error(d.error||"Não foi possível recuperar o pedido");
  $("#loadMessage").hidden=true;
  if(!d.canPay){expireUI(d.status==="Expirado"?"Este pedido expirou. Se ainda não realizou o pagamento, escolha um kit para fazer um novo pedido.":"Status atual do pedido: "+d.status+". Não é necessário gerar outro Pix.");return}
