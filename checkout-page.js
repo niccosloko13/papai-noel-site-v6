@@ -185,7 +185,7 @@ function showPayment(order){
  currentOrderId=order.id;
  pixExpiresAt=Date.parse(order.expiresAt||"")||Date.now()+3600000;
  const tracking=$("#trackOrderLink");
- if(tracking){tracking.href="minha-conta.html";tracking.hidden=false}
+ if(tracking){tracking.href="pedido.html?id="+encodeURIComponent(order.id);tracking.hidden=false}
  document.querySelector(".checkout-page-main").hidden=true;
  $("#paymentScene").hidden=false;
  $("#pixOrderId").textContent=order.id;
