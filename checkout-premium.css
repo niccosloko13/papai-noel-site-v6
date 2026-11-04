@@ -477,3 +477,63 @@ body.checkout-page .pix-redesign .pix-qr-section:after{content:"Confira o valor 
  body.checkout-page .pix-redesign .pix-qr-wrap{max-width:262px!important;width:min(262px,100%)!important}
  body.checkout-page .pix-redesign .pix-trust-row{gap:7px 12px!important}
 }
+
+/* PIX QR — corrected: qrcodejs creates a canvas and an image.
+   Never render both at once (the old CSS forced both visible and doubled height). */
+body.checkout-page .pix-redesign .pix-qr-wrap {
+ box-sizing:border-box!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ width:240px!important;
+ max-width:100%!important;
+ min-height:0!important;
+ height:auto!important;
+ padding:12px!important;
+ margin:0 auto!important;
+ aspect-ratio:1/1!important;
+ border-radius:16px!important;
+ overflow:hidden!important;
+ background:#fff!important;
+}
+body.checkout-page .pix-redesign #pixQrCanvas {
+ box-sizing:border-box!important;
+ width:216px!important;
+ max-width:100%!important;
+ height:216px!important;
+ max-height:216px!important;
+ aspect-ratio:1/1!important;
+ display:block!important;
+ margin:0 auto!important;
+ padding:0!important;
+ overflow:hidden!important;
+}
+body.checkout-page .pix-redesign #pixQrCanvas img,
+body.checkout-page .pix-redesign #pixQrCanvas canvas {
+ box-sizing:border-box!important;
+ width:216px!important;
+ height:216px!important;
+ max-width:100%!important;
+ max-height:100%!important;
+ aspect-ratio:1/1!important;
+ object-fit:contain!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+}
+body.checkout-page .pix-redesign #pixQrCanvas img {display:block!important;}
+body.checkout-page .pix-redesign #pixQrCanvas canvas {display:none!important;}
+body.checkout-page .pix-redesign #pixQrCanvas:not(:has(img)) canvas {display:block!important;}
+/* More useful content above the fold, without compromising touch targets. */
+body.checkout-page .pix-redesign .pix-qr-section{padding:14px 12px!important}
+body.checkout-page .pix-redesign .pix-method-heading{justify-content:flex-start!important}
+body.checkout-page .pix-redesign #pixCopyPaste{height:58px!important;min-height:58px!important}
+body.checkout-page .pix-redesign .pix-copy-section{padding-bottom:13px!important}
+body.checkout-page .pix-redesign .pix-main-copy-btn{max-width:320px!important;margin:9px auto 0!important}
+body.checkout-page .pix-redesign .pix-final-actions .pix-paid-special{max-width:280px!important}
+@media(max-width:450px){
+ body.checkout-page .pix-redesign .pix-qr-wrap{width:228px!important;padding:11px!important;}
+ body.checkout-page .pix-redesign #pixQrCanvas{width:206px!important;height:206px!important;}
+ body.checkout-page .pix-redesign #pixQrCanvas img,
+ body.checkout-page .pix-redesign #pixQrCanvas canvas{width:206px!important;height:206px!important;}
+}
