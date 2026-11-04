@@ -180,7 +180,7 @@ function showPayment(order){
  $("#pixMagicMessage").textContent=order.childName?("A surpresa de "+order.childName+" já está quase a caminho."):"Seu pedido já está quase a caminho.";
  $("#pixCopyPaste").value=order.pixPayload;
  const canvas=$("#pixQrCanvas");canvas.innerHTML="";
- if(window.QRCode)new window.QRCode(canvas,{text:order.pixPayload,width:280,height:280,colorDark:"#111111",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});
+ if(window.QRCode)new window.QRCode(canvas,{text:order.pixPayload,width:280,height:280,colorDark:"#111111",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});else canvas.textContent="QR indisponível neste navegador. Utilize o Pix copia e cola acima.";
  window.scrollTo({top:0,behavior:"smooth"});
 }
 child.addEventListener("input",updatePreview);letter.addEventListener("input",updatePreview);
@@ -245,7 +245,15 @@ cepInput.addEventListener("change",()=>{
  if(raw.length===8&&confirmedCep!==raw){clearTimeout(cepTimer);lookupCep(raw)}
 });
 if(cepInput.value)handleCepInput();
-$("#copyPix").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#pixCopyPaste").value)}catch{$("#pixCopyPaste").select();document.execCommand("copy")}$("#pixCopyFeedback").textContent="Código Pix copiado ✓"});
+$("#copyPix").addEventListener("click",async()=>{
+ const field=$("#pixCopyPaste"),feedback=$("#pixCopyFeedback"),button=$("#copyPix");
+ if(!field.value.trim()){feedback.textContent="O código Pix ainda não está disponível.";return}
+ let copied=false;
+ try{await navigator.clipboard.writeText(field.value);copied=true}
+ catch{field.focus();field.select();try{copied=document.execCommand("copy")===true}catch{}}
+ feedback.textContent=copied?"Código Pix copiado. Agora cole no aplicativo do seu banco.":"Selecione o código acima e copie manualmente.";
+ if(copied){button.textContent="Código copiado ✓"}
+});
 $("#pixPaidButton").addEventListener("click",async()=>{
  const b=$("#pixPaidButton");b.disabled=true;
  try{
