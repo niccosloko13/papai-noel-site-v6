@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:59.90,discountIncluded:true,prop:"Lareira decorativa com 7 pegadas, carta padrão e adesivo de janela.",benefits:["1 lareira decorativa de papelão","7 pegadas adesivas (3 pares + 1 solta)","1 carta padrão","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:84.65,discountIncluded:true,prop:"Lareira decorativa com 7 pegadas e adesivo de janela.",benefits:["1 lareira decorativa de papelão","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
@@ -104,14 +104,14 @@ function renderProducts(){
       <details class="product-specs">
         <summary>Ver medidas, materiais e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
-          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (7 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas, carta padrão do Papai Noel e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
+          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (7 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
           :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Lareira incluída:</b> papelão decorativo para montagem, sem fogo real.</p><p><b>Material das pegadas:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
       </details>
 
       <div class="product-buy-block">
         <div class="price-row">
           ${p.discountIncluded
-            ?`<div class="pix-price"><small>PREÇO FINAL • 15% JÁ INCLUÍDO</small><strong>${money(p.price)}</strong></div>`
+            ?`<div class="pix-price"><small>PIX • 15% OFF JÁ INCLUÍDO</small><strong>${money(p.price)}</strong></div>`
             :`<div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div><div class="pix-price"><small>PIX • ${discount}% OFF</small><strong>${money(discounted(p.price,p.id))}</strong></div>`}
         </div>
 
