@@ -111,7 +111,7 @@ function renderProducts(){
       <div class="product-buy-block">
         <div class="price-row">
           ${p.discountIncluded
-            ?`<div class="pix-price"><small>PIX • 15% OFF JÁ INCLUÍDO</small><strong>${money(p.price)}</strong></div>`
+            ?`<div class="pix-price"><small>15% OFF no Pix · de <s>${money(p.price/0.85)}</s> por</small><strong>${money(p.price)}</strong></div>`
             :`<div class="regular-price"><small>Preço</small><strong>${money(p.price)}</strong></div><div class="pix-price"><small>PIX • ${discount}% OFF</small><strong>${money(discounted(p.price,p.id))}</strong></div>`}
         </div>
 
