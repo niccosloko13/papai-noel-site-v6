@@ -59,7 +59,7 @@ function updatePreview(){
  previewName.classList.remove("is-writing");void previewName.offsetWidth;previewName.classList.add("is-writing");
 }
 function syncMode(){
- $("#stepOneKitImage").src=primaryProduct.image;
+ $("#stepOneKitImage").onerror=function(){this.onerror=null;this.src="assets/hero-lareira-familia-natal-2026.avif"};$("#stepOneKitImage").src=primaryProduct.image;
  $("#stepOneKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#stepOneKitTitle").textContent="Kit "+primaryProduct.name;
  $("#stepOneKitShort").textContent=primaryProduct.prop;
@@ -126,7 +126,7 @@ function validate(){
  return ok;
 }
 function renderReview(){
- $("#reviewKitImage").src=primaryProduct.image;
+ $("#reviewKitImage").onerror=function(){this.onerror=null;this.src="assets/hero-lareira-familia-natal-2026.avif"};$("#reviewKitImage").src=primaryProduct.image;
  $("#reviewKitImage").alt="Kit "+primaryProduct.name+" completo";
  $("#reviewKitTitle").textContent="Kit "+primaryProduct.name;
  $("#reviewKitProp").textContent=primaryProduct.prop;
