@@ -1,9 +1,9 @@
 window.STORE_DATA = Object.freeze({
   business: {
     brand: "Kit Papai Noel Passou Aqui",
-    whatsapp: "5513996589014",
-    phoneDisplay: "(13) 99658-9014",
-    email: "contato@papainoelpassouaqui.com.br"
+    whatsapp: "551152970363",
+    phoneDisplay: "(11) 5297-0363",
+    email: "atendimento@papainoelpassouaqui.com.br"
   },
   pix: {
     enabled: false,
