@@ -24,12 +24,12 @@ window.STORE_DATA = Object.freeze({
       "name": "Lareira Especial de Natal",
       "price": 84.65,
       "discountIncluded": true,
-      "prop": "Lareira decorativa + 7 pegadas adesivas e adesivo de janela. Tudo para montar a surpresa em casa.",
+      "prop": "Lareira cenográfica de 120 × 80 × 22 cm para montar + 7 pegadas adesivas e 1 adesivo de vidro. Um cenário de Natal para sua casa.",
       "benefits": [
-        "1 lareira decorativa de papelão para montar (fogo ilustrativo, sem aquecimento)",
+        "1 lareira cenográfica de papelão para montar, 120 × 80 × 22 cm (altura × largura × profundidade; fogo ilustrativo, não aquece)",
         "7 pegadas adesivas (3 pares + 1 solta), 22 × 8 cm cada",
         
-        "1 adesivo de janela Papai Noel Passou Aqui"
+        "1 adesivo de vidro/janela Papai Noel Passou Aqui"
       ],
       "image": "assets/hero-lareira-familia-natal-2026.avif",
       "active": true
