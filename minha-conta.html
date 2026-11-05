@@ -44,13 +44,13 @@
     <div class="cx-workspace">
       <section class="cx-panel-main" aria-label="Seus pedidos"><div class="cx-section-title"><h3>Meus pedidos</h3><a class="cx-mini-link" href="index.html#kits">Fazer novo pedido</a></div><div id="accountOrders" class="cx-list" aria-live="polite"></div></section>
       <aside class="cx-side">
-        <div class="cx-side-note"><small>SUPORTE À SUA COMPRA</small><h3>Estamos aqui até a entrega.</h3><p>Precisa corrigir um detalhe, verificar um pagamento ou confirmar o prazo?</p><a href="https://wa.me/5513996589014" target="_blank" rel="noopener">Falar no WhatsApp →</a><a href="mailto:contato@papainoelpassouaqui.com.br">contato@papainoelpassouaqui.com.br</a></div>
+        <div class="cx-side-note"><small>SUPORTE À SUA COMPRA</small><h3>Estamos aqui até a entrega.</h3><p>Precisa corrigir um detalhe, verificar um pagamento ou confirmar o prazo?</p><a href="https://wa.me/551152970363" target="_blank" rel="noopener">Falar no WhatsApp →</a><a href="mailto:atendimento@papainoelpassouaqui.com.br">atendimento@papainoelpassouaqui.com.br</a></div>
         <form id="claimForm" class="cx-claim"><span class="cx-kicker">JÁ TEM UM PEDIDO?</span><h3>Adicionar uma compra</h3><p class="cx-help">Use o número e a chave privada gerados no checkout.</p><label>Número do pedido<input id="claimOrderId" required autocomplete="off" placeholder="NATAL-..."></label><label>Chave de acesso<input id="claimKey" required autocomplete="off" placeholder="Código privado do pedido"></label><button class="cx-btn" type="submit">Vincular pedido</button><span id="claimError" class="cx-status" role="status"></span></form>
       </aside>
     </div>
   </section>
 </main>
-<footer class="cx-footer"><span>© Papai Noel Passou Aqui · Atendimento (13) 99658-9014</span><div><a href="mailto:contato@papainoelpassouaqui.com.br">E-mail</a> · <a href="entrega-e-prazos.html">Entrega</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5513996589014" target="_blank" rel="noopener">WhatsApp</a></div></footer>
+<footer class="cx-footer"><span>© Papai Noel Passou Aqui · Atendimento (11) 5297-0363</span><div><a href="mailto:atendimento@papainoelpassouaqui.com.br">E-mail</a> · <a href="entrega-e-prazos.html">Entrega</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/551152970363" target="_blank" rel="noopener">WhatsApp</a></div></footer>
 <script>
 const $=s=>document.querySelector(s);const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -73,7 +73,7 @@ async function loadOrders(){
   const items=(o.items||[]).map(i=>i.name+" × "+i.qty).join(", ");
   const progress=step>=0?'<div class="cx-progress-track">'+phases.map((label,i)=>'<span class="'+(i<=step?"done":"")+'" title="'+label+'"></span>').join("")+'</div><p class="cx-stage-description">'+esc(phases[step])+' · '+Math.round((step+1)/phases.length*100)+'% das etapas registradas</p>':'<p class="cx-order-warning">'+(expired?"Prazo de pagamento encerrado.":"Pedido cancelado.")+'</p>';
   const payAction=pending?'<a class="cx-btn cx-pay-now" href="pagamento-pedido.html?id='+encodeURIComponent(o.id)+'">Continuar pagamento Pix →</a>':'';
-  const supportAction=expired?'<a class="cx-btn cx-btn-outline" href="https://wa.me/5513996589014?text='+encodeURIComponent("Olá! Preciso de ajuda com meu pedido "+o.id+" que expirou.")+'" target="_blank" rel="noopener">Ajuda com pedido expirado</a>':'';
+  const supportAction=expired?'<a class="cx-btn cx-btn-outline" href="https://wa.me/551152970363?text='+encodeURIComponent("Olá! Preciso de ajuda com meu pedido "+o.id+" que expirou.")+'" target="_blank" rel="noopener">Ajuda com pedido expirado</a>':'';
   return '<article class="account-order cx-premium-order">'+
   '<div class="cx-order-top"><div><small>PEDIDO '+esc(o.id)+'</small><h4>'+esc(items||"Kit de Natal")+'</h4></div><span class="cx-order-badge '+(pending?"awaiting":expired||canceled?"ended":"active")+'">'+esc(o.status)+'</span></div>'+
   '<div class="cx-order-info"><div><small>VALOR TOTAL</small><strong>'+money(o.total)+'</strong></div><div><small>DATA DA COMPRA</small><strong>'+new Date(o.createdAt).toLocaleDateString("pt-BR")+'</strong></div></div>'+
