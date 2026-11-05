@@ -1,6 +1,5 @@
 const {db,init}=require("./_db");
 const fireplace={"id":"basic","name":"Lareira Especial de Natal","price":84.65,"discountIncluded":true,"prop":"Lareira cenográfica de 120 × 80 × 22 cm para montar + 7 pegadas adesivas e 1 adesivo de vidro. Um cenário de Natal para sua casa.","benefits":["1 lareira cenográfica de papelão para montar, 120 × 80 × 22 cm (altura × largura × profundidade; fogo ilustrativo, não aquece)","7 pegadas adesivas (3 pares + 1 solta), 22 × 8 cm cada","1 adesivo de vidro/janela Papai Noel Passou Aqui"],"image":"assets/hero-lareira-familia-natal-2026.avif","active":true};
-const personalized={"id":"personal","name":"Personalizado","price":69.9,"prop":"Também inclui a lareira! São 21 pegadas adesivas, carta e certificado personalizados, placa com nome e adesivo de janela.","benefits":["1 lareira cenográfica de papelão para montar, 120 × 80 × 22 cm (altura × largura × profundidade; fogo ilustrativo, não aquece)","21 pegadas adesivas (10 pares + 1 solta), 22 × 8 cm cada","1 adesivo de vidro/janela Papai Noel Passou Aqui","1 carta personalizada com nome da criança","1 certificado personalizado","1 placa personalizada com nome da criança","1 guia de aplicação"],"image":"assets/product/kit-personalizado.webp","active":true};
 const defaults=[fireplace];
 function canonicalProduct(p){
  if(!p||typeof p!=="object")return null;
