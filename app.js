@@ -418,7 +418,7 @@ function markPaymentInformed(){
   const order=getOrders().find(o=>o.id===currentOrderId);
   if(order){
     const msg=`Olá! Já fiz o Pix do pedido ${order.id} no valor de ${money(order.total)}. Nome: ${order.customerName||""}. Vou aguardar a conferência.`;
-    sendPaymentWhatsApp.href="https://wa.me/5513974100193?text="+encodeURIComponent(msg);
+    sendPaymentWhatsApp.href="https://wa.me/551152970363?text="+encodeURIComponent(msg);
     sendPaymentWhatsApp.hidden=false;
     trackOrderLink.href="minha-conta.html";
     trackOrderLink.hidden=false;
