@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:84.65,discountIncluded:true,prop:"Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.",benefits:["1 lareira cenográfica de papelão para montar (120 × 80 × 22 cm)","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de vidro/janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:84.65,discountIncluded:true,prop:"Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.",benefits:["1 lareira cenográfica de papelão para montar (120 × 80 × 22 cm)","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de vidro/janela"],image:"assets/product/natal-2026-hero-lareira-120cm.webp",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
@@ -70,7 +70,7 @@ function renderProducts(){
     return `
   <article class="product-card product-card--${p.id} ${p.badge?"recommended":""}">
     <figure class="product-card-media">
-      <img src="${p.image}" alt="Itens do Kit ${p.name} Papai Noel Passou Aqui" loading="lazy" width="660" height="540">
+      <img src="${p.image}" onerror="this.onerror=null;this.src=\'assets/hero-lareira-familia-natal-2026.avif\'" alt="Itens do Kit ${p.name} Papai Noel Passou Aqui" loading="lazy" width="660" height="540">
       <div class="product-media-badges">
         <span>KIT ÚNICO</span>
         ${p.badge?`<b>${p.badge}</b>`:""}
@@ -135,7 +135,7 @@ function renderCart(){
   cartCount.hidden=qty===0;
   cartItemsEl.innerHTML=items.map(({product:p,qty})=>`
     <article class="cart-item">
-      <img src="${p.image}" alt="" aria-hidden="true">
+      <img src="${p.image}" onerror="this.onerror=null;this.src=\'assets/hero-lareira-familia-natal-2026.avif\'" alt="" aria-hidden="true">
       <div class="cart-item-copy">
         <div class="cart-item-top"><div><small>Kit</small><strong>${p.name}</strong></div><button class="cart-remove" data-cart-remove="${p.id}" type="button" aria-label="Remover Kit ${p.name}">Remover</button></div>
         <div class="cart-item-bottom">
@@ -254,7 +254,7 @@ function renderCheckoutMini(){
   if(!checkoutCartMini)return;
   checkoutCartMini.innerHTML=items.map(i=>`
     <div class="checkout-mini-item">
-      <img src="${i.product.image}" alt="">
+      <img src="${i.product.image}" onerror="this.onerror=null;this.src=\'assets/hero-lareira-familia-natal-2026.avif\'" alt="">
       <div><small>${i.qty}× Kit</small><strong>${i.product.name}</strong></div>
       <b>${money(discounted(i.product.price,i.product.id)*i.qty)}</b>
     </div>`).join("");
