@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:84.65,discountIncluded:true,prop:"Lareira decorativa com 7 pegadas e adesivo de janela.",benefits:["1 lareira decorativa de papelão","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:84.65,discountIncluded:true,prop:"Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.",benefits:["1 lareira cenográfica de papelão para montar (120 × 80 × 22 cm)","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de vidro/janela"],image:"assets/hero-lareira-familia-natal-2026.avif",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
@@ -72,7 +72,7 @@ function renderProducts(){
     <figure class="product-card-media">
       <img src="${p.image}" alt="Itens do Kit ${p.name} Papai Noel Passou Aqui" loading="lazy" width="660" height="540">
       <div class="product-media-badges">
-        <span>KIT ${p.id==="personal"?"2":"1"}</span>
+        <span>KIT ÚNICO</span>
         ${p.badge?`<b>${p.badge}</b>`:""}
       </div>
     </figure>
@@ -80,7 +80,7 @@ function renderProducts(){
     <div class="product-card-body">
       <div class="product-heading">
         <div>
-          <small>KIT ${p.id==="personal"?"2":"1"} • ${p.id==="personal"?"PERSONALIZADO":"LAREIRA ESPECIAL"}</small>
+          <small>KIT ÚNICO • LAREIRA ESPECIAL</small>
           <h3>Kit ${p.name}</h3>
         </div>
         ${p.id==="personal"?'<span class="product-star" aria-hidden="true">✦</span>':""}
@@ -104,7 +104,7 @@ function renderProducts(){
       <details class="product-specs">
         <summary>Ver medidas, materiais e cuidados <span>+</span></summary>
         <div>${p.id==="basic"
-          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (7 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> papelão decorativo para montagem, com chama ilustrada (não aquece).</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
+          ?`<p><b>Pegadas:</b> 3 pares + 1 solta (7 unidades), 22 × 8 cm.</p><p><b>Lareira:</b> 120 cm de altura × 80 cm de largura × 22 cm de profundidade, papelão cenográfico para montar, chama apenas ilustrativa (não aquece). Medidas do projeto sujeitas à conferência do protótipo.</p><p><b>Material das pegadas:</b> adesivo em vinil fosco.</p><p><b>Inclui:</b> lareira, 7 pegadas e adesivo de janela.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`
           :`<p><b>Pegadas:</b> 10 pares + 1 solta (21 unidades), 22 × 8 cm.</p><p><b>Lareira incluída:</b> papelão decorativo para montagem, sem fogo real.</p><p><b>Material das pegadas:</b> vinil fosco removível.</p><p><b>Personalização:</b> placa, carta e certificado com o nome informado no pedido.</p><p><b>Onde aplicar:</b> piso liso, seco e limpo. Evite superfícies porosas, molhadas ou recém-pintadas.</p>`}</div>
       </details>
 
@@ -313,13 +313,13 @@ function renderSummary(){
   const sideTotal=document.querySelector("#sideTotal");
   if(sidePlan)sidePlan.textContent=names||"Seu pedido";
   if(sidePrice)sidePrice.textContent=money(regular);
-  if(sidePix)sidePix.textContent=(Number(cfg.discount)||0)+"% OFF";
+  if(sidePix)sidePix.textContent="15% OFF já incluídos";
   if(sideShipping)sideShipping.textContent=shipping===0?"Grátis":money(shipping);
   if(sideTotal)sideTotal.textContent=money(total);
 }
 function renderReview(){
   const personalized=checkoutHasPersonalized();
-  const person=personalized?(child.value.trim()||"—"):"Kit Essencial";
+  const person=personalized?(child.value.trim()||"—"):"Kit Lareira Especial";
   const msg=personalized?(letter.value.trim()||"Mensagem padrão do Papai Noel"):"Sem personalização";
   const addr=[document.querySelector("#address").value.trim(),document.querySelector("#number").value.trim(),document.querySelector("#complement").value.trim()].filter(Boolean).join(", ");
   const customer=document.querySelector("#customerName").value.trim();
