@@ -31,7 +31,7 @@ window.STORE_DATA = Object.freeze({
         
         "1 adesivo de vidro/janela Papai Noel Passou Aqui"
       ],
-      "image": "assets/hero-lareira-familia-natal-2026.avif",
+      "image": "assets/product/natal-2026-hero-lareira-120cm.webp",
       "active": true
     }
   ]
