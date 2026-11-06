@@ -49,7 +49,7 @@
     const shipping = window.STORE_DATA?.shipping || {};
     return {
       enabled: false,
-      discount: 15,
+      discount: 0,
       key: "",
       receiverName: "",
       displayName: "",
