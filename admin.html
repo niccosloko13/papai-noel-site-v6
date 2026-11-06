@@ -30,6 +30,7 @@
       <button class="nav-item" data-tab="orders">Pedidos</button>
       <button class="nav-item" data-tab="products">Produtos</button>
       <button class="nav-item" data-tab="pix">Pix</button>
+      <button class="nav-item" data-tab="marketplaces">Checkout</button>
       <button class="nav-item" data-tab="marketing">Anúncios</button>
       <button class="nav-item" data-tab="seo">SEO</button>
     </nav>
@@ -118,6 +119,23 @@
       </div>
     </section>
 
+    <section class="admin-panel" id="marketplaces">
+      <article class="panel-card">
+        <div class="panel-head"><div><small>DESTINOS DE COMPRA</small><h2>Checkout · Mercado Livre e Shopee</h2></div></div>
+        <p class="muted">Cole os links oficiais dos anúncios do seu kit. Quando um link válido estiver salvo, a opção de compra aparecerá automaticamente no site. Campos vazios permanecem indisponíveis.</p>
+        <label>Link do anúncio no Mercado Livre
+          <input id="marketplaceMercadoLivre" type="url" inputmode="url" autocomplete="off" placeholder="https://produto.mercadolivre.com.br/MLB-...">
+        </label>
+        <label>Link do anúncio na Shopee
+          <input id="marketplaceShopee" type="url" inputmode="url" autocomplete="off" placeholder="https://shopee.com.br/...">
+        </label>
+        <p class="muted">Use o link público do produto, e não um checkout temporário com dados de comprador. O valor do frete e o pagamento serão informados pela própria plataforma.</p>
+        <button type="button" class="btn primary" id="saveMarketplaces">Salvar links de compra</button>
+        <p id="marketplacesMsg" class="admin-feedback" role="status" aria-live="polite"></p>
+        <div class="admin-notice">Para testar, salve os links, abra a loja e confirme se cada botão leva ao anúncio correto. Não consideramos um clique como venda confirmada.</div>
+      </article>
+    </section>
+
     <section class="admin-panel" id="marketing">
       <div class="admin-section-lead"><div><small>ANÚNCIOS · PRONTO PARA TRÁFEGO</small><p>Confira as fontes de medição e gere links para cada criativo. Com o ID correto salvo, o Pixel só carrega no site quando o visitante aceita a medição de marketing. Eventos de compra exigem confirmação de pagamento.</p></div></div>
       <div class="settings-grid marketing-grid">
@@ -177,5 +195,5 @@
   </main>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261106-unique-ip"></script>
+<script src="admin.js?v=20261106-checkout-links-1"></script>
 </body></html>
