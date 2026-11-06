@@ -27,6 +27,24 @@
 .kit-updated-specs span{display:inline-flex;align-items:center;background:#fff8eb;border:1px solid #e9c78f;color:#662414;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;box-shadow:0 2px 8px #3d170f13}
 .kit-updated-specs span:before{content:"✓";color:#137b40;font-weight:900;margin-right:6px}
 @media(max-width:699px){.kit-updated-specs{justify-content:center;gap:6px;margin:11px 0}.kit-updated-specs span{font-size:11px;padding:6px 9px}}
+</style><style>
+.channel-price-mini{font-size:12px!important;line-height:1.5;margin:7px 0 12px!important;font-weight:600}
+.channel-compare{display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:28px;margin:32px auto 0;padding:28px;border:1px solid #eed9b8;border-radius:20px;background:linear-gradient(125deg,#fffaf1,#fff5e6);box-shadow:0 8px 28px #50251910;color:#542a1d}
+.channel-compare h3{font-size:clamp(20px,2.5vw,27px);color:#5b221b;margin:8px 0}
+.channel-compare p{font-size:14px;line-height:1.65;margin:10px 0;color:#614839}
+.channel-eyebrow{font-size:11px;letter-spacing:.13em;font-weight:900;color:#aa382c}
+.channel-price-summary{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.channel-price-summary>span{display:flex;flex-direction:column;gap:2px;border:1px solid #e6d0b2;background:#fff;border-radius:11px;padding:10px 14px;font-size:12px;font-weight:700}
+.channel-price-summary strong{font-size:17px;color:#772b22}
+.channel-marketplaces{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+.channel-seller-tag{display:flex;align-items:center;flex-direction:column;gap:5px;justify-content:center;padding:17px 9px;border:1px solid #e4d9cb;border-radius:14px;background:#fff;text-align:center;min-height:130px}
+.channel-seller-tag strong{font-size:16px;color:#462c25}
+.channel-seller-tag small{color:#725f56;font-size:11px}
+.marketplace-sign{display:grid;place-items:center;border-radius:11px;width:40px;height:40px;font-size:18px;font-weight:900;color:#3a312c}
+.channel-mercadolivre .marketplace-sign{background:#ffe600}
+.channel-shopee .marketplace-sign{background:#ee4d2d;color:white}
+.channel-marketplaces .marketplace-disclaimer{grid-column:1/-1;text-align:center;color:#786b63;font-size:11px;margin:0}
+@media(max-width:680px){.channel-compare{grid-template-columns:1fr;padding:19px;gap:17px;margin-top:21px}.channel-compare h3{font-size:21px}.channel-seller-tag{min-height:106px;padding:12px 5px}.channel-seller-tag strong{font-size:14px}.channel-price-mini{font-size:11px!important}}
 </style></head>
 <body>
 <div class="announcement-bar" role="note">
@@ -79,7 +97,7 @@
         <span class="natal-hero-eyebrow">NATAL 2026 · EDIÇÃO ESPECIAL</span>
         <h1 id="heroTitle">A magia do Natal deixa <em>pegadas.</em></h1>
         <p>Uma surpresa inesquecível para as crianças, com lareira cenográfica de 1,20 m, 7 pegadas e adesivo de vidro.</p>
-        <div class="natal-hero-price"><span>Lareira cenográfica de 1,20 m · <s>R$ 99,59</s> · 15% OFF no Pix</span><strong>R$ 84,65</strong></div>
+        <div class="natal-hero-price"><span>Oferta exclusiva do site · de <s>R$ 99,59</s> · 15% OFF no Pix</span><strong>R$ 84,65</strong></div><p class="channel-price-mini">Nas artes dos marketplaces: <strong>R$ 112,80</strong>. Valores diferentes conforme o canal.</p>
         <div class="kit-updated-specs" role="list" aria-label="Conteúdo atualizado do kit"><span role="listitem">Lareira 120 × 80 × 22 cm</span><span role="listitem">7 pegadas adesivas</span><span role="listitem">1 adesivo de vidro</span></div>
         <div class="natal-hero-actions">
           <a class="natal-hero-primary" href="checkout.html?kit=basic">Garantir minha lareira <span aria-hidden="true">→</span></a>
@@ -106,7 +124,7 @@
       <h2>Uma lareira de 1,20 m para transformar sua noite de Natal.</h2>
       <p>Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas adesivas e 1 adesivo de vidro. Tudo especificado antes de comprar.</p>
     </div>
-    <div class="product-grid" id="productGrid" tabindex="0" role="region" aria-label="Kits disponíveis"></div>
+    <div class="product-grid" id="productGrid" tabindex="0" role="region" aria-label="Kits disponíveis"></div><section class="channel-compare" id="canais-de-compra" aria-labelledby="channel-compare-title"><div class="channel-compare-copy"><span class="channel-eyebrow">ONDE COMPRAR</span><h3 id="channel-compare-title">O mesmo kit. Preços diferentes por canal.</h3><p>No <strong>site oficial, R$ 84,65 no Pix</strong>, com 15% OFF já incluídos. Nas nossas artes de Mercado Livre e Shopee, o preço de referência é <strong>R$ 112,80</strong>. Confira o valor exibido no anúncio antes de comprar.</p><div class="channel-price-summary"><span>Site oficial <strong>R$ 84,65 no Pix</strong></span><span>Marketplaces <strong>R$ 112,80 nas artes</strong></span></div></div><div class="channel-marketplaces" aria-label="Canais de marketplaces"><div class="channel-seller-tag channel-mercadolivre"><span class="marketplace-sign" aria-hidden="true">ML</span><strong>Mercado Livre</strong><small>Referência: R$ 112,80</small></div><div class="channel-seller-tag channel-shopee"><span class="marketplace-sign" aria-hidden="true">S</span><strong>Shopee</strong><small>Referência: R$ 112,80</small></div><p class="marketplace-disclaimer">Identificação dos marketplaces, não selo de parceria ou verificação. Links serão adicionados quando os anúncios estiverem publicados.</p></div></section>
   </section>
 
   <section class="section scene-section" id="como-fica">
@@ -206,7 +224,7 @@
       <img src="assets/product/natal-2026-kit-completo-120cm.webp" onerror="this.onerror=null;this.src='assets/product/pegadas-site.webp'" alt="Kit Lareira Especial de Natal com os três itens" loading="lazy" referrerpolicy="no-referrer">
       <div class="final-product-card">
         <img src="assets/product/natal-2026-ficha-lareira-120cm.webp" onerror="this.onerror=null;this.src='assets/hero-lareira-familia-natal-2026.avif'" alt="Ficha técnica da lareira cenográfica com medidas de 120 cm de altura, 80 cm de largura e 22 cm de profundidade">
-        <div><small>KIT LAREIRA ESPECIAL</small><strong>Lareira 1,20 m + 7 pegadas + adesivo de vidro</strong><span id="finalFeaturedPixPrice">R$ 84,65</span></div>
+        <div><small>KIT LAREIRA ESPECIAL</small><strong>Lareira 1,20 m + 7 pegadas + adesivo de vidro</strong><span id="finalFeaturedPixPrice">R$ 84,65 no Pix</span></div>
       </div>
     </div>
     <div class="final-cta-copy">
@@ -242,7 +260,7 @@
 </dialog>
 
 <div class="mobile-buy-bar" id="mobileBuyBar" hidden>
-  <div><small>Kit Lareira Especial</small><strong>R$ 84,65</strong></div>
+  <div><small>Site oficial · Pix 15% OFF</small><strong>R$ 84,65</strong></div>
   <button class="btn btn-primary" data-buy="Lareira Especial de Natal">Comprar</button>
 </div>
 
