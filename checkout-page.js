@@ -2,7 +2,7 @@
 const products=window.STORE_DATA?.products||[];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 let publicPixConfig=null;
-const cfg=()=>publicPixConfig||{discount:15,shippingFlat:0,enabled:false};
+const cfg=()=>publicPixConfig||{discount:0,shippingFlat:0,enabled:false};
 const discounted=(v,id)=>id==="basic"?Math.round(v*100)/100:Math.round(v*(1-(Number(cfg().discount)||0)/100)*100)/100;
 const params=new URLSearchParams(location.search);
 const campaignKit=params.get("kit");
@@ -306,7 +306,7 @@ fetch("/api/checkout-config",{cache:"no-store"}).then(async r=>{
  const data=await r.json();if(!r.ok)throw Error(data.error||"Configuração indisponível");
  publicPixConfig=data;
  if(step===3)renderReview();updatePriceDisplay();
-}).catch(()=>{publicPixConfig={enabled:false,discount:15,shippingFlat:0}});
+}).catch(()=>{publicPixConfig={enabled:false,discount:0,shippingFlat:0}});
 syncMode();updatePreview();renderStep();updatePriceDisplay();
 fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
  if(!data||!Array.isArray(data.products))return;
