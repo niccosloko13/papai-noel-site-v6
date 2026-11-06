@@ -22,7 +22,7 @@ window.STORE_DATA = Object.freeze({
     {
       "id": "basic",
       "name": "Lareira Especial de Natal",
-      "price": 84.65,
+      "price": 112.80,
       "discountIncluded": true,
       "prop": "Lareira cenográfica de 120 × 80 × 22 cm para montar + 7 pegadas adesivas e 1 adesivo de vidro. Um cenário de Natal para sua casa.",
       "benefits": [
