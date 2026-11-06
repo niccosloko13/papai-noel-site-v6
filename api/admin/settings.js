@@ -1,5 +1,5 @@
 const {valid}=require("../_auth");const {db,init,databaseStatus}=require("../_db");
-const KEYS=["pix","marketing","seo","products"];
+const KEYS=["pix","marketing","seo","products","marketplaces"];
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  if(!valid(req))return res.status(401).json({error:"Sessão necessária"});
@@ -12,7 +12,7 @@ module.exports=async function(req,res){
  }
  const {key,value}=req.body||{};
  if(!KEYS.includes(key)||!value||typeof value!=="object"||JSON.stringify(value).length>15000)return res.status(400).json({error:"Configuração inválida"});
- const allowed={pix:["enabled","key","displayName","receiverName","city","discount","shippingFlat"],marketing:["metaPixel","ga4","tiktokPixel","googleAds"],seo:["title","description","image"],products:[]};
+ const allowed={pix:["enabled","key","displayName","receiverName","city","discount","shippingFlat"],marketing:["metaPixel","ga4","tiktokPixel","googleAds"],seo:["title","description","image"],marketplaces:["mercadolivre","shopee"],products:[]};
  let safe;
  if(key==="products"){
   if(!Array.isArray(value)||value.length!==2||value[0]?.id!=="basic"||value[1]?.id!=="personal")return res.status(400).json({error:"Catálogo inválido"});
@@ -20,6 +20,21 @@ module.exports=async function(req,res){
   if(value.some(p=>typeof p.name!=="string"||!p.name.trim()||p.name.length>45||typeof p.prop!=="string"||p.prop.length>350||!Number.isFinite(p.price)||p.price<1||p.price>10000||!validImage(p.image)||!Array.isArray(p.benefits)||p.benefits.length>12||p.benefits.some(b=>typeof b!=="string"||b.length>150)||typeof p.active!=="boolean"))return res.status(400).json({error:"Dados de produto inválidos"});
   safe=value.map(p=>({id:p.id,name:p.name.trim(),price:Math.round(p.price*100)/100,prop:p.prop.trim(),image:p.image,benefits:p.benefits,active:p.active}));
  }else safe=Object.fromEntries(Object.entries(value).filter(([k])=>allowed[key].includes(k)));
+ if(key==="marketplaces"){
+  const hosts={mercadolivre:["mercadolivre.com.br","mercadolivre.com"],shopee:["shopee.com.br","shopee.com"]};
+  for(const platform of Object.keys(hosts)){
+   const raw=safe[platform];
+   if(raw!==undefined&&typeof raw!=="string")return res.status(400).json({error:"O link deve ser um texto."});
+   const link=String(raw||"").trim();
+   if(link.length>1200)return res.status(400).json({error:"Link muito longo."});
+   if(link){
+    let u;try{u=new URL(link)}catch{return res.status(400).json({error:"URL inválida."})}
+    if(u.protocol!=="https:"||u.username||u.password||!hosts[platform].some(h=>u.hostname===h||u.hostname.endsWith("."+h)))
+     return res.status(400).json({error:"Informe somente links HTTPS oficiais do marketplace selecionado."});
+   }
+   safe[platform]=link;
+  }
+ }
  if(key==="pix"){
   safe.enabled=safe.enabled===true;
   for(const f of ["key","displayName","receiverName","city"])safe[f]=typeof safe[f]==="string"?safe[f].trim():"";
