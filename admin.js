@@ -31,7 +31,7 @@ form.addEventListener("submit",async e=>{
 });
 $("#logoutBtn").onclick=logout;
 
-const titles={dashboard:["PAINEL","Visão geral"],orders:["VENDAS","Pedidos"],products:["CATÁLOGO","Produtos"],pix:["PAGAMENTOS","Pix"],marketing:["AQUISIÇÃO","Anúncios"],seo:["ORGANIC","SEO"]};
+const titles={dashboard:["PAINEL","Visão geral"],orders:["VENDAS","Pedidos"],products:["CATÁLOGO","Produtos"],pix:["PAGAMENTOS","Pix"],marketplaces:["VENDAS","Checkout"],marketing:["AQUISIÇÃO","Anúncios"],seo:["ORGANIC","SEO"]};
 function selectTab(id){
  $$(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
  $$(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
@@ -307,5 +307,34 @@ $("#saveSeo").onclick=async()=>{
  finally{button.disabled=false;button.textContent="Salvar rascunho de SEO"}
 };
 
-function renderAll(){metrics();renderOrders();loadPix();loadMarketing();loadSeo();loadProducts();bindStatus()}
+const marketplaceHosts={
+ mercadolivre:["mercadolivre.com.br","mercadolivre.com"],
+ shopee:["shopee.com.br","shopee.com"]
+};
+function marketplaceUrlValid(raw,type){
+ if(!raw)return true;
+ try{const u=new URL(raw);return u.protocol==="https:"&&!u.username&&!u.password&&marketplaceHosts[type].some(host=>u.hostname===host||u.hostname.endsWith("."+host))}
+ catch{return false}
+}
+function loadMarketplaces(){
+ const c=serverSettings.marketplaces||{};
+ $("#marketplaceMercadoLivre").value=c.mercadolivre||"";
+ $("#marketplaceShopee").value=c.shopee||"";
+}
+$("#saveMarketplaces").addEventListener("click",async()=>{
+ const msg=$("#marketplacesMsg"),button=$("#saveMarketplaces");
+ const value={mercadolivre:$("#marketplaceMercadoLivre").value.trim(),shopee:$("#marketplaceShopee").value.trim()};
+ if(!marketplaceUrlValid(value.mercadolivre,"mercadolivre")||!marketplaceUrlValid(value.shopee,"shopee")){
+  msg.dataset.state="error";msg.textContent="Use URLs HTTPS oficiais do Mercado Livre e da Shopee.";return;
+ }
+ button.disabled=true;msg.textContent="Salvando e conferindo...";
+ try{
+  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketplaces",value})});
+  const fresh=await api("settings");const saved=fresh.settings?.marketplaces;
+  if(!saved||saved.mercadolivre!==value.mercadolivre||saved.shopee!==value.shopee)throw Error("Não foi possível confirmar os links no banco.");
+  serverSettings.marketplaces=saved;msg.dataset.state="success";msg.textContent="Links salvos e conferidos! A vitrine usa os links ativos assim que recarregar.";
+ }catch(e){msg.dataset.state="error";msg.textContent="Falha ao salvar: "+e.message}
+ finally{button.disabled=false}
+});
+function renderAll(){metrics();renderOrders();loadPix();loadMarketplaces();loadMarketing();loadSeo();loadProducts();bindStatus()}
 })();
