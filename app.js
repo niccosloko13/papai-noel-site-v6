@@ -3,7 +3,7 @@ const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
-const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:15,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
+const pixConfig=()=>window.NatalPix?.getPixConfig?.()||{discount:0,shippingFlat:0,key:"",receiverName:"",displayName:"",city:"SAO PAULO"};
 const discounted=(value,id)=>id==='basic'?Math.round(value*100)/100:Math.round(value*(1-(Number(pixConfig().discount)||0)/100)*100)/100;
 const productById=id=>id==="basic"?(PRODUCTS.find(p=>p.id===id)||DEFAULT_PRODUCTS.find(p=>p.id===id)):null;
 
@@ -34,7 +34,7 @@ function updateCampaignPrices(){
  if(hero&&Number.isFinite(lowest))hero.textContent=money(lowest);
  const featured=PRODUCTS.find(p=>p.id==="basic");
  const featuredPix=document.querySelector("#finalFeaturedPixPrice");
- if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price,featured.id))+" no Pix";
+ if(featuredPix&&featured)featuredPix.textContent=money(discounted(featured.price,featured.id));
 }
 
 const grid=document.querySelector("#productGrid");
@@ -303,9 +303,9 @@ function renderSummary(){
   summary.innerHTML=`
     <div class="summary-row"><span>Kits</span><b>${money(regular)}</b></div>
     <div class="summary-products">${checkoutExpanded().map(i=>`<span>${i.qty}× Kit ${i.product.name}</span>`).join("")}</div>
-    <div class="summary-row discount"><span>${checkoutExpanded().every(i=>i.product.discountIncluded)?"Desconto já incluído na oferta":`Desconto Pix ${Number(cfg.discount)||0}%`}</span><b>− ${money(regular-productPix)}</b></div>
+    <div class="summary-row discount"><span>${checkoutExpanded().every(i=>i.product.discountIncluded)?"Sem desconto adicional":`Desconto Pix ${Number(cfg.discount)||0}%`}</span><b>− ${money(regular-productPix)}</b></div>
     <div class="summary-row"><span>Frete</span><b>${shipping===0?"Grátis":money(shipping)}</b></div>
-    <div class="summary-row total"><span>Total no Pix</span><b>${money(total)}</b></div>`;
+    <div class="summary-row total"><span>Total do pedido</span><b>${money(total)}</b></div>`;
   const sidePlan=document.querySelector("#sidePlan");
   const sidePrice=document.querySelector("#sidePrice");
   const sidePix=document.querySelector("#sidePix");
@@ -313,7 +313,7 @@ function renderSummary(){
   const sideTotal=document.querySelector("#sideTotal");
   if(sidePlan)sidePlan.textContent=names||"Seu pedido";
   if(sidePrice)sidePrice.textContent=money(regular);
-  if(sidePix)sidePix.textContent="15% OFF já incluídos";
+  if(sidePix)sidePix.textContent="Sem desconto adicional";
   if(sideShipping)sideShipping.textContent=shipping===0?"Grátis":money(shipping);
   if(sideTotal)sideTotal.textContent=money(total);
 }
