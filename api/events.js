@@ -18,6 +18,7 @@ async function initEvents(){
  order_id text NOT NULL DEFAULT ''
  )`);
  await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS utm_content text NOT NULL DEFAULT ''");
+ await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS visitor_hash text NOT NULL DEFAULT ''");
 }
 const clean=(v,max=90)=>typeof v==="string"?v.trim().slice(0,max):"";
 function hashedVisitor(req){
