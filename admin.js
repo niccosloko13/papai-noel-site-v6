@@ -85,11 +85,12 @@ async function loadSummary(){
 async function loadAnalytics(){
  try{
   const data=await api("analytics");
-  $("#realVisitors").textContent=data.visitors.toLocaleString("pt-BR");
+  $("#realVisitors").textContent=Number(data.visitors||0).toLocaleString("pt-BR");
+  if($("#realSessions"))$("#realSessions").textContent=Number(data.sessions||0).toLocaleString("pt-BR");
   $("#realCheckouts").textContent=data.checkouts.toLocaleString("pt-BR");
   $("#realConversion").textContent=data.conversionRate===null?"—":data.conversionRate.toLocaleString("pt-BR")+"%";
   $("#realAbandonment").textContent=data.checkoutAbandonment===null?"—":data.checkoutAbandonment.toLocaleString("pt-BR")+"%";
-  $("#realAnalyticsNote").textContent="Eventos reais coletados desde a ativação. Métricas sujeitas a bloqueadores e visitantes que não permitem o registro.";
+  $("#realAnalyticsNote").textContent="Visitantes únicos por IP anonimizado (HMAC), últimos 30 dias. Uma rede compartilhada pode contar como uma pessoa; IP dinâmico pode contar outra vez. Contagem disponível apenas após esta atualização. Nenhum IP em claro é armazenado.";
   $("#realCampaigns").innerHTML=(data.campaigns||[]).map(c=>'<div class="seo-check"><span>'+esc(c.source)+'</span><b>'+c.sessions+' sessões • '+c.orders+' pedidos</b></div>').join("")||'<p class="muted">Nenhum evento registrado.</p>';
  }catch(e){$("#realAnalyticsNote").textContent="Não foi possível carregar métricas: "+e.message}
 }
@@ -188,7 +189,7 @@ $("#saveProducts").addEventListener("click",async()=>{
  catch(e){$("#productsMsg").textContent="Não foi possível salvar: "+e.message}
  finally{button.disabled=false}
 });
-const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:15,shippingFlat:0,...(window.STORE_DATA?.pix||{})};
+const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:0,shippingFlat:0,...(window.STORE_DATA?.pix||{})};
 function loadPix(){
  const c={...pixDefaults,...(serverSettings.pix||{})};
  const map={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
