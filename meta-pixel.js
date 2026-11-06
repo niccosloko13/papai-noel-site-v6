@@ -17,7 +17,7 @@
   window.fbq("track","PageView");
  }
  function send(name,data){
-  if(!loaded||typeof window.fbq!=="function")return;
+  if(!accepted()||!loaded||typeof window.fbq!=="function")return;
   const product={content_ids:[data?.product_id||"basic"],content_type:"product",currency:"BRL",value:112.80};
   if(name==="view_product")window.fbq("track","ViewContent",product);
   if(name==="add_to_cart")window.fbq("track","AddToCart",product);
@@ -48,5 +48,6 @@
    }
   }catch{}
  }
+ window.natalMarketingPreferences=()=>{try{localStorage.removeItem(consentKey)}catch{};location.reload()};
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
