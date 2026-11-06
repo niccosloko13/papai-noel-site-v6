@@ -303,7 +303,7 @@ function renderSummary(){
   summary.innerHTML=`
     <div class="summary-row"><span>Kits</span><b>${money(regular)}</b></div>
     <div class="summary-products">${checkoutExpanded().map(i=>`<span>${i.qty}× Kit ${i.product.name}</span>`).join("")}</div>
-    <div class="summary-row discount"><span>${checkoutExpanded().every(i=>i.product.discountIncluded)?"Sem desconto adicional":`Desconto Pix ${Number(cfg.discount)||0}%`}</span><b>− ${money(regular-productPix)}</b></div>
+    <div class="summary-row discount"><span>Desconto adicional</span><b>${money(0)}</b></div>
     <div class="summary-row"><span>Frete</span><b>${shipping===0?"Grátis":money(shipping)}</b></div>
     <div class="summary-row total"><span>Total do pedido</span><b>${money(total)}</b></div>`;
   const sidePlan=document.querySelector("#sidePlan");
@@ -488,7 +488,7 @@ document.querySelector("#findCep").addEventListener("click",async()=>{
 
 const bar=document.querySelector("#mobileBuyBar");
 const barStrong=bar?.querySelector("strong");
-if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price,currentProduct.id))} no Pix`;
+if(barStrong)barStrong.textContent=`${money(discounted(currentProduct.price,currentProduct.id))}`;
 function isInViewport(el){if(!el)return false;const r=el.getBoundingClientRect();return r.bottom>0&&r.top<window.innerHeight}
 let stickyTick=false;
 function refreshStickyBuyBar(){
