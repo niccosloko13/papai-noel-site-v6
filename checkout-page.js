@@ -1,4 +1,5 @@
 (()=>{
+ if(!new URLSearchParams(location.search).has("legacy_payment")){location.replace("/#canais-de-compra");return;}
 const products=window.STORE_DATA?.products||[];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 let publicPixConfig=null;
