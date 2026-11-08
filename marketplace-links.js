@@ -9,6 +9,6 @@ fetch("/api/marketplace-links",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error
   if(!anchor||!valid(data[key],key))continue;
   anchor.href=data[key];anchor.hidden=false;count++;
  }
- if(note)note.textContent=count===2?"Escolha a plataforma de sua preferência. O pagamento e o frete são concluídos no marketplace.":count===1?"Confira a opção disponível acima. A outra plataforma será habilitada após publicação do anúncio.":"Os links de compra pelos marketplaces serão disponibilizados quando os anúncios estiverem publicados.";
-}).catch(()=>{if(note)note.textContent="Links dos marketplaces temporariamente indisponíveis. Você pode continuar pelo checkout do site."});
+ if(note)note.textContent=count===2?"Escolha a plataforma de sua preferência. O pagamento e o frete são concluídos no marketplace.":count===1?"Confira a opção disponível acima. A outra plataforma será habilitada após publicação do anúncio.":"Os links de compra serão disponibilizados quando os anúncios oficiais estiverem publicados. Não faça Pix por fora dos marketplaces.";
+}).catch(()=>{if(note)note.textContent="Links dos marketplaces temporariamente indisponíveis. Tente novamente mais tarde ou entre em contato com nosso atendimento para confirmar o anúncio oficial."});
 })();
