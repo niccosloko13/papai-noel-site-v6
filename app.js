@@ -126,6 +126,7 @@ function renderProducts(){
   observeProductCards();
 }
 renderProducts();updateCampaignPrices();
+ document.querySelectorAll("[data-add-cart]").forEach(el=>el.hidden=true);
 
 function renderCart(){
   const cart=getCart();
@@ -260,6 +261,7 @@ function renderCheckoutMini(){
     </div>`).join("");
 }
 function openCheckoutWithItems(items,{fromCart=false}={}){
+  window.location.hash="canais-de-compra";document.getElementById("canais-de-compra")?.scrollIntoView({behavior:"smooth",block:"start"});return;
   const normalized=[{id:"basic",qty:Math.max(1,Number(items?.find(i=>i.id==="basic")?.qty)||1)}];
   localStorage.setItem("natal_checkout_pending",JSON.stringify({items:normalized,fromCart,createdAt:Date.now()}));
   trackStoreEvent("begin_checkout",{items:normalized});
