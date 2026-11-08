@@ -6,6 +6,7 @@ module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  if(req.method!=="POST"){res.setHeader("Allow","POST");return res.status(405).end()}
  if(!safeOrigin(req))return res.status(403).json({error:"Origem inválida"});
+ return res.status(410).json({error:"Novas compras disponíveis exclusivamente no Mercado Livre ou Shopee. Consulte os canais oficiais em https://papainoelpassouaqui.com.br/#canais-de-compra"});
  try{
  const b=req.body||{};if(JSON.stringify(b).length>8000)return res.status(413).json({error:"Pedido muito grande"});
  const items=Array.isArray(b.items)?b.items:[],ids=items.map(x=>x.id);
