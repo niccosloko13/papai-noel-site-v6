@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:112.80,discountIncluded:true,prop:"Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.",benefits:["1 lareira cenográfica de papelão para montar (120 × 80 × 22 cm)","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de vidro/janela"],image:"assets/product/natal-2026-hero-lareira-120cm.webp",active:true}]).filter(p=>p.id==="basic");
+const DEFAULT_PRODUCTS=(window.STORE_DATA?.products||[{id:"basic",name:"Lareira Especial de Natal",price:124.90,discountIncluded:true,prop:"Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.",benefits:["1 lareira cenográfica de papelão para montar (120 × 80 × 22 cm)","7 pegadas adesivas (3 pares + 1 solta)","1 adesivo de vidro/janela"],image:"assets/product/natal-2026-hero-lareira-120cm.webp",active:true}]).filter(p=>p.id==="basic");
 const getProducts=()=>DEFAULT_PRODUCTS.filter(p=>p.id==="basic");
 let PRODUCTS=getProducts().filter(p=>p.id==="basic"&&p.active!==false).map(p=>({...p,badge:""}));
 
