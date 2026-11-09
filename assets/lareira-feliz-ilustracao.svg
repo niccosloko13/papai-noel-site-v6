@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1160" viewBox="0 0 900 1160" role="img" aria-labelledby="t d"><title id="t">Ilustração da Lareira Feliz</title><desc id="d">Lareira decorativa de papelão: chaminé central, estampa de tijolinhos vermelhos, guirlanda, duas meias natalinas e lareira com fogo ilustrado.</desc>
+<defs>
+<pattern id="brick" width="148" height="78" patternUnits="userSpaceOnUse"><rect width="148" height="78" fill="#aa493e"/><path d="M0 5H148M0 41H148M74 5V41M0 41V78M148 41V78" stroke="#f6d3b4" stroke-width="7"/><rect x="9" y="11" width="55" height="22" rx="2" fill="#d2735d" opacity=".65"/><rect x="84" y="47" width="55" height="23" rx="2" fill="#8a2c2a" opacity=".48"/></pattern>
+<linearGradient id="front" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ce7464"/><stop offset="1" stop-color="#923a33"/></linearGradient>
+<linearGradient id="fire" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#3b1818"/><stop offset=".7" stop-color="#090b11"/><stop offset="1" stop-color="#171418"/></linearGradient>
+<linearGradient id="shelf" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a95045"/><stop offset="1" stop-color="#692520"/></linearGradient>
+<linearGradient id="flame" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#ff6b22"/><stop offset=".55" stop-color="#ffc04d"/><stop offset="1" stop-color="#fff0ac"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="24"/></filter>
+<clipPath id="bodyclip"><path d="M165 427H700V1055H165Z"/></clipPath>
+<clipPath id="chimneyclip"><path d="M313 75H586V427H313Z"/></clipPath>
+</defs>
+<ellipse cx="457" cy="1062" rx="319" ry="48" fill="#48221b" opacity=".22" filter="url(#shadow)"/>
+<!-- chimney -->
+<path d="M313 75H586V427H313Z" fill="url(#brick)" stroke="#792b26" stroke-width="8"/>
+<path d="M586 75L631 100V437L586 427Z" fill="#812d29" stroke="#712c28" stroke-width="5"/>
+<path d="M313 75L345 51H612L586 75Z" fill="#e19a85" stroke="#792b26" stroke-width="4"/>
+<path d="M283 53H619V92H283Z" fill="url(#shelf)" stroke="#752a25" stroke-width="6"/>
+<path d="M283 53L315 34H647L619 53Z" fill="#d47f6f"/>
+<!-- body -->
+<path d="M165 427H700V1055H165Z" fill="url(#brick)" stroke="#82332e" stroke-width="8"/>
+<path d="M700 427L763 448V1040L700 1055Z" fill="#8d302a" stroke="#6e2925" stroke-width="6"/>
+<path d="M165 427L208 408H749L700 427Z" fill="#e6a08d" stroke="#7d312b" stroke-width="6"/>
+<path d="M121 404H733V463H121Z" fill="url(#shelf)" stroke="#702a25" stroke-width="7"/>
+<path d="M121 404L165 381H780L733 404Z" fill="#e0a190" stroke="#702a25" stroke-width="5"/>
+<path d="M153 463H707V486H153Z" fill="#682924" opacity=".6"/>
+<!-- rounded firebox reaching bottom -->
+<path d="M261 1055V754C261 636 340 582 435 582C531 582 610 636 610 754V1055Z" fill="#301b1c" stroke="#ebba9b" stroke-width="23" stroke-linejoin="round"/>
+<path d="M277 1055V756C277 650 354 607 435 607C516 607 594 650 594 756V1055Z" fill="url(#fire)"/>
+<ellipse cx="440" cy="1014" rx="150" ry="40" fill="#ef7b24" opacity=".36" filter="url(#shadow)"/>
+<!-- fire full to bottom -->
+<path d="M374 1021C331 965 382 913 380 856C418 878 420 917 426 946C447 905 468 857 456 788C525 840 522 908 513 947C552 920 559 899 554 867C602 944 560 1019 532 1042H388Z" fill="url(#flame)"/>
+<path d="M418 1041C389 992 430 964 430 920C458 947 455 980 462 992C480 969 492 948 482 913C526 953 532 1010 500 1045Z" fill="#ffe69a"/>
+<path d="M336 1049L487 1007L498 1039L357 1070Z" fill="#5e3327" stroke="#34221c" stroke-width="9"/>
+<path d="M399 1008L560 1051L550 1075L393 1038Z" fill="#784731" stroke="#34221c" stroke-width="9"/>
+<path d="M320 1056H574" stroke="#201a18" stroke-width="17" stroke-linecap="round"/>
+<!-- garland printed -->
+<path d="M167 484C235 526 266 485 329 520C390 554 462 512 507 528C569 548 625 499 700 483" stroke="#274b32" stroke-width="35" stroke-linecap="round" fill="none"/>
+<path d="M168 486C236 524 274 488 335 518C390 545 453 511 504 524C565 549 632 499 700 482" stroke="#47804a" stroke-width="15" stroke-linecap="round" fill="none" stroke-dasharray="7 17"/>
+<g fill="#cc2930"><circle cx="214" cy="501" r="9"/><circle cx="245" cy="504" r="8"/><circle cx="520" cy="529" r="9"/><circle cx="639" cy="498" r="9"/><circle cx="681" cy="488" r="8"/></g>
+<g fill="#f8d17a"><circle cx="193" cy="495" r="6"/><circle cx="290" cy="507" r="6"/><circle cx="474" cy="519" r="6"/><circle cx="572" cy="520" r="6"/><circle cx="668" cy="488" r="6"/></g>
+<!-- bow center -->
+<path d="M425 505C367 462 354 492 378 530L423 542Z" fill="#ae1424" stroke="#6f1322" stroke-width="5"/><path d="M450 505C506 463 520 492 496 530L450 542Z" fill="#c61f2d" stroke="#7c1520" stroke-width="5"/><path d="M426 537L407 599L439 577L455 602L463 537" fill="#ae1d2c"/><ellipse cx="438" cy="532" rx="18" ry="18" fill="#e84246"/>
+<!-- stockings hang printed -->
+<path d="M275 541L308 549L304 620C320 636 343 655 333 671C318 699 276 694 251 669C244 660 258 645 272 644Z" fill="#be2534" stroke="#78202b" stroke-width="5"/>
+<path d="M266 534L315 542L312 564L263 557Z" fill="#fff3e2" stroke="#c5b5a6" stroke-width="4"/>
+<path d="M564 536L600 528L608 625C629 634 647 648 640 667C629 696 586 702 557 676C547 662 560 648 574 641Z" fill="#bc2533" stroke="#78202b" stroke-width="5"/>
+<path d="M559 528L607 521L610 546L563 553Z" fill="#fff5e7" stroke="#c5b5a6" stroke-width="4"/>
+<g fill="none" stroke="#fff2e9" stroke-width="3" stroke-linecap="round"><path d="M298 610v22m-11-11h23m-19-8 15 15m0-15-15 15"/><path d="M583 610v22m-11-11h23m-19-8 15 15m0-15-15 15"/></g>
+<!-- base subtle -->
+<path d="M158 1055H703V1082H158Z" fill="#a44940" stroke="#6e2924" stroke-width="5"/><path d="M703 1055L762 1041V1065L703 1082Z" fill="#7b3029"/>
+</svg>
