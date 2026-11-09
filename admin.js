@@ -158,12 +158,12 @@ $("#orderSearch").addEventListener("input",renderOrders);$("#orderFilter").addEv
 
 const productDefaults=(window.STORE_DATA?.products||[]).map(p=>({...p,benefits:[...p.benefits]}));
 function loadProducts(){
- const products=Array.isArray(serverSettings.products)&&serverSettings.products.length===2?serverSettings.products:productDefaults;
+ const products=productDefaults.map(d=>({...d,price:Number(serverSettings.products?.find(p=>p.id===d.id)?.price)||d.price,image:serverSettings.products?.find(p=>p.id===d.id)?.image||d.image}));
  $("#productEditors").innerHTML=products.map(p=>`
  <div class="product-editor" data-product-id="${esc(p.id)}">
-  <div class="product-editor-photo"><img src="${esc(p.image)}" alt="Foto do Kit ${esc(p.name)}" loading="lazy"></div>
+  <div class="product-editor-photo"><img src="${esc(p.image)}" alt="Imagem da Lareira Feliz" loading="lazy"></div>
   <div class="product-editor-fields">
-    <h3>Kit ${esc(p.id==="basic"?"Essencial":"Personalizado")}</h3>
+    <h3>Lareira Feliz · produto único</h3>
     <label>Nome<input data-field="name" maxlength="45" value="${esc(p.name)}"></label>
     <label>Descrição<textarea data-field="prop" maxlength="350" rows="3">${esc(p.prop)}</textarea></label>
     <label>Preço (R$)<input data-field="price" type="number" min="1" max="10000" step=".01" value="${Number(p.price)}"></label>
@@ -187,7 +187,7 @@ $("#saveProducts").addEventListener("click",async()=>{
  });
  const button=$("#saveProducts");button.disabled=true;$("#productsMsg").textContent="Salvando...";
  try{await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"products",value:products})});
-   serverSettings.products=products;$("#productsMsg").textContent="Kits salvos no banco. A loja atualiza ao recarregar."}
+   serverSettings.products=products;$("#productsMsg").textContent="Produto salvo no banco. Os detalhes serão utilizados no catálogo da Lareira Feliz."}
  catch(e){$("#productsMsg").textContent="Não foi possível salvar: "+e.message}
  finally{button.disabled=false}
 });
