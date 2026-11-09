@@ -88,6 +88,8 @@ async function loadAnalytics(){
   $("#realVisitors").textContent=Number(data.visitors||0).toLocaleString("pt-BR");
   if($("#realSessions"))$("#realSessions").textContent=Number(data.sessions||0).toLocaleString("pt-BR");
   $("#realCheckouts").textContent=data.checkouts.toLocaleString("pt-BR");
+  $("#realMlClicks").textContent=Number(data.mlClicks||0).toLocaleString("pt-BR");
+  $("#realShopeeClicks").textContent=Number(data.shopeeClicks||0).toLocaleString("pt-BR");
   $("#realConversion").textContent=data.conversionRate===null?"—":data.conversionRate.toLocaleString("pt-BR")+"%";
   $("#realAbandonment").textContent=data.checkoutAbandonment===null?"—":data.checkoutAbandonment.toLocaleString("pt-BR")+"%";
   $("#realAnalyticsNote").textContent="Visitantes únicos por IP anonimizado (HMAC), últimos 30 dias. Uma rede compartilhada pode contar como uma pessoa; IP dinâmico pode contar outra vez. Contagem disponível apenas após esta atualização. Nenhum IP em claro é armazenado.";
