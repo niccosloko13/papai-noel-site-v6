@@ -1,7 +1,7 @@
 const {db,init}=require("./_db");
 const fireplace={id:"basic",name:"Lareira Feliz",price:124.90,discountIncluded:true,prop:"Lareira cenográfica de papelão impresso de 120 × 80 × 22 cm (dimensões de projeto, a confirmar no protótipo).",benefits:["1 Lareira Feliz para montagem, feita em papelão impresso","Uso decorativo em ambientes internos; não aquece","Não acompanha pegadas, adesivos, cartas ou outros acessórios"],image:"assets/lareira-feliz-ilustracao.svg",active:true};
 const defaults=[fireplace];
-function canonicalProduct(p){if(!p||p.id!=="basic")return null;return {...fireplace,active:p.active!==false}}
+function canonicalProduct(p){if(!p||p.id!=="basic")return null;return {...fireplace,price:Number.isFinite(Number(p.price))&&Number(p.price)>0&&Number(p.price)<10000?Math.round(Number(p.price)*100)/100:fireplace.price,image:typeof p.image==="string"&&p.image.startsWith("assets/")&&!p.image.includes("..")?p.image:fireplace.image,active:p.active!==false}}
 function canonicalCatalog(input){const saved=Array.isArray(input)?input:[];return defaults.map(d=>canonicalProduct(saved.find(p=>p?.id===d.id)||d))}
 async function catalog(){try{await init();const r=await db().query("SELECT value FROM natal_settings WHERE key='products'");return {products:canonicalCatalog(r.rows[0]?.value||defaults),source:"database"}}catch(e){console.error("Products fallback",e.code||e.message);return {products:defaults,source:"defaults"}}}
 module.exports=async function(req,res){res.setHeader("Cache-Control","no-store");if(req.method!=="GET")return res.status(405).end();res.status(200).json(await catalog())};
