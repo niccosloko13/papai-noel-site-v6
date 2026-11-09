@@ -15,7 +15,7 @@ module.exports=async function(req,res){
  const allowed={pix:["enabled","key","displayName","receiverName","city","discount","shippingFlat"],marketing:["metaPixel","ga4","tiktokPixel","googleAds"],seo:["title","description","image"],marketplaces:["mercadolivre","shopee"],products:[]};
  let safe;
  if(key==="products"){
-  if(!Array.isArray(value)||value.length!==2||value[0]?.id!=="basic"||value[1]?.id!=="personal")return res.status(400).json({error:"Catálogo inválido"});
+  if(!Array.isArray(value)||value.length!==1||value[0]?.id!=="basic")return res.status(400).json({error:"Catálogo inválido"});
   const validImage=x=>typeof x==="string"&&x.length<500&&(x.startsWith("assets/product/")&&!x.includes("..")||/^https:\/\/[^\s"'<>]+$/i.test(x));
   if(value.some(p=>typeof p.name!=="string"||!p.name.trim()||p.name.length>45||typeof p.prop!=="string"||p.prop.length>350||!Number.isFinite(p.price)||p.price<1||p.price>10000||!validImage(p.image)||!Array.isArray(p.benefits)||p.benefits.length>12||p.benefits.some(b=>typeof b!=="string"||b.length>150)||typeof p.active!=="boolean"))return res.status(400).json({error:"Dados de produto inválidos"});
   safe=value.map(p=>({id:p.id,name:p.name.trim(),price:Math.round(p.price*100)/100,prop:p.prop.trim(),image:p.image,benefits:p.benefits,active:p.active}));
