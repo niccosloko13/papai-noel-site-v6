@@ -1,6 +1,6 @@
 const {db,init}=require("./_db");
 const crypto=require("node:crypto");
-const TYPES=["page_view","view_product","add_to_cart","begin_checkout","shipping_info","order_created","payment_informed"];
+const TYPES=["page_view","view_product","add_to_cart","begin_checkout","shipping_info","order_created","payment_informed","marketplace_click"];
 async function initEvents(){
  await init();
  await db().query(`CREATE TABLE IF NOT EXISTS natal_events (
