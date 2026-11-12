@@ -41,3 +41,94 @@
 .trust-item span{font-size:17px}
 .page-footer{min-height:35px;padding:6px 5px}
 }
+
+
+/* Premium photo card — 2026 Lareira Feliz. Único produto e CTA principal. */
+.brand-header{background:linear-gradient(90deg,#fff8e9f4,#fff8e9ed,#fff8e9f4)}
+.header-buy{background:linear-gradient(180deg,#138a4b,#07582f);color:#fff;border-color:#126d3d;box-shadow:0 4px 0 #064426,0 10px 20px #133d2238;font-size:14px}
+.header-buy:hover{background:linear-gradient(180deg,#1aa05a,#076139);box-shadow:0 6px 0 #064426,0 12px 20px #133d2238}
+.product-hero{grid-template-columns:43% 57%;gap:18px;min-height:580px}
+.hero-information{align-self:center;padding:18px 6% 14px 8%}
+.side-kicker{display:inline-flex;align-items:center;font-size:11px;font-weight:900;letter-spacing:.14em;color:#a26d2e;margin-bottom:12px}
+.side-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(36px,4.2vw,66px);line-height:1.12;color:#a31319;margin:0 0 17px;letter-spacing:-.055em;text-wrap:balance}
+.side-title em{font-style:normal;color:#075635}
+.side-description{font-size:16px;line-height:1.62;color:#60412d;max-width:450px;margin:0 0 24px}
+.side-benefits{display:grid;gap:12px;margin:0 0 25px}
+.side-benefits>div{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:800;color:#422d20}
+.benefit-icon{width:36px;height:36px;border-radius:50%;border:2px solid #e7c16a;background:linear-gradient(#0e703c,#074b2e);display:grid;place-items:center;box-shadow:0 4px 12px #39662e33;color:#fff;font-size:17px;flex:none}
+.side-whatsapp{margin:0;max-width:400px;width:100%;font-size:15px;min-height:54px}
+.side-safe{font-size:11px;color:#7e5a47;margin:15px 0 0;max-width:390px;line-height:1.5}
+.hero-image-wrapper{height:auto;min-height:560px;padding:7px 6px 20px;display:flex;flex-direction:column;justify-content:center}
+.premium-product-card{position:relative;height:545px;width:min(100%,690px);margin:auto;border-radius:31px;padding:9px;background:linear-gradient(145deg,#ffecc6,#c48a35 40%,#fff2ba 65%,#ae792e);box-shadow:0 19px 50px #713d223d,0 0 0 1px #b57c2c;isolation:isolate;animation:cardRise .9s ease both}
+.premium-product-card:before{content:'';position:absolute;inset:5px;border:2px solid #fff4d4b8;border-radius:26px;pointer-events:none;z-index:3}
+.premium-product-card .photo-holder{position:absolute;inset:9px;width:auto;height:auto;max-width:none;border-radius:23px;overflow:hidden;border:0;background:#dfc09c;box-shadow:none}
+.premium-product-card .photo-holder:after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:23px;background:linear-gradient(180deg,#36140634 0%,transparent 27%,transparent 61%,#250d10e5 100%);border:0}
+.premium-product-card .fireplace-photo{width:100%;height:100%;object-fit:cover;object-position:center 47%;filter:contrast(1.05) saturate(1.11);animation:photoEnter 1.1s ease both}
+.card-bow{position:absolute;top:-33px;left:-21px;font-size:87px;z-index:5;filter:drop-shadow(1px 9px 7px #621c134d);transform:rotate(-12deg);animation:bowFloat 5s ease-in-out infinite}
+.card-topline{position:absolute;z-index:5;top:25px;left:31px;right:30px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-topline h1{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:-.05em;line-height:1.1;font-size:clamp(31px,3.25vw,52px);color:#fff7de;text-shadow:0 3px 6px #40080b,0 1px 1px #40080b;margin:0}
+.card-top-tag{padding:7px 10px;border-radius:40px;border:1px solid #d9b56e;background:#0b512edd;box-shadow:0 3px 6px #07150a25;font-size:10px;font-weight:900;letter-spacing:.1em;color:#fbe9b6;white-space:nowrap}
+.card-offer{position:absolute;bottom:11px;left:11px;right:11px;z-index:5;display:flex;align-items:center;flex-direction:column;gap:4px}
+.card-price{min-width:58%;text-align:center;border-radius:20px 20px 0 0;border:2px solid #f4cb64;border-bottom:0;background:linear-gradient(110deg,#840c12,#b51217 55%,#81080d);color:#fff4df;display:flex;gap:9px;align-items:center;justify-content:center;padding:4px 30px 6px;box-shadow:0 -6px 16px #390c1528;font-family:'Playfair Display',Georgia,serif}
+.card-price span{font-size:31px;font-weight:800}.card-price strong{font-size:51px;line-height:1;font-weight:900}
+.card-offer .mercado-livre-cta{margin:0;width:95%;min-height:65px;border-radius:100px;font-size:19px;box-shadow:0 4px 0 #b98510,0 10px 22px #1c130b33}
+.card-offer .mercado-livre-cta b{font-size:24px}
+.price-disclaimer{display:block;font-size:11px;margin:12px auto 0;text-align:center;color:#765943;line-height:1.5}
+.trust-strip{margin:5px auto 2px;background:linear-gradient(180deg,#fff9ed,#fcead1);border:2px solid #e7b86a;box-shadow:0 8px 22px #7f472128;padding:13px 10px}
+.trust-item{font-size:13px;gap:13px}
+.trust-item .trust-icon{font-size:31px;filter:drop-shadow(0 2px 2px #a6763455);animation:iconEntry .6s ease both}
+.trust-item:nth-child(2) .trust-icon{animation-delay:.15s}
+.trust-item:nth-child(3) .trust-icon{animation-delay:.3s}
+.trust-item:nth-child(4) .trust-icon{animation-delay:.45s}
+.shipping-footnote{text-align:center;color:#7c6148;font-size:10px;margin:7px 0 0}
+@keyframes bowFloat{0%,100%{transform:rotate(-12deg) translateY(0)}50%{transform:rotate(-8deg) translateY(-4px)}}
+@keyframes cardRise{from{opacity:.6;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iconEntry{from{opacity:0;transform:translateY(9px) scale(.8)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:701px) and (max-width:1050px){
+.product-hero{grid-template-columns:40% 60%;gap:8px}.side-title{font-size:clamp(32px,4.4vw,46px)}.side-description{font-size:14px}.side-benefits>div{font-size:12px}
+.premium-product-card{height:470px}.card-price strong{font-size:43px}.card-topline h1{font-size:33px}
+}
+@media(max-width:700px){
+.page-wrap{min-height:100svh}.brand-header{height:61px;justify-content:space-between;padding:5px 14px 5px 36px}
+.brand-lockup{font-size:clamp(17px,5vw,23px)}.header-buy{display:inline-flex;border-radius:60px;padding:10px 13px;font-size:11px;line-height:1.15;white-space:nowrap;box-shadow:0 3px 0 #064426,0 7px 12px #133d2238}
+.corner-sprig-right{display:none}.corner-sprig-left{left:3px;font-size:18px;top:6px}.santa-hat{font-size:18px;top:-12px;left:-16px}
+.landing-main{padding:4px 9px 9px}.product-hero{display:flex;flex-direction:column;min-height:0;gap:0}
+.hero-image-wrapper{order:0;width:100%;padding:12px 5px 2px;min-height:0;height:auto;display:block}
+.premium-product-card{width:100%;height:clamp(380px,61svh,560px);border-radius:25px;padding:6px}
+.premium-product-card:before{inset:3px;border-radius:20px}
+.premium-product-card .photo-holder{inset:6px;border-radius:19px}
+.premium-product-card .photo-holder:after{border-radius:19px}
+.premium-product-card .fireplace-photo{object-position:center 48%;object-fit:cover}
+.card-bow{font-size:60px;left:-8px;top:-20px}
+.card-topline{left:18px;right:14px;top:19px;flex-wrap:wrap}
+.card-topline h1{font-size:clamp(28px,8vw,43px)}
+.card-top-tag{font-size:8px;padding:5px 7px}
+.card-offer{bottom:10px;left:6px;right:6px;gap:2px}
+.card-price{padding:3px 20px;min-width:56%;border-radius:16px 16px 0 0}
+.card-price span{font-size:23px}.card-price strong{font-size:clamp(39px,10vw,50px)}
+.card-offer .mercado-livre-cta{min-height:55px;width:97%;padding:5px 12px;gap:9px}
+.card-offer .mercado-livre-cta span:nth-child(2){font-size:13px}.card-offer .mercado-livre-cta b{font-size:19px}
+.card-offer .ml-handshake svg{height:39px;width:45px}
+.price-disclaimer{margin:8px 4px 1px;font-size:9px}
+.hero-information{order:1;display:flex;flex-direction:column;align-items:center;padding:8px 9px 0;text-align:center;width:100%}
+.side-kicker,.side-title,.side-description,.side-safe{display:none}
+.side-benefits{width:100%;max-width:430px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 9px;text-align:left}
+.side-benefits>div{font-size:11px;gap:6px;line-height:1.3}.side-benefits>div:nth-child(3){grid-column:1/-1;justify-content:center}
+.benefit-icon{height:21px;width:21px;font-size:11px;border-width:1px}
+.side-whatsapp{width:94%;min-height:43px;font-size:14px}
+.side-whatsapp .wa-icon{font-size:18px}
+.trust-strip{grid-template-columns:repeat(4,1fr);margin:10px auto 3px;padding:8px 1px}
+.trust-item{gap:4px;padding:2px 5px;font-size:9px}.trust-item .trust-icon{font-size:22px}.trust-item strong{font-size:9px}
+.shipping-footnote{font-size:9px;margin:4px 0 0}
+}
+@media(max-width:390px){
+.premium-product-card{height:clamp(330px,55svh,460px)}
+.card-topline h1{font-size:30px}.card-top-tag{display:none}.card-price strong{font-size:38px}
+.trust-item strong{font-size:8px}.trust-item .trust-icon{font-size:20px}
+}
+@media(max-width:700px) and (max-height:730px){
+.premium-product-card{height:clamp(315px,52svh,430px)}
+.side-benefits{margin:3px 0 7px}.side-benefits>div{font-size:10px}.side-whatsapp{min-height:38px}
+.trust-strip{margin-top:7px;padding:5px 0}.price-disclaimer{margin-top:4px}
+}
+@media(prefers-reduced-motion:reduce){.card-bow,.premium-product-card,.trust-icon{animation:none!important}}
