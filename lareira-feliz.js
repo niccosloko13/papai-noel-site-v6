@@ -80,5 +80,25 @@ async function loadLinks(){
  }catch{updateCards({mercadolivre:verifiedOwnerUrl})}
 }
 $("#privacyChoice")?.addEventListener("click",()=>window.natalMarketingPreferences?.());
+
+// Carrossel de duas imagens com controles e gesto de deslizar
+const carousel=$("#fireplaceCarousel"),dots=[...document.querySelectorAll(".carousel-dots button")];
+if(carousel){
+ let activeSlide=0,downX=null;
+ const slides=[...carousel.children];
+ function setSlide(n){
+  activeSlide=(n+slides.length)%slides.length;
+  carousel.style.transform="translateX(-"+(activeSlide*100)+"%)";
+  dots.forEach((b,i)=>{b.classList.toggle("is-active",i===activeSlide);b.setAttribute("aria-current",String(i===activeSlide))});
+  slides.forEach((slide,i)=>slide.setAttribute("aria-hidden",String(i!==activeSlide)));
+ }
+ $(".carousel-prev")?.addEventListener("click",()=>setSlide(activeSlide-1));
+ $(".carousel-next")?.addEventListener("click",()=>setSlide(activeSlide+1));
+ dots.forEach((btn,i)=>btn.addEventListener("click",()=>setSlide(i)));
+ carousel.addEventListener("touchstart",e=>{downX=e.changedTouches[0]?.clientX??null},{passive:true});
+ carousel.addEventListener("touchend",e=>{if(downX===null)return;const delta=(e.changedTouches[0]?.clientX??downX)-downX;if(Math.abs(delta)>40)setSlide(activeSlide+(delta<0?1:-1));downX=null},{passive:true});
+ setSlide(0);
+}
+
 loadLinks();
 })();
