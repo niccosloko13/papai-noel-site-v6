@@ -4,10 +4,10 @@ const overlay=$("#platformOverlay"), close=$("#closePlatform");
 const nav=$("#mainNavigation"),toggle=$("#navToggle");
 const marketplaceNodes={
  mercadolivre:{anchor:$("#modalMercadoLivre"),availability:$("#mlAvailability"),name:"Mercado Livre"},
- shopee:{anchor:$("#modalShopee"),availability:$("#shAvailability"),name:"Shopee"}
+
 };
-const domains={mercadolivre:["mercadolivre.com.br","mercadolivre.com"],shopee:["shopee.com.br","shopee.com"]};
-let links={mercadolivre:"",shopee:""},lastFocus=null;
+const domains={mercadolivre:["mercadolivre.com.br","mercadolivre.com"]};
+let links={mercadolivre:""},lastFocus=null;
 function validLink(raw,platform){
  try{
   const u=new URL(String(raw||""));
@@ -45,7 +45,7 @@ nav?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{nav.classL
 function recordClick(platform){
  // Eventos próprios com UTM no servidor; não registram venda não confirmada.
  window.natalAnalytics?.track("marketplace_click",{product_id:platform});
- if(typeof window.fbq==="function"&&window.fbq.loaded){window.fbq("trackCustom","MarketplaceClick",{platform,content_name:"Lareira Feliz",currency:"BRL",value:124.90})}
+ if(window.natalMarketingConsentGranted===true&&typeof window.fbq==="function"&&window.fbq.loaded){window.fbq("trackCustom","MarketplaceClick",{platform,content_name:"Lareira Feliz",currency:"BRL",value:124.90})}
 }
 for(const [key,node] of Object.entries(marketplaceNodes)){
  node.anchor.addEventListener("click",e=>{
@@ -69,7 +69,7 @@ function updateCards(data){
    node.availability.textContent="Anúncio ainda não disponível";
   }
  }
- $("#platformStatus").textContent=active===2?"Ambas as plataformas estão disponíveis. Escolha a de sua preferência.":active===1?"Uma plataforma está disponível. A outra será adicionada quando o anúncio estiver pronto.":"Os anúncios ainda não têm links publicados aqui. Antes de pagar, confirme o anúncio oficial com nosso atendimento.";
+ $("#platformStatus").textContent=active===1?"Anúncio oficial disponível. Abra diretamente no Mercado Livre para conferir preço e condições.":"O anúncio oficial ainda não está vinculado ao site. Confirme com o atendimento antes de pagar.";
 }
 async function loadLinks(){
  try{
