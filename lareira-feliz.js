@@ -100,5 +100,10 @@ if(carousel){
  setSlide(0);
 }
 
+
+document.querySelectorAll("[data-ml-click]").forEach(anchor=>anchor.addEventListener("click",()=>{
+ window.natalAnalytics?.track("marketplace_click",{product_id:"mercadolivre"});
+ if(window.natalMarketingConsentGranted===true&&typeof window.fbq==="function")window.fbq("trackCustom","MarketplaceClick",{platform:"mercadolivre",content_name:"Lareira Feliz",currency:"BRL",value:124.90});
+}));
 loadLinks();
 })();
