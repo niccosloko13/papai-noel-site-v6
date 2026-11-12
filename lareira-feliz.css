@@ -5,3 +5,60 @@
 @media(max-width:700px){body{padding-bottom:78px}.hero-container{padding:0 16px 37px}.exclusive-alert{margin:0 -16px;min-height:64px;padding:11px 12px}.exclusive-alert strong{font-size:10px;line-height:1.4}.exclusive-alert span:not(.alert-shield){font-size:10px}.main-card{display:flex;flex-direction:column;padding:23px 0 0;gap:16px}.copy-col{width:100%}.brand{font-size:21px;margin-bottom:23px}.brand-mark{height:40px;width:40px}.collection{font-size:10px;padding:8px 11px}.copy-col h1{font-size:clamp(41px,11vw,60px);margin:15px 0 14px}.subtitle{font-size:14px;line-height:1.62;margin-bottom:14px}.mini-benefits span{font-size:10px;padding:8px 9px}.purchase-line{margin:16px 0 13px;padding-top:15px;gap:12px}.price{font-size:36px}.price-label{font-size:9px}.price-note{max-width:135px;font-size:10px}.buy-button{min-height:56px;font-size:15px}.below-button{font-size:11px;margin:10px 0 0}.visual-col{width:100%}.image-stage{height:min(94vw,440px);border-radius:19px}.top-image-tag{top:11px;left:11px;font-size:10px}.image-caption{font-size:10px}.support-container{padding:48px 16px 51px}.support-intro{margin-bottom:24px}.support-intro h2{font-size:34px}.service-card{padding:19px;display:grid;grid-template-columns:44px 1fr;gap:12px}.service-icon{width:44px;height:44px;font-size:25px}.service-card strong{font-size:14px}.service-card small{font-size:11px;line-height:1.5}.whatsapp-button{grid-column:1/-1;text-align:center;width:100%;margin:6px 0 0}.support-badges{grid-template-columns:1fr;gap:9px;margin-top:16px}.support-badges>div{padding:14px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}.support-badges strong{font-size:12px}.support-badges small{font-size:10px}.site-footer{padding:34px 16px 28px}.footer-inner{grid-template-columns:1fr;gap:22px}.mobile-purchase-bar{position:fixed;display:flex;bottom:0;left:0;right:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fffdf6;box-shadow:0 -5px 22px #08241623;z-index:50;align-items:center;gap:11px;border-top:1px solid #e4d6c5}.mobile-purchase-bar>div{flex-shrink:0}.mobile-purchase-bar small{display:block;color:#8a745c;font-size:9px;font-weight:800}.mobile-purchase-bar strong{color:#153d2a;font-size:21px}.mobile-purchase-bar a{flex:1;background:#ffe600;color:#173929;border-radius:11px;padding:15px 8px;font-size:12px;text-align:center;font-weight:900;text-decoration:none}}
 @media(max-width:380px){.copy-col h1{font-size:39px}.price-note{max-width:106px}.mobile-purchase-bar a{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+/* Landing compacta: uma dobra principal + WhatsApp + rodapé */
+.hero-container{padding-bottom:22px}
+.exclusive-alert{min-height:44px;padding:7px 12px}
+.exclusive-alert strong{font-size:11px}
+.exclusive-alert span:not(.alert-shield){font-size:10px}
+.main-card{padding:24px 0 6px;gap:34px;max-width:1050px;grid-template-columns:1.06fr .94fr}
+.brand{margin-bottom:16px;font-size:20px}.brand-mark{width:36px;height:36px}
+.collection{font-size:10px;padding:7px 10px}
+.copy-col h1{font-size:clamp(38px,4.6vw,60px);line-height:1.07;margin:11px 0}
+.subtitle{font-size:14px;line-height:1.5;margin-bottom:11px}
+.mini-benefits span{font-size:10px;padding:7px 11px}
+.purchase-line{margin:14px 0 12px;padding-top:11px}
+.price{font-size:38px}
+.buy-button{min-height:53px;font-size:15px}
+.below-button{font-size:11px;margin:9px 0}
+.image-stage{height:410px}
+.image-caption{font-size:10px;margin-top:6px}
+.support-container{padding:16px 22px 22px}
+.support-inner{max-width:1050px}
+.service-card{max-width:none;min-height:78px;padding:13px 19px;border-radius:15px}
+.service-icon{height:42px;width:42px;font-size:23px;border-radius:11px}
+.service-card strong{font-size:13px}.service-card small{font-size:11px;margin-top:3px}
+.whatsapp-button{padding:13px 16px;font-size:12px}
+.site-footer{padding:22px 24px 14px}
+.footer-inner{max-width:1050px;gap:19px}
+.footer-inner strong{font-size:12px}
+.footer-inner p,.footer-inner a{font-size:11px}
+.footer-disclaimer{margin-top:12px;padding-top:10px;font-size:10px}
+@media(max-width:700px){
+.hero-container{padding:0 14px 13px}
+.exclusive-alert{margin:0 -14px;min-height:48px;padding:7px 10px}
+.exclusive-alert strong{font-size:10px}
+.exclusive-alert span:not(.alert-shield){font-size:9px}
+.alert-shield{width:23px;height:23px}
+.main-card{padding:11px 0 0;gap:8px}
+.brand{margin:0 0 10px;font-size:17px}.brand-mark{height:32px;width:32px;border-radius:9px}.brand small{font-size:8px;margin-top:3px}
+.collection{font-size:9px;padding:6px 10px}
+.copy-col h1{font-size:clamp(34px,9vw,45px);line-height:1.04;margin:9px 0}
+.subtitle{font-size:12px;line-height:1.45;margin:0 0 9px}
+.mini-benefits span{font-size:9px;padding:6px 8px}
+.purchase-line{margin:10px 0 8px;padding-top:8px}
+.price{font-size:32px}.price-label{font-size:8px}
+.buy-button{min-height:45px;font-size:13px;border-radius:10px}
+.below-button{font-size:10px;margin:6px 0}
+.image-stage{height:260px;border-radius:13px}
+.image-caption{font-size:9px;margin-top:4px}
+.support-container{padding:13px 14px}
+.service-card{min-height:0;padding:12px;gap:7px;grid-template-columns:32px 1fr}
+.service-icon{width:32px;height:32px;font-size:19px}
+.service-card strong{font-size:12px}.service-card small{font-size:10px}
+.whatsapp-button{padding:11px;font-size:12px;margin-top:3px}
+.site-footer{padding:17px 14px 15px}
+.footer-inner{gap:11px}.footer-inner>div{gap:3px}
+.footer-inner strong{font-size:11px}.footer-inner p,.footer-inner a{font-size:10px}
+.footer-disclaimer{font-size:9px;margin-top:9px;padding-top:7px}
+}
