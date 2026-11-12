@@ -86,3 +86,9 @@ body{padding-bottom:77px}
 .product-carousel .carousel-dots{display:flex;gap:8px;position:absolute;bottom:15px;left:50%;transform:translateX(-50%);z-index:5}
 .product-carousel .carousel-dots button{width:9px;height:9px;border-radius:50%;background:#fff9ed;border:1px solid #95795f;opacity:.7;padding:0}.product-carousel .carousel-dots button.is-active{width:27px;border-radius:10px;background:#1a5036;opacity:1}
 @media(max-width:700px){.product-carousel .carousel-prev,.product-carousel .carousel-next{width:35px;height:35px;font-size:26px}.product-carousel .carousel-dots{bottom:12px}}
+
+
+.direct-ml-cta{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.mobile-conversion-bar .direct-ml-cta{flex:1;min-width:0;display:flex;background:#ffe600;border:0;border-radius:10px;font-size:12px;font-weight:900;color:#20352b;padding:14px 5px;text-align:center}
+.mobile-conversion-bar .direct-ml-cta:hover{background:#fff04a}
+.exclusive-buy-card .direct-ml-cta{width:100%;background:#ffe600;color:#20352b;font-weight:900}
