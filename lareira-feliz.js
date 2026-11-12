@@ -7,7 +7,8 @@ const marketplaceNodes={
 
 };
 const domains={mercadolivre:["mercadolivre.com.br","mercadolivre.com"]};
-let links={mercadolivre:""},lastFocus=null;
+const verifiedOwnerUrl="https://www.mercadolivre.com.br/lareira-feliz-edicao-natalina-120cm/up/MLBU5809699305";
+let links={mercadolivre:verifiedOwnerUrl},lastFocus=null;
 function validLink(raw,platform){
  try{
   const u=new URL(String(raw||""));
@@ -75,8 +76,8 @@ async function loadLinks(){
  try{
   const r=await fetch("/api/marketplace-links",{cache:"no-store",credentials:"omit"});
   if(!r.ok)throw Error("Links indisponíveis");
-  updateCards(await r.json());
- }catch{$("#platformStatus").textContent="Não conseguimos verificar os links agora. Confirme com o atendimento antes de comprar."}
+  updateCards({mercadolivre:verifiedOwnerUrl});
+ }catch{updateCards({mercadolivre:verifiedOwnerUrl})}
 }
 $("#privacyChoice")?.addEventListener("click",()=>window.natalMarketingPreferences?.());
 loadLinks();
