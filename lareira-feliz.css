@@ -24,3 +24,20 @@
 @media(max-height:730px) and (max-width:700px){.brand-header{height:51px}.sale-alert{min-height:27px}.hero-image-wrapper{height:32svh;min-height:145px}.heading-wrap h1{font-size:32px}.height-ribbon{font-size:10px}.selling-points{margin:4px 0 6px;gap:4px}.offer-price{min-height:45px}.offer-price strong{font-size:36px}.hero-actions{margin-top:6px;gap:6px}.mercado-livre-cta{min-height:50px}.whatsapp-cta{min-height:36px}.trust-strip{margin-top:7px;padding:5px 3px}.page-footer{min-height:34px;padding:5px}}
 @media(min-width:701px) and (max-height:740px){.brand-header{height:72px}.product-hero{min-height:410px}.hero-image-wrapper{min-height:410px}.photo-holder{height:410px}.landing-main{padding-top:3px}.heading-wrap h1{font-size:50px}.selling-points{margin:9px auto}.offer-price strong{font-size:48px}.mercado-livre-cta{min-height:52px}.page-footer{min-height:45px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Mantém a oferta e botões visíveis em uma única tela nos smartphones comuns. */
+@media(max-width:700px) and (min-height:731px) and (max-height:900px){
+.brand-header{height:60px}
+.landing-main{padding-top:2px;padding-bottom:3px}
+.hero-image-wrapper{height:34svh}
+.heading-wrap h1{font-size:clamp(32px,8.2vw,42px)}
+.selling-points{margin:4px 0 7px;gap:5px 9px}
+.offer-price{min-height:50px}
+.hero-actions{margin-top:6px;gap:7px}
+.mercado-livre-cta{min-height:53px}
+.whatsapp-cta{min-height:39px}
+.trust-strip{margin:8px auto 1px;padding:6px 2px}
+.trust-item span{font-size:17px}
+.page-footer{min-height:35px;padding:6px 5px}
+}
