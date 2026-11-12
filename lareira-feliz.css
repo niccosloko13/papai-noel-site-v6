@@ -92,3 +92,5 @@ body{padding-bottom:77px}
 .mobile-conversion-bar .direct-ml-cta{flex:1;min-width:0;display:flex;background:#ffe600;border:0;border-radius:10px;font-size:12px;font-weight:900;color:#20352b;padding:14px 5px;text-align:center}
 .mobile-conversion-bar .direct-ml-cta:hover{background:#fff04a}
 .exclusive-buy-card .direct-ml-cta{width:100%;background:#ffe600;color:#20352b;font-weight:900}
+
+.official-ml-banner{width:100%;max-width:635px;height:auto;border-radius:14px;margin:25px 0 0;box-shadow:0 14px 30px #051a2830}
