@@ -1,0 +1,38 @@
+name: Importar foto original Lareira Feliz
+on:
+  push:
+    paths:
+      - '.github/workflows/importar-foto-lareira.yml'
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Baixar mídia aprovada enviada pelo proprietário
+        env:
+          PHOTO_ORIGINAL: 'https://media.canva.com/v2/image-resize/format:PNG/height:1200/quality:100/uri:ifs%3A%2F%2FM%2Faa65dfc2-3c14-4af0-9f4c-5f33924a52ed/watermark:F/width:960?csig=AAAAAAAAAAAAAAAAAAAAAPmZdjPaVkkuESBVpk5E8PDpvt-adXcTeRCmAS_PCyQS&exp=1794476293&osig=AAAAAAAAAAAAAAAAAAAAAAGvLOEqFlq2XlnFueJSh4FMAPOsJWDlnjBEcd8Pf5Va&signer=media-rpc&token=AAIAAU0AJGFhNjVkZmMyLTNjMTQtNGFmMC05ZjRjLTVmMzM5MjRhNTJlZAAAAAABoc8fO4ha8UXuo3hqOMAx6vLTbbS_VtStdWHAXh2wwkrhLCF-fQ&x-canva-quality=thumbnail'
+          PHOTO_FALLBACK: 'https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2Faa65dfc2-3c14-4af0-9f4c-5f33924a52ed/watermark:F/width:160?csig=AAAAAAAAAAAAAAAAAAAAAPmZdjPaVkkuESBVpk5E8PDpvt-adXcTeRCmAS_PCyQS&exp=1794476293&osig=AAAAAAAAAAAAAAAAAAAAAAGvLOEqFlq2XlnFueJSh4FMAPOsJWDlnjBEcd8Pf5Va&signer=media-rpc&token=AAIAAU0AJGFhNjVkZmMyLTNjMTQtNGFmMC05ZjRjLTVmMzM5MjRhNTJlZAAAAAABoc8fO4ha8UXuo3hqOMAx6vLTbbS_VtStdWHAXh2wwkrhLCF-fQ&x-canva-quality=thumbnail'
+        run: |
+          set -e
+          mkdir -p assets
+          if ! curl -fL --max-time 35 "$PHOTO_ORIGINAL" -o /tmp/lareira.png; then
+             curl -fL --max-time 35 "$PHOTO_FALLBACK" -o /tmp/lareira.png
+          fi
+          test $(wc -c </tmp/lareira.png) -gt 3000
+          python -m pip install -q Pillow
+          python - <<'PY'
+          from PIL import Image
+          im=Image.open('/tmp/lareira.png').convert('RGB')
+          im.save('assets/lareira-feliz-real.webp','WEBP',quality=88,method=6)
+          print('Imported user-approved fireplace photo:',im.size)
+          PY
+      - name: Publicar imagem no repositório
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lareira-feliz-real.webp
+          git diff --cached --quiet || (git commit -m "Adiciona fotografia original enviada para a Lareira Feliz" && git push)
