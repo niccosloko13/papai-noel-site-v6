@@ -126,3 +126,58 @@ html{scroll-behavior:smooth}body{margin:0;background:#f8e5ce;color:var(--text);f
   height: 100%;
   object-fit: contain;
 }
+
+.sales-notice {
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  padding: clamp(18px, 5vw, 32px);
+  border: 2px solid var(--gold);
+  border-radius: 22px;
+  background: #fff8ec;
+  box-shadow: 0 16px 48px #320b0c66;
+  color: var(--text);
+  text-align: center;
+}
+
+.sales-notice::backdrop {
+  background: #250a0bc2;
+}
+
+.sales-notice h2 {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(21px, 5vw, 29px);
+  color: var(--red-dark);
+}
+
+.sales-notice-alert {
+  padding: 12px;
+  border-radius: 9px;
+  background: var(--red-dark);
+  color: #fff0bb;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sales-notice a {
+  color: var(--pine);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sales-notice button {
+  min-height: 44px;
+  padding: 8px 28px;
+  border: 0;
+  border-radius: 50px;
+  background: var(--pine);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sales-notice button:focus-visible {
+  outline: 3px solid #2f99fd;
+  outline-offset: 4px;
+}
