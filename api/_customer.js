@@ -24,7 +24,7 @@ function session(req){
  const parts=pair.slice(COOKIE.length+1).split(".");
  if(parts.length!==2)return null;
  const expected=sign(parts[0]);
- if(parts[1].length!==expected.length||!crypto.timingSafeEqual(Buffer.from(parts[1]),Buffer.from(expected)))return null;
+ if(!/^[A-Za-z0-9_-]{43}$/.test(parts[1])||!crypto.timingSafeEqual(Buffer.from(parts[1]),Buffer.from(expected)))return null;
  try{const data=JSON.parse(Buffer.from(parts[0],"base64url").toString());return typeof data.id==="string"&&data.exp>Date.now()?data.id:null}catch{return null}
 }
 function issue(id){const body=Buffer.from(JSON.stringify({id,exp:Date.now()+7*86400000})).toString("base64url");return cookie(body+"."+sign(body),7*86400)}

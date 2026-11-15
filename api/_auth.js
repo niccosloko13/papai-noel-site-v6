@@ -21,11 +21,18 @@ function settings(){
 }
 function sign(value,secret){return crypto.createHmac("sha256",secret).update(value).digest("base64url")}
 function parse(req){const raw=(req.headers.cookie||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(COOKIE+"="));return raw?raw.slice(COOKIE.length+1):""}
+function trustedOrigin(req){
+ const {origin,host}=req.headers;
+ return req.headers["sec-fetch-site"]!=="cross-site" &&
+  (!origin||origin==="https://"+host||
+   (process.env.VERCEL_ENV!=="production"&&/^http:\/\/localhost(?::\d+)?$/.test(origin)));
+}
 function valid(req){
+ if(req.method!=="GET"&&!trustedOrigin(req))return false;
  const cfg=settings();if(!cfg)return false;
  const parts=parse(req).split(".");if(parts.length!==2)return false;
  const [body,sig]=parts;const expected=sign(body,cfg.secret);
- if(sig.length!==expected.length||!crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(expected)))return false;
+ if(!/^[A-Za-z0-9_-]{43}$/.test(sig)||!crypto.timingSafeEqual(Buffer.from(sig),Buffer.from(expected)))return false;
  try{const token=JSON.parse(Buffer.from(body,"base64url").toString());return token.sub===cfg.user&&token.exp>Date.now()}catch{return false}
 }
 function cookie(value,maxAge){return `${COOKIE}=${value}; Path=/api/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`}
@@ -41,4 +48,4 @@ function authenticate(password,hash,privatePassword){
 
  try{const [salt,digest]=hash.split(":");const expected=Buffer.from(digest,"hex");if(expected.length!==64)return false;const actual=crypto.scryptSync(String(password),salt,64);return crypto.timingSafeEqual(actual,expected)}catch{return false}
 }
-module.exports={settings,configurationStatus,valid,cookie,sign,authenticate};
+module.exports={settings,configurationStatus,valid,cookie,sign,authenticate,trustedOrigin};
