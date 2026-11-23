@@ -31,12 +31,23 @@ form.addEventListener("submit",async e=>{
 });
 $("#logoutBtn").onclick=logout;
 
-const titles={dashboard:["PAINEL","Visão geral"],orders:["VENDAS","Pedidos"],products:["CATÁLOGO","Produtos"],pix:["PAGAMENTOS","Pix"],marketplaces:["VENDAS","Checkout"],marketing:["AQUISIÇÃO","Anúncios"],seo:["ORGANIC","SEO"]};
+const titles={
+ dashboard:["LOJA","Visão geral"],orders:["LOJA","Pedidos"],products:["LOJA","Produto"],
+ logistics:["OPERAÇÃO","Logística"],inventory:["OPERAÇÃO","Estoque"],
+ finance:["GESTÃO","Financeiro"],pix:["GESTÃO","Pagamentos"],
+ marketplaces:["CRESCIMENTO","Canais de venda"],marketing:["CRESCIMENTO","Marketing"],
+ seo:["CRESCIMENTO","SEO"],system:["SISTEMA","Diagnóstico"]
+};
 function selectTab(id){
- $$(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
- $$(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
+ $(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ $(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
  $("#sectionEyebrow").textContent=titles[id][0];$("#sectionTitle").textContent=titles[id][1];
- if(id==="orders")renderOrders();if(id==="marketing")loadAdsAnalytics();
+ if(id==="orders")renderOrders();
+ if(id==="logistics")renderLogistics();
+ if(id==="inventory")loadInventory();
+ if(id==="finance")renderFinance();
+ if(id==="marketing")loadAdsAnalytics();
+ if(id==="system")loadSystemStatus();
 }
 $$(".nav-item").forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
 $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
@@ -78,8 +89,7 @@ async function loadSummary(){
   $("#mTicket").textContent=money(x.ticketAverage);
   $("#mPending").textContent=x.awaiting.toLocaleString("pt-BR");
   $("#mMonth").textContent=x.month.toLocaleString("pt-BR");
-  $("#mBasic").textContent=x.basic.toLocaleString("pt-BR");
-  $("#mPersonal").textContent=x.personal.toLocaleString("pt-BR");
+  $("#mBasic").textContent=x.paid.toLocaleString("pt-BR");
  }catch(e){$("#mRevenueSub").textContent="Falha ao carregar resumo: "+e.message}
 }
 async function loadAnalytics(){
@@ -108,7 +118,8 @@ function metrics(){
  $("#mRevenue").textContent=money(revenue);$("#mRevenueSub").textContent=paid.length+" pedidos pagos";
  $("#mOrders").textContent=orders.length;$("#mOrdersSub").textContent=today.length+" hoje";
  $("#mTicket").textContent=money(paid.length?revenue/paid.length:0);
- $("#mPending").textContent=orders.filter(o=>!["Pago","Produção","Enviado"].includes(o.status)).length;
+ $("#mPending").textContent=orders.filter(o=>["Aguardando pagamento","Pagamento informado"].includes(o.status)).length;
+ $("#mBasic").textContent=paid.length;
  $("#fCreated").textContent=orders.length;$("#fInformed").textContent=informed.length;$("#fPaid").textContent=paid.length;
  $("#fConversion").textContent=(informed.length?Math.round(paid.length/(informed.length+paid.length)*100):0)+"%";
  $("#recentOrders").innerHTML=orders.slice(0,5).map(orderRow).join("")||'<p class="muted">Nenhum pedido ainda.</p>';
@@ -169,7 +180,7 @@ function loadProducts(){
     <label>Preço (R$)<input data-field="price" type="number" min="1" max="10000" step=".01" value="${Number(p.price)}"></label>
     <label>Endereço da foto<input data-field="image" value="${esc(p.image)}" placeholder="assets/product/foto.webp ou https://..."></label>
     <label>Itens incluídos (um por linha)<textarea data-field="benefits" rows="6">${esc(p.benefits.join("\n"))}</textarea></label>
-    <label class="toggle-product"><input type="checkbox" data-field="active" ${p.active!==false?"checked":""}> Kit disponível para compra</label>
+    <label class="toggle-product"><input type="checkbox" data-field="active" ${p.active!==false?"checked":""}> Lareira Feliz disponível para compra</label>
   </div>
  </div>`).join("");
  $$("#productEditors [data-field='image']").forEach(input=>input.addEventListener("change",()=>{
@@ -272,7 +283,7 @@ async function loadAdsAnalytics(){
  }catch(e){note.textContent="Métricas indisponíveis: "+e.message}
 }
 $("#refreshMarketingAnalytics")?.addEventListener("click",loadAdsAnalytics);
-const seoDefaults={title:"Papai Noel Passou Aqui | Kits de Natal 2026",description:"Transforme o Natal das crianças com pegadas do Papai Noel, lareira decorativa, carta do Papai Noel e adesivo de janela. Escolha seu kit e prepare uma surpresa em casa.",image:"assets/product/kit-personalizado.webp"};
+const seoDefaults={title:"Lareira Feliz | Lareira Decorativa de Natal",description:"Conheça a Lareira Feliz, peça decorativa cenográfica em papelão kraft premium. 120 cm de altura, 80 cm de largura e 22 cm de profundidade.",image:"assets/lareira-feliz-real.webp"};
 function loadSeo(){
  const c={...seoDefaults,...(serverSettings.seo||{})};
  $("#seoTitle").value=c.title;$("#seoDescription").value=c.description;$("#seoImage").value=c.image;
@@ -338,5 +349,98 @@ $("#saveMarketplaces").addEventListener("click",async()=>{
  }catch(e){msg.dataset.state="error";msg.textContent="Falha ao salvar: "+e.message}
  finally{button.disabled=false}
 });
-function renderAll(){metrics();renderOrders();loadPix();loadMarketplaces();loadMarketing();loadSeo();loadProducts();bindStatus()}
+function renderAll(){metrics();renderOrders();renderLogistics();renderFinance();loadInventory();loadPix();loadMarketplaces();loadMarketing();loadSeo();loadProducts();bindStatus()}
+
+function renderLogistics(){
+ const orders=getOrders();
+ const paid=orders.filter(o=>o.status==="Pago");
+ const production=orders.filter(o=>o.status==="Produção");
+ const shipped=orders.filter(o=>o.status==="Enviado");
+ $("#logPaid").textContent=paid.length.toLocaleString("pt-BR");
+ $("#logProduction").textContent=production.length.toLocaleString("pt-BR");
+ $("#logShipped").textContent=shipped.length.toLocaleString("pt-BR");
+ const active=orders.filter(o=>["Pago","Produção","Enviado"].includes(o.status));
+ $("#logisticsList").innerHTML=active.map(orderRow).join("")||'<p class="muted">Nenhum pedido está aguardando produção ou envio.</p>';
+ bindStatus();
+}
+function renderFinance(){
+ const orders=getOrders();
+ const paidStatuses=["Pago","Produção","Enviado","Concluído"];
+ const paid=orders.filter(o=>paidStatuses.includes(o.status));
+ const pending=orders.filter(o=>["Aguardando pagamento","Pagamento informado"].includes(o.status));
+ const cancelled=orders.filter(o=>o.status==="Cancelado");
+ const total=items=>items.reduce((sum,o)=>sum+(Number(o.total)||0),0);
+ $("#financePaid").textContent=money(total(paid));
+ $("#financePending").textContent=money(total(pending));
+ $("#financeCancelled").textContent=money(total(cancelled));
+ $("#financeCancelledCount").textContent=cancelled.length+" pedidos";
+ const rows=[...orders].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ $("#financeRows").innerHTML=rows.map(o=>'<tr><td>'+esc(o.id)+'</td><td>'+esc(new Date(o.createdAt).toLocaleDateString("pt-BR"))+'</td><td><span class="status '+statusClass(o.status)+'">'+esc(o.status)+'</span></td><td>'+money(o.total)+'</td></tr>').join("")||'<tr><td colspan="4">Nenhum pedido registrado.</td></tr>';
+}
+function loadInventory(){
+ const value=serverSettings.inventory||{};
+ $("#inventoryStock").value=value.stock===null||value.stock===undefined?"":String(value.stock);
+ $("#inventoryMinimum").value=value.reorderPoint===null||value.reorderPoint===undefined?"":String(value.reorderPoint);
+ $("#inventoryNotes").value=value.notes||"";
+ const status=$("#inventoryStatus");
+ if(value.stock===null||value.stock===undefined){
+  status.textContent="Estoque não informado";status.dataset.state="neutral";
+ }else if(Number(value.stock)===0){
+  status.textContent="Sem estoque";status.dataset.state="danger";
+ }else if(Number.isInteger(value.reorderPoint)&&Number(value.stock)<=Number(value.reorderPoint)){
+  status.textContent="Abaixo do mínimo";status.dataset.state="warning";
+ }else{
+  status.textContent="Estoque atualizado";status.dataset.state="success";
+ }
+}
+$("#saveInventory")?.addEventListener("click",async()=>{
+ const stockRaw=$("#inventoryStock").value.trim();
+ const minimumRaw=$("#inventoryMinimum").value.trim();
+ const value={
+  stock:stockRaw===""?null:Number(stockRaw),
+  reorderPoint:minimumRaw===""?null:Number(minimumRaw),
+  notes:$("#inventoryNotes").value.trim()
+ };
+ const validCount=n=>n===null||(Number.isInteger(n)&&n>=0&&n<=100000);
+ const message=$("#inventoryMsg"),button=$("#saveInventory");
+ if(!validCount(value.stock)||!validCount(value.reorderPoint)||value.notes.length>500){
+  message.dataset.state="error";message.textContent="Informe quantidades inteiras entre 0 e 100.000.";return;
+ }
+ button.disabled=true;message.textContent="Salvando...";
+ try{
+  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"inventory",value})});
+  const fresh=await api("settings");
+  if(!fresh.settings?.inventory)throw Error("Não foi possível confirmar o estoque.");
+  serverSettings.inventory=fresh.settings.inventory;loadInventory();
+  message.dataset.state="success";message.textContent="Estoque interno salvo e conferido.";
+ }catch(e){message.dataset.state="error";message.textContent="Falha ao salvar: "+e.message}
+ finally{button.disabled=false}
+});
+async function loadSystemStatus(){
+ const db=$("#systemDb"),auth=$("#systemAuth"),pix=$("#systemPix"),note=$("#systemNote");
+ if(!db||!auth||!pix||!note)return;
+ note.textContent="Verificando banco, sessão e configuração Pix...";
+ $("#systemHost").textContent=location.host;
+ try{
+  const [health,session]=await Promise.all([api("checkout-health"),api("auth")]);
+  db.textContent=health.neon?.ok?"Conectado":"Indisponível";
+  auth.textContent=session.authenticated?"Validado":"Protegido";
+  pix.textContent=health.pix?.configured?(health.pix?.brCodeValid?"Validado":"Revisar"):"Pendente";
+  $("#systemLastCheck").textContent=new Date().toLocaleString("pt-BR");
+  note.textContent=health.neon?.ok?"Conexão com o Neon respondendo. O diagnóstico Pix não realiza pagamento.": "Banco indisponível no ambiente atual.";
+ }catch(e){
+  db.textContent="Indisponível";auth.textContent="Protegido";pix.textContent="Não verificado";
+  $("#systemLastCheck").textContent=new Date().toLocaleString("pt-BR");
+  note.textContent="Não foi possível concluir o diagnóstico: "+e.message;
+ }
+}
+$("#refreshSystem")?.addEventListener("click",loadSystemStatus);
+const dashboardDate=$("#dashboardDate");
+if(dashboardDate)dashboardDate.textContent=new Intl.DateTimeFormat("pt-BR",{weekday:"long",day:"2-digit",month:"long"}).format(new Date());
+const environmentBadge=$("#environmentBadge");
+if(environmentBadge){
+ const host=location.hostname;
+ environmentBadge.textContent=host.includes("git-feature-admin-control-center")?"PRÉVIA ISOLADA":host.endsWith("papainoelpassouaqui.com.br")?"PRODUÇÃO":"AMBIENTE PROTEGIDO";
+}
+
 })();
