@@ -440,7 +440,7 @@ if(dashboardDate)dashboardDate.textContent=new Intl.DateTimeFormat("pt-BR",{week
 const environmentBadge=$("#environmentBadge");
 if(environmentBadge){
  const host=location.hostname;
- environmentBadge.textContent=host.includes("git-feature-admin-control-center")?"PRÉVIA ISOLADA":host.endsWith("papainoelpassouaqui.com.br")?"PRODUÇÃO":"AMBIENTE PROTEGIDO";
+ environmentBadge.textContent=host.endsWith("papainoelpassouaqui.com.br")||host==="papai-noel-site-v6.vercel.app"?"PRODUÇÃO":host.startsWith("papai-noel-site-v6-")&&host.endsWith(".vercel.app")?"PRÉVIA ISOLADA":"AMBIENTE PROTEGIDO";
 }
 
 })();
