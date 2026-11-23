@@ -1,24 +1,41 @@
 const {db,init}=require("./_db");
 const crypto=require("node:crypto");
 const TYPES=["page_view","view_product","add_to_cart","begin_checkout","shipping_info","order_created","payment_informed","marketplace_click"];
+let eventsReady=false;
 async function initEvents(){
+ if(eventsReady)return;
  await init();
- await db().query(`CREATE TABLE IF NOT EXISTS natal_events (
- id bigserial PRIMARY KEY,
- created_at timestamptz NOT NULL DEFAULT now(),
- session_id text NOT NULL,
- event_type text NOT NULL,
- page text NOT NULL DEFAULT '',
- origin text NOT NULL DEFAULT '',
- utm_source text NOT NULL DEFAULT '',
- utm_medium text NOT NULL DEFAULT '',
- utm_campaign text NOT NULL DEFAULT '',
- utm_content text NOT NULL DEFAULT '',
- product_id text NOT NULL DEFAULT '',
- order_id text NOT NULL DEFAULT ''
- )`);
- await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS utm_content text NOT NULL DEFAULT ''");
- await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS visitor_hash text NOT NULL DEFAULT ''");
+ if(process.env.VERCEL_ENV==="preview"){
+  const {rows}=await db().query(`
+   SELECT
+    to_regclass('public.natal_events') IS NOT NULL AS table_ready,
+    EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='natal_events' AND column_name='utm_content') AS utm_content_ready,
+    EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='natal_events' AND column_name='visitor_hash') AS visitor_hash_ready
+  `);
+  if(!rows[0]?.table_ready||!rows[0]?.utm_content_ready||!rows[0]?.visitor_hash_ready){
+   const err=new Error("EVENT_SCHEMA_NOT_READY");
+   err.code="EVENT_SCHEMA_NOT_READY";
+   throw err;
+  }
+ }else{
+  await db().query(`CREATE TABLE IF NOT EXISTS natal_events (
+   id bigserial PRIMARY KEY,
+   created_at timestamptz NOT NULL DEFAULT now(),
+   session_id text NOT NULL,
+   event_type text NOT NULL,
+   page text NOT NULL DEFAULT '',
+   origin text NOT NULL DEFAULT '',
+   utm_source text NOT NULL DEFAULT '',
+   utm_medium text NOT NULL DEFAULT '',
+   utm_campaign text NOT NULL DEFAULT '',
+   utm_content text NOT NULL DEFAULT '',
+   product_id text NOT NULL DEFAULT '',
+   order_id text NOT NULL DEFAULT ''
+  )`);
+  await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS utm_content text NOT NULL DEFAULT ''");
+  await db().query("ALTER TABLE natal_events ADD COLUMN IF NOT EXISTS visitor_hash text NOT NULL DEFAULT ''");
+ }
+ eventsReady=true;
 }
 const clean=(v,max=90)=>typeof v==="string"?v.trim().slice(0,max):"";
 function hashedVisitor(req){
