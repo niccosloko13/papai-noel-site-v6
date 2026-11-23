@@ -61,18 +61,31 @@ function db(){
 let initialized=false;
 async function init(){
   if(initialized)return;
-  await db().query(`CREATE TABLE IF NOT EXISTS natal_orders (
-    id text PRIMARY KEY,
-    created_at timestamptz NOT NULL DEFAULT now(),
-    updated_at timestamptz NOT NULL DEFAULT now(),
-    status text NOT NULL,
-    data jsonb NOT NULL
-  )`);
-  await db().query(`CREATE TABLE IF NOT EXISTS natal_settings (
-    key text PRIMARY KEY,
-    value jsonb NOT NULL,
-    updated_at timestamptz NOT NULL DEFAULT now()
-  )`);
+  if(process.env.VERCEL_ENV==="preview"){
+    const {rows}=await db().query(`
+      SELECT
+        to_regclass('public.natal_orders') IS NOT NULL AS orders_ready,
+        to_regclass('public.natal_settings') IS NOT NULL AS settings_ready
+    `);
+    if(!rows[0]?.orders_ready||!rows[0]?.settings_ready){
+      const err=new Error("DATABASE_SCHEMA_NOT_READY");
+      err.code="DATABASE_SCHEMA_NOT_READY";
+      throw err;
+    }
+  }else{
+    await db().query(`CREATE TABLE IF NOT EXISTS natal_orders (
+      id text PRIMARY KEY,
+      created_at timestamptz NOT NULL DEFAULT now(),
+      updated_at timestamptz NOT NULL DEFAULT now(),
+      status text NOT NULL,
+      data jsonb NOT NULL
+    )`);
+    await db().query(`CREATE TABLE IF NOT EXISTS natal_settings (
+      key text PRIMARY KEY,
+      value jsonb NOT NULL,
+      updated_at timestamptz NOT NULL DEFAULT now()
+    )`);
+  }
   initialized=true;
 }
 
