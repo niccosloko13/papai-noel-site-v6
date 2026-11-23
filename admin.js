@@ -118,7 +118,7 @@ function metrics(){
  $("#mRevenue").textContent=money(revenue);$("#mRevenueSub").textContent=paid.length+" pedidos pagos";
  $("#mOrders").textContent=orders.length;$("#mOrdersSub").textContent=today.length+" hoje";
  $("#mTicket").textContent=money(paid.length?revenue/paid.length:0);
- $("#mPending").textContent=orders.filter(o=>["Aguardando pagamento","Pagamento informado"].includes(o.status)).length;
+ $("#mPending").textContent=orders.filter(o=>o.status==="Aguardando pagamento").length;
  $("#mBasic").textContent=paid.length;
  $("#fCreated").textContent=orders.length;$("#fInformed").textContent=informed.length;$("#fPaid").textContent=paid.length;
  $("#fConversion").textContent=(informed.length?Math.round(paid.length/(informed.length+paid.length)*100):0)+"%";
