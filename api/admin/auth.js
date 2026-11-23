@@ -8,16 +8,30 @@ const WINDOW_SECONDS = 900;
 let limitsReady;
 
 async function consumeAttempt(req, secret) {
-  limitsReady ??= db().query(`
-    CREATE TABLE IF NOT EXISTS natal_admin_auth_limits (
-      ip_hash text PRIMARY KEY,
-      attempts integer NOT NULL,
-      window_start timestamptz NOT NULL
-    )
-  `).catch(error => {
-    limitsReady = undefined;
-    throw error;
-  });
+  if(process.env.VERCEL_ENV==="preview"){
+    limitsReady ??= db().query("SELECT to_regclass('public.natal_admin_auth_limits') IS NOT NULL AS ready")
+      .then(({rows})=>{
+        if(!rows[0]?.ready){
+          const error=new Error("ADMIN_AUTH_LIMITS_SCHEMA_NOT_READY");
+          error.code="ADMIN_AUTH_LIMITS_SCHEMA_NOT_READY";
+          throw error;
+        }
+      }).catch(error=>{
+        limitsReady=undefined;
+        throw error;
+      });
+  }else{
+    limitsReady ??= db().query(`
+      CREATE TABLE IF NOT EXISTS natal_admin_auth_limits (
+        ip_hash text PRIMARY KEY,
+        attempts integer NOT NULL,
+        window_start timestamptz NOT NULL
+      )
+    `).catch(error => {
+      limitsReady = undefined;
+      throw error;
+    });
+  }
   await limitsReady;
 
   const forwarded = String(req.headers["x-vercel-forwarded-for"] || "").split(",")[0].trim();
