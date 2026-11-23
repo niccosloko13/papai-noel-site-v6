@@ -7,14 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css?v=20261104-marketing-seo-v2">
+<link rel="stylesheet" href="admin.css?v=20261123-control-center-v1">
 </head>
 <body>
 <div class="admin-login" id="adminLogin">
   <form class="login-card" id="loginForm">
-    <span class="login-badge">ÁREA RESTRITA</span>
-    <h1>Painel de Natal</h1>
-    <p>Gerencie vendas, pagamentos, campanhas e SEO em um só lugar.</p>
+    <span class="login-badge">NEXUS · ACESSO RESTRITO</span>
+    <h1>Lareira Feliz</h1>
+    <p>Central de operação da loja, pedidos e pagamentos em um só lugar.</p>
     <label>Usuário<input id="loginUser" autocomplete="username" placeholder="Seu usuário"></label>
     <label>Senha<input id="loginPass" type="password" autocomplete="current-password" placeholder="Sua senha"></label>
     <button class="btn primary" type="submit">Entrar no painel</button>
@@ -24,31 +24,67 @@
 
 <div class="admin-app" id="adminApp" hidden>
   <aside class="sidebar">
-    <div class="admin-brand"><span>PN</span><div><small>ADMIN</small><strong>Papai Noel</strong></div></div>
-    <nav>
-      <button class="nav-item active" data-tab="dashboard">Visão geral</button>
-      <button class="nav-item" data-tab="orders">Pedidos</button>
-      <button class="nav-item" data-tab="products">Produtos</button>
-      
-      <button class="nav-item" data-tab="marketplaces">Checkout</button>
-      <button class="nav-item" data-tab="marketing">Anúncios</button>
-      <button class="nav-item" data-tab="seo">SEO</button>
+    <div class="admin-brand">
+      <span class="brand-mark">LF</span>
+      <div><small>PAINEL DA LOJA</small><strong>Lareira Feliz</strong></div>
+    </div>
+    <nav aria-label="Navegação principal">
+      <div class="nav-group">
+        <span class="nav-label">LOJA</span>
+        <button class="nav-item active" data-tab="dashboard"><span class="nav-icon" aria-hidden="true">▦</span>Visão geral</button>
+        <button class="nav-item" data-tab="orders"><span class="nav-icon" aria-hidden="true">☷</span>Pedidos</button>
+        <button class="nav-item" data-tab="products"><span class="nav-icon" aria-hidden="true">◇</span>Produto</button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">OPERAÇÃO</span>
+        <button class="nav-item" data-tab="logistics"><span class="nav-icon" aria-hidden="true">⇢</span>Logística</button>
+        <button class="nav-item" data-tab="inventory"><span class="nav-icon" aria-hidden="true">▣</span>Estoque</button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">GESTÃO</span>
+        <button class="nav-item" data-tab="finance"><span class="nav-icon" aria-hidden="true">◷</span>Financeiro</button>
+        <button class="nav-item" data-tab="pix"><span class="nav-icon" aria-hidden="true">▤</span>Pagamentos</button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">CRESCIMENTO</span>
+        <button class="nav-item" data-tab="marketplaces"><span class="nav-icon" aria-hidden="true">⌂</span>Canais de venda</button>
+        <button class="nav-item" data-tab="marketing"><span class="nav-icon" aria-hidden="true">↗</span>Marketing</button>
+        <button class="nav-item" data-tab="seo"><span class="nav-icon" aria-hidden="true">⌕</span>SEO</button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">SISTEMA</span>
+        <button class="nav-item" data-tab="system"><span class="nav-icon" aria-hidden="true">⚙</span>Diagnóstico</button>
+      </div>
     </nav>
-    <a class="store-link" href="index.html">Ver loja ↗</a>
+    <a class="store-link" href="index.html">Ver loja <span aria-hidden="true">↗</span></a>
   </aside>
 
   <main class="admin-main">
     <header class="admin-topbar">
-      <div><small id="sectionEyebrow">PAINEL</small><h1 id="sectionTitle">Visão geral</h1></div>
-      <div class="topbar-actions"><span class="live-dot">Acesso restrito</span><button class="btn ghost" id="logoutBtn">Sair</button></div>
+      <div class="topbar-title">
+        <small id="sectionEyebrow">CENTRAL DE OPERAÇÃO</small>
+        <h1 id="sectionTitle">Visão geral</h1>
+        <p>Gestão da Lareira Feliz em um único lugar</p>
+      </div>
+      <div class="topbar-actions">
+        <span class="environment-pill" id="environmentBadge">Ambiente protegido</span>
+        <span class="live-dot">Acesso restrito</span>
+        <button class="btn ghost" id="logoutBtn">Sair</button>
+      </div>
     </header>
 
     <section class="admin-panel active" id="dashboard">
+      <div class="dashboard-intro">
+        <div><small>RESUMO DA OPERAÇÃO</small><h2>Bem-vindo ao seu painel</h2><p>Acompanhe pedidos, pagamentos e a operação da Lareira Feliz.</p></div>
+        <span id="dashboardDate" class="dashboard-date"></span>
+      </div>
       <div class="metric-grid">
-        <article class="metric-card"><small>Faturamento pago</small><strong id="mRevenue">R$ 0,00</strong><span id="mRevenueSub">0 pedidos pagos</span></article>
-        <article class="metric-card"><small>Pedidos</small><strong id="mOrders">0</strong><span id="mOrdersSub">0 hoje</span></article>
-        <article class="metric-card"><small>Ticket médio</small><strong id="mTicket">R$ 0,00</strong><span>pedidos pagos</span></article>
-        <article class="metric-card"><small>Aguardando</small><strong id="mPending">0</strong><span>precisam de atenção</span></article><article class="metric-card"><small>Pedidos neste mês</small><strong id="mMonth">—</strong><span>Pedidos registrados</span></article><article class="metric-card"><small>Kit Essencial vendido</small><strong id="mBasic">—</strong><span>Pagamentos confirmados</span></article><article class="metric-card"><small>Kit Personalizado vendido</small><strong id="mPersonal">—</strong><span>Pagamentos confirmados</span></article>
+        <article class="metric-card"><small>Faturamento confirmado</small><strong id="mRevenue">R$ 0,00</strong><span id="mRevenueSub">0 pedidos pagos</span></article>
+        <article class="metric-card"><small>Pedidos registrados</small><strong id="mOrders">0</strong><span id="mOrdersSub">0 hoje</span></article>
+        <article class="metric-card"><small>Ticket médio pago</small><strong id="mTicket">R$ 0,00</strong><span>considera pedidos pagos</span></article>
+        <article class="metric-card"><small>Aguardando pagamento</small><strong id="mPending">0</strong><span>pedidos que precisam de atenção</span></article>
+        <article class="metric-card"><small>Pedidos neste mês</small><strong id="mMonth">—</strong><span>registros do mês atual</span></article>
+        <article class="metric-card"><small>Pedidos pagos</small><strong id="mBasic">—</strong><span>confirmação registrada</span></article>
       </div>
       <div class="panel-card" style="margin:18px 0">
         <div class="panel-head"><div><small>ANÁLISE REAL · ÚLTIMOS 30 DIAS</small><h2>Visitas e saída para marketplaces</h2></div></div><p class="muted">Acompanhamos cliques nos links oficiais. Vendas concluídas dentro das plataformas só aparecerão aqui após integração autorizada às respectivas contas.</p>
@@ -98,15 +134,15 @@
 
     <section class="admin-panel" id="products">
       <div class="panel-card">
-        <div class="panel-head"><div><small>CATÁLOGO</small><h2>Seus kits</h2><p class="muted">Edite fotos por endereço de imagem HTTPS ou caminho publicado no site. Alterações são salvas no banco central.</p></div></div>
+        <div class="panel-head"><div><small>CATÁLOGO</small><h2>Produto único</h2><p class="muted">Gerencie a Lareira Feliz avulsa. O painel não exibe os antigos kits.</p></div></div>
         <div class="product-edit-grid" id="productEditors"></div>
-        <div class="product-edit-footer"><button type="button" class="btn primary" id="saveProducts">Salvar alterações dos kits</button><span role="status" id="productsMsg"></span></div>
+        <div class="product-edit-footer"><button type="button" class="btn primary" id="saveProducts">Salvar dados do produto</button><span role="status" id="productsMsg"></span></div>
       </div>
     </section>
     <section class="admin-panel" id="pix">
       <div class="settings-grid">
         <article class="panel-card">
-          <small>RECEBIMENTO</small><h2>Configuração Pix</h2>
+          <small>RECEBIMENTO</small><h2>Pagamentos e Pix</h2>
           <label><input id="pixEnabled" type="checkbox"> Ativar Pix</label>
           <label>Chave Pix<input id="pixKey" placeholder="CPF, CNPJ, e-mail, telefone ou aleatória"></label>
           <label>Nome exibido ao cliente<input id="displayName"></label>
@@ -121,7 +157,7 @@
 
     <section class="admin-panel" id="marketplaces">
       <article class="panel-card">
-        <div class="panel-head"><div><small>DESTINOS DE COMPRA</small><h2>Checkout · Mercado Livre e Shopee</h2></div></div>
+        <div class="panel-head"><div><small>CANAIS OFICIAIS</small><h2>Destinos de compra</h2></div></div>
         <p class="muted">Cole os links oficiais dos anúncios do seu kit. Quando um link válido estiver salvo, a opção de compra aparecerá automaticamente no site. Campos vazios permanecem indisponíveis.</p>
         <label>Link do anúncio no Mercado Livre
           <input id="marketplaceMercadoLivre" type="url" inputmode="url" autocomplete="off" placeholder="https://produto.mercadolivre.com.br/MLB-...">
@@ -191,6 +227,74 @@
           <div class="admin-notice"><strong>Dados do responsável comercial</strong><p>PRISMARQ COMUNICACAO VISUAL LTDA<br>CNPJ 64.013.879/0001-99<br>Rua José Bonifácio, 203 · Galpão 1 · Centro<br>São Bernardo do Campo · SP · CEP 09721-160</p><small>Dados cadastrais fornecidos para conferência. Não devem ser confundidos com o nome da loja ou criar avaliações falsas.</small></div>
         </article>
       </div>
+    </section>
+    <section class="admin-panel" id="logistics">
+      <div class="section-lead"><div><small>OPERAÇÃO · EXPEDIÇÃO</small><h2>Fluxo de logística</h2><p>Acompanhe os pedidos por etapa. O painel mostra apenas status registrados no banco, sem inventar rastreios ou prazos.</p></div></div>
+      <div class="metric-grid logistics-metrics">
+        <article class="metric-card"><small>Pagos · iniciar produção</small><strong id="logPaid">0</strong><span>aguardando início da produção</span></article>
+        <article class="metric-card"><small>Em produção</small><strong id="logProduction">0</strong><span>pedidos em preparação</span></article>
+        <article class="metric-card"><small>Enviados</small><strong id="logShipped">0</strong><span>status marcado como enviado</span></article>
+      </div>
+      <article class="panel-card section-card">
+        <div class="panel-head"><div><small>FILA DE EXPEDIÇÃO</small><h2>Pedidos em andamento</h2></div></div>
+        <div id="logisticsList"><p class="muted">Carregando pedidos...</p></div>
+        <p class="muted section-footnote">Não há integração de rastreamento nesta tela. O status “Enviado” depende de atualização manual.</p>
+      </article>
+    </section>
+
+    <section class="admin-panel" id="inventory">
+      <div class="section-lead"><div><small>OPERAÇÃO · ESTOQUE</small><h2>Estoque da Lareira Feliz</h2><p>Cadastro interno do produto único. A quantidade não é sincronizada automaticamente com Mercado Livre ou Shopee.</p></div></div>
+      <article class="panel-card inventory-card">
+        <div class="inventory-product">
+          <div class="inventory-mark">LF</div>
+          <div><small>PRODUTO ÚNICO</small><h2>Lareira Feliz avulsa</h2><p class="muted">Controle manual de estoque físico</p></div>
+          <span id="inventoryStatus" class="inventory-status">Estoque não informado</span>
+        </div>
+        <div class="inventory-fields">
+          <label>Quantidade disponível
+            <input id="inventoryStock" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Informe o estoque atual">
+          </label>
+          <label>Estoque mínimo para alerta
+            <input id="inventoryMinimum" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Opcional">
+          </label>
+        </div>
+        <label>Observações internas
+          <textarea id="inventoryNotes" rows="3" maxlength="500" placeholder="Ex.: lote em produção, previsão de reposição ou observações"></textarea>
+        </label>
+        <div class="inventory-footer"><button type="button" class="btn primary" id="saveInventory">Salvar estoque interno</button><span id="inventoryMsg" role="status" aria-live="polite"></span></div>
+        <p class="muted section-footnote">Este cadastro é apenas interno e não altera o estoque dos anúncios nos marketplaces.</p>
+      </article>
+    </section>
+
+    <section class="admin-panel" id="finance">
+      <div class="section-lead"><div><small>GESTÃO · FINANCEIRO</small><h2>Resumo financeiro</h2><p>Valores calculados a partir dos pedidos registrados nesta loja. Não incluem vendas ou repasses externos de marketplaces.</p></div></div>
+      <div class="metric-grid finance-metrics">
+        <article class="metric-card"><small>Receita confirmada</small><strong id="financePaid">R$ 0,00</strong><span>pedidos pagos e concluídos</span></article>
+        <article class="metric-card"><small>Valor pendente</small><strong id="financePending">R$ 0,00</strong><span>pagamento ainda não confirmado</span></article>
+        <article class="metric-card"><small>Pedidos cancelados</small><strong id="financeCancelled">R$ 0,00</strong><span id="financeCancelledCount">0 pedidos</span></article>
+      </div>
+      <article class="panel-card section-card">
+        <div class="panel-head"><div><small>CONCILIAÇÃO INTERNA</small><h2>Movimentação dos pedidos</h2></div></div>
+        <div class="admin-table-scroll"><table class="admin-data-table"><thead><tr><th>Pedido</th><th>Data</th><th>Status</th><th>Valor</th></tr></thead><tbody id="financeRows"><tr><td colspan="4">Carregando...</td></tr></tbody></table></div>
+        <p class="muted section-footnote">“Receita confirmada” considera somente pedidos marcados como pagos, em produção, enviados ou concluídos.</p>
+      </article>
+    </section>
+
+    <section class="admin-panel" id="system">
+      <div class="section-lead"><div><small>SISTEMA · SAÚDE DA APLICAÇÃO</small><h2>Diagnóstico do ambiente</h2><p>Verificações de conexão e configuração. Nenhuma ação de teste cria pedidos ou movimenta dinheiro.</p></div></div>
+      <div class="metric-grid system-metrics">
+        <article class="metric-card"><small>Banco de dados</small><strong id="systemDb">—</strong><span>conexão Neon</span></article>
+        <article class="metric-card"><small>Acesso administrativo</small><strong id="systemAuth">—</strong><span>sessão protegida</span></article>
+        <article class="metric-card"><small>Configuração Pix</small><strong id="systemPix">—</strong><span>diagnóstico de BR Code</span></article>
+      </div>
+      <article class="panel-card section-card">
+        <div class="panel-head"><div><small>AMBIENTE ATUAL</small><h2>Informações técnicas</h2></div><button type="button" class="btn ghost" id="refreshSystem">Verificar novamente</button></div>
+        <div class="system-details">
+          <div><small>Endereço do ambiente</small><strong id="systemHost">—</strong></div>
+          <div><small>Última verificação</small><strong id="systemLastCheck">Ainda não verificado</strong></div>
+        </div>
+        <p id="systemNote" class="muted" role="status">Aguardando diagnóstico.</p>
+      </article>
     </section>
   </main>
 </div>
