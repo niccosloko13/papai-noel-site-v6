@@ -134,7 +134,7 @@
 
     <section class="admin-panel" id="products">
       <div class="panel-card">
-        <div class="panel-head"><div><small>CATÁLOGO</small><h2>Produto único</h2><p class="muted">Gerencie a Lareira Feliz avulsa. O painel não exibe os antigos kits.</p></div></div>
+        <div class="panel-head"><div><small>CATÁLOGO</small><h2>Produto único</h2><p class="muted">Gerencie a Lareira Feliz avulsa e mantenha os dados do produto único atualizados.</p></div></div>
         <div class="product-edit-grid" id="productEditors"></div>
         <div class="product-edit-footer"><button type="button" class="btn primary" id="saveProducts">Salvar dados do produto</button><span role="status" id="productsMsg"></span></div>
       </div>
@@ -158,7 +158,7 @@
     <section class="admin-panel" id="marketplaces">
       <article class="panel-card">
         <div class="panel-head"><div><small>CANAIS OFICIAIS</small><h2>Destinos de compra</h2></div></div>
-        <p class="muted">Cole os links oficiais dos anúncios do seu kit. Quando um link válido estiver salvo, a opção de compra aparecerá automaticamente no site. Campos vazios permanecem indisponíveis.</p>
+        <p class="muted">Cole os links oficiais dos anúncios da Lareira Feliz. Quando um link válido estiver salvo, a opção de compra aparecerá automaticamente no site. Campos vazios permanecem indisponíveis.</p>
         <label>Link do anúncio no Mercado Livre
           <input id="marketplaceMercadoLivre" type="url" inputmode="url" autocomplete="off" placeholder="https://produto.mercadolivre.com.br/MLB-...">
         </label>
@@ -216,7 +216,7 @@
           <small>IDENTIDADE DE BUSCA</small><h2>Como o site aparece no Google</h2>
           <label>Título da página <span class="field-count" id="seoTitleCount"></span><input id="seoTitle" maxlength="60"></label>
           <label>Meta description <span class="field-count" id="seoDescriptionCount"></span><textarea id="seoDescription" maxlength="160" rows="4"></textarea></label>
-          <label>Imagem social / Open Graph<input id="seoImage" placeholder="assets/product/kit-personalizado.webp"></label>
+          <label>Imagem social / Open Graph<input id="seoImage" placeholder="assets/lareira-feliz-real.webp"></label>
           <div class="seo-serp-preview"><small>PRÉVIA ILUSTRATIVA · RESULTADO DE BUSCA</small><strong id="seoPreviewTitle"></strong><span>papainoelpassouaqui.com.br</span><p id="seoPreviewDescription"></p></div>
           <button class="btn primary" id="saveSeo" type="button">Salvar rascunho de SEO</button><p id="seoMsg" role="status" aria-live="polite"></p>
           <p class="muted">Este botão salva o rascunho no painel; não altera automaticamente o HTML público nem garante indexação.</p>
