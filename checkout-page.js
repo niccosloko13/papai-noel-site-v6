@@ -2,6 +2,7 @@
 const $=s=>document.querySelector(s);
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const form=$("#checkoutForm"),qty=$("#quantity");
+window.natalAnalytics?.track("begin_checkout",{product_id:"basic"});
 let price=Number(window.STORE_DATA?.products?.find(p=>p.id==="basic")?.price)||132.90;
 let lastCepLookup="",cepController=null;
 const digits=v=>String(v||"").replace(/\D/g,"");
