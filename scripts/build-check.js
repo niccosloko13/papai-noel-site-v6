@@ -7,8 +7,8 @@ const dist=path.join(root,"dist");
 
 const required=[
   "index.html","checkout.html","admin.html","pedido.html","pedido-processando.html","pagamento-pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
-  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","marketplace-links.js",
-  "styles.css","lareira-feliz.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","product-gallery.js","marketplace-links.js",
+  "styles.css","lareira-feliz.css","product-gallery.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
   "robots.txt","sitemap.xml",
   "api/_db.js","api/_pix.js","api/cep.js","api/loggi-quote.js","api/checkout.js","api/admin/auth.js",
   "api/admin/orders.js","api/admin/settings.js",
@@ -25,7 +25,7 @@ for(const rel of jsFiles){
   cp.execFileSync(process.execPath,["--check",path.join(root,rel)],{stdio:"inherit"});
 }
 
-cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js"),path.join(root,"tests/admin-navigation.test.js"),path.join(root,"tests/manual-pix-flow.test.js"),path.join(root,"tests/cep-proxy.test.js"),path.join(root,"tests/checkout-flow-ui.test.js"),path.join(root,"tests/loggi-estimate.test.js"),path.join(root,"tests/db-init-race.test.js")],{stdio:"inherit"});
+cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js"),path.join(root,"tests/admin-navigation.test.js"),path.join(root,"tests/manual-pix-flow.test.js"),path.join(root,"tests/cep-proxy.test.js"),path.join(root,"tests/checkout-flow-ui.test.js"),path.join(root,"tests/loggi-estimate.test.js"),path.join(root,"tests/db-init-race.test.js"),path.join(root,"tests/product-gallery.test.js")],{stdio:"inherit"});
 
 const pkg=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8"));
 if(!pkg.dependencies?.["@neondatabase/serverless"])throw new Error("Missing @neondatabase/serverless dependency");
@@ -36,8 +36,8 @@ fs.mkdirSync(dist,{recursive:true});
 
 const staticFiles=[
   "index.html","checkout.html","admin.html","pedido.html","pedido-processando.html","pagamento-pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
-  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","marketplace-links.js",
-  "styles.css","lareira-feliz.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
+  "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","product-gallery.js","marketplace-links.js",
+  "styles.css","lareira-feliz.css","product-gallery.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
   "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
   "robots.txt","sitemap.xml"
 ];
@@ -61,6 +61,9 @@ for(const rel of staticFiles.filter(x=>x.endsWith(".html"))){
   const local=url.replace(/^\//,"");
   if(!fs.existsSync(path.join(dist,local)))throw new Error(rel+" references missing stylesheet "+local);
  }
+}
+for(const rel of ["assets/lareira-real-frente.jpeg","assets/lareira-real-lado-a.jpeg","assets/lareira-real-lado-b.jpeg","assets/lareira-real-video-sem-som.mp4"]){
+ if(!fs.existsSync(path.join(dist,rel))||fs.statSync(path.join(dist,rel)).size<5000)throw new Error("Galeria: arquivo ausente ou vazio: "+rel);
 }
 if(!fs.existsSync(path.join(dist,"index.html")))throw new Error("dist/index.html was not generated");
 
