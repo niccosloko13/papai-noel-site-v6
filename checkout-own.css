@@ -91,3 +91,70 @@ label{display:block;margin:13px 0 6px;font-size:12px;font-weight:800;color:#4842
 @media(prefers-reduced-motion:reduce){
  .checkout-whatsapp{transition:none}
 }
+
+
+/* Mobile checkout — one clear task, compact product video, no repeated sales copy */
+@media(max-width:960px){
+ .checkout-layout{gap:12px;margin:12px auto 28px}
+ .checkout-aside{border-radius:14px;box-shadow:none;background:#173e2d;border:0}
+ .aside-photo{height:clamp(145px,42vw,190px);min-height:0;background:#173e2d}
+ .aside-photo video{object-fit:contain;background:#173e2d}
+ .checkout-video-label{left:9px;bottom:8px;padding:5px 8px;font-size:8px}
+ .aside-copy,.aside-security{display:none!important}
+ .checkout-heading{margin:0 0 12px}
+ .checkout-heading .eyebrow{font-size:8px;letter-spacing:.12em}
+ .checkout-heading h1{font-size:25px;margin:3px 0 0}
+ .checkout-heading p{display:none}
+ .form-card{padding:13px 12px;margin-bottom:10px;border-radius:13px;box-shadow:0 3px 10px #4e35100a}
+ .form-card-heading{gap:9px;margin-bottom:10px}
+ .form-card-heading>span{width:27px;height:27px;font-size:12px}
+ .form-card-heading h2{font-size:14px}
+ .form-card-heading p{font-size:9px;line-height:1.3}
+ label{margin:9px 0 4px;font-size:10px}
+ input{min-height:43px;padding:9px 10px;font-size:13px;border-radius:9px}
+ .field-grid{gap:8px}
+ .field-hint{font-size:9px;margin-top:4px;min-height:0}
+ .address-autofill{padding:9px;margin-top:8px;gap:6px}
+ .loggi-estimate-card{margin-top:9px;padding:9px 10px;border-radius:10px}
+ .loggi-estimate-heading{gap:8px;font-size:10px}
+ .loggi-wordmark{min-width:46px;height:22px;font-size:15px}
+ #loggiEstimateStatus{margin:7px 0 5px;font-size:10px}
+ .loggi-estimate-option{padding:7px 8px;font-size:10px}
+ .loggi-estimate-card>small{font-size:8px;margin-top:6px}
+ .quantity-row{flex-direction:row;align-items:center;padding-bottom:10px;gap:8px}
+ .quantity-row strong{font-size:12px}
+ .quantity-row small{font-size:9px}
+ .quantity-control button{width:31px;height:34px}
+ .quantity-control input{width:35px;min-height:34px}
+ .price-line{padding:7px 0;font-size:11px}
+ .price-total{padding:10px 0 1px;font-size:12px}
+ .price-total strong{font-size:22px}
+ .payment-note{padding:9px;margin-top:10px;font-size:9px;line-height:1.4;border-radius:9px}
+ .terms-check{margin:11px 1px;font-size:9px;line-height:1.35;gap:7px}
+ .terms-check input{width:16px;height:16px;min-height:16px}
+ .submit-button{min-height:51px;border-radius:11px;font-size:14px}
+ .checkout-message{font-size:10px;min-height:14px}
+ .checkout-footer{display:none}
+ .checkout-whatsapp{right:10px;bottom:max(10px,env(safe-area-inset-bottom));min-height:42px;padding:7px 11px;border-radius:50px;box-shadow:0 4px 14px #0e452744}
+ .checkout-whatsapp svg{width:24px;height:24px}
+ .checkout-whatsapp span{display:block}
+ .checkout-whatsapp span strong{font-size:11px}
+}
+@media(max-width:480px){
+ .checkout-header{height:58px;padding:6px 10px}
+ .checkout-header img{width:148px}
+ .checkout-header>span{font-size:8px}
+ .checkout-layout{width:calc(100% - 20px);margin:9px auto 24px;gap:10px}
+ .aside-photo{height:155px}
+ .checkout-heading h1{font-size:23px}
+ .form-card{padding:12px 10px}
+ .field-grid{grid-template-columns:1fr 1fr}
+ .checkout-whatsapp{min-height:40px}
+}
+@media(max-width:360px){
+ .checkout-header img{width:132px}
+ .checkout-header>span{font-size:7px}
+ .aside-photo{height:140px}
+ .form-card-heading h2{font-size:13px}
+ .field-grid{grid-template-columns:1fr}
+}
