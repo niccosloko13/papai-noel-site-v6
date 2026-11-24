@@ -96,8 +96,11 @@ module.exports = async function handler(req, res) {
     }
 
     await db().query("DELETE FROM natal_admin_auth_limits WHERE ip_hash=$1", [key]);
-    const body = Buffer.from(JSON.stringify({ sub: cfg.user, exp: Date.now() + 28800000 })).toString("base64url");
-    res.setHeader("Set-Cookie", cookie(body + "." + sign(body, cfg.secret), 28800));
+    const maxExpiry=Date.now()+(cfg.temporaryExpiresAt?86400000:28800000);
+    const expiry=cfg.temporaryExpiresAt?Math.min(maxExpiry,Date.parse(cfg.temporaryExpiresAt)):maxExpiry;
+    const maxAge=Math.max(0,Math.floor((expiry-Date.now())/1000));
+    const body = Buffer.from(JSON.stringify({ sub: cfg.user, exp: expiry })).toString("base64url");
+    res.setHeader("Set-Cookie", cookie(body + "." + sign(body, cfg.secret), maxAge));
     return res.json({ authenticated: true });
   } catch (error) {
     console.error("Admin authentication unavailable", error.code || error.message);
