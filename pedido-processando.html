@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#123d2b">
+<title>Preparando seu pedido | Lareira Feliz</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 18% 12%,#54765a 0,transparent 30%),linear-gradient(145deg,#103b2e,#7a3540);font-family:Arial,system-ui,sans-serif;color:#263a2e}
+.process-card{width:min(520px,100%);padding:clamp(22px,5vw,38px);border-radius:25px;border:1px solid #e7d4b2;background:linear-gradient(155deg,#fffdf7,#fff0dc);box-shadow:0 24px 75px #081b174d;text-align:center;position:relative;overflow:hidden}
+.brand{width:210px;max-width:75%;height:auto;margin:0 auto 22px;display:block}
+.kicker{font-size:10px;font-weight:900;letter-spacing:.18em;color:#9a5960}
+h1{font:400 clamp(29px,7vw,40px)/1.08 Georgia,serif;color:#174333;margin:12px 0}
+p{font-size:13px;line-height:1.65;color:#71695e;margin:10px auto;max-width:390px}
+.spinner{width:58px;height:58px;margin:26px auto 18px;border-radius:50%;border:4px solid #dfe9df;border-top-color:#17694c;border-right-color:#c7a15b;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.steps{display:grid;gap:9px;text-align:left;margin:25px 0 0}
+.step{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid #eadfcd;border-radius:12px;background:#fffaf2;color:#6c7165;font-size:12px}
+.step i{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#e8f0e6;color:#17694c;font-style:normal;font-weight:900;flex:none}
+.step.active{border-color:#d7c18f;color:#34523e;background:#fff}
+.order{margin-top:18px;padding:10px;border-radius:10px;background:#edf4ea;color:#38523e;font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.support{margin-top:20px;font-size:11px}
+.support a{color:#17694c;font-weight:800}
+#processError{display:none;margin-top:16px;padding:12px;border-radius:12px;background:#fff1ef;border:1px solid #e8c2bb;color:#89333b;font-size:12px;line-height:1.5}
+@media(prefers-reduced-motion:reduce){.spinner{animation:none}}
+</style>
+</head>
+<body>
+<main class="process-card">
+ <img class="brand" src="/assets/logo-lareira-feliz.svg" alt="Lareira Feliz">
+ <span class="kicker">SEU NATAL ESTÁ SENDO PREPARADO</span>
+ <h1 id="heading">Estamos processando seu pedido</h1>
+ <div class="spinner" id="spinner" aria-hidden="true"></div>
+ <p id="message" role="status" aria-live="polite">Recebemos seus dados. Estamos conferindo as informações e aguardando a liberação do seu Pix pela nossa equipe.</p>
+ <div class="steps">
+  <div class="step active"><i>✓</i><span>Dados recebidos com segurança</span></div>
+  <div class="step active"><i>2</i><span>Conferência do pedido pela equipe</span></div>
+  <div class="step" id="pixStep"><i>3</i><span>Preparação do QR Code Pix</span></div>
+ </div>
+ <div class="order" id="orderId">Pedido —</div>
+ <div id="processError"></div>
+ <p class="support">Esta página atualiza automaticamente. Precisa de ajuda? <a href="https://wa.me/551152970363" target="_blank" rel="noopener">Fale com nosso atendimento</a></p>
+</main>
+<script>
+const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get("id")||"";
+const access=(()=>{try{const x=JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}");return x.id===id?x.accessKey:""}catch{return ""}})();
+let interval=null,attempts=0,redirecting=false;
+$("#orderId").textContent="Pedido "+(id||"—");
+function error(message){$("#processError").style.display="block";$("#processError").textContent=message;$("#spinner").style.display="none";$("#heading").textContent="Seu pedido foi registrado"}
+async function check(){
+ if(redirecting)return;
+ if(!/^NATAL-[A-F0-9]{12}$/.test(id)||!access){error("Não conseguimos validar o acesso a este pedido neste navegador. Abra novamente o link de acompanhamento ou fale com nosso atendimento.");clearInterval(interval);return}
+ attempts++;
+ try{
+  const response=await fetch("/api/customer/payment",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,accessKey:access}),cache:"no-store"});
+  const data=await response.json();
+  if(!response.ok)throw Error(data.error||"Não foi possível consultar o pedido");
+  if(data.status==="Aguardando pagamento"&&data.canPay&&data.pixPayload){
+   redirecting=true;clearInterval(interval);$("#pixStep").classList.add("active");$("#message").textContent="QR Code liberado! Abrindo a página de pagamento...";location.replace("/pagamento-pedido.html?id="+encodeURIComponent(id));return;
+  }
+  if(data.status==="Pagamento informado"||data.status==="Pago"||data.status==="Produção"||data.status==="Enviado"||data.status==="Concluído"){
+   $("#heading").textContent="Recebemos seu pedido!";
+   $("#message").textContent=data.status==="Pagamento informado"?"Seu aviso de pagamento foi recebido. Nossa equipe está conferindo o crédito.":"O status do seu pedido é "+data.status+".";
+   $("#spinner").style.display="none";clearInterval(interval);return;
+  }
+  if(data.status==="Expirado"||data.status==="Cancelado"){
+   $("#heading").textContent="Seu pedido precisa de atenção";
+   $("#message").textContent="O status atual é "+data.status+". Entre em contato com nosso atendimento para continuar.";
+   $("#spinner").style.display="none";clearInterval(interval);return;
+  }
+  $("#message").textContent=attempts<4?"Recebemos seus dados. Estamos conferindo as informações do pedido...":"Pedido registrado! Assim que nossa equipe liberar o QR Code Pix, esta página abrirá o pagamento automaticamente.";
+ }catch(e){
+  if(attempts>=4)$("#message").textContent="Seu pedido foi enviado. Estamos tentando atualizar o status automaticamente...";
+  if(attempts>=12)$("#processError").style.display="block",$("#processError").textContent="A atualização está demorando. Você pode aguardar mais um pouco ou falar com nosso atendimento.";
+ }
+}
+if(!/^NATAL-[A-F0-9]{12}$/.test(id)||!access)error("Não foi possível validar o link deste pedido. Fale com nosso atendimento.");
+else{check();interval=setInterval(check,3000)}
+</script>
+</body>
+</html>
