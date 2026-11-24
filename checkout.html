@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#123d2b">
 <title>Finalizar pedido | Lareira Feliz</title>
-<link rel="stylesheet" href="/checkout-own.css?v=20261123-cep-cpf-13290">
+<link rel="stylesheet" href="/checkout-own.css?v=20261124-loggi-funnel">
 </head>
 <body>
 <header class="checkout-header">
@@ -33,6 +33,12 @@
             <div><label for="number">Número</label><input id="number" name="number" autocomplete="address-line2" maxlength="20" placeholder="Nº" required></div>
             <div><label for="complement">Complemento <span>(opcional)</span></label><input id="complement" name="complement" maxlength="100" placeholder="Apto, bloco, casa"></div>
           </div>
+          <section id="loggiEstimateCard" class="loggi-estimate-card" hidden aria-live="polite">
+            <div class="loggi-estimate-heading"><span class="loggi-wordmark">loggi</span><span>Previsão de entrega</span></div>
+            <p id="loggiEstimateStatus">Calculando estimativa para seu endereço...</p>
+            <div id="loggiEstimateOptions" class="loggi-estimate-options"></div>
+            <small>Prazo estimado pela Loggi. A previsão final depende da confirmação do envio.</small>
+          </section>
         </div>
       </section>
       <section class="form-card">
@@ -66,6 +72,6 @@
 <footer class="checkout-footer"><a href="/">← Voltar à loja</a><span>Atendimento (11) 5297-0363 · atendimento@papainoelpassouaqui.com.br</span></footer>
 <script src="/store-data.js"></script>
 <script src="/analytics.js?v=20261106-unique-ip-v1" defer></script>
-<script src="/checkout-page.js?v=20261123-cep-cpf-13290" defer></script>
+<script src="/checkout-page.js?v=20261124-loggi-funnel" defer></script>
 </body>
 </html>
