@@ -47,7 +47,7 @@
       </div>
       <div class="nav-group">
         <span class="nav-label">CRESCIMENTO</span>
-        <button class="nav-item" data-tab="marketplaces"><span class="nav-icon" aria-hidden="true">⌂</span>Canais de venda</button>
+        <button class="nav-item" data-tab="checkout"><span class="nav-icon" aria-hidden="true">⌂</span>Checkout próprio</button>
         <button class="nav-item" data-tab="marketing"><span class="nav-icon" aria-hidden="true">↗</span>Marketing</button>
         <button class="nav-item" data-tab="seo"><span class="nav-icon" aria-hidden="true">⌕</span>SEO</button>
       </div>
@@ -82,15 +82,15 @@
         <article class="metric-card"><small>Faturamento confirmado</small><strong id="mRevenue">R$ 0,00</strong><span id="mRevenueSub">0 pedidos pagos</span></article>
         <article class="metric-card"><small>Pedidos registrados</small><strong id="mOrders">0</strong><span id="mOrdersSub">0 hoje</span></article>
         <article class="metric-card"><small>Ticket médio pago</small><strong id="mTicket">R$ 0,00</strong><span>considera pedidos pagos</span></article>
-        <article class="metric-card"><small>Aguardando pagamento</small><strong id="mPending">0</strong><span>pedidos que precisam de atenção</span></article>
+        <article class="metric-card"><small>Aguardando QR ou pagamento</small><strong id="mPending">0</strong><span>pedidos que precisam de atenção</span></article>
         <article class="metric-card"><small>Pedidos neste mês</small><strong id="mMonth">—</strong><span>registros do mês atual</span></article>
         <article class="metric-card"><small>Pedidos pagos</small><strong id="mBasic">—</strong><span>confirmação registrada</span></article>
       </div>
       <div class="panel-card" style="margin:18px 0">
-        <div class="panel-head"><div><small>ANÁLISE REAL · ÚLTIMOS 30 DIAS</small><h2>Visitas e saída para marketplaces</h2></div></div><p class="muted">Acompanhamos cliques nos links oficiais. Vendas concluídas dentro das plataformas só aparecerão aqui após integração autorizada às respectivas contas.</p>
+        <div class="panel-head"><div><small>ANÁLISE REAL · ÚLTIMOS 30 DIAS</small><h2>Visitas e conversão da loja</h2></div></div><p class="muted">Acompanhe os acessos, pedidos criados e avisos de pagamento do checkout próprio. O pagamento só entra no faturamento depois da conferência manual.</p>
         <div class="metric-grid">
           <div class="metric-card"><small>Visitantes únicos (IP)</small><strong id="realVisitors">—</strong></div>
-          <div class="metric-card"><small>Sessões registradas</small><strong id="realSessions">—</strong></div><div class="metric-card"><small>Cliques Mercado Livre</small><strong id="realMlClicks">—</strong></div><div class="metric-card"><small>Cliques Shopee</small><strong id="realShopeeClicks">—</strong></div><div class="metric-card"><small>Inícios de checkout (histórico antigo)</small><strong id="realCheckouts">—</strong></div>
+          <div class="metric-card"><small>Sessões registradas</small><strong id="realSessions">—</strong></div><div class="metric-card"><small>Pedidos criados</small><strong id="realMlClicks">—</strong></div><div class="metric-card"><small>Avisos de pagamento</small><strong id="realShopeeClicks">—</strong></div><div class="metric-card"><small>Inícios de checkout (histórico antigo)</small><strong id="realCheckouts">—</strong></div>
           <div class="metric-card"><small>Conversão observada</small><strong id="realConversion">—</strong></div>
           <div class="metric-card"><small>Abandono observado</small><strong id="realAbandonment">—</strong></div>
         </div>
@@ -125,7 +125,7 @@
           <div><small>PEDIDOS</small><h2>Central de vendas</h2></div>
           <div class="order-tools">
             <input id="orderSearch" placeholder="Buscar pedido, nome ou telefone">
-            <select id="orderFilter"><option value="all">Todos</option><option>Aguardando pagamento</option><option>Pagamento informado</option><option>Pago</option><option>Produção</option><option>Enviado</option></select>
+            <select id="orderFilter"><option value="all">Todos</option><option>Aguardando QR Code</option><option>Aguardando pagamento</option><option>Pagamento informado</option><option>Pago</option><option>Produção</option><option>Enviado</option></select>
           </div>
         </div>
         <div id="ordersList"></div>
@@ -142,37 +142,30 @@
     <section class="admin-panel" id="pix">
       <div class="settings-grid">
         <article class="panel-card">
-          <small>RECEBIMENTO</small><h2>Pagamentos e Pix</h2>
-          <label><input id="pixEnabled" type="checkbox"> Ativar Pix</label>
+          <small>RECEBIMENTO</small><h2>Configuração Pix</h2>
+          <label><input id="pixEnabled" type="checkbox"> Habilitar geração manual de QR Pix</label>
+          <p class="muted">A chave fica salva com acesso restrito. Nenhum QR é criado quando o cliente faz o pedido. Você decide quando liberar a cobrança em cada pedido.</p>
           <label>Chave Pix<input id="pixKey" placeholder="CPF, CNPJ, e-mail, telefone ou aleatória"></label>
           <label>Nome exibido ao cliente<input id="displayName"></label>
           <label>Nome do recebedor no BR Code<input id="receiverName" maxlength="25"></label>
           <label>Cidade<input id="pixCity" maxlength="15"></label>
-          <div class="two"><label>Desconto Pix (%)<input id="pixDiscount" type="number" min="0" max="50" step=".1"></label><label>Frete fixo (R$)<input id="shippingFlat" type="number" min="0" step=".01"></label></div>
+          <input id="pixDiscount" type="hidden" value="0"><input id="shippingFlat" type="hidden" value="0">
+          <p class="admin-notice">Frete grátis fixo para todo o Brasil. O total do checkout é calculado sem cobrança adicional de entrega.</p>
           <button class="btn primary" id="savePix">Salvar configuração</button><div id="pixMsg" role="status" aria-live="polite"></div>
         </article>
-        <article class="panel-card dark-card"><small>PROCESSO</small><h2>Pagamento e pedido</h2><p>O cliente vê apenas a cobrança. A confirmação e mudança de status ficam aqui no painel.</p><ul><li>Pagamento informado</li><li>Conferir entrada no banco</li><li>Marcar como pago</li><li>Mover para produção e envio</li></ul></article>
+        <article class="panel-card dark-card"><small>FLUXO DE COBRANÇA</small><h2>Você libera o Pix</h2><ol><li>O cliente preenche nome, WhatsApp e endereço</li><li>O pedido entra como Aguardando QR Code</li><li>Você abre o pedido e clica em Gerar QR Pix</li><li>O cliente passa a visualizar o QR Code e o Pix copia e cola</li><li>Você confere o crédito no banco e marca como pago</li></ol><p>O site não confirma transferências automaticamente.</p></article>
       </div>
     </section>
-
-    <section class="admin-panel" id="marketplaces">
+    <section class="admin-panel" id="checkout">
       <article class="panel-card">
-        <div class="panel-head"><div><small>CANAIS OFICIAIS</small><h2>Destinos de compra</h2></div></div>
-        <p class="muted">Cole os links oficiais dos anúncios da Lareira Feliz. Quando um link válido estiver salvo, a opção de compra aparecerá automaticamente no site. Campos vazios permanecem indisponíveis.</p>
-        <label>Link do anúncio no Mercado Livre
-          <input id="marketplaceMercadoLivre" type="url" inputmode="url" autocomplete="off" placeholder="https://produto.mercadolivre.com.br/MLB-...">
-        </label>
-        <label>Link do anúncio na Shopee
-          <input id="marketplaceShopee" type="url" inputmode="url" autocomplete="off" placeholder="https://shopee.com.br/...">
-        </label>
-        <p class="muted">Use o link público do produto, e não um checkout temporário com dados de comprador. O valor do frete e o pagamento serão informados pela própria plataforma.</p>
-        <button type="button" class="btn primary" id="saveMarketplaces">Salvar links de compra</button>
-        <p id="marketplacesMsg" class="admin-feedback" role="status" aria-live="polite"></p>
-        <div class="admin-notice">Para testar, salve os links, abra a loja e confirme se cada botão leva ao anúncio correto. Não consideramos um clique como venda confirmada.</div>
+        <div class="panel-head"><div><small>LOJA PRÓPRIA</small><h2>Checkout e pedidos</h2></div></div>
+        <p>As compras são feitas diretamente no site da Lareira Feliz. O checkout coleta os dados do comprador e o endereço de entrega, calcula o frete como grátis e registra o pedido no banco.</p>
+        <div class="admin-notice"><strong>Liberação manual do Pix</strong><br>Todo pedido novo fica aguardando sua ação. Abra a aba Pedidos e clique em Gerar QR Pix somente depois de conferir o valor e os dados do cliente.</div>
+        <p id="checkoutFlowStatus" class="muted" role="status">Frete grátis ativo · QR Pix depende da configuração de recebimento.</p>
+        <button class="btn ghost" type="button" data-open-tab="orders">Abrir pedidos</button>
       </article>
     </section>
-
-    <section class="admin-panel" id="marketing">
+<section class="admin-panel" id="marketing">
       <div class="admin-section-lead"><div><small>ANÚNCIOS · PRONTO PARA TRÁFEGO</small><p>Confira as fontes de medição e gere links para cada criativo. Com o ID correto salvo, o Pixel só carrega no site quando o visitante aceita a medição de marketing. Eventos de compra exigem confirmação de pagamento.</p></div></div>
       <div class="settings-grid marketing-grid">
         <article class="panel-card">
