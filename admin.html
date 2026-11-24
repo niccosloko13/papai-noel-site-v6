@@ -90,7 +90,7 @@
         <div class="panel-head"><div><small>ANÁLISE REAL · ÚLTIMOS 30 DIAS</small><h2>Visitas e conversão da loja</h2></div></div><p class="muted">Acompanhe os acessos, pedidos criados e avisos de pagamento do checkout próprio. O pagamento só entra no faturamento depois da conferência manual.</p>
         <div class="metric-grid">
           <div class="metric-card"><small>Visitantes únicos (IP)</small><strong id="realVisitors">—</strong></div>
-          <div class="metric-card"><small>Sessões registradas</small><strong id="realSessions">—</strong></div><div class="metric-card"><small>Pedidos criados</small><strong id="realMlClicks">—</strong></div><div class="metric-card"><small>Avisos de pagamento</small><strong id="realShopeeClicks">—</strong></div><div class="metric-card"><small>Inícios de checkout (histórico antigo)</small><strong id="realCheckouts">—</strong></div>
+          <div class="metric-card"><small>Sessões registradas</small><strong id="realSessions">—</strong></div><div class="metric-card"><small>Pedidos criados</small><strong id="realMlClicks">—</strong></div><div class="metric-card"><small>Avisos de pagamento</small><strong id="realShopeeClicks">—</strong></div><div class="metric-card"><small>Inícios de checkout</small><strong id="realCheckouts">—</strong></div>
           <div class="metric-card"><small>Conversão observada</small><strong id="realConversion">—</strong></div>
           <div class="metric-card"><small>Abandono observado</small><strong id="realAbandonment">—</strong></div>
         </div>
@@ -236,7 +236,7 @@
     </section>
 
     <section class="admin-panel" id="inventory">
-      <div class="section-lead"><div><small>OPERAÇÃO · ESTOQUE</small><h2>Estoque da Lareira Feliz</h2><p>Cadastro interno do produto único. A quantidade não é sincronizada automaticamente com Mercado Livre ou Shopee.</p></div></div>
+      <div class="section-lead"><div><small>OPERAÇÃO · ESTOQUE</small><h2>Estoque da Lareira Feliz</h2><p>Cadastro interno do produto único. O estoque registrado aqui serve para controle da equipe.</p></div></div>
       <article class="panel-card inventory-card">
         <div class="inventory-product">
           <div class="inventory-mark">LF</div>
@@ -255,12 +255,12 @@
           <textarea id="inventoryNotes" rows="3" maxlength="500" placeholder="Ex.: lote em produção, previsão de reposição ou observações"></textarea>
         </label>
         <div class="inventory-footer"><button type="button" class="btn primary" id="saveInventory">Salvar estoque interno</button><span id="inventoryMsg" role="status" aria-live="polite"></span></div>
-        <p class="muted section-footnote">Este cadastro é apenas interno e não altera o estoque dos anúncios nos marketplaces.</p>
+        <p class="muted section-footnote">Este cadastro é interno e serve para acompanhar a disponibilidade da loja.</p>
       </article>
     </section>
 
     <section class="admin-panel" id="finance">
-      <div class="section-lead"><div><small>GESTÃO · FINANCEIRO</small><h2>Resumo financeiro</h2><p>Valores calculados a partir dos pedidos registrados nesta loja. Não incluem vendas ou repasses externos de marketplaces.</p></div></div>
+      <div class="section-lead"><div><small>GESTÃO · FINANCEIRO</small><h2>Resumo financeiro</h2><p>Valores calculados a partir dos pedidos registrados diretamente nesta loja.</p></div></div>
       <div class="metric-grid finance-metrics">
         <article class="metric-card"><small>Receita confirmada</small><strong id="financePaid">R$ 0,00</strong><span>pedidos pagos e concluídos</span></article>
         <article class="metric-card"><small>Valor pendente</small><strong id="financePending">R$ 0,00</strong><span>pagamento ainda não confirmado</span></article>
