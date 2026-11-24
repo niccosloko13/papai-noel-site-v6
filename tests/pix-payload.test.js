@@ -46,7 +46,7 @@ test("Pix dinâmico com valor embutido confere o total do pedido",async()=>{
  await assert.rejects(validatePixPayload(dynamicCode("pix.banco.com.br/cob/abc123","125.00"),124),/pedido é/);
 });
 test("Pix dinâmico rejeita URL não HTTPS ou malformada",async()=>{
- for(const url of ["javascript:alert(1)","http://localhost/pix","not a url with spaces"]){
+ for(const url of ["javascript:alert(1)","http://localhost/pix","https://"]){
   await assert.rejects(validatePixPayload(dynamicCode(url),124),/URL deste Pix dinâmico/);
  }
 });
