@@ -20,6 +20,8 @@ module.exports=async function(req,res){
     result.pix.brCodeValid=code.startsWith("000201")&&code.includes("BR.GOV.BCB.PIX")&&code.includes("54041.23")&&/6304[A-F0-9]{4}$/.test(code);
    }catch{}
   }
+  result.checkout.acceptingOrders=result.neon.ok;
+  result.checkout.manualPixRelease=true;
   result.checkout.ready=result.neon.ok&&result.pix.configured&&result.pix.brCodeValid;
   return res.status(200).json(result);
  }catch(e){console.error("checkout diagnostic",e.code||e.message);return res.status(200).json(result)}
