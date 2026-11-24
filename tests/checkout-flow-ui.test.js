@@ -9,7 +9,7 @@ test("checkout uses same-origin CEP proxy and triggers estimate after address nu
  assert.match(source,/fetch\("\/api\/cep\?cep="/);
  assert.doesNotMatch(source,/https:\/\/viacep\.com\.br\/ws/);
  assert.match(source,/field\.addEventListener\("input",scheduleLoggiQuote\)/);
- assert.match(source,/card\.hidden=false;status\.textContent="Consultando o prazo estimado da Loggi/);
+ assert.match(source,/fetch\("\/api\/loggi-quote\?cep="/);\n assert.match(source,/card\.hidden=false;status\.textContent="Consultando o prazo estimado da Loggi/);
  assert.match(html,/id="loggiEstimateCard"[^>]*hidden/);
  assert.match(html,/Não é uma cotação em tempo real da transportadora/);
 });
