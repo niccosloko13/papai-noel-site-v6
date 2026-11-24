@@ -1,6 +1,7 @@
 const {valid}=require("../_auth");
 const {db,init}=require("../_db");
 const {buildPix}=require("../_pix");
+const {initEvents}=require("../events");
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  if(!valid(req))return res.status(401).json({error:"Sessão necessária"});
@@ -27,17 +28,27 @@ module.exports=async function(req,res){
    const receiverName=pix.receiverName;
    const patch={pixPayload,paymentReceiverName:receiverName,paymentReleasedAt:new Date().toISOString(),paymentStatus:"Aguardando pagamento"};
    await db().query("UPDATE natal_orders SET status='Aguardando pagamento',data=data||$2::jsonb,updated_at=now() WHERE id=$1",[id,JSON.stringify(patch)]);
+   if(typeof order.sessionId==="string"&&order.sessionId){
+    try{await initEvents();await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,product_id,order_id) VALUES($1,'pix_released','/pagamento-pedido.html','','basic',$2)",[order.sessionId,id])}
+    catch(eventError){console.error("Pix release event",eventError.code||eventError.message)}
+   }
    return res.json({ok:true,id,status:"Aguardando pagamento",amount,receiverName});
   }
   const allowed=["Aguardando QR Code","Aguardando pagamento","Pagamento informado","Pago","Produção","Enviado","Concluído","Cancelado"];
   if(!allowed.includes(status))return res.status(400).json({error:"Status inválido"});
+  let paidSessionId="";
   if(status==="Pago"){
-   const current=await db().query("SELECT status FROM natal_orders WHERE id=$1",[id]);
+   const current=await db().query("SELECT status,data FROM natal_orders WHERE id=$1",[id]);
    if(!current.rowCount)return res.status(404).json({error:"Pedido não encontrado"});
    if(current.rows[0].status!=="Pagamento informado")return res.status(409).json({error:"O pedido precisa estar com pagamento informado antes da confirmação"});
+   paidSessionId=String(current.rows[0].data?.sessionId||"");
   }
   const found=await db().query("UPDATE natal_orders SET status=$2,updated_at=now() WHERE id=$1 RETURNING id",[id,status]);
   if(!found.rowCount)return res.status(404).json({error:"Pedido não encontrado"});
+  if(status==="Pago"&&paidSessionId){
+   try{await initEvents();await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,product_id,order_id) VALUES($1,'payment_confirmed','/admin.html','','basic',$2)",[paidSessionId,id])}
+   catch(eventError){console.error("Payment confirmed event",eventError.code||eventError.message)}
+  }
   return res.json({ok:true,id,status});
  }catch(e){console.error("Admin orders failed",e.code||e.message);return res.status(503).json({error:"Banco de dados indisponível"})}
 };
