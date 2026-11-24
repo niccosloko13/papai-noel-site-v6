@@ -15,7 +15,8 @@ function schedule(){
   window.clearTimeout(timer);
   if(reduced||hovered||focused||!visible||document.hidden)return;
   const isVideo=!!slides[current].querySelector("video");
-  timer=window.setTimeout(()=>show(current+1),isVideo?11500:4700);
+  if(isVideo)return; // Mantém o vídeo como peça principal, em loop, até o visitante navegar
+  timer=window.setTimeout(()=>show(current+1),4700);
 }
 function show(index){
   current=(index+slides.length)%slides.length;
