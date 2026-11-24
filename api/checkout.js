@@ -1,9 +1,21 @@
 const crypto=require("node:crypto");
 const {isIP}=require("node:net");
 const {db,init}=require("./_db");
-const PRICE_FALLBACK=148.90;
+const PRICE_FALLBACK=132.90;
 const digits=v=>String(v||"").replace(/\D/g,"");
 function clean(v,max){return typeof v==="string"?v.trim().slice(0,max):""}
+function validCpf(value){
+ const cpf=digits(value);
+ if(!/^\d{11}$/.test(cpf)||/^(\d)\1{10}$/.test(cpf))return false;
+ let sum=0;
+ for(let i=0;i<9;i++)sum+=Number(cpf[i])*(10-i);
+ let check=(sum*10)%11;if(check===10)check=0;
+ if(check!==Number(cpf[9]))return false;
+ sum=0;
+ for(let i=0;i<10;i++)sum+=Number(cpf[i])*(11-i);
+ check=(sum*10)%11;if(check===10)check=0;
+ return check===Number(cpf[10]);
+}
 function validOrigin(req){const origin=req.headers.origin,host=req.headers.host;return !!origin&&(origin==="https://"+host||(process.env.VERCEL_ENV!=="production"&&/^http:\/\/localhost(?::\d+)?$/.test(origin)))}
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
@@ -12,12 +24,12 @@ module.exports=async function(req,res){
  if(req.method!=="POST"){res.setHeader("Allow","POST");return res.status(405).end()}
  if(!validOrigin(req))return res.status(403).json({error:"Origem não autorizada"});
  const body=req.body||{};
- const customerName=clean(body.customerName,100),phone=digits(body.phone),cep=digits(body.cep);
+ const customerName=clean(body.customerName,100),cpf=digits(body.cpf),phone=digits(body.phone),cep=digits(body.cep);
  const address=clean(body.address,120),number=clean(body.number,20),complement=clean(body.complement,100);
  const neighborhood=clean(body.neighborhood,100),city=clean(body.city,100),state=clean(body.state,2).toUpperCase();
  const quantity=Number(body.quantity);
- if(customerName.length<3||phone.length<10||phone.length>13||cep.length!==8||address.length<3||!number||neighborhood.length<2||city.length<2||!/^[A-Z]{2}$/.test(state)||!Number.isInteger(quantity)||quantity<1||quantity>10||body.acceptTerms!==true)
-  return res.status(400).json({error:"Confira nome, WhatsApp, CEP, endereço, quantidade e aceite dos termos."});
+ if(customerName.length<3||!validCpf(cpf)||phone.length<10||phone.length>13||cep.length!==8||address.length<3||!number||neighborhood.length<2||city.length<2||!/^[A-Z]{2}$/.test(state)||!Number.isInteger(quantity)||quantity<1||quantity>10||body.acceptTerms!==true)
+  return res.status(400).json({error:"Confira nome completo, CPF, WhatsApp, CEP, endereço, quantidade e aceite dos termos."});
  try{
   await init();
   const pepper=process.env.CHECKOUT_RATE_LIMIT_SECRET||process.env.ADMIN_SESSION_SECRET||"";
@@ -43,7 +55,7 @@ module.exports=async function(req,res){
   const accessKey=crypto.randomBytes(32).toString("hex");
   const paymentClaimHash=crypto.createHash("sha256").update(accessKey).digest("hex");
   const order={
-   customerName,phone,cep,address,number,complement,neighborhood,city,state,
+   customerName,cpf,phone,cep,address,number,complement,neighborhood,city,state,
    items:[{id:"basic",name:"Lareira Feliz",qty:quantity,unitPrice}],
    subtotal:total,shipping:0,shippingLabel:"Frete grátis",total,
    paymentClaimHash,paymentMethod:"Pix",paymentStatus:"Aguardando liberação manual",
