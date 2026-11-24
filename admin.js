@@ -4,7 +4,7 @@ const $$=s=>[...document.querySelectorAll(s)];
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const esc=v=>String(v??"").replace(/[&<>"\x27]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","\x27":"&#39;"}[c]));
 const login=$("#adminLogin"),app=$("#adminApp"),form=$("#loginForm"),err=$("#loginError");
-function openApp(){login.hidden=true;app.hidden=false;loadServer()}
+function openApp(){login.hidden=true;app.hidden=false;selectTab("dashboard");loadServer()}
 async function checkSession(){
  try{
   const r=await fetch("/api/admin/auth",{credentials:"same-origin",cache:"no-store"});
@@ -34,23 +34,39 @@ $("#logoutBtn").onclick=logout;
 const titles={
  dashboard:["LOJA","Visão geral"],orders:["LOJA","Pedidos"],products:["LOJA","Produto"],
  logistics:["OPERAÇÃO","Logística"],inventory:["OPERAÇÃO","Estoque"],
- finance:["GESTÃO","Financeiro"],pix:["GESTÃO","Pagamentos"],
- checkout:["LOJA","Checkout próprio"],marketing:["CRESCIMENTO","Marketing"],
- seo:["CRESCIMENTO","SEO"],system:["SISTEMA","Diagnóstico"]
+ finance:["GESTÃO","Financeiro"],checkout:["LOJA","Checkout próprio"]
 };
 function selectTab(id){
- $(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
- $(".admin-panel").forEach(p=>p.classList.toggle("active",p.id===id));
- $("#sectionEyebrow").textContent=titles[id][0];$("#sectionTitle").textContent=titles[id][1];
+ const target=document.getElementById(id);
+ if(!target||!target.classList.contains("admin-panel"))return;
+ $$(".nav-item").forEach(button=>{
+  const active=button.dataset.tab===id;
+  button.classList.toggle("active",active);
+  if(active)button.setAttribute("aria-current","page");
+  else button.removeAttribute("aria-current");
+ });
+ $$(".admin-panel").forEach(panel=>{
+  const active=panel===target;
+  panel.classList.toggle("active",active);
+  panel.hidden=!active;
+ });
+ const title=titles[id]||["LOJA","Painel"];
+ $("#sectionEyebrow").textContent=title[0];
+ $("#sectionTitle").textContent=title[1];
  if(id==="orders")renderOrders();
  if(id==="logistics")renderLogistics();
  if(id==="inventory")loadInventory();
  if(id==="finance")renderFinance();
- if(id==="marketing")loadAdsAnalytics();
- if(id==="system")loadSystemStatus();
+ window.scrollTo({top:0,behavior:"auto"});
 }
-$$(".nav-item").forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
-$$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
+document.addEventListener("click",event=>{
+ const button=event.target.closest(".nav-item[data-tab], [data-open-tab]");
+ if(!button)return;
+ const id=button.dataset.tab||button.dataset.openTab;
+ if(!id)return;
+ event.preventDefault();
+ selectTab(id);
+},true);
 
 let serverOrders=[];let serverSettings={};
 const getOrders=()=>serverOrders;
@@ -220,7 +236,7 @@ async function loadServer(){
  const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
  const freshOrders=orders.orders||[];
  processOrderSnapshot(freshOrders);
- serverOrders=freshOrders;serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();loadCheckoutHealth();startOrderPolling();
+ serverOrders=freshOrders;serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();startOrderPolling();
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
@@ -229,15 +245,7 @@ async function loadServer(){
   $("#productsMsg").textContent="Banco de dados indisponível: é possível visualizar os campos, mas não salvar até configurar DATABASE_URL.";;
  }
 }
-async function loadCheckoutHealth(){
- const el=$("#checkoutHealthResult");if(!el)return;
- el.textContent="Verificando Neon e configuração Pix...";
- try{
-  const r=await api("checkout-health");
-  el.textContent="Banco: "+(r.neon?.ok?"conectado ✓":"indisponível")+" · Pix: "+(r.pix?.configured?"configurado ✓":"incompleto")+" · QR manual: "+(r.pix?.brCodeValid?"pronto ✓":"aguardando configuração");
- }catch(e){el.textContent="Falha no diagnóstico: "+e.message}
-}
-$("#checkCheckoutHealth")?.addEventListener("click",loadCheckoutHealth);
+
 async function loadSummary(){
  try{
   const x=await api("summary");
@@ -298,11 +306,32 @@ function metrics(){
  $("#mBasic").textContent=paid.length;
  $("#fCreated").textContent=orders.length;$("#fInformed").textContent=informed.length;$("#fPaid").textContent=paid.length;
  $("#fConversion").textContent=(informed.length?Math.round(paid.length/(informed.length+paid.length)*100):0)+"%";
- $("#recentOrders").innerHTML=orders.slice(0,5).map(orderRow).join("")||'<p class="muted">Nenhum pedido ainda.</p>';
+ $("#recentOrders").innerHTML=orders.slice(0,5).map(order=>orderRow(order)).join("")||'<p class="muted">Nenhum pedido ainda.</p>';
 }
 
 function kitLabel(o){return esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name).join(", ")||o.plan||"Kit")}
-function orderRow(o){
+function orderPaymentTools(o){
+ const pending=o.status==="Aguardando QR Code",released=o.status==="Aguardando pagamento";
+ if(!pending&&!released)return "";
+ const id=esc(o.id),payload=pending?String(o.pixPayloadDraft||""):String(o.pixPayload||"");
+ const receiver=pending?String(o.pixDraftReceiverName||""):String(o.paymentReceiverName||"");
+ const expiry=o.expiresAt?new Date(o.expiresAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"";
+ const input=pending
+  ?'<label class="pix-paste-label">Pix copia e cola<textarea data-pix-input="'+id+'" rows="3" maxlength="2048" placeholder="Cole aqui o Pix copia e cola gerado no aplicativo do seu banco">'+esc(payload)+'</textarea></label>'
+  :'<label class="pix-paste-label">Pix copia e cola<textarea readonly rows="3">'+esc(payload)+'</textarea></label>';
+ const statusText=pending?(payload?"Código validado. Confira o QR Code e o valor antes de liberar.":"Cole o código do banco. Vamos validar o CRC e o valor do pedido."):"Cobrança liberada para o cliente"+(expiry?" · expira às "+expiry:"");
+ const actions=pending
+  ?'<div class="pix-admin-actions"><button type="button" class="pay" data-prepare-pix-id="'+id+'">Validar e gerar QR Code</button>'+(payload?'<button type="button" data-copy-pix-id="'+id+'">Copiar Pix</button><button type="button" class="pay" data-release-pix-id="'+id+'">Confirmar e liberar para o cliente</button>':'')+'</div>'
+  :'<div class="pix-admin-actions"><button type="button" data-copy-pix-id="'+id+'">Copiar Pix</button></div>';
+ return '<section class="order-payment-tools" data-payment-order="'+id+'">'+
+  '<div class="order-payment-head"><div><small>PAGAMENTO MANUAL</small><strong>'+(pending?"Preparar Pix deste pedido":"Pix liberado para o cliente")+'</strong></div><span>'+money(o.total)+'</span></div>'+
+  input+
+  '<p class="pix-admin-feedback" data-pix-message="'+id+'" role="status">'+esc(statusText)+(receiver?" · Recebedor: "+esc(receiver):"")+'</p>'+
+  '<div class="pix-admin-preview"><div class="pix-admin-qr" data-pix-qr="'+id+'">'+(payload?"":"O QR Code aparecerá aqui após a validação")+'</div><small>Confira o QR Code, o recebedor e o valor antes de liberar</small></div>'+
+  actions+
+ '</section>';
+}
+function orderRow(o,withPaymentTools=false){
  const id=esc(o.id),status=esc(o.status||"—"),contact=String(o.phone||"").replace(/\D/g,"");
  const address=[o.address,o.number,o.complement,o.neighborhood,o.city,o.state].filter(Boolean).join(", ");
  const details='<details class="order-detail"><summary>Ver dados completos do pedido</summary>'+
@@ -316,19 +345,20 @@ function orderRow(o){
  '<div><small>PRODUTOS</small><strong>'+money(o.subtotal??o.total)+'</strong></div>'+
  '<div><small>FRETE</small><strong>GRÁTIS</strong></div>'+
  '<div><small>VALOR TOTAL</small><strong>'+money(o.total)+'</strong></div>'+
- '<div><small>PIX</small><strong>'+esc(o.pixPayload?"QR Pix liberado":"Aguardando liberação manual")+'</strong></div>'+
+ '<div><small>PIX</small><strong>'+esc(o.pixPayload?"QR Pix liberado":o.pixPayloadDraft?"QR Pix validado · aguardando liberação":"Aguardando Pix manual")+'</strong></div>'+
  '</div></details>';
+ const payment=withPaymentTools?orderPaymentTools(o):"";
  return '<article class="order-row"><div class="order-top"><div><b>'+id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+status+'</span></div>'+
  '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>PRODUTO</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL · FRETE GRÁTIS</small><strong>'+money(o.total)+'</strong></div></div>'+
- details+'<div class="order-actions">'+
- (o.status==="Aguardando QR Code"?'<button class="pay" data-generate-pix-id="'+id+'" data-total="'+Number(o.total||0)+'">Gerar QR Pix</button>':'')+
- (o.status==="Pagamento informado"?'<button class="pay" data-status-id="'+id+'" data-status="Pago">Confirmar pagamento</button>':'')+
- (o.status==="Pago"?'<button data-status-id="'+id+'" data-status="Produção">Iniciar produção</button>':'')+
- (o.status==="Produção"?'<button data-status-id="'+id+'" data-status="Enviado">Marcar como enviado</button>':'')+
- (o.status==="Enviado"?'<button data-status-id="'+id+'" data-status="Concluído">Concluir pedido</button>':'')+
- (!["Concluído","Cancelado"].includes(o.status)?'<button data-status-id="'+id+'" data-status="Cancelado">Cancelar pedido</button>':'')+
+ details+payment+'<div class="order-actions">'+
+ (o.status==="Pagamento informado"?'<button type="button" class="pay" data-status-id="'+id+'" data-status="Pago">Confirmar pagamento</button>':'')+
+ (o.status==="Pago"?'<button type="button" data-status-id="'+id+'" data-status="Produção">Iniciar produção</button>':'')+
+ (o.status==="Produção"?'<button type="button" data-status-id="'+id+'" data-status="Enviado">Marcar como enviado</button>':'')+
+ (o.status==="Enviado"?'<button type="button" data-status-id="'+id+'" data-status="Concluído">Concluir pedido</button>':'')+
+ (!["Concluído","Cancelado"].includes(o.status)?'<button type="button" data-status-id="'+id+'" data-status="Cancelado">Cancelar pedido</button>':'')+
  (contact?'<a href="https://wa.me/55'+contact+'" target="_blank" rel="noopener">WhatsApp</a>':'')+'</div></article>';
 }
+
 function bindStatus(){
  $$("[data-status-id]").forEach(b=>b.onclick=async()=>{
   const next=b.dataset.status,id=b.dataset.statusId;
@@ -337,14 +367,62 @@ function bindStatus(){
   catch(e){alert("Não foi possível atualizar: "+e.message)}
  });
 }
-function bindGeneratePix(){
- $$("[data-generate-pix-id]").forEach(b=>b.onclick=async()=>{
-  const id=b.dataset.generatePixId,amount=Number(b.dataset.total)||0;
-  if(!confirm("Gerar e liberar o QR Pix deste pedido no valor de "+money(amount)+"? Confira os dados antes de continuar."))return;
-  b.disabled=true;b.textContent="Gerando QR Pix...";
-  try{await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"generate-pix"})});await loadServer()}
-  catch(e){b.disabled=false;b.textContent="Gerar QR Pix";alert("Não foi possível gerar o QR Pix: "+e.message)}
+function renderOrderPixPreviews(){
+ $$("[data-pix-qr]").forEach(box=>{
+  const id=box.dataset.pixQr,order=getOrders().find(item=>item.id===id);
+  const payload=order?.status==="Aguardando pagamento"?order.pixPayload:order?.pixPayloadDraft;
+  box.replaceChildren();
+  if(!payload){box.textContent="O QR Code aparecerá aqui após a validação";return}
+  try{
+   if(typeof QRCode==="undefined")throw Error("QR indisponível");
+   new QRCode(box,{text:payload,width:160,height:160,colorDark:"#173b2d",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+  }catch{box.textContent="Não foi possível desenhar o QR Code neste navegador. Confira o Pix copia e cola."}
  });
+}
+function bindOrderPixTools(){
+ renderOrderPixPreviews();
+ $$("[data-pix-input]").forEach(input=>input.addEventListener("input",()=>{
+  const id=input.dataset.pixInput,order=getOrders().find(item=>item.id===id);
+  const release=document.querySelector('[data-release-pix-id="'+id+'"]'),message=document.querySelector('[data-pix-message="'+id+'"]');
+  const unchanged=!!order?.pixPayloadDraft&&input.value.trim()===String(order.pixPayloadDraft);
+  if(release)release.disabled=!unchanged;
+  if(message)message.textContent=unchanged?"Código validado. Confira o QR Code e o valor antes de liberar.":"Código alterado. Clique em Validar e gerar QR Code novamente.";
+ }));
+ $$("[data-prepare-pix-id]").forEach(button=>button.addEventListener("click",async()=>{
+  const id=button.dataset.preparePixId,input=document.querySelector('[data-pix-input="'+button.dataset.preparePixId+'"]'),message=document.querySelector('[data-pix-message="'+button.dataset.preparePixId+'"]');
+  const pixPayload=input?.value.trim()||"";
+  if(!pixPayload){if(message)message.textContent="Cole o Pix copia e cola antes de continuar.";return}
+  button.disabled=true;button.textContent="Validando código...";
+  try{
+   const result=await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"prepare-pix",pixPayload})});
+   await loadServer();
+   const feedback=document.querySelector('[data-pix-message="'+id+'"]');
+   if(feedback)feedback.textContent="Pix validado · "+money(result.validation.amount)+(result.validation.receiverName?" · Recebedor: "+result.validation.receiverName:"")+". Confira o QR antes de liberar.";
+  }catch(error){
+   if(message)message.textContent=error.message;
+   button.disabled=false;button.textContent="Validar e gerar QR Code";
+  }
+ }));
+ $$("[data-release-pix-id]").forEach(button=>button.addEventListener("click",async()=>{
+  const id=button.dataset.releasePixId,order=getOrders().find(item=>item.id===id);
+  if(!order?.pixPayloadDraft){alert("Valide e gere o QR Code antes de liberar.");return}
+  if(!confirm("Você conferiu o QR Code e o valor de "+money(order.total)+"? Confirmar e liberar para o cliente por 4 minutos?"))return;
+  button.disabled=true;button.textContent="Liberando para o cliente...";
+  try{
+   await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"release-pix"})});
+   await loadServer();
+   const feedback=document.querySelector('[data-pix-message="'+id+'"]');
+   if(feedback)feedback.textContent="Pix liberado para o cliente. O prazo de pagamento é de 4 minutos.";
+  }catch(error){button.disabled=false;button.textContent="Confirmar e liberar para o cliente";alert("Não foi possível liberar o Pix: "+error.message)}
+ }));
+ $$("[data-copy-pix-id]").forEach(button=>button.addEventListener("click",async()=>{
+  const id=button.dataset.copyPixId,order=getOrders().find(item=>item.id===id);
+  const payload=order?.status==="Aguardando pagamento"?order.pixPayload:order?.pixPayloadDraft;
+  const message=document.querySelector('[data-pix-message="'+id+'"]');
+  if(!payload)return;
+  try{await navigator.clipboard.writeText(payload);if(message)message.textContent="Pix copia e cola copiado."}
+  catch{const input=document.querySelector('[data-pix-input="'+id+'"]');if(input){input.focus();input.select();if(message)message.textContent="Selecione e copie o código manualmente."}}
+ }));
 }
 
 function renderOrders(){
@@ -353,7 +431,7 @@ function renderOrders(){
   const hay=[o.id,o.customerName,o.phone,o.childName,kitLabel(o)].join(" ").toLowerCase();
   return (!q||hay.includes(q))&&(filter==="all"||o.status===filter);
  });
- $("#ordersList").innerHTML=orders.map(orderRow).join("")||'<p class="muted">Nenhum pedido encontrado.</p>';bindStatus();bindGeneratePix();
+ $("#ordersList").innerHTML=orders.map(order=>orderRow(order,true)).join("")||'<p class="muted">Nenhum pedido encontrado.</p>';bindStatus();bindOrderPixTools();
 }
 $("#orderSearch").addEventListener("input",renderOrders);$("#orderFilter").addEventListener("change",renderOrders);
 
@@ -392,30 +470,6 @@ $("#saveProducts").addEventListener("click",async()=>{
  catch(e){$("#productsMsg").textContent="Não foi possível salvar: "+e.message}
  finally{button.disabled=false}
 });
-const pixDefaults={key:"",displayName:"",receiverName:"",city:"SAO PAULO",discount:0,shippingFlat:0,...(window.STORE_DATA?.pix||{})};
-function loadPix(){
- const c={...pixDefaults,...(serverSettings.pix||{})};
- const map={pixKey:"key",displayName:"displayName",receiverName:"receiverName",pixCity:"city",pixDiscount:"discount",shippingFlat:"shippingFlat"};
- Object.entries(map).forEach(([id,k])=>$("#"+id).value=c[k]??"");$("#pixEnabled").checked=!!c.enabled;
-}
-$("#savePix").onclick=async()=>{
- const button=$("#savePix"),message=$("#pixMsg");
- const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:0,shippingFlat:0};
- message.dataset.state="";message.textContent="";
- if(out.enabled&&(!out.key||!out.receiverName||!out.city)){message.dataset.state="error";message.textContent="Preencha chave Pix, nome do recebedor e cidade antes de ativar.";return}
- 
- button.disabled=true;button.textContent="Salvando...";message.textContent="Conferindo configuração...";
- try{
-  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})});
-  const readBack=await api("settings");
-  const saved=readBack.settings?.pix;
-  if(!saved||saved.enabled!==out.enabled||saved.key!==out.key||Number(saved.discount)!==out.discount)throw Error("Salvo, mas não foi possível confirmar a configuração; atualize e confira.");
-  serverSettings.pix=saved;loadPix();
-  message.dataset.state="success";message.textContent="Chave Pix salva. Agora você pode gerar o QR manualmente dentro de cada pedido.";
- }catch(e){message.dataset.state="error";message.textContent="Não foi possível confirmar: "+e.message}
- finally{button.disabled=false;button.textContent="Salvar configuração"}
-};
-
 const marketingDefaults={metaPixel:"",ga4:"",tiktokPixel:"",googleAds:""};
 function loadMarketing(){
  const c={...marketingDefaults,...(serverSettings.marketing||{})};
@@ -512,11 +566,10 @@ $("#saveSeo").onclick=async()=>{
 
 function loadCheckoutInfo(){
  const el=$("#checkoutFlowStatus");if(!el)return;
- const c=serverSettings.pix||{};
- el.textContent=c.enabled&&c.key&&c.receiverName?"Frete grátis ativo · Chave Pix configurada · QR Code só é liberado quando você clicar no pedido":"Frete grátis ativo · Configure a chave Pix no menu Pagamentos para liberar cobranças";
+ el.textContent="Frete grátis ativo · Pix copia e cola conferido por pedido · liberação manual após sua aprovação.";
 }
 
-function renderAll(){metrics();renderOrders();renderLogistics();renderFinance();loadInventory();loadPix();loadCheckoutInfo();loadMarketing();loadSeo();loadProducts();bindStatus();bindGeneratePix()}
+function renderAll(){metrics();renderOrders();renderLogistics();renderFinance();loadInventory();loadCheckoutInfo();loadProducts();bindStatus()}
 
 function renderLogistics(){
  const orders=getOrders();
@@ -527,7 +580,7 @@ function renderLogistics(){
  $("#logProduction").textContent=production.length.toLocaleString("pt-BR");
  $("#logShipped").textContent=shipped.length.toLocaleString("pt-BR");
  const active=orders.filter(o=>["Pago","Produção","Enviado"].includes(o.status));
- $("#logisticsList").innerHTML=active.map(orderRow).join("")||'<p class="muted">Nenhum pedido está aguardando produção ou envio.</p>';
+ $("#logisticsList").innerHTML=active.map(order=>orderRow(order)).join("")||'<p class="muted">Nenhum pedido está aguardando produção ou envio.</p>';
  bindStatus();
 }
 function renderFinance(){
