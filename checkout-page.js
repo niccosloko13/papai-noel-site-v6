@@ -8,7 +8,7 @@ let lastCepLookup="",cepController=null;
 const digits=v=>String(v||"").replace(/\D/g,"");
 const sentSteps=new Set();
 function trackStep(step){if(sentSteps.has(step))return;sentSteps.add(step);window.natalAnalytics?.track("checkout_step",{product_id:step})}
-let loggiQuoteController=null,lastLoggiSignature="";
+let loggiQuoteController=null,lastLoggiSignature="",loggiQuoteTimer=null;
 function quantity(){const n=Math.max(1,Math.min(10,Math.floor(Number(qty.value)||1)));qty.value=String(n);return n}
 function updateTotal(){const total=price*quantity();$("#subtotal").textContent=money(total);$("#total").textContent=money(total)}
 function validCpf(value){
@@ -97,7 +97,7 @@ async function calculateLoggiQuote(){
  try{
   const response=await fetch("/api/loggi-quote",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),signal:controller.signal,credentials:"same-origin"});
   const result=await response.json();
-  if(result.configured===false){card.hidden=true;return}
+  if(result.configured===false){card.hidden=false;status.textContent="Estamos ativando a consulta de prazo da Loggi para este endereço.";options.replaceChildren();return}
   if(!response.ok)throw Error(result.error||"Consulta indisponível");
   if(!result.available||!Array.isArray(result.options)||!result.options.length){status.textContent=result.reason==="oversize"?"Estamos confirmando o prazo desta embalagem com a Loggi.":"A Loggi não retornou uma previsão para este endereço no momento.";return}
   status.textContent="Estimativa calculada para o seu CEP";
@@ -120,8 +120,15 @@ function trackAddressAndQuote(){
 function trackCustomerData(){
  if($("#customerName").value.trim().length>=3&&validCpf($("#cpf").value)&&digits($("#phone").value).length>=10)trackStep("dados");
 }
-$("#number").addEventListener("blur",trackAddressAndQuote);
-$("#complement").addEventListener("blur",trackAddressAndQuote);
+function scheduleLoggiQuote(){
+ clearTimeout(loggiQuoteTimer);
+ loggiQuoteTimer=setTimeout(()=>{trackAddressAndQuote()},700);
+}
+["number","complement"].forEach(id=>{
+ const field=$("#"+id);
+ field.addEventListener("input",scheduleLoggiQuote);
+ field.addEventListener("blur",()=>{clearTimeout(loggiQuoteTimer);trackAddressAndQuote()});
+});
 ["customerName","cpf","phone"].forEach(id=>$("#"+id).addEventListener("blur",trackCustomerData));
 $("#acceptTerms").addEventListener("change",()=>{if($("#acceptTerms").checked)trackStep("termos")});
 
