@@ -116,7 +116,7 @@ async function loadAnalytics(){
   const recent=data.recentSessions||[];
   $("#checkoutSessionsList").innerHTML=recent.map(s=>{
    const state=s.paid?"Pago":s.paymentInformed?"Pagamento informado":s.pixReleased?"Pix liberado":s.completed?"Pedido criado":"Abandonou checkout";
-   const steps=(s.steps||[]).map(x=>stepNames[x]||x).join(" · ")||"Nenhuma etapa além do início";
+   const steps=["cep","endereco","dados","termos","confirmacao"].filter(x=>(s.steps||[]).includes(x)).map(x=>stepNames[x]).join(" · ")||"Nenhuma etapa além do início";
    const when=s.lastActivity?new Date(s.lastActivity).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"";
    return '<div class="checkout-session-row"><div><strong>Sessão #'+esc(s.sessionId)+'</strong><small>'+esc(when)+' · '+esc(s.source||"Direto")+'</small></div><div><b>'+esc(state)+'</b><small>Etapas: '+esc(steps)+'</small></div></div>';
   }).join("")||'<p class="muted">Ainda não há sessões de checkout registradas.</p>';
