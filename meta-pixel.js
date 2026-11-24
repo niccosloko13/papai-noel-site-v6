@@ -18,7 +18,7 @@
  }
  function send(name,data){
   if(!accepted()||!loaded||typeof window.fbq!=="function")return;
-  const product={content_ids:[data?.product_id||"lareira-feliz"],content_type:"product",currency:"BRL",value:124.90};
+  const product={content_ids:[data?.product_id||"lareira-feliz"],content_type:"product",currency:"BRL",value:148.90};
   if(name==="view_product")window.fbq("track","ViewContent",product);
   if(name==="add_to_cart")window.fbq("track","AddToCart",product);
   if(name==="begin_checkout")window.fbq("track","InitiateCheckout",product);
@@ -29,9 +29,35 @@
   bar=document.createElement("aside");
   bar.setAttribute("role","dialog");
   bar.setAttribute("aria-label","Preferências de privacidade");
-  bar.style.cssText="position:fixed;bottom:12px;left:12px;right:12px;z-index:100000;max-width:510px;margin:auto;padding:17px;border:1px solid #ddc2a1;border-radius:14px;background:#fffaf0;color:#40251e;box-shadow:0 12px 36px #0004;font:14px/1.5 system-ui,sans-serif";
-  bar.innerHTML='<strong style="display:block;font-size:15px;margin-bottom:7px">Podemos medir a eficácia dos anúncios?</strong><p style="margin:0 0 12px">Se você aceitar, usaremos o Pixel da Meta para medir visitas e etapas da compra. Recusar não impede a compra. <a href="/privacidade.html" style="color:#8d3224;text-decoration:underline">Privacidade</a>.</p><div style="display:flex;gap:10px"><button type="button" data-consent="no" style="flex:1;min-height:41px;border-radius:9px;border:1px solid #8c7167;background:#fff;color:#54352c;font-weight:700;cursor:pointer">Recusar</button><button type="button" data-consent="yes" style="flex:1;min-height:41px;border-radius:9px;border:0;background:#8d271e;color:#fff;font-weight:700;cursor:pointer">Aceitar</button></div>';
-  bar.querySelectorAll("[data-consent]").forEach(b=>b.addEventListener("click",()=>{save(b.dataset.consent);bar.remove();bar=null;if(accepted())setupPixel()}));
+  bar.className="privacy-consent";
+  bar.setAttribute("role","dialog");
+  bar.setAttribute("aria-label","Preferências de privacidade");
+  const title=document.createElement("strong");
+  title.textContent="Podemos medir a eficácia dos anúncios?";
+  const message=document.createElement("p");
+  message.append("Se você aceitar, usaremos o Pixel da Meta para medir visitas e etapas da compra. Recusar não impede a compra. ");
+  const privacy=document.createElement("a");
+  privacy.href="/privacidade.html";
+  privacy.textContent="Privacidade";
+  message.append(privacy,".");
+  const actions=document.createElement("div");
+  actions.className="privacy-consent-actions";
+  const reject=document.createElement("button");
+  reject.type="button";
+  reject.dataset.consent="no";
+  reject.textContent="Recusar";
+  const accept=document.createElement("button");
+  accept.type="button";
+  accept.dataset.consent="yes";
+  accept.textContent="Aceitar";
+  actions.append(reject,accept);
+  bar.append(title,message,actions);
+  bar.querySelectorAll("[data-consent]").forEach(b=>b.addEventListener("click",()=>{
+    save(b.dataset.consent);
+    bar.remove();
+    bar=null;
+    if(accepted())setupPixel();
+  }));
   document.body.appendChild(bar);
  }
  async function init(){
