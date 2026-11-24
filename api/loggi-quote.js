@@ -34,6 +34,9 @@ module.exports=async function(req,res){
  const lengthCm=Math.max(1,Math.min(300,Number(process.env.LOGGI_PACKAGE_LENGTH_CM)||119));
  const widthCm=Math.max(1,Math.min(300,Number(process.env.LOGGI_PACKAGE_WIDTH_CM)||112));
  const heightCm=Math.max(1,Math.min(300,Number(process.env.LOGGI_PACKAGE_HEIGHT_CM)||1));
+ if((lengthCm>100||widthCm>100||heightCm>100)&&process.env.LOGGI_ALLOW_OVERSIZE_QUOTE!=="true"){
+  return res.status(200).json({configured:true,available:false,reason:"oversize"});
+ }
  const unitValue=Number(process.env.LOGGI_GOODS_VALUE)||132.90;
  const packages=Array.from({length:quantity},()=>({weightG,lengthCm,widthCm,heightCm,goodsValue:amountParts(unitValue)}));
  const quoteBody={
