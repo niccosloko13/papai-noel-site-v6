@@ -99,7 +99,7 @@ async function calculateLoggiQuote(){
   const result=await response.json();
   if(result.configured===false){card.hidden=true;return}
   if(!response.ok)throw Error(result.error||"Consulta indisponível");
-  if(!result.available||!Array.isArray(result.options)||!result.options.length){status.textContent="A Loggi não retornou uma previsão para este endereço no momento.";return}
+  if(!result.available||!Array.isArray(result.options)||!result.options.length){status.textContent=result.reason==="oversize"?"Estamos confirmando o prazo desta embalagem com a Loggi.":"A Loggi não retornou uma previsão para este endereço no momento.";return}
   status.textContent="Estimativa calculada para o seu CEP";
   result.options.forEach(option=>{
    const line=document.createElement("div");line.className="loggi-estimate-option";
