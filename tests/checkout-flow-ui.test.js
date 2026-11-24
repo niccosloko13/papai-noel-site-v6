@@ -12,7 +12,7 @@ test("checkout uses same-origin CEP proxy and triggers estimate after address nu
  assert.match(source,/fetch\("\/api\/loggi-quote\?cep="/);
  assert.match(source,/card\.hidden=false;status\.textContent="Consultando o prazo estimado da Loggi/);
  assert.match(html,/id="loggiEstimateCard"[^>]*hidden/);
- assert.match(html,/Não é uma cotação em tempo real da transportadora/);
+ assert.match(html,/não é cotação em tempo real da transportadora/);
 });
 test("processing page has a clean invalid-link state",()=>{
  const source=fs.readFileSync(path.join(root,"pedido-processando.html"),"utf8");
