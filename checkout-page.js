@@ -2,6 +2,20 @@
 const $=s=>document.querySelector(s);
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 const form=$("#checkoutForm"),qty=$("#quantity");
+const productVideo=$("#checkoutProductVideo");
+if(productVideo){
+ productVideo.muted=true;
+ productVideo.defaultMuted=true;
+ productVideo.playsInline=true;
+ const playProductVideo=()=>{
+  if(document.hidden)return;
+  const playback=productVideo.play();
+  if(playback&&playback.catch)playback.catch(()=>{});
+ };
+ productVideo.addEventListener("loadeddata",playProductVideo,{once:true});
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden)playProductVideo()});
+ playProductVideo();
+}
 window.natalAnalytics?.track("begin_checkout",{product_id:"basic"});
 let price=Number(window.STORE_DATA?.products?.find(p=>p.id==="basic")?.price)||124.00;
 let lastCepLookup="",cepController=null;
