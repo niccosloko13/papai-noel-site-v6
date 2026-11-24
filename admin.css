@@ -456,3 +456,28 @@ button,input,select,textarea{font-family:inherit}
  .notification-permission{font-size:.6rem}
  .order-toast-container{top:10px;right:10px;width:calc(100vw - 20px)}
 }
+
+
+/* Navegação do painel e conferência de Pix por pedido */
+.sidebar{z-index:40;pointer-events:auto}
+.sidebar nav{position:relative;z-index:41;pointer-events:auto}
+.nav-item{position:relative;z-index:42;display:block;width:100%;pointer-events:auto;cursor:pointer}
+.admin-main{min-width:0}
+.order-payment-tools{margin-top:14px;padding:16px;border:1px solid #dce8dc;border-radius:15px;background:#f5faf5}
+.order-payment-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.order-payment-head>div{display:grid;gap:4px}
+.order-payment-head small{font-size:.58rem;font-weight:900;letter-spacing:.1em;color:#26714d}
+.order-payment-head strong{font-size:.86rem;color:#244b37}
+.order-payment-head>span{font-size:.9rem;font-weight:900;color:#173b2d}
+.pix-paste-label{display:grid;gap:7px;font-size:.72rem;font-weight:800;color:#365441}
+.pix-paste-label textarea{width:100%;min-height:76px;padding:10px;border:1px solid #d6e1d6;border-radius:10px;background:#fff;color:#1f382a;font:500 .7rem/1.5 ui-monospace,monospace;resize:vertical;overflow-wrap:anywhere}
+.pix-admin-feedback{min-height:18px;margin:9px 0;color:#45654f;font-size:.68rem;line-height:1.5}
+.pix-admin-preview{display:flex;align-items:center;gap:13px;margin:10px 0;padding:10px;border:1px solid #e1e9df;border-radius:12px;background:#fff}
+.pix-admin-qr{display:grid;place-items:center;width:164px;min-width:164px;min-height:164px;padding:2px;color:#7c887d;text-align:center;font-size:.62rem;line-height:1.4}
+.pix-admin-qr img{display:block;width:160px;height:160px;image-rendering:pixelated}
+.pix-admin-preview>small{max-width:190px;color:#6c7b6e;font-size:.64rem;line-height:1.5}
+.pix-admin-actions{display:flex;flex-wrap:wrap;gap:8px}
+.pix-admin-actions button{min-height:36px;padding:0 12px;border:1px solid #d6e0d6;border-radius:9px;background:#fff;color:#244b37;font-size:.68rem;font-weight:850;cursor:pointer}
+.pix-admin-actions button.pay{border-color:#176b4b;background:#176b4b;color:#fff}
+.pix-admin-actions button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:560px){.pix-admin-preview{align-items:flex-start;flex-direction:column}.pix-admin-preview>small{max-width:none}.pix-admin-actions button{flex:1 1 100%}}
