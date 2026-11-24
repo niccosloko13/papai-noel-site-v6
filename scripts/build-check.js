@@ -10,7 +10,7 @@ const required=[
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","marketplace-links.js",
   "styles.css","lareira-feliz.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
   "robots.txt","sitemap.xml",
-  "api/_db.js","api/_pix.js","api/cep.js","api/checkout.js","api/admin/auth.js",
+  "api/_db.js","api/_pix.js","api/cep.js","api/loggi-quote.js","api/checkout.js","api/admin/auth.js",
   "api/admin/orders.js","api/admin/settings.js",
   "api/order-status.js","api/events.js","api/admin/analytics.js","api/admin/summary.js","api/admin/checkout-health.js","api/_customer.js","api/customer/auth.js","api/customer/orders.js"
 ];
