@@ -18,7 +18,7 @@
   visibility:hidden;
   pointer-events:none;
   background:linear-gradient(140deg,#f8e9d7,#dcb68e);
-  transition:opacity .35s ease,visibility .35s ease;
+  transition:opacity .16s ease,visibility .16s ease;
 }
 .product-gallery .gallery-slide.is-current {
   opacity:1;
@@ -96,7 +96,7 @@
   background:#fff8e9;
   box-shadow:0 2px 5px #4e291e1b;
   cursor:pointer;
-  transition:border-color .2s,box-shadow .2s,transform .2s;
+  transition:border-color .14s,box-shadow .14s,transform .14s;
 }
 .gallery-thumbs .gallery-thumb[aria-selected="true"]{
   border-color:#08603c;

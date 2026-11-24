@@ -10,7 +10,7 @@ test("carrossel abre com vídeo principal e quatro fotos",()=>{
   assert.match(html,/id="lareiraProductGallery"/);
   assert.ok(html.indexOf('<video src="/assets/lareira-real-video-sem-som.mp4"')<html.indexOf('<img src="/assets/lareira-feliz-natal.webp"'),"vídeo precisa ser o primeiro item");
   assert.match(html,/id="lareira-thumb-0"[\s\S]*?Vídeo principal/);
-  assert.match(html,/muted playsinline loop/);
+  assert.match(html,/autoplay muted playsinline webkit-playsinline loop preload="auto"/);
   assert.match(html,/product-gallery\.js/);
   assert.match(html,/product-gallery\.css/);
 });
@@ -32,5 +32,9 @@ test("arquivos reais estão completos e vídeo é silencioso e permanece como de
   const script=fs.readFileSync(path.join(root,"product-gallery.js"),"utf8");
   assert.match(script,/video\.muted=true/);
   assert.match(script,/video\.volume=0/);
+  assert.match(script,/function startVideo\(video,restart=false\)/);
+  assert.match(script,/mainVideo.preload="auto"/);
+  assert.match(script,/mainVideo.addEventListener\("canplay"/);
+  assert.doesNotMatch(html,/lareira-slide-[1-4][\s\S]{0,500}loading="lazy"/);
   assert.match(script,/if\(isVideo\)return/);
 });

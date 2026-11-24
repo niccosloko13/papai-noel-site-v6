@@ -11,6 +11,28 @@ const next=gallery.querySelector(".gallery-arrow-next");
 if(slides.length!==5||thumbs.length!==slides.length||!previous||!next)return;
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let current=0,timer=0,hovered=false,focused=false,visible=true,touchX=null;
+const mainVideo=slides[0].querySelector("video");
+function startVideo(video,restart=false){
+  if(!video||document.hidden||!visible)return;
+  video.muted=true;
+  video.defaultMuted=true;
+  video.volume=0;
+  video.playsInline=true;
+  video.autoplay=true;
+  if(restart){try{video.currentTime=0}catch{}}
+  const playback=video.play();
+  if(playback&&playback.catch)playback.catch(()=>{video.dataset.autoplayBlocked="true"});
+}
+if(mainVideo){
+  mainVideo.muted=true;
+  mainVideo.defaultMuted=true;
+  mainVideo.playsInline=true;
+  mainVideo.autoplay=true;
+  mainVideo.preload="auto";
+  mainVideo.addEventListener("canplay",()=>{
+    if(current===0&&visible&&!document.hidden)startVideo(mainVideo,false);
+  },{passive:true});
+}
 function schedule(){
   window.clearTimeout(timer);
   if(reduced||hovered||focused||!visible||document.hidden)return;
@@ -19,20 +41,17 @@ function schedule(){
   timer=window.setTimeout(()=>show(current+1),4700);
 }
 function show(index){
+  const previous=current;
   current=(index+slides.length)%slides.length;
+  const changed=current!==previous;
   slides.forEach((slide,i)=>{
     const active=i===current;
     slide.classList.toggle("is-current",active);
     slide.setAttribute("aria-hidden",String(!active));
     const video=slide.querySelector("video");
     if(video){
-      video.muted=true;
-      video.volume=0;
-      if(active){
-        video.currentTime=0;
-        const playback=video.play();
-        if(playback&&playback.catch)playback.catch(()=>{});
-      }else{video.pause()}
+      if(active)startVideo(video,changed);
+      else video.pause();
     }
   });
   thumbs.forEach((thumb,i)=>{
@@ -48,6 +67,7 @@ previous.addEventListener("click",()=>show(current-1));
 next.addEventListener("click",()=>show(current+1));
 thumbs.forEach((thumb,i)=>thumb.addEventListener("click",()=>show(i)));
 gallery.addEventListener("touchstart",event=>{
+  if(current===0&&mainVideo?.paused)startVideo(mainVideo,false);
   touchX=event.touches&&event.touches.length===1?event.touches[0].clientX:null;
 },{passive:true});
 gallery.addEventListener("touchend",event=>{
@@ -71,7 +91,7 @@ tablist.addEventListener("keydown",event=>{
 document.addEventListener("visibilitychange",()=>{
   const video=slides[current].querySelector("video");
   if(document.hidden){window.clearTimeout(timer);video?.pause()}
-  else {if(video){const p=video.play();if(p&&p.catch)p.catch(()=>{})}schedule()}
+  else {if(video)startVideo(video,false);schedule()}
 });
 if("IntersectionObserver" in window){
   const observer=new IntersectionObserver(entries=>{
@@ -79,7 +99,7 @@ if("IntersectionObserver" in window){
     if(!visible){window.clearTimeout(timer);slides[current].querySelector("video")?.pause()}
     else{
       const video=slides[current].querySelector("video");
-      if(video){const p=video.play();if(p&&p.catch)p.catch(()=>{})}
+      if(video)startVideo(video,false);
       schedule();
     }
   },{threshold:0.1});
