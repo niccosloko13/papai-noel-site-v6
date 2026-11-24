@@ -24,7 +24,7 @@ module.exports=async function(req,res){
    const amount=Number(order.total);
    if(!Number.isFinite(amount)||amount<=0)return res.status(400).json({error:"Valor do pedido inválido"});
    const pixPayload=buildPix({key:pix.key,receiverName:pix.receiverName,city:pix.city,amount,txid:id.replace(/[^A-Z0-9]/g,"")});
-   const receiverName=pix.displayName||pix.receiverName;
+   const receiverName=pix.receiverName;
    const patch={pixPayload,paymentReceiverName:receiverName,paymentReleasedAt:new Date().toISOString(),paymentStatus:"Aguardando pagamento"};
    await db().query("UPDATE natal_orders SET status='Aguardando pagamento',data=data||$2::jsonb,updated_at=now() WHERE id=$1",[id,JSON.stringify(patch)]);
    return res.json({ok:true,id,status:"Aguardando pagamento",amount,receiverName});
