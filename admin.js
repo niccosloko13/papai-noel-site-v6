@@ -104,6 +104,22 @@ async function loadAnalytics(){
   $("#realAbandonment").textContent=data.checkoutAbandonment===null?"—":data.checkoutAbandonment.toLocaleString("pt-BR")+"%";
   $("#realAnalyticsNote").textContent="Visitantes únicos por IP anonimizado (HMAC), últimos 30 dias. Uma rede compartilhada pode contar como uma pessoa; IP dinâmico pode contar outra vez. Contagem disponível apenas após esta atualização. Nenhum IP em claro é armazenado.";
   $("#realCampaigns").innerHTML=(data.campaigns||[]).map(c=>'<div class="seo-check"><span>'+esc(c.source)+'</span><b>'+c.sessions+' sessões • '+c.orders+' pedidos</b></div>').join("")||'<p class="muted">Nenhum evento registrado.</p>';
+  const stages=data.checkoutStages||{};
+  const stageItems=[
+   ["Iniciaram",stages.started],["CEP localizado",stages.cep],["Endereço completo",stages.address],
+   ["Dados pessoais",stages.customer],["Termos aceitos",stages.terms],["Confirmaram pedido",stages.orders],
+   ["Pix liberado",stages.pixReleased],["Avisaram pagamento",stages.paymentInformed],["Pagos",stages.paymentConfirmed],
+   ["Abandonaram",stages.abandoned]
+  ];
+  $("#checkoutStageGrid").innerHTML=stageItems.map(([label,value])=>'<div class="checkout-stage-card"><small>'+esc(label)+'</small><strong>'+Number(value||0).toLocaleString("pt-BR")+'</strong></div>').join("");
+  const stepNames={cep:"CEP",endereco:"Endereço",dados:"Dados pessoais",termos:"Termos",confirmacao:"Confirmação"};
+  const recent=data.recentSessions||[];
+  $("#checkoutSessionsList").innerHTML=recent.map(s=>{
+   const state=s.paid?"Pago":s.paymentInformed?"Pagamento informado":s.pixReleased?"Pix liberado":s.completed?"Pedido criado":"Abandonou checkout";
+   const steps=(s.steps||[]).map(x=>stepNames[x]||x).join(" · ")||"Nenhuma etapa além do início";
+   const when=s.lastActivity?new Date(s.lastActivity).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"";
+   return '<div class="checkout-session-row"><div><strong>Sessão #'+esc(s.sessionId)+'</strong><small>'+esc(when)+' · '+esc(s.source||"Direto")+'</small></div><div><b>'+esc(state)+'</b><small>Etapas: '+esc(steps)+'</small></div></div>';
+  }).join("")||'<p class="muted">Ainda não há sessões de checkout registradas.</p>';
  }catch(e){$("#realAnalyticsNote").textContent="Não foi possível carregar métricas: "+e.message}
 }
 const statusClass=s=>s==="Pago"||s==="Produção"||s==="Enviado"?"paid":"";
