@@ -403,3 +403,15 @@ button,input,select,textarea{font-family:inherit}
   .environment-pill{font-size:.58rem}
 }
 [hidden]{display:none!important}
+
+.checkout-stage-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:12px 0 20px}
+.checkout-stage-card{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fffaf3}
+.checkout-stage-card small{display:block;min-height:26px;color:var(--muted);font-size:.65rem;font-weight:800;line-height:1.35}
+.checkout-stage-card strong{display:block;margin-top:5px;color:#17694c;font-size:1.45rem;font-variant-numeric:tabular-nums}
+.checkout-sessions-list{display:grid;gap:7px}
+.checkout-session-row{display:grid;grid-template-columns:minmax(120px,.7fr) minmax(0,1.3fr);gap:12px;padding:11px 12px;border:1px solid #eee4d8;border-radius:11px;background:#fff}
+.checkout-session-row>div{min-width:0;display:grid;gap:4px}
+.checkout-session-row strong,.checkout-session-row b{font-size:.76rem;color:#304a39}
+.checkout-session-row small{font-size:.65rem;color:var(--muted);line-height:1.4;overflow-wrap:anywhere}
+@media(max-width:900px){.checkout-stage-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){.checkout-stage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.checkout-session-row{grid-template-columns:1fr;gap:7px}}
