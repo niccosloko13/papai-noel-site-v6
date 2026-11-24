@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#123d2b">
 <title>Finalizar pedido | Lareira Feliz</title>
-<link rel="stylesheet" href="/checkout-own.css?v=20261123-own-checkout">
+<link rel="stylesheet" href="/checkout-own.css?v=20261123-cep-cpf-13290">
 </head>
 <body>
 <header class="checkout-header">
@@ -18,35 +18,38 @@
     <div class="checkout-heading"><span class="eyebrow">SUA COMPRA DE NATAL</span><h1>Vamos preparar seu pedido</h1><p>Preencha seus dados para registrar a compra. O Pix será liberado manualmente pela nossa equipe depois da conferência.</p></div>
     <form id="checkoutForm" novalidate>
       <section class="form-card">
-        <div class="form-card-heading"><span>1</span><div><h2>Quem está comprando?</h2><p>Usaremos esses dados para falar sobre seu pedido</p></div></div>
-        <label for="customerName">Nome completo</label>
-        <input id="customerName" name="customerName" autocomplete="name" maxlength="100" placeholder="Seu nome e sobrenome" required>
-        <label for="phone">WhatsApp</label>
-        <input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(11) 99999-9999" required>
+        <div class="form-card-heading"><span>1</span><div><h2>Onde vamos entregar?</h2><p>Digite seu CEP para localizar o endereço automaticamente</p></div></div>
+        <label for="cep">CEP</label>
+        <input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required>
+        <p id="cepStatus" class="field-hint" role="status" aria-live="polite">Ao completar o CEP, seu endereço será preenchido automaticamente</p>
+        <div id="addressAutofill" class="address-autofill" hidden>
+          <div class="address-grid">
+            <div><label for="address">Rua / Avenida</label><input id="address" name="address" autocomplete="address-line1" maxlength="120" placeholder="Rua" required readonly></div>
+            <div><label for="neighborhood">Bairro</label><input id="neighborhood" name="neighborhood" autocomplete="address-level3" maxlength="100" placeholder="Bairro" required readonly></div>
+            <div><label for="city">Cidade</label><input id="city" name="city" autocomplete="address-level2" maxlength="100" placeholder="Cidade" required readonly></div>
+            <div><label for="state">Estado</label><input id="state" name="state" autocomplete="address-level1" maxlength="2" placeholder="UF" required readonly></div>
+          </div>
+          <div class="field-grid">
+            <div><label for="number">Número</label><input id="number" name="number" autocomplete="address-line2" maxlength="20" placeholder="Nº" required></div>
+            <div><label for="complement">Complemento <span>(opcional)</span></label><input id="complement" name="complement" maxlength="100" placeholder="Apto, bloco, casa"></div>
+          </div>
+        </div>
       </section>
       <section class="form-card">
-        <div class="form-card-heading"><span>2</span><div><h2>Onde vamos entregar?</h2><p>O frete é grátis. Precisamos do endereço completo</p></div></div>
-        <div class="cep-row"><div class="field-grow"><label for="cep">CEP</label><input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required></div><button id="lookupCep" class="secondary-button" type="button">Buscar CEP</button></div>
-        <p id="cepStatus" class="field-hint" role="status">Digite o CEP para preencher rua, bairro e cidade</p>
-        <label for="address">Rua / Avenida</label>
-        <input id="address" name="address" autocomplete="address-line1" maxlength="120" placeholder="Nome da rua" required>
-        <div class="field-grid">
-          <div><label for="number">Número</label><input id="number" name="number" autocomplete="address-line2" maxlength="20" placeholder="Nº" required></div>
-          <div><label for="complement">Complemento <span>(opcional)</span></label><input id="complement" name="complement" maxlength="100" placeholder="Apto, bloco, casa"></div>
-        </div>
-        <label for="neighborhood">Bairro</label>
-        <input id="neighborhood" name="neighborhood" autocomplete="address-level3" maxlength="100" placeholder="Seu bairro" required>
-        <div class="field-grid">
-          <div><label for="city">Cidade</label><input id="city" name="city" autocomplete="address-level2" maxlength="100" placeholder="Cidade" required></div>
-          <div><label for="state">UF</label><input id="state" name="state" autocomplete="address-level1" maxlength="2" placeholder="SP" required></div>
-        </div>
+        <div class="form-card-heading"><span>2</span><div><h2>Seus dados</h2><p>Precisamos dessas informações para registrar seu pedido</p></div></div>
+        <label for="customerName">Nome completo</label>
+        <input id="customerName" name="customerName" autocomplete="name" maxlength="100" placeholder="Seu nome e sobrenome" required>
+        <label for="cpf">CPF</label>
+        <input id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
+        <label for="phone">WhatsApp</label>
+        <input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(11) 99999-9999" required>
       </section>
       <section class="form-card order-confirm-card">
         <div class="form-card-heading"><span>3</span><div><h2>Confira seu pedido</h2><p>Uma Lareira Feliz, com frete grátis</p></div></div>
         <div class="quantity-row"><div><strong>Lareira Feliz</strong><small>120 × 80 × 22 cm · peça única</small></div><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button><input id="quantity" type="number" min="1" max="10" value="1" inputmode="numeric" aria-label="Quantidade"><button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button></div></div>
-        <div class="price-line"><span>Produtos</span><strong id="subtotal">R$ 148,90</strong></div>
+        <div class="price-line"><span>Produtos</span><strong id="subtotal">R$ 132,90</strong></div>
         <div class="price-line free-shipping"><span>Frete</span><strong>GRÁTIS</strong></div>
-        <div class="price-total"><span>Total do pedido</span><strong id="total">R$ 148,90</strong></div>
+        <div class="price-total"><span>Total do pedido</span><strong id="total">R$ 132,90</strong></div>
         <p class="payment-note"><span>🔒</span> Após confirmar, o pedido ficará aguardando a liberação manual do QR Code Pix no painel da nossa equipe. Nenhuma cobrança será gerada automaticamente.</p>
       </section>
       <label class="terms-check"><input id="acceptTerms" type="checkbox" required><span>Confirmo que os dados de entrega estão corretos e aceito os <a href="/termos-de-compra.html" target="_blank" rel="noopener">termos de compra</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
@@ -63,6 +66,6 @@
 <footer class="checkout-footer"><a href="/">← Voltar à loja</a><span>Atendimento (11) 5297-0363 · atendimento@papainoelpassouaqui.com.br</span></footer>
 <script src="/store-data.js"></script>
 <script src="/analytics.js?v=20261106-unique-ip-v1" defer></script>
-<script src="/checkout-page.js?v=20261123-own-checkout" defer></script>
+<script src="/checkout-page.js?v=20261123-cep-cpf-13290" defer></script>
 </body>
 </html>
