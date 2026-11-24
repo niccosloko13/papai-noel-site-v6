@@ -18,3 +18,13 @@ label{display:block;margin:13px 0 6px;font-size:12px;font-weight:800;color:#4842
 #cepStatus[data-state="error"]{color:#a00812;font-weight:700}
 #cepStatus[data-state="loading"]{color:#8b6a2e;font-weight:700}
 @media(max-width:480px){.address-autofill{padding:11px}.address-grid{grid-template-columns:1fr}}
+
+.loggi-estimate-card{margin-top:14px;padding:14px 15px;border:1px solid #d7e4d9;border-radius:13px;background:linear-gradient(135deg,#f8fbf7,#edf5ed)}
+.loggi-estimate-heading{display:flex;align-items:center;gap:10px;color:#526253;font-size:11px;font-weight:800}
+.loggi-wordmark{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:25px;padding:0 9px;border-radius:7px;background:#fff;color:#183c30;font-size:17px;font-weight:900;letter-spacing:-1.5px;border:1px solid #e0e8df}
+#loggiEstimateStatus{margin:10px 0 6px;color:#34523e;font-size:12px;font-weight:700}
+.loggi-estimate-options{display:grid;gap:6px}
+.loggi-estimate-option{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #e2eadf;color:#334a39;font-size:12px}
+.loggi-estimate-option span{font-weight:900;color:#17694c}
+.loggi-estimate-card>small{display:block;margin-top:8px;color:#7b8578;font-size:9px;line-height:1.45}
+.loggi-estimate-card[hidden]{display:none!important}
