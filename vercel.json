@@ -26,11 +26,6 @@
       ],
       "destination": "https://papainoelpassouaqui.com.br/:path*",
       "permanent": true
-    },
-    {
-      "source": "/checkout.html",
-      "destination": "/",
-      "permanent": false
     }
   ],
   "headers": [
@@ -86,6 +81,15 @@
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' https://fonts.googleapis.com; style-src-attr 'none'; script-src-attr 'none'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com https://*.fbcdn.net; connect-src 'self' https://www.facebook.com https://connect.facebook.net; frame-src 'none'; media-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/checkout.html",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://viacep.com.br; frame-src 'none'; upgrade-insecure-requests"
         }
       ]
     }
