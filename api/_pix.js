@@ -24,6 +24,7 @@ function dynamicLocation(fields){
 }
 function validateDynamicLocation(raw){
  const value=String(raw||"").trim();
+ if(/^[a-z][a-z0-9+.-]*:/i.test(value)&&!/^https:\/\//i.test(value))throw Error("A URL deste Pix dinâmico deve usar HTTPS.");
  const address=/^https:\/\//i.test(value)?value:"https://"+value;
  let url;try{url=new URL(address)}catch{throw Error("A URL deste Pix dinâmico é inválida.")}
  if(url.protocol!=="https:"||!url.hostname||url.username||url.password)throw Error("A URL deste Pix dinâmico não é HTTPS válida.");
