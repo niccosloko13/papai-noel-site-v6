@@ -94,7 +94,7 @@ async function calculateLoggiQuote(){
  const controller=new AbortController();loggiQuoteController=controller;
  card.hidden=false;status.textContent="Consultando o prazo estimado da Loggi...";options.replaceChildren();
  try{
-  const response=await fetch("/api/loggi-quote",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),signal:controller.signal,credentials:"same-origin"});
+  const response=await fetch("/api/loggi-quote?cep="+encodeURIComponent(data.cep),{method:"GET",signal:controller.signal,credentials:"same-origin",cache:"no-store"});
   const result=await response.json();
   if(result.configured===false){card.hidden=false;status.textContent="Estamos ativando a consulta de prazo da Loggi para este endereço.";options.replaceChildren();return}
   if(!response.ok)throw Error(result.error||"Consulta indisponível");
