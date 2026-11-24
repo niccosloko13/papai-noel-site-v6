@@ -1,6 +1,6 @@
 const {db,init}=require("./_db");
 const crypto=require("node:crypto");
-const TYPES=["page_view","view_product","add_to_cart","begin_checkout","shipping_info","order_created","payment_informed","marketplace_click"];
+const TYPES=["page_view","view_product","add_to_cart","begin_checkout","shipping_info","checkout_step","order_created","pix_released","payment_informed","payment_confirmed","marketplace_click"];
 let eventsReady=false;
 async function initEvents(){
  if(eventsReady)return;
