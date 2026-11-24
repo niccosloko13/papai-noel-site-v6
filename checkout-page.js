@@ -46,18 +46,17 @@ async function lookupCep(cep){
  status.dataset.state="loading";
  clearAddress();
  try{
-  const response=await fetch("https://viacep.com.br/ws/"+cep+"/json/",{signal:controller.signal,cache:"no-store"});
-  if(!response.ok)throw Error("CEP indisponível");
+  const response=await fetch("/api/cep?cep="+encodeURIComponent(cep),{signal:controller.signal,cache:"no-store",credentials:"same-origin"});
   const data=await response.json();
-  if(data.erro)throw Error("CEP não encontrado");
-  $("#address").value=data.logradouro||"";
-  $("#neighborhood").value=data.bairro||"";
-  $("#city").value=data.localidade||"";
-  $("#state").value=data.uf||"";
-  $("#address").readOnly=!!data.logradouro;
-  $("#neighborhood").readOnly=!!data.bairro;
-  $("#city").readOnly=!!data.localidade;
-  $("#state").readOnly=!!data.uf;
+  if(!response.ok||!data.ok)throw Error(data.error||"CEP indisponível");
+  $("#address").value=data.address||"";
+  $("#neighborhood").value=data.neighborhood||"";
+  $("#city").value=data.city||"";
+  $("#state").value=data.state||"";
+  $("#address").readOnly=!!data.address;
+  $("#neighborhood").readOnly=!!data.neighborhood;
+  $("#city").readOnly=!!data.city;
+  $("#state").readOnly=!!data.state;
   $("#addressAutofill").hidden=false;
   status.textContent=(data.logradouro&&data.bairro)?"Endereço localizado! Agora informe somente o número e o complemento.":"CEP localizado. Complete os campos de endereço que vieram em branco e informe o número.";
   status.dataset.state="success";
@@ -67,7 +66,7 @@ async function lookupCep(cep){
  }catch(error){
   if(error.name==="AbortError")return;
   lastCepLookup="";
-  status.textContent="Não encontramos esse CEP. Confira os números e tente novamente.";
+  status.textContent=error.message==="CEP não encontrado"?"Não encontramos esse CEP. Confira os números e tente novamente.":"Não foi possível consultar o CEP agora. Tente novamente em instantes.";
   status.dataset.state="error";
   clearAddress();
  }finally{if(cepController===controller)cepController=null}
@@ -89,7 +88,7 @@ $("#cep").addEventListener("blur",()=>{const d=digits($("#cep").value);if(d.leng
 async function calculateLoggiQuote(){
  const card=$("#loggiEstimateCard"),status=$("#loggiEstimateStatus"),options=$("#loggiEstimateOptions");
  const data={cep:digits($("#cep").value),address:$("#address").value.trim(),number:$("#number").value.trim(),complement:$("#complement").value.trim(),neighborhood:$("#neighborhood").value.trim(),city:$("#city").value.trim(),state:$("#state").value.trim(),quantity:quantity()};
- if(data.cep.length!==8||!data.address||!data.number||!data.neighborhood||!data.city||!data.state)return;
+ if(data.cep.length!==8||!data.address||!data.number||!data.neighborhood||!data.city||!data.state){card.hidden=true;lastLoggiSignature="";return}
  const signature=JSON.stringify(data);if(signature===lastLoggiSignature)return;lastLoggiSignature=signature;
  if(loggiQuoteController)loggiQuoteController.abort();
  const controller=new AbortController();loggiQuoteController=controller;
