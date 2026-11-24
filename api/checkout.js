@@ -2,9 +2,9 @@ const crypto=require("node:crypto");
 const {isIP}=require("node:net");
 const {db,init}=require("./_db");
 const PRICE_FALLBACK=148.90;
-const digits=v=>String(v||"").replace(/\\D/g,"");
+const digits=v=>String(v||"").replace(/\D/g,"");
 function clean(v,max){return typeof v==="string"?v.trim().slice(0,max):""}
-function validOrigin(req){const origin=req.headers.origin,host=req.headers.host;return !!origin&&(origin==="https://"+host||(process.env.VERCEL_ENV!=="production"&&/^http:\/\/localhost(?::\\d+)?$/.test(origin)))}
+function validOrigin(req){const origin=req.headers.origin,host=req.headers.host;return !!origin&&(origin==="https://"+host||(process.env.VERCEL_ENV!=="production"&&/^http:\/\/localhost(?::\d+)?$/.test(origin)))}
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  res.setHeader("X-Robots-Tag","noindex,nofollow");
