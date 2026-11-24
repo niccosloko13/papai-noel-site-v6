@@ -29,7 +29,7 @@ async function init(){
    refresh.textContent="Atualizar pedido";refresh.disabled=false;return;
   }
   available=true;$("#paymentUnavailable").hidden=true;$("#paymentAvailable").hidden=false;$("#paymentHeading").textContent="Seu Pix está pronto!";$("#paymentId").textContent=d.id;$("#paymentAmount").textContent=money(d.amount);$("#paymentCode").value=d.pixPayload;$("#paymentReceiver").textContent=d.receiverName||"Confira o recebedor no seu banco";
-  if(d.expiresAt){deadline=Date.parse(d.expiresAt);$("#paymentTimerWrap").hidden=false;const tick=()=>{const rem=Math.max(0,Math.ceil((deadline-Date.now())/1000));$("#paymentTimer").textContent=String(Math.floor(rem/60)).padStart(2,"0")+":"+String(rem%60).padStart(2,"0")};tick();timer=setInterval(tick,1000)}else $("#paymentTimerWrap").hidden=true;
+  if(d.expiresAt){deadline=Date.parse(d.expiresAt);$("#paymentTimerWrap").hidden=false;const tick=()=>{const rem=Math.max(0,Math.ceil((deadline-Date.now())/1000));if(rem<=0){clearInterval(timer);timer=null;init();return}$("#paymentTimer").textContent=String(Math.floor(rem/60)).padStart(2,"0")+":"+String(rem%60).padStart(2,"0")};tick();timer=setInterval(tick,1000)}else $("#paymentTimerWrap").hidden=true;
   const qr=$("#paymentQr");qr.replaceChildren();try{new QRCode(qr,{text:d.pixPayload,width:218,height:218,colorDark:"#10271c",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.L})}catch{qr.textContent="QR indisponível. Use o Pix copia e cola."}
   if(access)$("#informPaid").hidden=false;
  }catch(e){$("#loadMessage").hidden=true;showUnavailable(e.message,"Não foi possível carregar o pedido")}
