@@ -16,7 +16,7 @@ function parseTlv(payload){
 function validatePixPayload(payload,expectedAmount){
  if(typeof payload!=="string")throw Error("Cole o Pix copia e cola gerado no aplicativo do banco.");
  const code=payload.trim();
- if(code.length<30||code.length>2048||/\s/.test(code))throw Error("O Pix copia e cola está vazio ou tem formato inválido.");
+ if(code.length<30||code.length>2048||/[\r\n\t]/.test(code))throw Error("O Pix copia e cola está vazio ou tem formato inválido.");
  const crcPosition=code.lastIndexOf("6304");
  if(crcPosition!==code.length-8||!/^[A-Fa-f0-9]{4}$/.test(code.slice(-4)))throw Error("O código Pix não contém uma assinatura CRC válida.");
  if(crc16(code.slice(0,-4))!==code.slice(-4).toUpperCase())throw Error("A assinatura do Pix não confere. Copie novamente do banco.");
