@@ -8,8 +8,8 @@ test("carrossel abre com vídeo principal e quatro fotos",()=>{
   assert.equal((html.match(/class="gallery-slide(?: is-current)?"/g)||[]).length,5);
   assert.equal((html.match(/data-gallery-index="/g)||[]).length,5);
   assert.match(html,/id="lareiraProductGallery"/);
-  assert.ok(html.indexOf("<video src=")<html.indexOf("<img src="),"vídeo precisa ser o primeiro item da galeria");
-  assert.match(html,/lareira-thumb-0[\s\S]*?Vídeo principal/);
+  assert.ok(html.indexOf('<video src="/assets/lareira-real-video-sem-som.mp4"')<html.indexOf('<img src="/assets/lareira-feliz-natal.webp"'),"vídeo precisa ser o primeiro item");
+  assert.match(html,/id="lareira-thumb-0"[\s\S]*?Vídeo principal/);
   assert.match(html,/muted playsinline loop/);
   assert.match(html,/product-gallery\.js/);
   assert.match(html,/product-gallery\.css/);
@@ -21,7 +21,7 @@ test("loja mantém checkout, botão comprar e painel administrativo",()=>{
   assert.ok(fs.existsSync(path.join(root,"checkout.html")));
   assert.ok(fs.existsSync(path.join(root,"admin.html")));
 });
-test("arquivos reais estão completos e vídeo é silencioso e fica como principal",()=>{
+test("arquivos reais estão completos e vídeo é silencioso e permanece como destaque",()=>{
   const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
   for(const file of ["lareira-real-frente.jpeg","lareira-real-lado-a.jpeg","lareira-real-lado-b.jpeg","lareira-real-video-sem-som.mp4"]){
     const full=path.join(root,"assets",file);
