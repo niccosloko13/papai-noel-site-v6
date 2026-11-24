@@ -62,3 +62,27 @@ test("mobile checkout keeps Loggi, free shipping, Pix and WhatsApp while compact
  assert.match(css,/\.aside-copy,\.aside-security\{display:none!important\}/);
  assert.match(css,/\.checkout-footer\{display:none\}/);
 });
+
+test("landing mobile orders brand before video and keeps price and purchase CTA prominent",()=>{
+ const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
+ const css=fs.readFileSync(path.join(root,"lareira-feliz.css"),"utf8");
+ assert.match(html,/class="hero-copy"/);
+ assert.match(html,/class="product-price-card"/);
+ assert.match(css,/Refinamento mobile v3 — hierarquia clara/);
+ assert.match(css,/\.hero-copy\{display:contents\}/);
+ assert.match(css,/\.hero-copy h1\{order:0/);
+ assert.match(css,/\.hero-product\{order:2/);
+ assert.match(css,/\.hero-copy \.product-price-card\{order:3/);
+});
+test("checkout mobile groups customer fields and keeps the WhatsApp action below the form",()=>{
+ const html=fs.readFileSync(path.join(root,"checkout.html"),"utf8");
+ const css=fs.readFileSync(path.join(root,"checkout-own.css"),"utf8");
+ assert.match(html,/class="field-grid customer-grid"/);
+ assert.match(html,/id="cpf"/);
+ assert.match(html,/id="phone"/);
+ assert.match(html,/id="loggiEstimateCard"/);
+ assert.match(html,/class="price-line free-shipping"/);
+ assert.match(html,/class="checkout-whatsapp"/);
+ assert.match(css,/Refinamento mobile v3 — formulário leve/);
+ assert.match(css,/\.checkout-whatsapp\{position:static/);
+});

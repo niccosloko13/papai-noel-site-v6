@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#123d2b">
 <title>Finalizar pedido | Lareira Feliz</title>
-<link rel="stylesheet" href="/checkout-own.css?v=20261124-mobile-clean-2">
+<link rel="stylesheet" href="/checkout-own.css?v=20261124-mobile-refine-3">
 </head>
 <body>
 <header class="checkout-header">
@@ -15,13 +15,13 @@
 </header>
 <main class="checkout-layout">
   <section class="checkout-main">
-    <div class="checkout-heading"><span class="eyebrow">SUA COMPRA DE NATAL</span><h1>Vamos preparar seu pedido</h1><p>Preencha seus dados e confira a entrega</p></div>
+    <div class="checkout-heading"><span class="eyebrow">SUA COMPRA DE NATAL</span><h1>Finalizar pedido</h1><p>Preencha seus dados e confira a entrega</p></div>
     <form id="checkoutForm" novalidate>
       <section class="form-card">
-        <div class="form-card-heading"><span>1</span><div><h2>Onde vamos entregar?</h2><p>Digite seu CEP para localizar o endereço automaticamente</p></div></div>
+        <div class="form-card-heading"><span>1</span><div><h2>Onde vamos entregar?</h2><p>Informe seu CEP para preencher o endereço</p></div></div>
         <label for="cep">CEP</label>
         <input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required>
-        <p id="cepStatus" class="field-hint" role="status" aria-live="polite">Ao completar o CEP, seu endereço será preenchido automaticamente</p>
+        <p id="cepStatus" class="field-hint" role="status" aria-live="polite">Preenchimento automático pelo CEP</p>
         <div id="addressAutofill" class="address-autofill" hidden>
           <div class="address-grid">
             <div><label for="address">Rua / Avenida</label><input id="address" name="address" autocomplete="address-line1" maxlength="120" placeholder="Rua" required readonly></div>
@@ -37,28 +37,28 @@
             <div class="loggi-estimate-heading"><span class="loggi-wordmark">loggi</span><span>Prazo estimado de entrega</span></div>
             <p id="loggiEstimateStatus">Calculando estimativa para seu endereço...</p>
             <div id="loggiEstimateOptions" class="loggi-estimate-options"></div>
-            <small>Estimativa regional da loja com base no CEP, considerando embalagem de até 1 kg. Não é uma cotação em tempo real da transportadora.</small>
+            <small>Prazo regional estimado, não é cotação em tempo real da transportadora.</small>
           </section>
         </div>
       </section>
       <section class="form-card">
-        <div class="form-card-heading"><span>2</span><div><h2>Seus dados</h2><p>Precisamos dessas informações para registrar seu pedido</p></div></div>
+        <div class="form-card-heading"><span>2</span><div><h2>Seus dados</h2><p>Dados para registrar a compra</p></div></div>
         <label for="customerName">Nome completo</label>
         <input id="customerName" name="customerName" autocomplete="name" maxlength="100" placeholder="Seu nome e sobrenome" required>
-        <label for="cpf">CPF</label>
-        <input id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required>
-        <label for="phone">WhatsApp</label>
-        <input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(11) 99999-9999" required>
+        <div class="field-grid customer-grid">
+          <div><label for="cpf">CPF</label><input id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" required></div>
+          <div><label for="phone">WhatsApp</label><input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(11) 99999-9999" required></div>
+        </div>
       </section>
       <section class="form-card order-confirm-card">
-        <div class="form-card-heading"><span>3</span><div><h2>Confira seu pedido</h2><p>Uma Lareira Feliz, com frete grátis</p></div></div>
-        <div class="quantity-row"><div><strong>Lareira Feliz</strong><small>120 × 80 × 22 cm · peça única</small></div><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button><input id="quantity" type="number" min="1" max="10" value="1" inputmode="numeric" aria-label="Quantidade"><button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button></div></div>
+        <div class="form-card-heading"><span>3</span><div><h2>Confira seu pedido</h2><p>1 peça · frete grátis</p></div></div>
+        <div class="quantity-row"><div><strong>Lareira Feliz</strong><small>120 × 80 × 22 cm</small></div><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button><input id="quantity" type="number" min="1" max="10" value="1" inputmode="numeric" aria-label="Quantidade"><button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button></div></div>
         <div class="price-line"><span>Produtos</span><strong id="subtotal">R$ 124,00</strong></div>
         <div class="price-line free-shipping"><span>Frete</span><strong>GRÁTIS</strong></div>
         <div class="price-total"><span>Total do pedido</span><strong id="total">R$ 124,00</strong></div>
-        <p class="payment-note"><span>🔒</span> Após confirmar, o pedido ficará aguardando a liberação manual do QR Code Pix no painel da nossa equipe. Nenhuma cobrança será gerada automaticamente.</p>
+        <p class="payment-note"><span>🔒</span> O Pix será liberado manualmente após a conferência do pedido. Nenhuma cobrança automática.</p>
       </section>
-      <label class="terms-check"><input id="acceptTerms" type="checkbox" required><span>Confirmo que os dados de entrega estão corretos e aceito os <a href="/termos-de-compra.html" target="_blank" rel="noopener">termos de compra</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
+      <label class="terms-check"><input id="acceptTerms" type="checkbox" required><span>Confirmo os dados e aceito os <a href="/termos-de-compra.html" target="_blank" rel="noopener">termos de compra</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
       <button id="submitOrder" class="submit-button" type="submit">Confirmar pedido <span>→</span></button>
       <p id="checkoutMessage" class="checkout-message" role="status" aria-live="polite"></p>
     </form>
