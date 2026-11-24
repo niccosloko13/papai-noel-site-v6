@@ -133,6 +133,7 @@ function orderRow(o){
  '<div class="order-detail-grid">'+
  '<div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div>'+
  '<div><small>WHATSAPP</small><strong>'+esc(o.phone||"—")+'</strong></div>'+
+ '<div><small>CPF</small><strong>'+esc(o.cpf||"—")+'</strong></div>'+
  '<div><small>ENDEREÇO DE ENTREGA</small><p>'+esc(address||"—")+'</p></div>'+
  '<div><small>CEP</small><strong>'+esc(o.cep||"—")+'</strong></div>'+
  '<div><small>ITENS</small><p>'+esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name+" — "+money(i.unitPrice)).join(" • "))+'</p></div>'+
