@@ -1,5 +1,5 @@
 const {valid}=require("../_auth");const {db,init,databaseStatus}=require("../_db");
-const KEYS=["pix","marketing","seo","products","inventory"];
+const KEYS=["marketing","seo","products","inventory"];
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  if(!valid(req))return res.status(401).json({error:"Sessão necessária"});
@@ -12,7 +12,7 @@ module.exports=async function(req,res){
  }
  const {key,value}=req.body||{};
  if(!KEYS.includes(key)||!value||typeof value!=="object"||JSON.stringify(value).length>15000)return res.status(400).json({error:"Configuração inválida"});
- const allowed={pix:["enabled","key","displayName","receiverName","city","discount","shippingFlat"],marketing:["metaPixel","ga4","tiktokPixel","googleAds"],seo:["title","description","image"],products:[],inventory:["stock","reorderPoint","notes"]};
+ const allowed={marketing:["metaPixel","ga4","tiktokPixel","googleAds"],seo:["title","description","image"],products:[],inventory:["stock","reorderPoint","notes"]};
  let safe;
  if(key==="products"){
   if(!Array.isArray(value)||value.length!==1||value[0]?.id!=="basic")return res.status(400).json({error:"Catálogo inválido"});
@@ -27,17 +27,7 @@ module.exports=async function(req,res){
   if(!validCount(stock)||!validCount(reorderPoint)||notes.length>500)return res.status(400).json({error:"Informe quantidades inteiras entre 0 e 100.000 e observações de até 500 caracteres."});
   safe={stock,reorderPoint,notes};
  }else safe=Object.fromEntries(Object.entries(value).filter(([k])=>allowed[key].includes(k)));
- if(key==="pix"){
-  safe.enabled=safe.enabled===true;
-  for(const f of ["key","displayName","receiverName","city"])safe[f]=typeof safe[f]==="string"?safe[f].trim():"";
-  safe.discount=0;
-  safe.shippingFlat=0;
-  const keyOk=!safe.key||(/^[0-9]{11}$/.test(safe.key)||/^[0-9]{14}$/.test(safe.key)||/^\+?[0-9]{10,15}$/.test(safe.key)||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safe.key)||/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(safe.key));
-  if(!keyOk||safe.key.length>77||safe.displayName.length>90||safe.receiverName.length>25||safe.city.length>15
-   ||safe.discount!==0||safe.shippingFlat!==0
-   ||(safe.enabled&&(!safe.key||!safe.receiverName||!safe.city)))
-   return res.status(400).json({error:"Confira a chave Pix, os dados do recebedor, o desconto e o frete."});
- }
+
  await db().query("INSERT INTO natal_settings(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=EXCLUDED.value,updated_at=now()",[key,JSON.stringify(safe)]);
  return res.json({ok:true});
  }catch(e){
