@@ -9,11 +9,11 @@ module.exports=async function(req,res){
  try{
  const hash=crypto.createHash("sha256").update(claim).digest("hex");
  await db().query("UPDATE natal_orders SET status='Expirado',updated_at=now() WHERE id=$1 AND status='Aguardando pagamento' AND data ? 'expiresAt' AND (data->>'expiresAt')::timestamptz <= now()",[id]);
- const result=await db().query("UPDATE natal_orders SET status='Pagamento informado',updated_at=now() WHERE id=$1 AND data->>'paymentClaimHash'=$2 AND status='Aguardando pagamento' AND (NOT (data ? 'expiresAt') OR (data->>'expiresAt')::timestamptz > now()) RETURNING id",[id,hash]);
+ const result=await db().query("UPDATE natal_orders SET status='Pagamento informado',updated_at=now() WHERE id=$1 AND data->>'paymentClaimHash'=$2 AND status='Aguardando pagamento' AND (NOT (data ? 'expiresAt') OR (data->>'expiresAt')::timestamptz > now()) RETURNING id,data->>'sessionId' AS session_id",[id,hash]);
  if(result.rowCount){
   try{
    await initEvents();
-   await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,order_id) VALUES($1,'payment_informed',$2,$3,$4)",[crypto.randomBytes(12).toString("hex"),"/pagamento-pedido.html",String(origin||""),id]);
+   await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,order_id) VALUES($1,'payment_informed',$2,$3,$4)",[String(result.rows[0]?.session_id||crypto.randomBytes(12).toString("hex")),"/pagamento-pedido.html",String(origin||""),id]);
   }catch(e){console.error("payment analytics",e.code||e.message)}
   return res.json({ok:true});
  }
