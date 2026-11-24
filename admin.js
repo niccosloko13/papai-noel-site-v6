@@ -54,6 +54,163 @@ $$("[data-open-tab]").forEach(b=>b.onclick=()=>selectTab(b.dataset.openTab));
 
 let serverOrders=[];let serverSettings={};
 const getOrders=()=>serverOrders;
+
+const notificationStorageKey="natal_admin_order_notifications_v1:"+location.hostname;
+const lastOrderCheckKey="natal_admin_order_check_v1:"+location.hostname;
+const orderSoundKey="natal_admin_order_sound_v1:"+location.hostname;
+let orderNotificationItems=[];
+let knownOrderIds=new Set();
+let orderSnapshotInitialized=false;
+let orderPollTimer=null;
+let orderPollBusy=false;
+let orderAudioContext=null;
+let orderSoundEnabled=false;
+try{
+ orderNotificationItems=JSON.parse(localStorage.getItem(notificationStorageKey)||"[]");
+ if(!Array.isArray(orderNotificationItems))orderNotificationItems=[];
+ orderSoundEnabled=localStorage.getItem(orderSoundKey)==="1";
+}catch{}
+
+function saveOrderNotifications(){
+ try{localStorage.setItem(notificationStorageKey,JSON.stringify(orderNotificationItems.slice(0,30)))}catch{}
+}
+function renderOrderNotifications(){
+ const unread=orderNotificationItems.filter(item=>!item.seen).length;
+ const count=$("#notificationCount");
+ if(count){count.textContent=unread>99?"99+":String(unread);count.hidden=unread===0}
+ const status=$("#notificationStatus");
+ if(status)status.textContent=unread?unread+" pedido(s) não visualizado(s)":"Tudo em dia";
+ const list=$("#notificationList");
+ if(!list)return;
+ list.innerHTML=orderNotificationItems.length?orderNotificationItems.slice(0,12).map(item=>{
+  const when=item.createdAt?new Date(item.createdAt).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"Agora";
+  return '<button type="button" class="notification-item '+(item.seen?"seen":"unread")+'" data-open-order="'+esc(item.id)+'"><span class="notification-item-dot"></span><span class="notification-item-copy"><strong>Novo pedido · '+esc(item.id)+'</strong><small>'+esc(when)+' · '+money(item.total)+'</small></span><span class="notification-item-arrow">›</span></button>';
+ }).join(""):'<p class="muted notification-empty">Nenhum pedido novo por enquanto.</p>';
+ list.querySelectorAll("[data-open-order]").forEach(button=>button.addEventListener("click",()=>{
+  const id=button.dataset.openOrder;
+  orderNotificationItems=orderNotificationItems.map(item=>item.id===id?{...item,seen:true}:item);
+  saveOrderNotifications();renderOrderNotifications();
+  $("#notificationPopover").hidden=true;$("#notificationBell").setAttribute("aria-expanded","false");
+  selectTab("orders");$("#orderSearch").value=id;renderOrders();
+ }));
+}
+function openOrderFromNotification(id){
+ const item=orderNotificationItems.find(x=>x.id===id);
+ if(item){orderNotificationItems=orderNotificationItems.map(x=>x.id===id?{...x,seen:true}:x);saveOrderNotifications();renderOrderNotifications()}
+ selectTab("orders");
+ if($("#orderSearch")){$("#orderSearch").value=id;renderOrders()}
+}
+function playOrderNotificationSound(){
+ if(!orderSoundEnabled||!orderAudioContext)return;
+ try{
+  if(orderAudioContext.state==="suspended")orderAudioContext.resume();
+  const start=orderAudioContext.currentTime;
+  [880,1175,880].forEach((frequency,index)=>{
+   const oscillator=orderAudioContext.createOscillator(),gain=orderAudioContext.createGain();
+   oscillator.type="sine";oscillator.frequency.value=frequency;
+   gain.gain.setValueAtTime(.0001,start+index*.16);
+   gain.gain.exponentialRampToValueAtTime(.16,start+index*.16+.025);
+   gain.gain.exponentialRampToValueAtTime(.0001,start+index*.16+.13);
+   oscillator.connect(gain);gain.connect(orderAudioContext.destination);
+   oscillator.start(start+index*.16);oscillator.stop(start+index*.16+.14);
+  });
+ }catch{}
+}
+function showOrderToast(order){
+ const container=$("#orderToastContainer");if(!container)return;
+ const toast=document.createElement("article");toast.className="order-toast";
+ const copy=document.createElement("div");copy.className="order-toast-copy";
+ const title=document.createElement("strong");title.textContent="Novo pedido recebido!";
+ const detail=document.createElement("span");detail.textContent=order.id+" · "+money(order.total);
+ copy.append(title,detail);
+ const view=document.createElement("button");view.type="button";view.className="order-toast-view";view.textContent="Ver pedido";
+ view.addEventListener("click",()=>{openOrderFromNotification(order.id);toast.remove()});
+ const dismiss=document.createElement("button");dismiss.type="button";dismiss.className="order-toast-dismiss";dismiss.setAttribute("aria-label","Fechar notificação");dismiss.textContent="×";dismiss.addEventListener("click",()=>toast.remove());
+ toast.append(copy,view,dismiss);container.prepend(toast);
+ while(container.children.length>4)container.lastElementChild.remove();
+ setTimeout(()=>toast.remove(),14000);
+}
+function notifyNewOrder(order){
+ if(orderNotificationItems.some(item=>item.id===order.id))return;
+ orderNotificationItems.unshift({id:order.id,total:Number(order.total)||0,createdAt:order.createdAt||new Date().toISOString(),seen:false});
+ orderNotificationItems=orderNotificationItems.slice(0,30);
+ saveOrderNotifications();renderOrderNotifications();showOrderToast(order);playOrderNotificationSound();
+ if("Notification" in window&&Notification.permission==="granted"){
+  try{
+   const notification=new Notification("Novo pedido — Lareira Feliz",{body:order.id+" · "+money(order.total),tag:"lareira-"+order.id});
+   notification.onclick=()=>{window.focus();openOrderFromNotification(order.id);notification.close()};
+  }catch{}
+ }
+}
+function processOrderSnapshot(orders){
+ const now=Date.now();
+ let incoming=[];
+ if(!orderSnapshotInitialized){
+  let lastCheck=0;
+  try{lastCheck=Number(localStorage.getItem(lastOrderCheckKey))||0}catch{}
+  if(lastCheck>0)incoming=orders.filter(order=>new Date(order.createdAt).getTime()>lastCheck);
+  orderSnapshotInitialized=true;
+ }else{
+  incoming=orders.filter(order=>!knownOrderIds.has(order.id));
+ }
+ incoming.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt)).forEach(notifyNewOrder);
+ knownOrderIds=new Set(orders.map(order=>order.id));
+ try{localStorage.setItem(lastOrderCheckKey,String(now))}catch{}
+}
+async function pollForNewOrders(){
+ if(orderPollBusy)return;
+ orderPollBusy=true;
+ try{
+  const data=await api("orders"),fresh=data.orders||[];
+  const previous=new Map(serverOrders.map(order=>[order.id,order.status]));
+  const changed=fresh.length!==serverOrders.length||fresh.some(order=>previous.get(order.id)!==order.status);
+  processOrderSnapshot(fresh);
+  if(changed){
+   serverOrders=fresh;metrics();renderOrders();renderLogistics();renderFinance();
+  }
+ }catch(error){
+  const status=$("#notificationStatus");
+  if(status&&$("#notificationPopover")&&!$("#notificationPopover").hidden)status.textContent="Reconectando ao servidor...";
+ }finally{orderPollBusy=false}
+}
+function startOrderPolling(){
+ if(orderPollTimer)return;
+ orderPollTimer=setInterval(pollForNewOrders,15000);
+}
+const notificationBell=$("#notificationBell");
+notificationBell?.addEventListener("click",()=>{
+ const popover=$("#notificationPopover"),open=popover.hidden;
+ popover.hidden=!open;notificationBell.setAttribute("aria-expanded",String(open));
+ if(open)renderOrderNotifications();
+});
+$("#clearNotifications")?.addEventListener("click",()=>{
+ orderNotificationItems=orderNotificationItems.map(item=>({...item,seen:true}));
+ saveOrderNotifications();renderOrderNotifications();
+});
+document.addEventListener("click",event=>{
+ if(!event.target.closest(".notification-center")){
+  const popover=$("#notificationPopover");
+  if(popover){popover.hidden=true;notificationBell?.setAttribute("aria-expanded","false")}
+ }
+});
+$("#enableOrderAlerts")?.addEventListener("click",async()=>{
+ const button=$("#enableOrderAlerts");
+ orderSoundEnabled=true;
+ try{localStorage.setItem(orderSoundKey,"1")}catch{}
+ try{
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(AudioContextClass){orderAudioContext=orderAudioContext||new AudioContextClass();await orderAudioContext.resume()}
+ }catch{}
+ let permission="unsupported";
+ if("Notification" in window){
+  try{permission=Notification.permission==="default"?await Notification.requestPermission():Notification.permission}catch{permission="denied"}
+ }
+ if(permission==="granted")button.textContent="Alertas ativados ✓";
+ else if(permission==="denied")button.textContent="Som ativado · navegador bloqueado";
+ else button.textContent="Som ativado";
+ button.classList.add("alerts-enabled");
+});
+renderOrderNotifications();
 async function api(path,options={}){
  const response=await fetch("/api/admin/"+path,{credentials:"same-origin",cache:"no-store",...options});
  const data=await response.json();if(!response.ok)throw Error(data.error||"Erro no servidor");return data;
@@ -61,7 +218,9 @@ async function api(path,options={}){
 async function loadServer(){
  try{
  const [orders,settings]=await Promise.all([api("orders"),api("settings")]);
- serverOrders=orders.orders||[];serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();loadCheckoutHealth();
+ const freshOrders=orders.orders||[];
+ processOrderSnapshot(freshOrders);
+ serverOrders=freshOrders;serverSettings=settings.settings||{};renderAll();loadAnalytics();loadSummary();loadCheckoutHealth();startOrderPolling();
  }catch(e){
  $("#sectionEyebrow").textContent="CONEXÃO INDISPONÍVEL";
  $("#recentOrders").textContent="Não foi possível conectar ao banco: "+e.message;
