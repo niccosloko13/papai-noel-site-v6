@@ -35,7 +35,7 @@ const titles={
  dashboard:["LOJA","Visão geral"],orders:["LOJA","Pedidos"],products:["LOJA","Produto"],
  logistics:["OPERAÇÃO","Logística"],inventory:["OPERAÇÃO","Estoque"],
  finance:["GESTÃO","Financeiro"],pix:["GESTÃO","Pagamentos"],
- marketplaces:["CRESCIMENTO","Canais de venda"],marketing:["CRESCIMENTO","Marketing"],
+ checkout:["LOJA","Checkout próprio"],marketing:["CRESCIMENTO","Marketing"],
  seo:["CRESCIMENTO","SEO"],system:["SISTEMA","Diagnóstico"]
 };
 function selectTab(id){
@@ -75,7 +75,7 @@ async function loadCheckoutHealth(){
  el.textContent="Verificando Neon e configuração Pix...";
  try{
   const r=await api("checkout-health");
-  el.textContent="Neon: "+(r.neon?.ok?"conectado ✓":"indisponível")+" · Pix: "+(r.pix?.configured?"configurado ✓":"incompleto")+" · QR/BR Code: "+(r.pix?.brCodeValid?"válido ✓":"não validado")+(r.checkout?.ready?" · Pronto para receber pedidos":" · Requer atenção");
+  el.textContent="Banco: "+(r.neon?.ok?"conectado ✓":"indisponível")+" · Pix: "+(r.pix?.configured?"configurado ✓":"incompleto")+" · QR manual: "+(r.pix?.brCodeValid?"pronto ✓":"aguardando configuração");
  }catch(e){el.textContent="Falha no diagnóstico: "+e.message}
 }
 $("#checkCheckoutHealth")?.addEventListener("click",loadCheckoutHealth);
@@ -98,8 +98,8 @@ async function loadAnalytics(){
   $("#realVisitors").textContent=Number(data.visitors||0).toLocaleString("pt-BR");
   if($("#realSessions"))$("#realSessions").textContent=Number(data.sessions||0).toLocaleString("pt-BR");
   $("#realCheckouts").textContent=data.checkouts.toLocaleString("pt-BR");
-  $("#realMlClicks").textContent=Number(data.mlClicks||0).toLocaleString("pt-BR");
-  $("#realShopeeClicks").textContent=Number(data.shopeeClicks||0).toLocaleString("pt-BR");
+  $("#realMlClicks").textContent=Number(data.ordersCreated||0).toLocaleString("pt-BR");
+  $("#realShopeeClicks").textContent=Number(data.paymentNotices||0).toLocaleString("pt-BR");
   $("#realConversion").textContent=data.conversionRate===null?"—":data.conversionRate.toLocaleString("pt-BR")+"%";
   $("#realAbandonment").textContent=data.checkoutAbandonment===null?"—":data.checkoutAbandonment.toLocaleString("pt-BR")+"%";
   $("#realAnalyticsNote").textContent="Visitantes únicos por IP anonimizado (HMAC), últimos 30 dias. Uma rede compartilhada pode contar como uma pessoa; IP dinâmico pode contar outra vez. Contagem disponível apenas após esta atualização. Nenhum IP em claro é armazenado.";
@@ -118,7 +118,7 @@ function metrics(){
  $("#mRevenue").textContent=money(revenue);$("#mRevenueSub").textContent=paid.length+" pedidos pagos";
  $("#mOrders").textContent=orders.length;$("#mOrdersSub").textContent=today.length+" hoje";
  $("#mTicket").textContent=money(paid.length?revenue/paid.length:0);
- $("#mPending").textContent=orders.filter(o=>o.status==="Aguardando pagamento").length;
+ $("#mPending").textContent=orders.filter(o=>["Aguardando QR Code","Aguardando pagamento"].includes(o.status)).length;
  $("#mBasic").textContent=paid.length;
  $("#fCreated").textContent=orders.length;$("#fInformed").textContent=informed.length;$("#fPaid").textContent=paid.length;
  $("#fConversion").textContent=(informed.length?Math.round(paid.length/(informed.length+paid.length)*100):0)+"%";
@@ -128,20 +128,23 @@ function metrics(){
 function kitLabel(o){return esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name).join(", ")||o.plan||"Kit")}
 function orderRow(o){
  const id=esc(o.id),status=esc(o.status||"—"),contact=String(o.phone||"").replace(/\D/g,"");
+ const address=[o.address,o.number,o.complement,o.neighborhood,o.city,o.state].filter(Boolean).join(", ");
  const details='<details class="order-detail"><summary>Ver dados completos do pedido</summary>'+
  '<div class="order-detail-grid">'+
  '<div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div>'+
  '<div><small>WHATSAPP</small><strong>'+esc(o.phone||"—")+'</strong></div>'+
- '<div><small>PERSONALIZAÇÃO</small><strong>'+esc(o.childName||"Sem personalização")+'</strong></div>'+
- '<div><small>MENSAGEM</small><p>'+esc(o.letter||"Mensagem padrão")+'</p></div>'+
- '<div><small>ENDEREÇO</small><p>'+esc([o.address,o.number,o.complement].filter(Boolean).join(", "))+'</p></div>'+
+ '<div><small>ENDEREÇO DE ENTREGA</small><p>'+esc(address||"—")+'</p></div>'+
  '<div><small>CEP</small><strong>'+esc(o.cep||"—")+'</strong></div>'+
- '<div><small>ITENS</small><p>'+esc((o.items||[]).map(i=>i.qty+"× "+i.name+" — "+money(i.unitPrice)).join(" • "))+'</p></div>'+
- '<div><small>VALOR FINAL</small><strong>'+money(o.total)+'</strong></div>'+
+ '<div><small>ITENS</small><p>'+esc((o.items||[]).map(i=>(i.qty||1)+"× "+i.name+" — "+money(i.unitPrice)).join(" • "))+'</p></div>'+
+ '<div><small>PRODUTOS</small><strong>'+money(o.subtotal??o.total)+'</strong></div>'+
+ '<div><small>FRETE</small><strong>GRÁTIS</strong></div>'+
+ '<div><small>VALOR TOTAL</small><strong>'+money(o.total)+'</strong></div>'+
+ '<div><small>PIX</small><strong>'+esc(o.pixPayload?"QR Pix liberado":"Aguardando liberação manual")+'</strong></div>'+
  '</div></details>';
  return '<article class="order-row"><div class="order-top"><div><b>'+id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+status+'</span></div>'+
- '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>KIT</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL</small><strong>'+money(o.total)+'</strong></div></div>'+
+ '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>PRODUTO</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL · FRETE GRÁTIS</small><strong>'+money(o.total)+'</strong></div></div>'+
  details+'<div class="order-actions">'+
+ (o.status==="Aguardando QR Code"?'<button class="pay" data-generate-pix-id="'+id+'" data-total="'+Number(o.total||0)+'">Gerar QR Pix</button>':'')+
  (o.status==="Pagamento informado"?'<button class="pay" data-status-id="'+id+'" data-status="Pago">Confirmar pagamento</button>':'')+
  (o.status==="Pago"?'<button data-status-id="'+id+'" data-status="Produção">Iniciar produção</button>':'')+
  (o.status==="Produção"?'<button data-status-id="'+id+'" data-status="Enviado">Marcar como enviado</button>':'')+
@@ -157,13 +160,23 @@ function bindStatus(){
   catch(e){alert("Não foi possível atualizar: "+e.message)}
  });
 }
+function bindGeneratePix(){
+ $$("[data-generate-pix-id]").forEach(b=>b.onclick=async()=>{
+  const id=b.dataset.generatePixId,amount=Number(b.dataset.total)||0;
+  if(!confirm("Gerar e liberar o QR Pix deste pedido no valor de "+money(amount)+"? Confira os dados antes de continuar."))return;
+  b.disabled=true;b.textContent="Gerando QR Pix...";
+  try{await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"generate-pix"})});await loadServer()}
+  catch(e){b.disabled=false;b.textContent="Gerar QR Pix";alert("Não foi possível gerar o QR Pix: "+e.message)}
+ });
+}
+
 function renderOrders(){
  const q=$("#orderSearch").value.trim().toLowerCase(),filter=$("#orderFilter").value;
  const orders=getOrders().filter(o=>{
   const hay=[o.id,o.customerName,o.phone,o.childName,kitLabel(o)].join(" ").toLowerCase();
   return (!q||hay.includes(q))&&(filter==="all"||o.status===filter);
  });
- $("#ordersList").innerHTML=orders.map(orderRow).join("")||'<p class="muted">Nenhum pedido encontrado.</p>';bindStatus();
+ $("#ordersList").innerHTML=orders.map(orderRow).join("")||'<p class="muted">Nenhum pedido encontrado.</p>';bindStatus();bindGeneratePix();
 }
 $("#orderSearch").addEventListener("input",renderOrders);$("#orderFilter").addEventListener("change",renderOrders);
 
@@ -210,10 +223,10 @@ function loadPix(){
 }
 $("#savePix").onclick=async()=>{
  const button=$("#savePix"),message=$("#pixMsg");
- const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:Number($("#pixDiscount").value),shippingFlat:Number($("#shippingFlat").value)};
+ const out={enabled:$("#pixEnabled").checked,key:$("#pixKey").value.trim(),displayName:$("#displayName").value.trim(),receiverName:$("#receiverName").value.trim(),city:$("#pixCity").value.trim(),discount:0,shippingFlat:0};
  message.dataset.state="";message.textContent="";
  if(out.enabled&&(!out.key||!out.receiverName||!out.city)){message.dataset.state="error";message.textContent="Preencha chave Pix, nome do recebedor e cidade antes de ativar.";return}
- if(!Number.isFinite(out.discount)||out.discount<0||out.discount>50||!Number.isFinite(out.shippingFlat)||out.shippingFlat<0||out.shippingFlat>1000){message.dataset.state="error";message.textContent="Confira desconto (0 a 50%) e frete (0 a R$ 1.000).";return}
+ 
  button.disabled=true;button.textContent="Salvando...";message.textContent="Conferindo configuração...";
  try{
   await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"pix",value:out})});
@@ -221,7 +234,7 @@ $("#savePix").onclick=async()=>{
   const saved=readBack.settings?.pix;
   if(!saved||saved.enabled!==out.enabled||saved.key!==out.key||Number(saved.discount)!==out.discount)throw Error("Salvo, mas não foi possível confirmar a configuração; atualize e confira.");
   serverSettings.pix=saved;loadPix();
-  message.dataset.state="success";message.textContent="Configuração conferida no servidor. A validação bancária do recebedor ainda depende do app do banco.";
+  message.dataset.state="success";message.textContent="Chave Pix salva. Agora você pode gerar o QR manualmente dentro de cada pedido.";
  }catch(e){message.dataset.state="error";message.textContent="Não foi possível confirmar: "+e.message}
  finally{button.disabled=false;button.textContent="Salvar configuração"}
 };
@@ -320,36 +333,13 @@ $("#saveSeo").onclick=async()=>{
  finally{button.disabled=false;button.textContent="Salvar rascunho de SEO"}
 };
 
-const marketplaceHosts={
- mercadolivre:["mercadolivre.com.br","mercadolivre.com"],
- shopee:["shopee.com.br","shopee.com"]
-};
-function marketplaceUrlValid(raw,type){
- if(!raw)return true;
- try{const u=new URL(raw);return u.protocol==="https:"&&!u.username&&!u.password&&marketplaceHosts[type].some(host=>u.hostname===host||u.hostname.endsWith("."+host))}
- catch{return false}
+function loadCheckoutInfo(){
+ const el=$("#checkoutFlowStatus");if(!el)return;
+ const c=serverSettings.pix||{};
+ el.textContent=c.enabled&&c.key&&c.receiverName?"Frete grátis ativo · Chave Pix configurada · QR Code só é liberado quando você clicar no pedido":"Frete grátis ativo · Configure a chave Pix no menu Pagamentos para liberar cobranças";
 }
-function loadMarketplaces(){
- const c=serverSettings.marketplaces||{};
- $("#marketplaceMercadoLivre").value=c.mercadolivre||"";
- $("#marketplaceShopee").value=c.shopee||"";
-}
-$("#saveMarketplaces").addEventListener("click",async()=>{
- const msg=$("#marketplacesMsg"),button=$("#saveMarketplaces");
- const value={mercadolivre:$("#marketplaceMercadoLivre").value.trim(),shopee:$("#marketplaceShopee").value.trim()};
- if(!marketplaceUrlValid(value.mercadolivre,"mercadolivre")||!marketplaceUrlValid(value.shopee,"shopee")){
-  msg.dataset.state="error";msg.textContent="Use URLs HTTPS oficiais do Mercado Livre e da Shopee.";return;
- }
- button.disabled=true;msg.textContent="Salvando e conferindo...";
- try{
-  await api("settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:"marketplaces",value})});
-  const fresh=await api("settings");const saved=fresh.settings?.marketplaces;
-  if(!saved||saved.mercadolivre!==value.mercadolivre||saved.shopee!==value.shopee)throw Error("Não foi possível confirmar os links no banco.");
-  serverSettings.marketplaces=saved;msg.dataset.state="success";msg.textContent="Links salvos e conferidos! A vitrine usa os links ativos assim que recarregar.";
- }catch(e){msg.dataset.state="error";msg.textContent="Falha ao salvar: "+e.message}
- finally{button.disabled=false}
-});
-function renderAll(){metrics();renderOrders();renderLogistics();renderFinance();loadInventory();loadPix();loadMarketplaces();loadMarketing();loadSeo();loadProducts();bindStatus()}
+
+function renderAll(){metrics();renderOrders();renderLogistics();renderFinance();loadInventory();loadPix();loadCheckoutInfo();loadMarketing();loadSeo();loadProducts();bindStatus();bindGeneratePix()}
 
 function renderLogistics(){
  const orders=getOrders();
@@ -367,7 +357,7 @@ function renderFinance(){
  const orders=getOrders();
  const paidStatuses=["Pago","Produção","Enviado","Concluído"];
  const paid=orders.filter(o=>paidStatuses.includes(o.status));
- const pending=orders.filter(o=>["Aguardando pagamento","Pagamento informado"].includes(o.status));
+ const pending=orders.filter(o=>["Aguardando QR Code","Aguardando pagamento","Pagamento informado"].includes(o.status));
  const cancelled=orders.filter(o=>o.status==="Cancelado");
  const total=items=>items.reduce((sum,o)=>sum+(Number(o.total)||0),0);
  $("#financePaid").textContent=money(total(paid));
