@@ -1,6 +1,7 @@
 const crypto=require("node:crypto");
 const {isIP}=require("node:net");
 const {db,init}=require("./_db");
+const {initEvents}=require("./events");
 const PRICE_FALLBACK=132.90;
 const digits=v=>String(v||"").replace(/\D/g,"");
 function clean(v,max){return typeof v==="string"?v.trim().slice(0,max):""}
@@ -24,6 +25,9 @@ module.exports=async function(req,res){
  if(req.method!=="POST"){res.setHeader("Allow","POST");return res.status(405).end()}
  if(!validOrigin(req))return res.status(403).json({error:"Origem não autorizada"});
  const body=req.body||{};
+ const sessionCandidate=clean(body.sessionId,64);
+ const sessionId=/^[a-zA-Z0-9_-]{16,64}$/.test(sessionCandidate)?sessionCandidate:"";
+ const attribution=body.attribution&&typeof body.attribution==="object"?body.attribution:{};
  const customerName=clean(body.customerName,100),cpf=digits(body.cpf),phone=digits(body.phone),cep=digits(body.cep);
  const address=clean(body.address,120),number=clean(body.number,20),complement=clean(body.complement,100);
  const neighborhood=clean(body.neighborhood,100),city=clean(body.city,100),state=clean(body.state,2).toUpperCase();
@@ -55,13 +59,19 @@ module.exports=async function(req,res){
   const accessKey=crypto.randomBytes(32).toString("hex");
   const paymentClaimHash=crypto.createHash("sha256").update(accessKey).digest("hex");
   const order={
-   customerName,cpf,phone,cep,address,number,complement,neighborhood,city,state,
+   customerName,cpf,phone,cep,address,number,complement,neighborhood,city,state,sessionId,
    items:[{id:"basic",name:"Lareira Feliz",qty:quantity,unitPrice}],
    subtotal:total,shipping:0,shippingLabel:"Frete grátis",total,
    paymentClaimHash,paymentMethod:"Pix",paymentStatus:"Aguardando liberação manual",
    source:"loja_propria",createdAt:new Date().toISOString()
   };
   await db().query("INSERT INTO natal_orders(id,status,data) VALUES($1,'Aguardando QR Code',$2::jsonb)",[id,JSON.stringify(order)]);
+  if(sessionId){
+   try{
+    await initEvents();
+    await db().query("INSERT INTO natal_events(session_id,event_type,page,origin,utm_source,utm_medium,utm_campaign,utm_content,product_id,order_id) VALUES($1,'order_created','/checkout.html',$2,$3,$4,$5,$6,'basic',$7)",[sessionId,clean(req.headers.origin,150),clean(attribution.utm_source,90),clean(attribution.utm_medium,90),clean(attribution.utm_campaign,90),clean(attribution.utm_content,90),id]);
+   }catch(eventError){console.error("checkout order event",eventError.code||eventError.message)}
+  }
   return res.status(201).json({ok:true,id,accessKey,status:"Aguardando QR Code",unitPrice,quantity,shipping:0,total});
  }catch(e){console.error("Checkout order creation",e.code||e.message);return res.status(503).json({error:"Não foi possível registrar o pedido agora. Tente novamente ou fale com nosso atendimento."})}
 };
