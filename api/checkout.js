@@ -2,7 +2,7 @@ const crypto=require("node:crypto");
 const {isIP}=require("node:net");
 const {db,init}=require("./_db");
 const {initEvents}=require("./events");
-const PRICE_FALLBACK=132.90;
+const PRICE_FALLBACK=124.00;
 const digits=v=>String(v||"").replace(/\D/g,"");
 function clean(v,max){return typeof v==="string"?v.trim().slice(0,max):""}
 function validCpf(value){
