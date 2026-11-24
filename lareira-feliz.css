@@ -181,3 +181,92 @@ html{scroll-behavior:smooth}body{margin:0;background:#f8e5ce;color:var(--text);f
   outline: 3px solid #2f99fd;
   outline-offset: 4px;
 }
+
+
+/* Identidade visual e conversão da vitrine Lareira Feliz */
+.logo{
+  display:inline-flex;
+  align-items:center;
+  flex:0 1 auto;
+  min-width:0;
+  text-decoration:none;
+  line-height:0;
+}
+.logo img{
+  display:block;
+  width:clamp(220px,27vw,360px);
+  height:auto;
+  max-height:76px;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 2px rgba(70,35,15,.10));
+}
+.product-price-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  width:min(100%,555px);
+  margin:0 0 18px;
+  padding:13px 15px;
+  border:1px solid #d7ad62;
+  border-radius:18px;
+  background:linear-gradient(115deg,#fffdf5,#ffefd4);
+  box-shadow:0 7px 17px rgba(91,54,20,.12),inset 0 1px #fff;
+}
+.price-details{display:flex;flex-direction:column;gap:2px;min-width:0}
+.price-eyebrow{font-size:10px;font-weight:900;letter-spacing:.13em;color:#80511f}
+.price-details strong{font-family:'Playfair Display',Georgia,serif;font-size:clamp(29px,3.2vw,42px);line-height:1.05;color:#073d27;white-space:nowrap}
+.price-details small{font-size:11px;color:#795f48}
+.price-action{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:142px;min-height:55px;padding:8px 13px;border:2px solid #fff0a0;border-radius:13px;
+  background:linear-gradient(180deg,#fff34a,#ffd500 75%,#f3b900);color:#052d65;
+  box-shadow:0 3px 0 #bd8b0a;font-weight:900;text-align:center;text-decoration:none;
+  transition:transform .2s,filter .2s;
+}
+.price-action:hover{transform:translateY(-2px);filter:brightness(1.03)}
+.price-action span{font-size:15px;line-height:1.15}
+.price-action small{font-size:11px;line-height:1.15}
+.product-disclaimer{margin:-10px 0 15px;color:#79543b;font-size:12px;font-weight:700}
+.security-note{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:15px;
+  width:min(100%,1410px);margin:13px auto 0;padding:15px 20px;
+  border:1px solid #d9ad5b;border-radius:18px;
+  background:linear-gradient(110deg,#073d28,#0b5134);color:#fff8e8;
+  box-shadow:0 8px 20px rgba(44,32,12,.15);
+}
+.security-note-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fff0c9;color:#0b4a2d;font-size:24px}
+.security-note-copy strong{display:block;color:#ffe4a0;font-size:16px;font-weight:900}
+.security-note-copy p{margin:3px 0 0;color:#fff8e8;font-size:12px;line-height:1.45}
+.security-note>a{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 13px;border:1px solid #f2d58e;border-radius:11px;color:#173b2a;background:#fff2d1;font-size:12px;font-weight:900;white-space:nowrap}
+.privacy-consent{
+  position:fixed;z-index:100000;left:12px;right:12px;bottom:12px;width:min(510px,calc(100% - 24px));
+  margin-inline:auto;padding:17px;border:1px solid #ddc2a1;border-radius:14px;
+  background:#fffaf0;color:#40251e;box-shadow:0 12px 36px #0004;
+  font:14px/1.5 system-ui,sans-serif;
+}
+.privacy-consent>strong{display:block;font-size:15px;margin-bottom:7px}
+.privacy-consent p{margin:0 0 12px}
+.privacy-consent a{color:#8d3224;text-decoration:underline}
+.privacy-consent-actions{display:flex;gap:10px}
+.privacy-consent button{flex:1;min-height:41px;padding:8px 12px;border-radius:9px;border:1px solid #8c7167;background:#fff;color:#54352c;font:inherit;font-weight:700;cursor:pointer}
+.privacy-consent button[data-consent="yes"]{border:0;background:#8d271e;color:#fff}
+.privacy-consent button:focus-visible{outline:3px solid #2f99fd;outline-offset:3px}
+@media(max-width:700px){
+  .logo img{width:clamp(160px,43vw,240px);max-height:58px}
+  .header{gap:8px}
+  .product-price-card{max-width:490px;margin:0 auto 13px;padding:10px 11px;gap:8px}
+  .price-details strong{font-size:clamp(27px,8vw,36px)}
+  .price-details small{font-size:9px}
+  .price-eyebrow{font-size:9px}
+  .price-action{min-width:120px;min-height:49px;padding:7px 9px}
+  .price-action span{font-size:13px}
+  .price-action small{font-size:10px}
+  .product-disclaimer{font-size:10px;margin:-7px auto 12px;max-width:490px}
+  .security-note{grid-template-columns:auto minmax(0,1fr);gap:10px;padding:12px;border-radius:15px}
+  .security-note-icon{width:38px;height:38px;font-size:20px}
+  .security-note-copy strong{font-size:13px}
+  .security-note-copy p{font-size:10px}
+  .security-note>a{grid-column:1/-1;width:100%;padding:9px}
+}
+@media(prefers-reduced-motion:reduce){.price-action{transition:none}}
