@@ -1,22 +1,22 @@
 const {valid}=require("../_auth");
 const {db}=require("../_db");
 const {initEvents}=require("../events");
+const paidStatuses=["Pago","Produção","Enviado","Concluído"];
+const funnelEvents=["begin_checkout","checkout_step","order_created","pix_released","payment_informed","payment_confirmed"];
 module.exports=async function(req,res){
  res.setHeader("Cache-Control","no-store");
  if(!valid(req))return res.status(401).json({error:"Acesso restrito"});
  if(req.method!=="GET")return res.status(405).end();
  try{
   await initEvents();
-  const a=await db().query(`SELECT
-   COUNT(DISTINCT visitor_hash) FILTER(WHERE event_type='page_view' AND visitor_hash<>'')::int AS visitors,
-   COUNT(DISTINCT session_id) FILTER(WHERE event_type='page_view')::int AS sessions,
-   COUNT(DISTINCT session_id) FILTER(WHERE event_type='begin_checkout')::int AS checkouts,
-   COUNT(DISTINCT order_id) FILTER(WHERE event_type='order_created' AND order_id<>'')::int AS orders_created,
-   COUNT(DISTINCT order_id) FILTER(WHERE event_type='payment_informed' AND order_id<>'')::int AS payment_notices
-   FROM natal_events WHERE created_at>=now()-interval '30 days'`);
-  const b=await db().query("SELECT COUNT(*)::int AS paid FROM natal_orders WHERE created_at>=now()-interval '30 days' AND status=ANY($1)",[["Pago","Produção","Enviado","Concluído"]]);
-  const campaigns=await db().query(`SELECT COALESCE(NULLIF(utm_source,''),'Direto / não informado') AS source,COALESCE(NULLIF(utm_campaign,''),'Sem campanha') AS campaign,COALESCE(NULLIF(utm_content,''),'Sem criativo') AS creative,COUNT(DISTINCT session_id)::int AS sessions,COUNT(DISTINCT order_id) FILTER(WHERE event_type='order_created' AND order_id<>'')::int AS orders FROM natal_events WHERE created_at>=now()-interval '30 days' GROUP BY 1,2,3 ORDER BY sessions DESC LIMIT 15`);
-  const x=a.rows[0]||{},visitors=Number(x.visitors)||0,checkouts=Number(x.checkouts)||0,orders=Number(x.orders_created)||0;
-  return res.json({period:"Últimos 30 dias",visitors,sessions:Number(x.sessions)||0,checkouts,ordersCreated:orders,paymentNotices:Number(x.payment_notices)||0,paid:Number(b.rows[0]?.paid)||0,conversionRate:visitors?Math.round(orders/visitors*10000)/100:null,checkoutAbandonment:checkouts?Math.round(Math.max(0,checkouts-orders)/checkouts*10000)/100:null,campaigns:campaigns.rows});
- }catch(e){console.error("analytics dashboard",e.code||e.message);return res.status(503).json({error:"Métricas indisponíveis"})}
+  const a=await db().query("SELECT COUNT(DISTINCT visitor_hash) FILTER(WHERE event_type='page_view' AND visitor_hash<>'')::int AS visitors, COUNT(DISTINCT session_id) FILTER(WHERE event_type='page_view')::int AS sessions, COUNT(DISTINCT session_id) FILTER(WHERE event_type='begin_checkout')::int AS checkouts, COUNT(DISTINCT order_id) FILTER(WHERE event_type='order_created' AND order_id<>'')::int AS orders_created, COUNT(DISTINCT order_id) FILTER(WHERE event_type='payment_informed' AND order_id<>'')::int AS payment_notices FROM natal_events WHERE created_at>=now()-interval '30 days'");
+  const b=await db().query("SELECT COUNT(*)::int AS paid FROM natal_orders WHERE created_at>=now()-interval '30 days' AND status=ANY($1)",[paidStatuses]);
+  const campaigns=await db().query("SELECT COALESCE(NULLIF(utm_source,''),'Direto / não informado') AS source,COALESCE(NULLIF(utm_campaign,''),'Sem campanha') AS campaign,COALESCE(NULLIF(utm_content,''),'Sem criativo') AS creative,COUNT(DISTINCT session_id)::int AS sessions,COUNT(DISTINCT order_id) FILTER(WHERE event_type='order_created' AND order_id<>'')::int AS orders FROM natal_events WHERE created_at>=now()-interval '30 days' GROUP BY 1,2,3 ORDER BY sessions DESC LIMIT 15");
+  const c=await db().query("SELECT COUNT(DISTINCT session_id) FILTER(WHERE event_type='begin_checkout')::int AS started, COUNT(DISTINCT session_id) FILTER(WHERE event_type='checkout_step' AND product_id='cep')::int AS cep, COUNT(DISTINCT session_id) FILTER(WHERE event_type='checkout_step' AND product_id='endereco')::int AS address, COUNT(DISTINCT session_id) FILTER(WHERE event_type='checkout_step' AND product_id='dados')::int AS customer, COUNT(DISTINCT session_id) FILTER(WHERE event_type='checkout_step' AND product_id='termos')::int AS terms, COUNT(DISTINCT session_id) FILTER(WHERE event_type='checkout_step' AND product_id='confirmacao')::int AS review, COUNT(DISTINCT session_id) FILTER(WHERE event_type='order_created')::int AS orders, COUNT(DISTINCT session_id) FILTER(WHERE event_type='pix_released')::int AS pix_released, COUNT(DISTINCT session_id) FILTER(WHERE event_type='payment_informed')::int AS payment_informed, COUNT(DISTINCT session_id) FILTER(WHERE event_type='payment_confirmed')::int AS payment_confirmed FROM natal_events WHERE created_at>=now()-interval '30 days'");
+  const d=await db().query("SELECT session_id,MAX(created_at) AS last_activity,ARRAY_REMOVE(ARRAY_AGG(DISTINCT product_id) FILTER(WHERE event_type='checkout_step'),NULL) AS steps,BOOL_OR(event_type='order_created') AS completed,BOOL_OR(event_type='pix_released') AS pix_released,BOOL_OR(event_type='payment_informed') AS payment_informed,BOOL_OR(event_type='payment_confirmed') AS paid,MAX(NULLIF(utm_source,'')) AS source,MAX(NULLIF(utm_campaign,'')) AS campaign FROM natal_events WHERE created_at>=now()-interval '30 days' AND event_type=ANY($1) GROUP BY session_id ORDER BY MAX(created_at) DESC LIMIT 30",[funnelEvents]);
+  const x=a.rows[0]||{},st=c.rows[0]||{},visitors=Number(x.visitors)||0,checkouts=Number(x.checkouts)||0,orders=Number(x.orders_created)||0,started=Number(st.started)||0;
+  const checkoutStages={started,cep:Number(st.cep)||0,address:Number(st.address)||0,customer:Number(st.customer)||0,terms:Number(st.terms)||0,review:Number(st.review)||0,orders:Number(st.orders)||0,pixReleased:Number(st.pix_released)||0,paymentInformed:Number(st.payment_informed)||0,paymentConfirmed:Number(st.payment_confirmed)||0,abandoned:Math.max(0,started-(Number(st.orders)||0))};
+  const recentSessions=d.rows.map(row=>({sessionId:String(row.session_id||"").slice(0,8),lastActivity:row.last_activity,steps:row.steps||[],completed:!!row.completed,pixReleased:!!row.pix_released,paymentInformed:!!row.payment_informed,paid:!!row.paid,source:row.source||"Direto / não informado",campaign:row.campaign||"Sem campanha"}));
+  return res.json({period:"Últimos 30 dias",visitors,sessions:Number(x.sessions)||0,checkouts,ordersCreated:orders,paymentNotices:Number(x.payment_notices)||0,paid:Number(b.rows[0]?.paid)||0,conversionRate:visitors?Math.round(orders/visitors*10000)/100:null,checkoutAbandonment:checkouts?Math.round(Math.max(0,checkouts-orders)/checkouts*10000)/100:null,checkoutStages,recentSessions,campaigns:campaigns.rows});
+ }catch(e){console.error("Admin analytics",e.code||e.message);return res.status(503).json({error:"Métricas indisponíveis"})}
 };
