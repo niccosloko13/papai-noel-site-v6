@@ -41,7 +41,17 @@ p{font-size:13px;line-height:1.65;color:#71695e;margin:10px auto;max-width:390px
 </main>
 <script>
 const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get("id")||"";
-const access=(()=>{try{const x=JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}");return x.id===id?x.accessKey:""}catch{return ""}})();
+const access=(()=>{try{
+ const params=new URLSearchParams(location.hash.replace(/^#/,""));
+ const incoming=params.get("k");
+ if(incoming&&/^[a-f0-9]{64}$/.test(incoming)){
+  localStorage.setItem("natal_customer_order_access",JSON.stringify({id,accessKey:incoming}));
+  history.replaceState(null,"",location.pathname+location.search);
+  return incoming;
+ }
+ const x=JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}");
+ return x.id===id?x.accessKey:"";
+ }catch{return ""}})();
 let interval=null,attempts=0,redirecting=false;
 $("#orderId").textContent="Pedido "+(id||"—");
 function error(message){$("#processError").style.display="block";$("#processError").textContent=message;$("#spinner").style.display="none";$("#heading").textContent="Seu pedido foi registrado"}
