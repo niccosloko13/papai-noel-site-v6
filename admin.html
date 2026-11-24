@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css?v=20261123-control-center-v1">
+<link rel="stylesheet" href="admin.css?v=20261124-order-alerts-v1">
 </head>
 <body>
 <div class="admin-login" id="adminLogin">
@@ -67,6 +67,19 @@
         <p>Gestão da Lareira Feliz em um único lugar</p>
       </div>
       <div class="topbar-actions">
+        <div class="notification-center">
+          <button type="button" class="notification-trigger" id="notificationBell" aria-expanded="false" aria-controls="notificationPopover">
+            <span aria-hidden="true">♧</span><span>Notificações</span><span class="notification-count" id="notificationCount" hidden>0</span>
+          </button>
+          <section class="notification-popover" id="notificationPopover" aria-label="Notificações de pedidos" hidden>
+            <div class="notification-popover-head">
+              <div><strong>Pedidos novos</strong><small id="notificationStatus">Aguardando novos pedidos</small></div>
+              <button type="button" id="clearNotifications">Marcar como vistos</button>
+            </div>
+            <div class="notification-list" id="notificationList"><p class="muted">Nenhum pedido novo por enquanto.</p></div>
+          </section>
+        </div>
+        <button class="btn ghost notification-permission" id="enableOrderAlerts" type="button">Ativar alertas e som</button>
         <span class="environment-pill" id="environmentBadge">Ambiente protegido</span>
         <span class="live-dot">Acesso restrito</span>
         <button class="btn ghost" id="logoutBtn">Sair</button>
@@ -295,7 +308,8 @@
       </article>
     </section>
   </main>
+  <div class="order-toast-container" id="orderToastContainer" aria-live="polite" aria-atomic="false"></div>
 </div>
 <script src="store-data.js"></script>
-<script src="admin.js?v=20261115-auth"></script>
+<script src="admin.js?v=20261124-order-alerts-v1"></script>
 </body></html>
