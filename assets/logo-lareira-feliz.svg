@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" role="img" aria-labelledby="title desc">
+  <title id="title">Lareira Feliz</title>
+  <desc id="desc">Logo da Lareira Feliz, da Papai Noel Passou Aqui</desc>
+  <defs>
+    <linearGradient id="brick" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c51d22"/><stop offset="1" stop-color="#861015"/></linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe18a"/><stop offset="1" stop-color="#e88724"/></linearGradient>
+  </defs>
+  <g transform="translate(8 6)">
+    <path d="M23 49h130v13H23z" fill="#e5b75d" stroke="#8a581e" stroke-width="3"/>
+    <path d="M35 18h29v31H35zM111 18h29v31h-29z" fill="url(#brick)" stroke="#741014" stroke-width="3"/>
+    <path d="M29 62h118v83H29z" rx="8" fill="#f8e6ca" stroke="#8d1719" stroke-width="6"/>
+    <path d="M40 75h96v70H40z" fill="#143c2c" stroke="#c28a37" stroke-width="4"/>
+    <path d="M86 131c-20-14-12-29-2-39 1 11 9 12 9 21 8-8 9-18 7-27 20 17 25 32 12 45-8 8-19 8-26 0Z" fill="url(#flame)"/>
+    <path d="M87 132c-7-8-2-16 5-21 0 7 7 9 6 16-1 5-6 8-11 5Z" fill="#fff0b8"/>
+    <path d="M23 62h130" stroke="#d5a04d" stroke-width="4" stroke-linecap="round"/>
+    <path d="m12 32 7-10 7 10-7 10z" fill="#e6b84e"/>
+    <path d="m154 20 5-8 5 8-5 8z" fill="#e6b84e"/>
+    <path d="M11 145h150" stroke="#d5a04d" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g>
+    <text x="185" y="91" font-family="Georgia, 'Times New Roman', serif" font-size="67" font-weight="700" letter-spacing="-2.8" fill="#0a432d">Lareira Feliz</text>
+    <path d="M188 108h410" stroke="#d6a24b" stroke-width="2"/>
+    <text x="190" y="136" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="4.2" fill="#8c1c1e">PAPAI NOEL PASSOU AQUI</text>
+    <path d="m617 119 5-9 5 9-5 9z" fill="#d6a24b"/>
+    <path d="m643 119 5-9 5 9-5 9z" fill="#d6a24b"/>
+  </g>
+</svg>
