@@ -316,7 +316,7 @@ function orderPaymentTools(o){
  const id=esc(o.id),payload=pending?String(o.pixPayloadDraft||""):String(o.pixPayload||"");
  const receiver=pending?String(o.pixDraftReceiverName||""):String(o.paymentReceiverName||"");
  const expiry=o.expiresAt?new Date(o.expiresAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"";
- const validated=!!payload,receiverText=receiver?esc(receiver):(validated?"Aguardando confirmação":"Aguardando validação");
+ const validated=!!payload,dynamic=pending?!!o.pixDraftDynamic:!!o.pixDynamic,receiverText=receiver?esc(receiver):(validated?"Aguardando confirmação":"Aguardando validação");
  const statusLabel=released?"PIX LIBERADO":validated?"PIX VALIDADO":"AGUARDANDO PIX";
  const input=pending
   ?'<label class="pix-paste-label"><span>PIX COPIA E COLA</span><textarea data-pix-input="'+id+'" rows="2" maxlength="2048" placeholder="Cole aqui o código Pix do banco">'+esc(payload)+'</textarea></label>'
@@ -329,7 +329,7 @@ function orderPaymentTools(o){
   '<div class="lf-pix-banner"><span class="lf-pix-brand-mark" aria-hidden="true">✦</span><div><small>LAREIRA FELIZ · CENTRAL DE PAGAMENTOS</small><strong>Pagamento manual</strong></div><span class="lf-pix-state">'+statusLabel+'</span></div>'+
   '<div class="lf-pix-order-summary"><img src="/assets/lareira-real-frente.jpeg" alt="Lareira Feliz" width="64" height="64"><div class="lf-pix-order-copy"><small>PEDIDO</small><strong>'+id+'</strong><span>'+kitLabel(o)+'</span></div><div class="lf-pix-order-total"><small>TOTAL</small><strong>'+money(o.total)+'</strong><span>Frete grátis</span></div></div>'+
   '<div class="lf-pix-content"><div class="lf-pix-code-column">'+input+
-  '<div class="lf-pix-info-grid"><div><small>RECEBEDOR</small><strong>'+receiverText+'</strong></div><div><small>VALOR</small><strong>'+money(validated?(o.pixDraftAmount??o.total):o.total)+'</strong></div></div></div>'+
+  '<div class="lf-pix-info-grid"><div><small>RECEBEDOR</small><strong>'+receiverText+'</strong></div><div><small>VALOR</small><strong>'+(validated&&dynamic?"Conferir no banco":money(validated?(o.pixDraftAmount??o.total):o.total))+'</strong></div></div></div>'+
   '<aside class="lf-pix-qr-panel"><strong>QR CODE</strong><div class="pix-admin-qr" data-pix-qr="'+id+'">'+(payload?"":"Aguardando validação")+'</div><small>'+(payload?"Pronto para conferir":"Aparece após validar o Pix")+'</small></aside></div>'+
   '<div class="lf-pix-confirm-note"><span aria-hidden="true">✓</span><span>Confira o recebedor e o valor antes de liberar</span></div>'+
   '<p class="pix-admin-feedback" data-pix-message="'+id+'" role="status">'+esc(statusText)+'</p>'+
@@ -403,7 +403,7 @@ function bindOrderPixTools(){
    const result=await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"prepare-pix",pixPayload})});
    await loadServer();
    const feedback=document.querySelector('[data-pix-message="'+id+'"]');
-   if(feedback)feedback.textContent="Pix validado"+(result.validation.dynamic?" · cobrança dinâmica ativa":"")+" · "+money(result.validation.amount)+(result.validation.receiverName?" · Recebedor: "+result.validation.receiverName:"")+". Confira o QR antes de liberar.";
+   if(feedback)feedback.textContent=result.validation.dynamic?"Pix dinâmico aceito · "+(result.validation.receiverName?"Recebedor: "+result.validation.receiverName+". ":"")+"Confira o valor e o recebedor no aplicativo do banco antes de liberar.":"Pix validado · "+money(result.validation.amount)+(result.validation.receiverName?" · Recebedor: "+result.validation.receiverName:"")+". Confira o QR antes de liberar.";
   }catch(error){
    if(message)message.textContent=error.message;
    button.disabled=false;button.textContent="Validar e gerar QR Code";
@@ -412,13 +412,15 @@ function bindOrderPixTools(){
  $$("[data-release-pix-id]").forEach(button=>button.addEventListener("click",async()=>{
   const id=button.dataset.releasePixId,order=getOrders().find(item=>item.id===id);
   if(!order?.pixPayloadDraft){alert("Valide e gere o QR Code antes de liberar.");return}
-  if(!confirm("Você conferiu o QR Code e o valor de "+money(order.total)+"? Confirmar e liberar para o cliente por 4 minutos?"))return;
+  const dynamic=!!order.pixDraftDynamic;
+  const confirmation=dynamic?"Este Pix é dinâmico. O valor não está confirmado automaticamente. Confira no aplicativo do banco se o recebedor e o valor correspondem ao pedido de "+money(order.total)+". Liberar para o cliente?":"Você conferiu o QR Code e o valor de "+money(order.total)+"? Confirmar e liberar para o cliente por 4 minutos?";
+  if(!confirm(confirmation))return;
   button.disabled=true;button.textContent="Liberando para o cliente...";
   try{
    await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"release-pix"})});
    await loadServer();
    const feedback=document.querySelector('[data-pix-message="'+id+'"]');
-   if(feedback)feedback.textContent="Pix liberado para o cliente. O prazo de pagamento é de 4 minutos.";
+   if(feedback)feedback.textContent=dynamic?"Pix dinâmico liberado. O prazo é controlado pelo provedor; o cliente deve conferir o valor no banco.":"Pix liberado para o cliente. O prazo de pagamento é de 4 minutos.";
   }catch(error){button.disabled=false;button.textContent="Confirmar e liberar para o cliente";alert("Não foi possível liberar o Pix: "+error.message)}
  }));
  $$("[data-copy-pix-id]").forEach(button=>button.addEventListener("click",async()=>{

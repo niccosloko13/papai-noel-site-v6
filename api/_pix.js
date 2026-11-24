@@ -13,7 +13,6 @@ function parseTlv(payload){
  }
  return fields;
 }
-function normalizedName(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim().replace(/\s+/g," ")}
 function dynamicLocation(fields){
  for(let n=26;n<=51;n++){
   const value=fields[String(n).padStart(2,"0")];if(!value)continue;
@@ -23,48 +22,12 @@ function dynamicLocation(fields){
  }
  return "";
 }
-function normalizeDynamicUrl(raw){
+function validateDynamicLocation(raw){
  const value=String(raw||"").trim();
  const address=/^https:\/\//i.test(value)?value:"https://"+value;
- let url;try{url=new URL(address)}catch{throw Error("A localização da cobrança Pix dinâmica é inválida.")}
- if(url.protocol!=="https:"||url.hostname.toLowerCase()!=="qrcode.gowd.com"||(url.port&&url.port!=="443")||url.username||url.password||url.search||url.hash||!/^\/v1\/cob\/[a-f0-9]{32}$/i.test(url.pathname)){
-  throw Error("Este provedor de Pix dinâmico ainda não está autorizado para consulta segura. Não libere esta cobrança.");
- }
- return url.toString();
-}
-async function resolveDynamicPix(location,expectedAmount,emvReceiver){
- const url=normalizeDynamicUrl(location);
- let response;
- try{
-  response=await fetch(url,{method:"GET",headers:{Accept:"application/json"},redirect:"manual",signal:AbortSignal.timeout(8000)});
- }catch(error){
-  if(error?.name==="TimeoutError"||error?.name==="AbortError")throw Error("A consulta da cobrança Pix demorou demais. Tente novamente.");
-  throw Error("Não foi possível consultar a cobrança Pix no provedor. Tente novamente.");
- }
- if(response.status===404)throw Error("A cobrança Pix dinâmica não foi encontrada ou expirou no provedor. Gere um novo Pix no banco.");
- if(response.status>=300&&response.status<400)throw Error("O provedor redirecionou a cobrança Pix. Por segurança, este QR Code não pode ser liberado.");
- if(!response.ok)throw Error("O provedor Pix não confirmou a cobrança (HTTP "+response.status+"). Tente novamente.");
- let data;
- try{
-  const body=await response.text();
-  if(body.length>65536)throw Error("Resposta muito grande");
-  data=JSON.parse(body);
- }catch{throw Error("O provedor Pix não retornou os dados esperados da cobrança.")}
- if(!data||typeof data!=="object"||Array.isArray(data))throw Error("Resposta inválida do provedor Pix.");
- if(String(data.code||data.codigo||"")==="404")throw Error("A cobrança Pix dinâmica não foi encontrada ou expirou no provedor. Gere um novo Pix no banco.");
- const cob=data.cob&&typeof data.cob==="object"?data.cob:data;
- const status=String(cob.status||cob.situacao||"").toUpperCase();
- if(!["ATIVA","ACTIVE"].includes(status))throw Error("O provedor não confirmou que a cobrança Pix está ativa. Status: "+(status||"não informado")+". Não libere este QR Code.");
- const rawAmount=cob.valor?.original??cob.valor?.final??cob.amount??cob.value??cob.valorOriginal;
- const amountText=typeof rawAmount==="object"&&rawAmount!==null?(rawAmount.original??rawAmount.final):rawAmount;
- const amount=Number(String(amountText??"").replace(",","."));
- const expected=Math.round(Number(expectedAmount)*100)/100;
- if(!Number.isFinite(amount)||amount<=0)throw Error("O provedor não informou um valor válido para esta cobrança Pix.");
- if(Math.round(amount*100)!==Math.round(expected*100))throw Error("O Pix informa "+amount.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})+", mas o pedido é "+expected.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})+". Gere uma cobrança com o valor correto.");
- const providerReceiver=String(cob.recebedor?.nome||cob.receiver?.name||cob.receiverName||cob.nomeRecebedor||"").trim();
- if(providerReceiver&&emvReceiver&&normalizedName(providerReceiver)!==normalizedName(emvReceiver))throw Error("O nome do recebedor no provedor não confere com o Pix copia e cola. Não libere esta cobrança.");
- const expiry=Number(cob.calendario?.expiracao??cob.expiresInSeconds??0);
- return {amount,receiverName:providerReceiver||emvReceiver||"",dynamic:true,expiresInSeconds:Number.isFinite(expiry)&&expiry>0?Math.floor(expiry):null};
+ let url;try{url=new URL(address)}catch{throw Error("A URL deste Pix dinâmico é inválida.")}
+ if(url.protocol!=="https:"||!url.hostname||url.username||url.password)throw Error("A URL deste Pix dinâmico não é HTTPS válida.");
+ return true;
 }
 async function validatePixPayload(payload,expectedAmount){
  if(typeof payload!=="string")throw Error("Cole o Pix copia e cola gerado no aplicativo do banco.");
@@ -79,8 +42,16 @@ async function validatePixPayload(payload,expectedAmount){
  const location=dynamicLocation(fields);
  const emvReceiver=fields["59"]||"";
  if(location){
-  const dynamic=await resolveDynamicPix(location,expectedAmount,emvReceiver);
-  return {payload:code,amount:dynamic.amount,receiverName:dynamic.receiverName,city:fields["60"]||"",crcValid:true,dynamic:true,expiresInSeconds:dynamic.expiresInSeconds};
+  validateDynamicLocation(location);
+  let amount=null;
+  if(fields["54"]){
+   if(!/^\d{1,13}(?:\.\d{1,2})?$/.test(fields["54"]))throw Error("O valor informado neste Pix dinâmico é inválido.");
+   amount=Math.round(Number(fields["54"])*100)/100;
+   const expected=Math.round(Number(expectedAmount)*100)/100;
+   if(!Number.isFinite(amount)||!Number.isFinite(expected)||expected<=0)throw Error("Não foi possível conferir o valor do pedido.");
+   if(Math.round(amount*100)!==Math.round(expected*100))throw Error("O Pix informa "+amount.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})+", mas o pedido é "+expected.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})+". Gere o código com o valor correto.");
+  }
+  return {payload:code,amount,receiverName:emvReceiver,city:fields["60"]||"",crcValid:true,dynamic:true,expiresInSeconds:null};
  }
  const rawAmount=fields["54"];
  if(!rawAmount||!/^\d{1,13}(?:\.\d{1,2})?$/.test(rawAmount))throw Error("Este Pix não contém valor fixo nem uma localização de cobrança dinâmica reconhecida. Gere um Pix com valor exato no banco.");

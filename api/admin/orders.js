@@ -19,7 +19,7 @@ module.exports=async function(req,res){
    if(!found.rowCount)return res.status(404).json({error:"Pedido não encontrado"});
    if(found.rows[0].status!=="Aguardando QR Code")return res.status(409).json({error:"Este pedido não está aguardando a preparação do Pix."});
    const order=found.rows[0].data||{},checked=await validatePixPayload(pixPayload,Number(order.total));
-   const patch={pixPayloadDraft:checked.payload,pixDraftReceiverName:checked.receiverName,pixDraftAmount:checked.amount,pixDraftDynamic:!!checked.dynamic,pixDraftExpiresInSeconds:checked.expiresInSeconds||null,pixDraftValidatedAt:new Date().toISOString(),paymentStatus:"QR validado · aguardando liberação"};
+   const patch={pixPayloadDraft:checked.payload,pixDraftReceiverName:checked.receiverName,pixDraftAmount:checked.amount??null,pixDraftDynamic:!!checked.dynamic,pixDraftExpiresInSeconds:checked.expiresInSeconds||null,pixDraftValidatedAt:new Date().toISOString(),paymentStatus:"QR validado · aguardando liberação"};
    const saved=await db().query("UPDATE natal_orders SET data=data||$2::jsonb,updated_at=now() WHERE id=$1 AND status='Aguardando QR Code' RETURNING id",[id,JSON.stringify(patch)]);
    if(!saved.rowCount)return res.status(409).json({error:"O pedido mudou de status. Atualize a lista e tente novamente."});
    return res.json({ok:true,id,status:"Aguardando QR Code",validation:{amount:checked.amount,receiverName:checked.receiverName,crcValid:true}});
@@ -29,8 +29,8 @@ module.exports=async function(req,res){
    if(!found.rowCount)return res.status(404).json({error:"Pedido não encontrado"});
    if(found.rows[0].status!=="Aguardando QR Code")return res.status(409).json({error:"Este pedido não está aguardando a liberação do Pix."});
    const order=found.rows[0].data||{},checked=await validatePixPayload(order.pixPayloadDraft,Number(order.total));
-   const now=new Date(),validitySeconds=checked.expiresInSeconds?Math.min(240,checked.expiresInSeconds):240,expiresAt=new Date(now.getTime()+validitySeconds*1000).toISOString();
-   const patch={pixPayload:checked.payload,paymentReceiverName:checked.receiverName,paymentReleasedAt:now.toISOString(),expiresAt,paymentStatus:"Aguardando pagamento"};
+   const now=new Date(),validitySeconds=checked.expiresInSeconds?Math.min(240,checked.expiresInSeconds):240,expiresAt=checked.dynamic?null:new Date(now.getTime()+validitySeconds*1000).toISOString();
+   const patch={pixPayload:checked.payload,paymentReceiverName:checked.receiverName,pixDynamic:!!checked.dynamic,paymentReleasedAt:now.toISOString(),expiresAt,paymentStatus:"Aguardando pagamento"};
    const saved=await db().query("UPDATE natal_orders SET status='Aguardando pagamento',data=data||$2::jsonb,updated_at=now() WHERE id=$1 AND status='Aguardando QR Code' RETURNING id",[id,JSON.stringify(patch)]);
    if(!saved.rowCount)return res.status(409).json({error:"O pedido já foi liberado ou mudou de status. Atualize a lista."});
    if(typeof order.sessionId==="string"&&order.sessionId){

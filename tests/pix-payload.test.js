@@ -1,9 +1,9 @@
 const test=require("node:test");const assert=require("node:assert/strict");
 const {buildPix,validatePixPayload,crc16}=require("../api/_pix");
 function tlv(id,value){return id+String(value.length).padStart(2,"0")+value}
-function dynamicCode(url){
+function dynamicCode(url,amount=""){
  const merchant=tlv("00","br.gov.bcb.pix")+tlv("25",url);
- const body=tlv("00","01")+tlv("01","12")+tlv("26",merchant)+tlv("52","0000")+tlv("53","986")+tlv("58","BR")+tlv("59","NIVURA PAGOU LTDA")+tlv("60","Sao Paulo")+tlv("62",tlv("05","***"))+"6304";
+ const body=tlv("00","01")+tlv("01","12")+tlv("26",merchant)+tlv("52","0000")+tlv("53","986")+(amount?tlv("54",amount):"")+tlv("58","BR")+tlv("59","NIVURA PAGOU LTDA")+tlv("60","Sao Paulo")+tlv("62",tlv("05","***"))+"6304";
  return body+crc16(body);
 }
 test("Pix payload: campos fixos, valor exato e CRC válido",async()=>{
@@ -25,26 +25,28 @@ test("Pix fixo sem valor é rejeitado",async()=>{
  const noAmount=code.replace("5406124.00",""),body=noAmount.slice(0,-8)+"6304",withoutAmount=body+crc16(body);
  await assert.rejects(validatePixPayload(withoutAmount,124),/não contém valor fixo/);
 });
-test("Pix dinâmico consulta cobrança ativa, confere valor e recebedor mesmo com GUI minúscula",async()=>{
- const original=global.fetch;global.fetch=async(url,options)=>new Response(JSON.stringify({status:"ATIVA",valor:{original:"124.00"},recebedor:{nome:"NIVURA PAGOU LTDA"},calendario:{expiracao:300}}),{status:200,headers:{"content-type":"application/json"}});
+test("Pix dinâmico de qualquer provedor HTTPS é aceito sem chamada externa",async()=>{
+ const original=global.fetch;let fetched=false;global.fetch=async()=>{fetched=true;throw Error("Não deve consultar o provedor")};
  try{
-  const code=dynamicCode("qrcode.gowd.com/v1/cob/0123456789abcdef0123456789abcdef");
-  const result=await validatePixPayload(code,124);
-  assert.equal(result.dynamic,true);assert.equal(result.amount,124);assert.equal(result.receiverName,"NIVURA PAGOU LTDA");assert.equal(result.expiresInSeconds,300);
+  for(const url of ["qrcode.hyperwalletip.com.br/dynamic/f7354598-6614-4f9d-b08d-68edf98a3637","pix.novobanco.com.br/cob/0123456789abcdef0123456789abcdef?ref=loja","https://pagamentos.outro-provedor.com.br/pix/abc123"]){
+   const result=await validatePixPayload(dynamicCode(url),124);
+   assert.equal(result.dynamic,true);assert.equal(result.amount,null);assert.equal(result.receiverName,"NIVURA PAGOU LTDA");assert.equal(result.crcValid,true);
+  }
+  assert.equal(fetched,false,"validação não deve acessar URLs externas");
  }finally{global.fetch=original}
 });
-test("Pix dinâmico bloqueia cobrança 404 sem liberar",async()=>{
- const original=global.fetch;global.fetch=async()=>new Response(JSON.stringify({code:"404",message:"Resource not found"}),{status:404,headers:{"content-type":"application/json"}});
- try{
-  const code=dynamicCode("qrcode.gowd.com/v1/cob/01a20e550f6f7635b6f0d2145bd7c386");
-  await assert.rejects(validatePixPayload(code,124),/não foi encontrada ou expirou/);
- }finally{global.fetch=original}
+test("Pix dinâmico exato da SINPAY é aceito com CRC 79F0",async()=>{
+ const code="00020101021226940014br.gov.bcb.pix2572qrcode.hyperwalletip.com.br/dynamic/f7354598-6614-4f9d-b08d-68edf98a36375204000053039865802BR5911SINPAY LTDA6008Brasilia62070503***630479F0";
+ const result=await validatePixPayload(code,124);
+ assert.equal(result.dynamic,true);assert.equal(result.amount,null);assert.equal(result.receiverName,"SINPAY LTDA");assert.equal(result.city,"Brasilia");assert.equal(result.crcValid,true);
 });
-test("Pix dinâmico rejeita domínio não autorizado antes de consultar",async()=>{
- const code=dynamicCode("attacker.example/v1/cob/0123456789abcdef0123456789abcdef");
- await assert.rejects(validatePixPayload(code,124),/não está autorizado/);
+test("Pix dinâmico com valor embutido confere o total do pedido",async()=>{
+ const result=await validatePixPayload(dynamicCode("pix.banco.com.br/cob/abc123","124.00"),124);
+ assert.equal(result.dynamic,true);assert.equal(result.amount,124);
+ await assert.rejects(validatePixPayload(dynamicCode("pix.banco.com.br/cob/abc123","125.00"),124),/pedido é/);
 });
-test("Pix dinâmico rejeita cobrança ativa com valor divergente",async()=>{
- const original=global.fetch;global.fetch=async()=>new Response(JSON.stringify({status:"ATIVA",valor:{original:"125.00"}}),{status:200,headers:{"content-type":"application/json"}});
- try{await assert.rejects(validatePixPayload(dynamicCode("qrcode.gowd.com/v1/cob/0123456789abcdef0123456789abcdef"),124),/pedido é/)}finally{global.fetch=original}
+test("Pix dinâmico rejeita URL não HTTPS ou malformada",async()=>{
+ for(const url of ["javascript:alert(1)","http://localhost/pix","not a url with spaces"]){
+  await assert.rejects(validatePixPayload(dynamicCode(url),124),/URL deste Pix dinâmico/);
+ }
 });

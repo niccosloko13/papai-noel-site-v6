@@ -30,6 +30,6 @@ module.exports=async function(req,res){
    return res.json({id,status:"Aguardando QR Code",waitingForPix:true,canPay:false,amount:order.total,shipping:0});
   }
   if(status!=="Aguardando pagamento")return res.json({id,status,expiresAt,amount:order.total,canPay:false});
-  return res.json({id,status,canPay:true,amount:order.total,expiresAt,receiverName:order.paymentReceiverName||"",pixPayload:order.pixPayload});
+  return res.json({id,status,canPay:true,amount:order.total,expiresAt,receiverName:order.paymentReceiverName||"",pixDynamic:!!order.pixDynamic,pixPayload:order.pixPayload});
  }catch(e){console.error("Payment resume",e.code||e.message);return res.status(503).json({error:"Não conseguimos recuperar este pedido agora"})}
 };
