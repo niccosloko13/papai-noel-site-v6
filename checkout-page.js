@@ -99,14 +99,12 @@ async function calculateLoggiQuote(){
   const result=await response.json();
   if(result.configured===false){card.hidden=false;status.textContent="Estamos ativando a consulta de prazo da Loggi para este endereço.";options.replaceChildren();return}
   if(!response.ok)throw Error(result.error||"Consulta indisponível");
-  if(!result.available||!Array.isArray(result.options)||!result.options.length){status.textContent=result.reason==="oversize"?"Estamos confirmando o prazo desta embalagem com a Loggi.":"A Loggi não retornou uma previsão para este endereço no momento.";return}
-  status.textContent="Estimativa calculada para o seu CEP";
-  result.options.forEach(option=>{
-   const line=document.createElement("div");line.className="loggi-estimate-option";
-   const label=document.createElement("strong");label.textContent=option.label||"Loggi";
-   const days=document.createElement("span");days.textContent=Number(option.days)===0?"No mesmo dia":Number(option.days)===1?"1 dia":Number(option.days)+" dias";
-   line.append(label,days);options.append(line);
-  });
+  if(!result.available||!Number.isFinite(Number(result.daysMin))||!Number.isFinite(Number(result.daysMax))){status.textContent="Não conseguimos estimar o prazo para este CEP. Confira o número informado.";return}
+  status.textContent="Previsão aproximada para "+(result.destinationRegion||"a sua região");
+  const line=document.createElement("div");line.className="loggi-estimate-option";
+  const label=document.createElement("strong");label.textContent="Entrega estimada";
+  const days=document.createElement("span");days.textContent=Number(result.daysMin)+" a "+Number(result.daysMax)+" dias úteis";
+  line.append(label,days);options.append(line);
  }catch(error){
   if(error.name==="AbortError")return;
   status.textContent="Não foi possível consultar a previsão da Loggi agora.";
