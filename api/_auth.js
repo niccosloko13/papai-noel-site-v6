@@ -6,10 +6,16 @@ function configurationStatus(){
  if(!process.env.ADMIN_PASSWORD&&!process.env.ADMIN_PASSWORD_SCRYPT)missing.push("ADMIN_PASSWORD");
  if(!(process.env.ADMIN_SESSION_SECRET||""))missing.push("ADMIN_SESSION_SECRET");
  const invalid=[];
+ const temporaryExpiresAt=process.env.ADMIN_TEMP_EXPIRES_AT||"";
+ if(temporaryExpiresAt){
+  const expiry=Date.parse(temporaryExpiresAt);
+  if(process.env.VERCEL_ENV!=="preview"||!Number.isFinite(expiry))invalid.push("ADMIN_TEMP_EXPIRES_AT");
+  else if(expiry<=Date.now())invalid.push("ADMIN_TEMP_EXPIRED");
+ }
  if(process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD.length<7)invalid.push("ADMIN_PASSWORD");
  if(process.env.ADMIN_SESSION_SECRET&&process.env.ADMIN_SESSION_SECRET.length<32)invalid.push("ADMIN_SESSION_SECRET");
  if(!process.env.ADMIN_PASSWORD&&process.env.ADMIN_PASSWORD_SCRYPT&&!/^[0-9a-f]+:[0-9a-f]{128}$/i.test(process.env.ADMIN_PASSWORD_SCRYPT))invalid.push("ADMIN_PASSWORD_SCRYPT");
- return {configured:missing.length===0&&invalid.length===0,missing,invalid};
+ return {configured:missing.length===0&&invalid.length===0,missing,invalid,temporary:!!temporaryExpiresAt,expiresAt:temporaryExpiresAt||null};
 }
 function settings(){
  const secret=process.env.ADMIN_SESSION_SECRET||"";
@@ -17,7 +23,7 @@ function settings(){
  const password=process.env.ADMIN_PASSWORD||"";
  const user=process.env.ADMIN_USERNAME||"";
  if(!configurationStatus().configured)return null;
- return {secret,hash,password,user};
+ return {secret,hash,password,user,temporaryExpiresAt:process.env.ADMIN_TEMP_EXPIRES_AT||null};
 }
 function sign(value,secret){return crypto.createHmac("sha256",secret).update(value).digest("base64url")}
 function parse(req){const raw=(req.headers.cookie||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(COOKIE+"="));return raw?raw.slice(COOKIE.length+1):""}
