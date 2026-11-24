@@ -10,6 +10,15 @@
 const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get("id")||"",access=(()=>{try{const x=JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}");return x.id===id?x.accessKey:""}catch{return ""}})();
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 let deadline=0,timer=null,available=false;
+const simulationMode=new URLSearchParams(location.search).get("simulacao")==="1";
+function renderSimulation(){
+ document.title="Simulação do Pix | Lareira Feliz";
+ const banner=document.createElement("div");banner.textContent="SIMULAÇÃO VISUAL · NÃO É UMA COBRANÇA REAL · NÃO PAGUE";banner.style.cssText="position:relative;z-index:2;margin:0 0 14px;padding:12px 14px;border-radius:12px;background:#8b2635;color:#fff;text-align:center;font-size:11px;font-weight:900;letter-spacing:.04em";document.querySelector(".pay-shell").prepend(banner);
+ $("#loadMessage").hidden=true;$("#paymentUnavailable").hidden=true;$("#paymentAvailable").hidden=false;$("#paymentHeading").textContent="Seu Pix está pronto!";$("#paymentId").textContent="NATAL-SIMULAÇÃO";$("#paymentAmount").textContent=money(124);$("#paymentCode").value="SIMULAÇÃO — NÃO PAGAR";$("#copyPayment").disabled=true;$("#copyPayment").textContent="Código desativado na simulação";$("#copyMessage").textContent="Esta demonstração não copia nem gera uma cobrança real.";
+ $("#paymentReceiver").textContent="RECEBEDOR DE TESTE — NÃO PAGAR";$("#paymentTimer").textContent="04:00";$("#paymentDeadlineNote").textContent="Tempo ilustrativo. Nenhuma cobrança foi criada.";$("#paymentTimerWrap").hidden=false;$("#informPaid").hidden=true;$("#paymentQr").replaceChildren();$("#paymentQr").setAttribute("aria-label","QR demonstrativo não pagável");
+ try{new QRCode($("#paymentQr"),{text:"SIMULACAO_NAO_PAGAR_LAREIRA_FELIZ",width:218,height:218,colorDark:"#10271c",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.L})}catch{$("#paymentQr").textContent="QR de demonstração";}
+}
+
 function showUnavailable(message,heading){available=false;$("#paymentAvailable").hidden=true;$("#paymentUnavailable").hidden=false;$("#paymentHeading").textContent=heading||"Acompanhe seu pedido";$("#unavailableMessage").textContent=message;$("#refreshPayment").hidden=false;$("#waitingSummary").hidden=true;clearInterval(timer)}
 async function init(){
  const refresh=$("#refreshPayment");refresh.disabled=true;refresh.textContent="Consultando pedido...";
@@ -39,5 +48,5 @@ async function copy(){if(!available)return;const v=$("#paymentCode").value;let o
 $("#copyPayment").addEventListener("click",copy);$("#paymentCode").addEventListener("click",copy);
 $("#refreshPayment").addEventListener("click",init);
 $("#informPaid").addEventListener("click",async()=>{if(!available||!access)return;const b=$("#informPaid");b.disabled=true;try{const r=await fetch("/api/payment-informed",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,claim:access})});const d=await r.json();if(!r.ok)throw Error(d.error||"Não foi possível informar");$("#paidFeedback").textContent="Aviso registrado. Nossa equipe vai conferir o recebimento.";b.hidden=true}catch(e){b.disabled=false;$("#paidFeedback").textContent=e.message}});
-init();
+if(simulationMode)renderSimulation();else init();
 </script></body></html>

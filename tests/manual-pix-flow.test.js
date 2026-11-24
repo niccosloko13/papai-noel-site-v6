@@ -55,7 +55,7 @@ test("fluxo completo simulado: pedido -> Pix validado -> aprovação -> cliente 
   assert.equal(before.body.canPay,false);
   assert.equal(before.body.pixPayload,undefined,"cliente não vê Pix antes da autorização");
   const fakeCode=buildPix({key:"teste@example.com",receiverName:"RECEBEDOR TESTE",city:"SAO PAULO",amount:124,txid:"NATALTESTE"});
-  assert.equal(validatePixPayload(fakeCode,124).crcValid,true);
+  assert.equal((await validatePixPayload(fakeCode,124)).crcValid,true);
   const wrongCode=buildPix({key:"teste@example.com",receiverName:"RECEBEDOR TESTE",city:"SAO PAULO",amount:125,txid:"NATALTESTE"});
   let response=await call(admin,"PATCH",{id:orderId,action:"prepare-pix",pixPayload:wrongCode});
   assert.equal(response.statusCode,400,"Pix de valor incorreto deve ser rejeitado");
@@ -82,7 +82,7 @@ test("fluxo completo simulado: pedido -> Pix validado -> aprovação -> cliente 
   assert.equal(after.body.pixPayload,fakeCode,"cliente recebe exatamente o código validado");
   assert.equal(after.body.amount,124);
   assert.equal(after.body.receiverName,"RECEBEDOR TESTE");
-  assert.equal(validatePixPayload(after.body.pixPayload,124).crcValid,true);
+  assert.equal((await validatePixPayload(after.body.pixPayload,124)).crcValid,true);
   assert.equal(saved.filter(q=>q.startsWith("UPDATE natal_orders SET status='Aguardando pagamento'")).length,1);
  }finally{
   delete require.cache[ordersPath];delete require.cache[paymentPath];

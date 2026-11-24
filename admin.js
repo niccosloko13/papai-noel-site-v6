@@ -397,7 +397,7 @@ function bindOrderPixTools(){
    const result=await api("orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"prepare-pix",pixPayload})});
    await loadServer();
    const feedback=document.querySelector('[data-pix-message="'+id+'"]');
-   if(feedback)feedback.textContent="Pix validado · "+money(result.validation.amount)+(result.validation.receiverName?" · Recebedor: "+result.validation.receiverName:"")+". Confira o QR antes de liberar.";
+   if(feedback)feedback.textContent="Pix validado"+(result.validation.dynamic?" · cobrança dinâmica ativa":"")+" · "+money(result.validation.amount)+(result.validation.receiverName?" · Recebedor: "+result.validation.receiverName:"")+". Confira o QR antes de liberar.";
   }catch(error){
    if(message)message.textContent=error.message;
    button.disabled=false;button.textContent="Validar e gerar QR Code";
