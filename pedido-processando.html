@@ -54,7 +54,7 @@ const access=(()=>{try{
  }catch{return ""}})();
 let interval=null,attempts=0,redirecting=false;
 $("#orderId").textContent="Pedido "+(id||"—");
-function error(message){$("#processError").style.display="block";$("#processError").textContent=message;$("#spinner").style.display="none";$("#heading").textContent="Seu pedido foi registrado"}
+function error(message){$("#processError").style.display="block";$("#processError").textContent=message;$("#spinner").style.display="none";$("#heading").textContent="Não encontramos seu pedido";$("#message").textContent="Confira o link recebido após a confirmação da compra.";document.querySelector(".steps").style.display="none";$("#orderId").style.display="none"}
 async function check(){
  if(redirecting)return;
  if(!/^NATAL-[A-F0-9]{12}$/.test(id)||!access){error("Não conseguimos validar o acesso a este pedido neste navegador. Abra novamente o link de acompanhamento ou fale com nosso atendimento.");clearInterval(interval);return}
@@ -82,7 +82,7 @@ async function check(){
   if(attempts>=12)$("#processError").style.display="block",$("#processError").textContent="A atualização está demorando. Você pode aguardar mais um pouco ou falar com nosso atendimento.";
  }
 }
-if(!/^NATAL-[A-F0-9]{12}$/.test(id)||!access)error("Não foi possível validar o link deste pedido. Fale com nosso atendimento.");
+if(!/^NATAL-[A-F0-9]{12}$/.test(id)||!access)error("Não foi possível validar este link. Se você acabou de fazer uma compra, use o link de acompanhamento recebido. Caso contrário, volte à loja e inicie seu pedido.");
 else{check();interval=setInterval(check,3000)}
 </script>
 </body>
