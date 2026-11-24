@@ -1,0 +1,20 @@
+const test=require("node:test");
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
+const root=path.resolve(__dirname,"..");
+test("painel Pix usa layout natalino compacto com resumo, Pix e QR na mesma área",()=>{
+ const js=fs.readFileSync(path.join(root,"admin.js"),"utf8");
+ const css=fs.readFileSync(path.join(root,"admin.css"),"utf8");
+ assert.match(js,/lf-pix-banner/);
+ assert.match(js,/lf-pix-order-summary/);
+ assert.match(js,/lf-pix-qr-panel/);
+ assert.match(js,/lf-pix-confirm-note/);
+ assert.match(js,/order-row-with-payment/);
+ assert.match(css,/Lareira Feliz · painel Pix natalino responsivo/);
+ assert.match(css,/@media\(max-width:700px\)/);
+ assert.match(css,/@media\(max-width:390px\)/);
+ assert.match(css,/grid-template-columns:minmax\(0,1fr\) 120px/);
+ assert.match(js,/data-prepare-pix-id/);
+ assert.match(js,/data-release-pix-id/);
+});

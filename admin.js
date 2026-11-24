@@ -316,18 +316,23 @@ function orderPaymentTools(o){
  const id=esc(o.id),payload=pending?String(o.pixPayloadDraft||""):String(o.pixPayload||"");
  const receiver=pending?String(o.pixDraftReceiverName||""):String(o.paymentReceiverName||"");
  const expiry=o.expiresAt?new Date(o.expiresAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"";
+ const validated=!!payload,receiverText=receiver?esc(receiver):(validated?"Aguardando confirmação":"Aguardando validação");
+ const statusLabel=released?"PIX LIBERADO":validated?"PIX VALIDADO":"AGUARDANDO PIX";
  const input=pending
-  ?'<label class="pix-paste-label">Pix copia e cola<textarea data-pix-input="'+id+'" rows="3" maxlength="2048" placeholder="Cole aqui o Pix copia e cola gerado no aplicativo do seu banco">'+esc(payload)+'</textarea></label>'
-  :'<label class="pix-paste-label">Pix copia e cola<textarea readonly rows="3">'+esc(payload)+'</textarea></label>';
- const statusText=pending?(payload?"Código validado. Confira o QR Code e o valor antes de liberar.":"Cole o código do banco. Vamos validar o CRC e o valor do pedido."):"Cobrança liberada para o cliente"+(expiry?" · expira às "+expiry:"");
+  ?'<label class="pix-paste-label"><span>PIX COPIA E COLA</span><textarea data-pix-input="'+id+'" rows="2" maxlength="2048" placeholder="Cole aqui o código Pix do banco">'+esc(payload)+'</textarea></label>'
+  :'<label class="pix-paste-label"><span>PIX COPIA E COLA</span><textarea readonly rows="2">'+esc(payload)+'</textarea></label>';
+ const statusText=pending?(validated?"Código validado. Confira o recebedor e o QR Code.":"Cole o código do banco e valide para gerar o QR Code."):"Cobrança liberada para o cliente"+(expiry?" · expira às "+expiry:"");
  const actions=pending
-  ?'<div class="pix-admin-actions"><button type="button" class="pay" data-prepare-pix-id="'+id+'">Validar e gerar QR Code</button>'+(payload?'<button type="button" data-copy-pix-id="'+id+'">Copiar Pix</button><button type="button" class="pay" data-release-pix-id="'+id+'">Confirmar e liberar para o cliente</button>':'')+'</div>'
+  ?'<div class="pix-admin-actions"><button type="button" class="pay" data-prepare-pix-id="'+id+'">Validar e gerar QR Code</button>'+(validated?'<button type="button" data-copy-pix-id="'+id+'">Copiar Pix</button><button type="button" class="pay" data-release-pix-id="'+id+'">Liberar para o cliente</button>':'')+'</div>'
   :'<div class="pix-admin-actions"><button type="button" data-copy-pix-id="'+id+'">Copiar Pix</button></div>';
- return '<section class="order-payment-tools" data-payment-order="'+id+'">'+
-  '<div class="order-payment-head"><div><small>PAGAMENTO MANUAL</small><strong>'+(pending?"Preparar Pix deste pedido":"Pix liberado para o cliente")+'</strong></div><span>'+money(o.total)+'</span></div>'+
-  input+
-  '<p class="pix-admin-feedback" data-pix-message="'+id+'" role="status">'+esc(statusText)+(receiver?" · Recebedor: "+esc(receiver):"")+'</p>'+
-  '<div class="pix-admin-preview"><div class="pix-admin-qr" data-pix-qr="'+id+'">'+(payload?"":"O QR Code aparecerá aqui após a validação")+'</div><small>Confira o QR Code, o recebedor e o valor antes de liberar</small></div>'+
+ return '<section class="order-payment-tools lf-pix-card" data-payment-order="'+id+'">'+
+  '<div class="lf-pix-banner"><span class="lf-pix-brand-mark" aria-hidden="true">✦</span><div><small>LAREIRA FELIZ · CENTRAL DE PAGAMENTOS</small><strong>Pagamento manual</strong></div><span class="lf-pix-state">'+statusLabel+'</span></div>'+
+  '<div class="lf-pix-order-summary"><img src="/assets/lareira-real-frente.jpeg" alt="Lareira Feliz" width="64" height="64"><div class="lf-pix-order-copy"><small>PEDIDO</small><strong>'+id+'</strong><span>'+kitLabel(o)+'</span></div><div class="lf-pix-order-total"><small>TOTAL</small><strong>'+money(o.total)+'</strong><span>Frete grátis</span></div></div>'+
+  '<div class="lf-pix-content"><div class="lf-pix-code-column">'+input+
+  '<div class="lf-pix-info-grid"><div><small>RECEBEDOR</small><strong>'+receiverText+'</strong></div><div><small>VALOR</small><strong>'+money(validated?(o.pixDraftAmount??o.total):o.total)+'</strong></div></div></div>'+
+  '<aside class="lf-pix-qr-panel"><strong>QR CODE</strong><div class="pix-admin-qr" data-pix-qr="'+id+'">'+(payload?"":"Aguardando validação")+'</div><small>'+(payload?"Pronto para conferir":"Aparece após validar o Pix")+'</small></aside></div>'+
+  '<div class="lf-pix-confirm-note"><span aria-hidden="true">✓</span><span>Confira o recebedor e o valor antes de liberar</span></div>'+
+  '<p class="pix-admin-feedback" data-pix-message="'+id+'" role="status">'+esc(statusText)+'</p>'+
   actions+
  '</section>';
 }
@@ -348,7 +353,7 @@ function orderRow(o,withPaymentTools=false){
  '<div><small>PIX</small><strong>'+esc(o.pixPayload?"QR Pix liberado":o.pixPayloadDraft?"QR Pix validado · aguardando liberação":"Aguardando Pix manual")+'</strong></div>'+
  '</div></details>';
  const payment=withPaymentTools?orderPaymentTools(o):"";
- return '<article class="order-row"><div class="order-top"><div><b>'+id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+status+'</span></div>'+
+ return '<article class="order-row'+(withPaymentTools?' order-row-with-payment':'')+'"><div class="order-top"><div><b>'+id+'</b><small>'+new Date(o.createdAt).toLocaleString("pt-BR")+'</small></div><span class="status '+statusClass(o.status)+'">'+status+'</span></div>'+
  '<div class="order-meta"><div><small>CLIENTE</small><strong>'+esc(o.customerName||"—")+'</strong></div><div><small>PRODUTO</small><strong>'+kitLabel(o)+'</strong></div><div><small>TOTAL · FRETE GRÁTIS</small><strong>'+money(o.total)+'</strong></div></div>'+
  details+payment+'<div class="order-actions">'+
  (o.status==="Pagamento informado"?'<button type="button" class="pay" data-status-id="'+id+'" data-status="Pago">Confirmar pagamento</button>':'')+
@@ -375,7 +380,8 @@ function renderOrderPixPreviews(){
   if(!payload){box.textContent="O QR Code aparecerá aqui após a validação";return}
   try{
    if(typeof QRCode==="undefined")throw Error("QR indisponível");
-   new QRCode(box,{text:payload,width:160,height:160,colorDark:"#173b2d",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+   const size=window.matchMedia("(max-width:560px)").matches?112:148;
+   new QRCode(box,{text:payload,width:size,height:size,colorDark:"#173b2d",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
   }catch{box.textContent="Não foi possível desenhar o QR Code neste navegador. Confira o Pix copia e cola."}
  });
 }

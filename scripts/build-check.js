@@ -25,7 +25,7 @@ for(const rel of jsFiles){
   cp.execFileSync(process.execPath,["--check",path.join(root,rel)],{stdio:"inherit"});
 }
 
-cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js"),path.join(root,"tests/admin-navigation.test.js"),path.join(root,"tests/manual-pix-flow.test.js"),path.join(root,"tests/cep-proxy.test.js"),path.join(root,"tests/checkout-flow-ui.test.js"),path.join(root,"tests/loggi-estimate.test.js"),path.join(root,"tests/db-init-race.test.js"),path.join(root,"tests/product-gallery.test.js"),path.join(root,"tests/payment-page-simulation.test.js")],{stdio:"inherit"});
+cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js"),path.join(root,"tests/admin-navigation.test.js"),path.join(root,"tests/manual-pix-flow.test.js"),path.join(root,"tests/cep-proxy.test.js"),path.join(root,"tests/checkout-flow-ui.test.js"),path.join(root,"tests/loggi-estimate.test.js"),path.join(root,"tests/db-init-race.test.js"),path.join(root,"tests/product-gallery.test.js"),path.join(root,"tests/payment-page-simulation.test.js"),path.join(root,"tests/admin-pix-layout.test.js")],{stdio:"inherit"});
 
 const pkg=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8"));
 if(!pkg.dependencies?.["@neondatabase/serverless"])throw new Error("Missing @neondatabase/serverless dependency");
