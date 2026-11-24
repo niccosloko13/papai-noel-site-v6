@@ -5,6 +5,9 @@ const form=$("#checkoutForm"),qty=$("#quantity");
 let price=Number(window.STORE_DATA?.products?.find(p=>p.id==="basic")?.price)||132.90;
 let lastCepLookup="",cepController=null;
 const digits=v=>String(v||"").replace(/\D/g,"");
+const sentSteps=new Set();
+function trackStep(step){if(sentSteps.has(step))return;sentSteps.add(step);window.natalAnalytics?.track("checkout_step",{product_id:step})}
+let loggiQuoteController=null,lastLoggiSignature="";
 function quantity(){const n=Math.max(1,Math.min(10,Math.floor(Number(qty.value)||1)));qty.value=String(n);return n}
 function updateTotal(){const total=price*quantity();$("#subtotal").textContent=money(total);$("#total").textContent=money(total)}
 function validCpf(value){
@@ -25,7 +28,7 @@ function formatCpf(value){
 }
 $("#qtyMinus").addEventListener("click",()=>{qty.value=String(Math.max(1,quantity()-1));updateTotal()});
 $("#qtyPlus").addEventListener("click",()=>{qty.value=String(Math.min(10,quantity()+1));updateTotal()});
-qty.addEventListener("change",updateTotal);
+qty.addEventListener("change",()=>{updateTotal();lastLoggiSignature="";calculateLoggiQuote()});
 $("#phone").addEventListener("input",e=>{const d=digits(e.target.value).slice(0,11);e.target.value=d.length<=10?d.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{4})(\d)/,"$1-$2"):d.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d)/,"$1-$2")});
 $("#cpf").addEventListener("input",e=>{e.target.value=formatCpf(e.target.value)});
 function clearAddress(){
@@ -57,6 +60,7 @@ async function lookupCep(cep){
   $("#addressAutofill").hidden=false;
   status.textContent=(data.logradouro&&data.bairro)?"Endereço localizado! Agora informe somente o número e o complemento.":"CEP localizado. Complete os campos de endereço que vieram em branco e informe o número.";
   status.dataset.state="success";
+  trackStep("cep");
   if(!data.logradouro)$("#address").focus();
   else $("#number").focus();
  }catch(error){
@@ -80,6 +84,46 @@ $("#cep").addEventListener("input",e=>{
  if(d.length===8)lookupCep(d);
 });
 $("#cep").addEventListener("blur",()=>{const d=digits($("#cep").value);if(d.length===8&&lastCepLookup!==d)lookupCep(d)});
+
+async function calculateLoggiQuote(){
+ const card=$("#loggiEstimateCard"),status=$("#loggiEstimateStatus"),options=$("#loggiEstimateOptions");
+ const data={cep:digits($("#cep").value),address:$("#address").value.trim(),number:$("#number").value.trim(),complement:$("#complement").value.trim(),neighborhood:$("#neighborhood").value.trim(),city:$("#city").value.trim(),state:$("#state").value.trim(),quantity:quantity()};
+ if(data.cep.length!==8||!data.address||!data.number||!data.neighborhood||!data.city||!data.state)return;
+ const signature=JSON.stringify(data);if(signature===lastLoggiSignature)return;lastLoggiSignature=signature;
+ if(loggiQuoteController)loggiQuoteController.abort();
+ const controller=new AbortController();loggiQuoteController=controller;
+ card.hidden=false;status.textContent="Consultando o prazo estimado da Loggi...";options.replaceChildren();
+ try{
+  const response=await fetch("/api/loggi-quote",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),signal:controller.signal,credentials:"same-origin"});
+  const result=await response.json();
+  if(result.configured===false){card.hidden=true;return}
+  if(!response.ok)throw Error(result.error||"Consulta indisponível");
+  if(!result.available||!Array.isArray(result.options)||!result.options.length){status.textContent="A Loggi não retornou uma previsão para este endereço no momento.";return}
+  status.textContent="Estimativa calculada para o seu CEP";
+  result.options.forEach(option=>{
+   const line=document.createElement("div");line.className="loggi-estimate-option";
+   const label=document.createElement("strong");label.textContent=option.label||"Loggi";
+   const days=document.createElement("span");days.textContent=Number(option.days)===0?"No mesmo dia":Number(option.days)===1?"1 dia":Number(option.days)+" dias";
+   line.append(label,days);options.append(line);
+  });
+ }catch(error){
+  if(error.name==="AbortError")return;
+  status.textContent="Não foi possível consultar a previsão da Loggi agora.";
+ }finally{if(loggiQuoteController===controller)loggiQuoteController=null}
+}
+function trackAddressAndQuote(){
+ if(!$("#addressAutofill").hidden&&$("#number").value.trim()&&$("#address").value.trim()&&$("#neighborhood").value.trim()&&$("#city").value.trim()&&$("#state").value.trim()){
+  trackStep("endereco");calculateLoggiQuote();
+ }
+}
+function trackCustomerData(){
+ if($("#customerName").value.trim().length>=3&&validCpf($("#cpf").value)&&digits($("#phone").value).length>=10)trackStep("dados");
+}
+$("#number").addEventListener("blur",trackAddressAndQuote);
+$("#complement").addEventListener("blur",trackAddressAndQuote);
+["customerName","cpf","phone"].forEach(id=>$("#"+id).addEventListener("blur",trackCustomerData));
+$("#acceptTerms").addEventListener("change",()=>{if($("#acceptTerms").checked)trackStep("termos")});
+
 function showMessage(msg){$("#checkoutMessage").textContent=msg}
 form.addEventListener("submit",async e=>{
  e.preventDefault();showMessage("");
@@ -103,14 +147,15 @@ form.addEventListener("submit",async e=>{
  if(data.phone.length<10){showMessage("Informe um WhatsApp válido.");$("#phone").focus();return}
  if(data.address.length<3||!data.number||data.neighborhood.length<2||data.city.length<2||!/^[A-Z]{2}$/.test(data.state)){showMessage("Confira o endereço e informe o número da residência.");$("#number").focus();return}
  if(!data.acceptTerms){showMessage("É necessário aceitar os termos para continuar.");$("#acceptTerms").focus();return}
+ trackStep("confirmacao");
  const button=$("#submitOrder");button.disabled=true;button.textContent="Registrando seu pedido...";
  try{
-  const response=await fetch("/api/checkout",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+  const response=await fetch("/api/checkout",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data,sessionId:window.natalAnalytics?.sessionId||"",attribution:window.natalAnalytics?.attribution||{}})});
   const result=await response.json();
   if(!response.ok)throw Error(result.error||"Não foi possível registrar o pedido");
   localStorage.setItem("natal_customer_order_access",JSON.stringify({id:result.id,accessKey:result.accessKey}));
   window.natalAnalytics?.track("order_created",{order_id:result.id,product_id:"basic",value:result.total,currency:"BRL"});
-  location.href="/pagamento-pedido.html?id="+encodeURIComponent(result.id);
+  location.href="/pedido-processando.html?id="+encodeURIComponent(result.id);
  }catch(error){showMessage(error.message||"Falha ao registrar o pedido. Tente novamente.");button.disabled=false;button.innerHTML='Confirmar pedido <span>→</span>'}
 });
 updateTotal();
