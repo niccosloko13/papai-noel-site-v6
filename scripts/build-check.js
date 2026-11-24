@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,"..");
 const dist=path.join(root,"dist");
 
 const required=[
-  "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
+  "index.html","checkout.html","admin.html","pedido.html","pedido-processando.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","marketplace-links.js",
   "styles.css","lareira-feliz.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css","hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
   "robots.txt","sitemap.xml",
@@ -33,7 +33,7 @@ fs.rmSync(dist,{recursive:true,force:true});
 fs.mkdirSync(dist,{recursive:true});
 
 const staticFiles=[
-  "index.html","checkout.html","admin.html","pedido.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
+  "index.html","checkout.html","admin.html","pedido.html","pedido-processando.html","contato.html","minha-conta.html","entrega-e-prazos.html","trocas-e-devolucoes.html","privacidade.html","termos-de-compra.html",
   "app.js","checkout-page.js","admin.js","store-data.js","pix.js","analytics.js","meta-pixel.js","lareira-feliz.js","marketplace-links.js",
   "styles.css","lareira-feliz.css","checkout-own.css","admin.css","checkout-premium.css","customer-experience.css","conversion-refresh.css",
   "hero-rebuild.css","premium-experience.css","hero-clean.css","hero-poster-2026.css","holiday-sections.css","postal-christmas.css","mobile-shopping.css",
