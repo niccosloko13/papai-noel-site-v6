@@ -22,7 +22,7 @@ module.exports=async function(req,res){
   await init();
   const pepper=process.env.CHECKOUT_RATE_LIMIT_SECRET||process.env.ADMIN_SESSION_SECRET||"";
   if(pepper.length<32)return res.status(503).json({error:"Checkout temporariamente indisponível. Fale com nosso atendimento."});
-  const forwarded=String(req.headers["x-vercel-forwarded-for"]||"").split(",")[0].trim();
+  const forwarded=String(req.headers["x-vercel-forwarded-for"]||req.headers["x-forwarded-for"]||req.headers["x-real-ip"]||"").split(",")[0].trim();
   const ip=isIP(forwarded)?forwarded:(req.socket?.remoteAddress||"unknown");
   const ipHash=crypto.createHmac("sha256",pepper).update("checkout:"+ip).digest("hex");
   const limited=await db().query(`
