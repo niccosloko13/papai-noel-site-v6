@@ -3,14 +3,14 @@
 </style></head><body>
 <main class="pay-shell"><a class="pay-back" href="/">← Voltar à loja</a><span class="pay-kicker">✦ NATAL 2026 · PAGAMENTO SEGURO</span><h1 id="paymentHeading">Sua surpresa está quase pronta!</h1><p class="pay-sub">Seu pedido foi registrado. A equipe vai conferir os dados e liberar o QR Code Pix manualmente.</p><div id="loadMessage" class="pay-card" role="status">Consultando seu pedido com segurança…</div>
 <div id="paymentAvailable" class="pay-view" hidden><div class="pay-card pay-summary"><div><small>VALOR DO PEDIDO</small><strong id="paymentAmount" class="pay-price">—</strong></div><div><small>NÚMERO DO PEDIDO</small><strong id="paymentId" class="pay-id">—</strong></div></div><div class="pay-timer" id="paymentTimerWrap">⏳ Prazo restante: <strong id="paymentTimer">—</strong><div class="pay-note" id="paymentDeadlineNote">O prazo é calculado no servidor.</div></div><section class="pay-card"><label class="pay-label" for="paymentCode">1 · Toque para copiar o Pix</label><textarea id="paymentCode" class="pay-code" readonly aria-label="Código Pix copia e cola"></textarea><button type="button" class="pay-button" id="copyPayment">Copiar código Pix</button><div id="copyMessage" class="pay-feedback" role="status"></div></section><section class="pay-card"><h2 class="pay-qr-head">2 · Ou escaneie o QR Code</h2><div class="pay-qr-box"><div id="paymentQr" class="pay-qr" aria-label="QR Code Pix do seu pedido"></div></div></section><div class="pay-check">CONFIRA NO APLICATIVO DO BANCO<strong id="paymentReceiver">Confira o recebedor no seu banco</strong>Confira o recebedor e o valor antes de transferir. Caso haja divergência, não pague.</div><button type="button" id="informPaid" class="pay-button" hidden>Já fiz o Pix · avisar pagamento</button><p id="paidFeedback" class="pay-note"></p></div>
-<div id="paymentUnavailable" class="pay-view" hidden><div class="pay-error" id="unavailableMessage"></div><button type="button" id="refreshPayment" class="pay-button">Atualizar pedido</button><p class="pay-note">Se já transferiu um Pix, não faça outro antes de falar com nosso atendimento.</p></div>
+<div id="paymentUnavailable" class="pay-view" hidden><div class="pay-error" id="unavailableMessage"></div><div class="pay-card pay-summary" id="waitingSummary" hidden><div><small>VALOR DO PEDIDO</small><strong id="waitingAmount" class="pay-price">—</strong></div><div><small>NÚMERO DO PEDIDO</small><strong id="waitingId" class="pay-id">—</strong></div></div><button type="button" id="refreshPayment" class="pay-button">Atualizar pedido</button><p class="pay-note">Se já transferiu um Pix, não faça outro antes de falar com nosso atendimento.</p></div>
 <div class="pay-actions" style="margin-top:20px"><a href="/">Voltar à loja</a><a href="https://wa.me/551152970363" target="_blank" rel="noopener">Falar com atendimento</a></div><p class="pay-note">Atendimento: atendimento@papainoelpassouaqui.com.br · (11) 5297-0363</p>
 </main>
 <script src="vendor/qrcode.min.js"></script><script>
 const $=s=>document.querySelector(s),id=new URLSearchParams(location.search).get("id")||"",access=(()=>{try{const x=JSON.parse(localStorage.getItem("natal_customer_order_access")||"{}");return x.id===id?x.accessKey:""}catch{return ""}})();
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
 let deadline=0,timer=null,available=false;
-function showUnavailable(message,heading){available=false;$("#paymentAvailable").hidden=true;$("#paymentUnavailable").hidden=false;$("#paymentHeading").textContent=heading||"Acompanhe seu pedido";$("#unavailableMessage").textContent=message;$("#refreshPayment").hidden=false;clearInterval(timer)}
+function showUnavailable(message,heading){available=false;$("#paymentAvailable").hidden=true;$("#paymentUnavailable").hidden=false;$("#paymentHeading").textContent=heading||"Acompanhe seu pedido";$("#unavailableMessage").textContent=message;$("#refreshPayment").hidden=false;$("#waitingSummary").hidden=true;clearInterval(timer)}
 async function init(){
  const refresh=$("#refreshPayment");refresh.disabled=true;refresh.textContent="Consultando pedido...";
  if(!/^NATAL-[A-F0-9]{12}$/.test(id)){showUnavailable("Número do pedido inválido. Volte à loja e refaça o pedido.","Não foi possível localizar seu pedido");$("#loadMessage").hidden=true;refresh.disabled=false;refresh.textContent="Atualizar pedido";return}
@@ -20,6 +20,7 @@ async function init(){
   $("#loadMessage").hidden=true;
   if(d.waitingForPix||d.status==="Aguardando QR Code"){
    showUnavailable("Pedido "+id+" recebido com sucesso. Nossa equipe está conferindo os dados e vai liberar o QR Code Pix manualmente. Você pode atualizar esta página para verificar.","Pedido recebido!");
+   $("#waitingId").textContent=id;$("#waitingAmount").textContent=money(d.amount);$("#waitingSummary").hidden=false;
    refresh.textContent="Atualizar pedido";refresh.disabled=false;return;
   }
   if(!d.canPay){
