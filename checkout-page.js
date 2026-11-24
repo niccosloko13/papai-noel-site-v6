@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=s=>document.querySelector(s);
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0);
-const form=$("#checkoutForm"),qty=$("#quantity"),price=Number(window.STORE_DATA?.products?.find(p=>p.id==="basic")?.price)||148.90;
+const form=$("#checkoutForm"),qty=$("#quantity");let price=Number(window.STORE_DATA?.products?.find(p=>p.id==="basic")?.price)||148.90;
 const digits=v=>String(v||"").replace(/\D/g,"");
 function quantity(){const n=Math.max(1,Math.min(10,Math.floor(Number(qty.value)||1)));qty.value=String(n);return n}
 function updateTotal(){const total=price*quantity();$("#subtotal").textContent=money(total);$("#total").textContent=money(total)}
@@ -19,4 +19,5 @@ const button=$("#submitOrder");button.disabled=true;button.textContent="Registra
 try{const r=await fetch("/api/checkout",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});const result=await r.json();if(!r.ok)throw Error(result.error||"Não foi possível registrar o pedido");localStorage.setItem("natal_customer_order_access",JSON.stringify({id:result.id,accessKey:result.accessKey}));window.natalAnalytics?.track("order_created",{order_id:result.id,product_id:"basic",value:result.total,currency:"BRL"});location.href="/pagamento-pedido.html?id="+encodeURIComponent(result.id)}catch(err){showMessage(err.message||"Falha ao registrar o pedido. Tente novamente.");button.disabled=false;button.innerHTML='Confirmar pedido <span>→</span>'}
 });
 updateTotal();
+fetch("/api/products",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{const p=data?.products?.find(x=>x.id==="basic");if(p&&Number(p.price)>0){price=Number(p.price);updateTotal()}}).catch(()=>{});
 })();
