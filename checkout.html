@@ -3,196 +3,66 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#173c30">
 <meta name="robots" content="noindex,nofollow">
-<title>Finalizar pedido • Papai Noel Passou Aqui</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="conversion-refresh.css?v=20261028-c">
-<link rel="stylesheet" href="checkout-premium.css?v=20261104-kit-list-clarity"><link rel="stylesheet" href="premium-experience.css?v=20261104-contrast-fix">
-<style>/* Kit único sem carta: esconder etapas decorativas e controles legados */ .checkout-letter-stage,.checkout-review-postcard,.review-person,.personalization-fields,.letter-preview-wrap,.natal-letter-dialog{display:none!important}</style></head>
-<body class="checkout-page">
-<div class="natal-atmosphere" aria-hidden="true"><div class="natal-stars"></div><div class="natal-fir natal-fir-left"></div><div class="natal-fir natal-fir-right"></div><span class="natal-ornament natal-ornament-one"></span><span class="natal-ornament natal-ornament-two"></span></div>
-<header class="checkout-page-header">
-  <a href="index.html#kits" class="checkout-page-back" aria-label="Voltar para os kits">←</a>
-  <div><small>EDIÇÃO DE NATAL</small><strong>Papai Noel Passou Aqui</strong></div>
-  <a class="checkout-identity-link" href="minha-conta.html">Área do cliente</a><span class="checkout-page-secure">♢ Conexão protegida</span>
+<meta name="theme-color" content="#123d2b">
+<title>Finalizar pedido | Lareira Feliz</title>
+<link rel="stylesheet" href="/checkout-own.css?v=20261123-own-checkout">
+</head>
+<body>
+<header class="checkout-header">
+  <a href="/" aria-label="Voltar à loja"><img src="/assets/logo-lareira-feliz.svg" alt="Lareira Feliz" width="260" height="58"></a>
+  <span><span class="lock-dot">●</span> Checkout da loja oficial</span>
 </header>
-
-<main class="checkout-page-main">
-<aside class="checkout-story" aria-label="Sua experiência de Natal">
-<span class="checkout-story-kicker">UMA EXPERIÊNCIA PARA LEMBRAR</span>
-<span class="checkout-story-star" aria-hidden="true">✦</span>
-<h1>O Natal começa com <em>um sinal.</em></h1>
-<p>Pegadas no chão, a lareira montada e uma surpresa que fica na memória.</p>
-<div class="checkout-story-image"><img src="assets/product/natal-2026-kit-completo-120cm.webp" onerror="this.onerror=null;this.src='assets/product/pegadas-site.webp'" alt="Kit completo com lareira de 1,20 m, pegadas e adesivo de vidro" loading="lazy"></div>
-<small>FEITO PARA SURPREENDER DE VERDADE</small>
-</aside>
-<section class="checkout-page-shell">
-  <div class="checkout-experience-banner"><span class="checkout-experience-icon" aria-hidden="true">✦</span><div><small>NATAL 2026 · EDIÇÃO ESPECIAL</small><strong>A magia começa com um detalhe.</strong></div><span class="checkout-experience-flare" aria-hidden="true">✧</span></div><div class="checkout-shell-intro"><span>O SEU MOMENTO ESPECIAL</span><strong id="checkoutMomentTitle">Vamos preparar a surpresa?</strong><p id="checkoutMomentText">Os detalhes que tornam esse Natal único.</p></div>
-  <div class="checkout-page-progress" aria-label="Etapas do pedido">
-    <div class="checkout-progress"><span id="checkoutProgress"></span></div>
-    <div class="checkout-progress-steps">
-      <span data-progress-step="1"><i>1</i><b>Conferir kit</b></span>
-      <span data-progress-step="2"><i>2</i><b>Entrega</b></span>
-      <span data-progress-step="3"><i>3</i><b>Revisar e pagar</b></span>
-    </div>
-  </div>
-
-  <section class="checkout-step active checkout-step-personal" data-step="1">
-    <div class="checkout-step-kicker">PASSO 1 · CONFIRA SEU KIT</div>
-
-    <div class="checkout-oneview" id="checkoutOneView">
-      <div class="checkout-oneview-product">
-        <img id="stepOneKitImage" src="" alt="">
-        <div>
-          <small>SEU KIT</small>
-          <strong id="stepOneKitTitle">Kit Lareira Especial de Natal</strong>
-          <span id="stepOneKitShort">Lareira de 1,20 m, 7 pegadas e adesivo de vidro.</span><span class="checkout-product-value"><strong id="stepOneKitPrice">R$ 124,90</strong><small>Preço único</small></span>
-        </div>
-      </div>
-
-      <button class="checkout-letter-stage" type="button" id="openSantaLetter" aria-haspopup="dialog" aria-controls="letterDialog">
-        <span class="envelope" aria-hidden="true">✉</span><span><small>UM RECADO DIRETO DO POLO NORTE</small><strong>Uma carta assinada pelo Papai Noel.</strong><em>Toque para abrir e descobrir a mensagem</em></span><span class="arrow" aria-hidden="true">↗</span>
-      </button>
-      <div class="basic-checkout-summary" id="basicCheckoutSummary" hidden>
-        <div class="basic-summary-copy">
-          <span>JÁ VEM PRONTO</span>
-          <h2 id="basicSummaryTitle">Kit Lareira Especial</h2>
-          <p id="basicSummaryText">Lareira de papelão para montar, 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.</p>
-          <details class="checkout-details-disclosure" open><summary>O que vem no seu kit <span aria-hidden="true">+</span></summary><div class="basic-summary-list" id="basicSummaryList"></div></details>
-        </div>
-      </div>
-
-      <section class="checkout-personal-includes" id="personalCheckoutIncludes" hidden aria-label="Itens do Kit Personalizado">
-        <span class="checkout-item-kicker">✦ O QUE VEM NO KIT PERSONALIZADO</span>
-        <div class="checkout-item-list" id="personalCheckoutList"></div>
+<main class="checkout-layout">
+  <section class="checkout-main">
+    <div class="checkout-heading"><span class="eyebrow">SUA COMPRA DE NATAL</span><h1>Vamos preparar seu pedido</h1><p>Preencha seus dados para registrar a compra. O Pix será liberado manualmente pela nossa equipe depois da conferência.</p></div>
+    <form id="checkoutForm" novalidate>
+      <section class="form-card">
+        <div class="form-card-heading"><span>1</span><div><h2>Quem está comprando?</h2><p>Usaremos esses dados para falar sobre seu pedido</p></div></div>
+        <label for="customerName">Nome completo</label>
+        <input id="customerName" name="customerName" autocomplete="name" maxlength="100" placeholder="Seu nome e sobrenome" required>
+        <label for="phone">WhatsApp</label>
+        <input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(11) 99999-9999" required>
       </section>
-      <div class="personalization-layout checkout-personalization-compact" id="personalizationLayout">
-        <div class="personalization-fields compact-fields">
-          <label>Nome
-            <input id="childName" maxlength="40" required placeholder="Ex.: Miguel" autocomplete="off">
-          </label>
-          <label>Recado <span class="field-optional">até 220 caracteres</span>
-            <textarea id="letterText" maxlength="220" rows="2" placeholder="Deixe em branco para usar nossa mensagem padrão."></textarea>
-            <small><span id="letterCount">0</span>/220</small>
-          </label>
+      <section class="form-card">
+        <div class="form-card-heading"><span>2</span><div><h2>Onde vamos entregar?</h2><p>O frete é grátis. Precisamos do endereço completo</p></div></div>
+        <div class="cep-row"><div class="field-grow"><label for="cep">CEP</label><input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required></div><button id="lookupCep" class="secondary-button" type="button">Buscar CEP</button></div>
+        <p id="cepStatus" class="field-hint" role="status">Digite o CEP para preencher rua, bairro e cidade</p>
+        <label for="address">Rua / Avenida</label>
+        <input id="address" name="address" autocomplete="address-line1" maxlength="120" placeholder="Nome da rua" required>
+        <div class="field-grid">
+          <div><label for="number">Número</label><input id="number" name="number" autocomplete="address-line2" maxlength="20" placeholder="Nº" required></div>
+          <div><label for="complement">Complemento <span>(opcional)</span></label><input id="complement" name="complement" maxlength="100" placeholder="Apto, bloco, casa"></div>
         </div>
-
-        <div class="letter-preview-wrap compact-letter-preview" id="letterPreviewWrap">
-          <div class="letter-preview-head">
-            <div><small>SUA CARTA</small><strong>Prévia em tempo real</strong></div>
-            <button type="button" class="letter-expand" id="letterExpand" aria-expanded="false" aria-controls="letterPreviewPaper"><span class="letter-expand-label">Abrir carta</span><span aria-hidden="true">↗</span></button>
-          </div>
-          <div class="letter-preview" id="letterPreviewPaper" aria-live="polite">
-            <div class="letter-seal" aria-hidden="true"><span>PN</span></div>
-            <div class="letter-preview-stars" aria-hidden="true">✦ ✧ ✦</div>
-            <small class="letter-preview-kicker">Mensagem especial do Papai Noel</small>
-            <strong class="letter-preview-greeting" id="previewName">Querido Miguel,</strong>
-            <p id="previewLetter">Você foi muito especial este ano! Continue sendo essa pessoa incrível, cheia de alegria e um grande coração. Nos vemos no próximo Natal!</p>
-            <div class="letter-preview-signature"><span>Com carinho,</span><strong>Papai Noel</strong></div>
-          </div>
+        <label for="neighborhood">Bairro</label>
+        <input id="neighborhood" name="neighborhood" autocomplete="address-level3" maxlength="100" placeholder="Seu bairro" required>
+        <div class="field-grid">
+          <div><label for="city">Cidade</label><input id="city" name="city" autocomplete="address-level2" maxlength="100" placeholder="Cidade" required></div>
+          <div><label for="state">UF</label><input id="state" name="state" autocomplete="address-level1" maxlength="2" placeholder="SP" required></div>
         </div>
-      </div>
-    </div>
+      </section>
+      <section class="form-card order-confirm-card">
+        <div class="form-card-heading"><span>3</span><div><h2>Confira seu pedido</h2><p>Uma Lareira Feliz, com frete grátis</p></div></div>
+        <div class="quantity-row"><div><strong>Lareira Feliz</strong><small>120 × 80 × 22 cm · peça única</small></div><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button><input id="quantity" type="number" min="1" max="10" value="1" inputmode="numeric" aria-label="Quantidade"><button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button></div></div>
+        <div class="price-line"><span>Produtos</span><strong id="subtotal">R$ 148,90</strong></div>
+        <div class="price-line free-shipping"><span>Frete</span><strong>GRÁTIS</strong></div>
+        <div class="price-total"><span>Total do pedido</span><strong id="total">R$ 148,90</strong></div>
+        <p class="payment-note"><span>🔒</span> Após confirmar, o pedido ficará aguardando a liberação manual do QR Code Pix no painel da nossa equipe. Nenhuma cobrança será gerada automaticamente.</p>
+      </section>
+      <label class="terms-check"><input id="acceptTerms" type="checkbox" required><span>Confirmo que os dados de entrega estão corretos e aceito os <a href="/termos-de-compra.html" target="_blank" rel="noopener">termos de compra</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
+      <button id="submitOrder" class="submit-button" type="submit">Confirmar pedido <span>→</span></button>
+      <p id="checkoutMessage" class="checkout-message" role="status" aria-live="polite"></p>
+    </form>
   </section>
-
-  <section class="checkout-step checkout-step-delivery" data-step="2">
-    <div class="checkout-step-kicker">PASSO 2 • ENTREGA</div>
-    <div class="checkout-step-title"><h2>Onde entregamos?</h2><p>Informe o CEP. Encontramos seu endereço automaticamente.</p></div>
-    <div class="cep-search cep-auto-search">
-      <label for="cep">CEP
-        <span class="cep-field-wrap"><input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" aria-describedby="cepHelp cepStatus" required><span class="cep-field-symbol" aria-hidden="true">⌖</span></span>
-      </label>
-      <small id="cepHelp">O endereço aparece sozinho ao completar os 8 números.</small>
-      <div id="cepStatus" class="cep-status" role="status" aria-live="polite"></div>
-    </div>
-    <div class="address-result" id="addressResult" hidden><div id="deliveryEstimate" class="delivery-estimate" role="status"></div>
-      <div class="address-found"><span class="address-check" aria-hidden="true">✓</span><div><small>ENDEREÇO ENCONTRADO</small><strong id="addressFoundText">—</strong></div></div>
-      <input id="address" required hidden>
-      <div class="field-grid">
-        <label>Número<input id="number" inputmode="numeric" required placeholder="Ex.: 123" autocomplete="address-line2"></label>
-        <label>Complemento <span class="field-optional">opcional</span><input id="complement" placeholder="Apto, bloco..."></label>
-      </div>
-    </div>
-    <div class="delivery-contact">
-      <label>Nome de quem faz o pedido<input id="customerName" autocomplete="name" required placeholder="Seu nome"></label>
-      <label>WhatsApp<input id="phone" inputmode="tel" autocomplete="tel" required placeholder="(13) 99999-9999" aria-describedby="phoneHelp"><small id="phoneHelp">Para avisar sobre seu pedido e a entrega. Não enviamos mensagens desnecessárias.</small></label>
-    </div>
-  </section>
-
-  <section class="checkout-step checkout-step-review" data-step="3">
-    <div class="checkout-step-kicker">PASSO 3 • REVISÃO E PIX</div>
-    <div class="checkout-step-title"><h2>Está tudo pronto para a magia.</h2><p>Revise os itens e o endereço antes de pagar.</p></div>
-    
-
-    <div class="review-kit-showcase">
-      <div class="review-kit-photo"><img id="reviewKitImage" src="" alt=""></div>
-      <div class="review-kit-copy">
-        <span class="review-kit-kicker">SEU KIT DE NATAL</span>
-        <h2 id="reviewKitTitle">Kit Lareira Especial</h2>
-        <p id="reviewKitProp">Lareira cenográfica de 120 × 80 × 22 cm, 7 pegadas e adesivo de vidro.</p>
-        <details class="checkout-details-disclosure" open><summary>Confira o que será enviado <span aria-hidden="true">+</span></summary><div class="review-kit-items" id="reviewKitItems"></div></details>
-      </div>
-    </div>
-
-    <div class="review-card">
-      <div class="checkout-review-postcard"><span class="letter-icon" aria-hidden="true">✉</span><span><strong>A carta da sua surpresa</strong><small>Revise a mensagem antes do Pix</small></span><button id="reviewLetterTrigger" type="button" aria-haspopup="dialog">Abrir carta ↗</button></div><div class="review-person"><span class="review-spark">✦</span><small id="reviewPersonLabel">A CARTA SERÁ PREPARADA PARA</small><strong id="reviewChildName">Miguel</strong><p id="reviewMessage">Mensagem padrão do Papai Noel</p></div>
-      <div class="review-grid"><div><small>ENTREGA</small><strong id="reviewAddress">—</strong></div><div><small>CONTATO</small><strong id="reviewCustomer">—</strong></div></div>
-      <div class="review-total"><span><small>TOTAL DO PEDIDO</small><b>Preço único do kit</b></span><strong id="reviewTotal">—</strong></div>
-    </div>
-  </section>
-
-  <footer class="checkout-page-actions"><div class="checkout-page-action-buttons"><div class="checkout-footer-price" id="checkoutFooterPrice" aria-live="polite"><small>TOTAL</small><strong id="checkoutFooterTotal">—</strong></div><button type="button" class="btn btn-secondary" id="checkoutBack" hidden>Voltar</button><button type="button" class="btn btn-primary checkout-primary-action" id="checkoutNext">Continuar</button></div><div class="checkout-reassurance">Pagamento via Pix · Seus dados protegidos</div></footer>
-</section>
+  <aside class="checkout-aside">
+    <div class="aside-photo"><img src="/assets/lareira-feliz-natal.webp" alt="Lareira Feliz decorando um ambiente natalino"></div>
+    <div class="aside-copy"><span class="eyebrow">DECORAÇÃO NATALINA</span><h2>A magia do Natal começa em casa</h2><p>Uma lareira cenográfica de papelão kraft premium, com impressão UV digital e montagem por encaixes.</p><ul><li>120 cm de altura</li><li>80 cm de largura</li><li>22 cm de profundidade</li><li>Frete grátis para todo o Brasil</li></ul></div>
+    <div class="aside-security">🔒 Seus dados são usados para registrar e entregar seu pedido</div>
+  </aside>
 </main>
-
-<dialog class="natal-letter-dialog" id="letterDialog" aria-labelledby="letterDialogTitle">
-  <div class="natal-letter-dialog-inner">
-    <div class="natal-letter-dialog-toolbar"><div><small>CARTA ESPECIAL</small><strong id="letterDialogTitle">Uma mensagem do Papai Noel</strong></div><button id="closeLetterDialog" class="natal-letter-close" type="button" aria-label="Fechar carta">×</button></div>
-    <div class="natal-letter-full" id="letterDialogContent"></div>
-    <button type="button" class="natal-letter-done" id="letterDialogDone">Voltar à minha surpresa</button>
-  </div>
-</dialog>
-
-<section class="checkout-payment-scene" id="paymentScene" hidden>
-  <div class="pix-panel pix-panel-special pix-redesign">
-    <div class="pix-topline"><span class="pix-step-kicker">ETAPA FINAL · PAGAMENTO PIX</span><span class="pix-security-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.3 8.4 8 10 4.7-1.6 8-5 8-10V6l-8-4Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8 12 2.6 2.6 5-5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg> Página protegida por HTTPS</span></div>
-    <div class="pix-headline"><div><span class="pix-kicker">É quase Natal!</span><h2>Finalize sua compra com Pix</h2><p id="pixMagicMessage">Seu pedido está pronto. Escolha como prefere pagar.</p></div>
-      <img class="pix-brand-logo" src="https://www.bcb.gov.br/content/estabilidadefinanceira/piximg/logo_pix.png" alt="Pix, meio de pagamento" loading="lazy" onerror="this.hidden=true">
-    </div>
-    <div class="pix-order-summary"><div><small>VALOR DO PEDIDO</small><strong id="pixOrderTotal">—</strong></div><div><small>Nº DO PEDIDO</small><strong id="pixOrderId">—</strong></div></div>
-    <div class="pix-snow-decoration" aria-hidden="true">✦ ❄ ✧ ❅ ✦ ❄ ✧ ❅</div>
-    <div class="pix-expiry-banner"><span aria-hidden="true">⏳</span><div><strong>Seu pedido está reservado por <span id="pixTimer" aria-live="off">60:00</span></strong><small id="pixExpiryNote">Após 60 minutos, o pedido vence e será necessário gerar outro. Pix já enviado? Avise antes do prazo.</small></div></div>
-    <div class="pix-payment-methods">
-      <section class="pix-copy-section" aria-labelledby="pixCopyTitle">
-        <div class="pix-method-heading"><span class="pix-method-number">1</span><div><h3 id="pixCopyTitle">Pague com 1 toque</h3><p>Copie o código e cole na área Pix do aplicativo do seu banco.</p></div></div>
-        <label class="pix-code-label" for="pixCopyPaste">Toque no código para copiar</label>
-        <textarea id="pixCopyPaste" rows="3" readonly spellcheck="false" title="Toque para copiar o Pix" aria-describedby="pixCopyFeedback" placeholder="Preparando seu código Pix…"></textarea>
-        <button class="pix-main-copy-btn" type="button" id="copyPix"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="2"/></svg> Copiar código Pix</button>
-        <p class="pix-copy-feedback" id="pixCopyFeedback" aria-live="polite" role="status"></p>
-      </section>
-      <section class="pix-qr-section" aria-labelledby="pixQrTitle">
-        <div class="pix-method-heading"><span class="pix-method-number">2</span><div><h3 id="pixQrTitle">Ou escaneie o QR Code</h3><p>Para pagar usando outro aparelho.</p></div></div>
-        <div class="pix-qr-wrap"><div id="pixQrCanvas" class="pix-qr" aria-label="QR Code para pagamento Pix"></div></div>
-      </section>
-    </div>
-    <div class="pix-recipient-reassurance"><div><small>CONFIRA NO SEU BANCO ANTES DE PAGAR</small><strong id="pixReceiverLabel">—</strong></div><p>O aplicativo do banco deve mostrar o mesmo recebedor e valor informados acima. Se houver diferença, não confirme a transferência.</p></div>
-    <div class="pix-garland" aria-hidden="true">✦ ✧ ❄ ✦ ❅ ✧ ✦ ❄</div><div class="pix-trust-row" aria-label="Informações sobre o pedido"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.3 8.4 8 10 4.7-1.6 8-5 8-10V6l-8-4Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Conexão HTTPS</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3zM7 7V4h10v3M3 12h18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Pedido registrado</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg> Acompanhe seu pedido</span></div>
-    <div class="pix-final-actions"><button class="btn btn-primary pix-paid-special" type="button" id="pixPaidButton">Já fiz o Pix · avisar pagamento</button>
-    <small>Este botão apenas informa o pagamento. A equipe confirma o recebimento após conferência bancária.</small></div>
-    <div class="payment-celebration-message" id="paymentCelebrationMessage" hidden><div><small>AVISO RECEBIDO</small><strong>Vamos conferir o pagamento.</strong></div></div>
-    <a class="btn btn-whatsapp" id="sendPaymentWhatsApp" href="#" target="_blank" rel="noopener" hidden>Enviar confirmação no WhatsApp</a>
-    <div class="pix-after-links"><a class="btn btn-secondary" id="trackOrderLink" href="minha-conta.html" hidden>Acompanhar pedido</a><a class="btn btn-secondary" href="minha-conta.html#criar-conta" id="createCustomerAccount">Criar acesso à área do cliente</a></div>
-  </div>
-</section>
-
-<script src="analytics.js?v=20261106-unique-ip-v1"></script>
-<script src="meta-pixel.js?v=20261106-consent-v1"></script>
-<script src="store-data.js?v=20261108-preco12490"></script>
-<script src="vendor/qrcode.min.js"></script>
-<script src="pix.js"></script>
-<script src="checkout-page.js?v=20261108-only"></script>
-</body></html>
+<footer class="checkout-footer"><a href="/">← Voltar à loja</a><span>Atendimento (11) 5297-0363 · atendimento@papainoelpassouaqui.com.br</span></footer>
+<script src="/store-data.js"></script>
+<script src="/analytics.js?v=20261106-unique-ip-v1" defer></script>
+<script src="/checkout-page.js?v=20261123-own-checkout" defer></script>
+</body>
+</html>
