@@ -26,8 +26,8 @@ function formatCpf(value){
  const d=digits(value).slice(0,11);
  return d.replace(/^(\d{3})(\d)/,"$1.$2").replace(/^(\d{3})\.(\d{3})(\d)/,"$1.$2.$3").replace(/\.(\d{3})(\d)/,".$1-$2");
 }
-$("#qtyMinus").addEventListener("click",()=>{qty.value=String(Math.max(1,quantity()-1));updateTotal()});
-$("#qtyPlus").addEventListener("click",()=>{qty.value=String(Math.min(10,quantity()+1));updateTotal()});
+$("#qtyMinus").addEventListener("click",()=>{qty.value=String(Math.max(1,quantity()-1));updateTotal();lastLoggiSignature="";calculateLoggiQuote()});
+$("#qtyPlus").addEventListener("click",()=>{qty.value=String(Math.min(10,quantity()+1));updateTotal();lastLoggiSignature="";calculateLoggiQuote()});
 qty.addEventListener("change",()=>{updateTotal();lastLoggiSignature="";calculateLoggiQuote()});
 $("#phone").addEventListener("input",e=>{const d=digits(e.target.value).slice(0,11);e.target.value=d.length<=10?d.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{4})(\d)/,"$1-$2"):d.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d)/,"$1-$2")});
 $("#cpf").addEventListener("input",e=>{e.target.value=formatCpf(e.target.value)});
@@ -147,7 +147,7 @@ form.addEventListener("submit",async e=>{
  if(data.phone.length<10){showMessage("Informe um WhatsApp válido.");$("#phone").focus();return}
  if(data.address.length<3||!data.number||data.neighborhood.length<2||data.city.length<2||!/^[A-Z]{2}$/.test(data.state)){showMessage("Confira o endereço e informe o número da residência.");$("#number").focus();return}
  if(!data.acceptTerms){showMessage("É necessário aceitar os termos para continuar.");$("#acceptTerms").focus();return}
- trackStep("confirmacao");
+ trackAddressAndQuote();trackCustomerData();trackStep("confirmacao");
  const button=$("#submitOrder");button.disabled=true;button.textContent="Registrando seu pedido...";
  try{
   const response=await fetch("/api/checkout",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data,sessionId:window.natalAnalytics?.sessionId||"",attribution:window.natalAnalytics?.attribution||{}})});
