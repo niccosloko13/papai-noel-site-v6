@@ -25,7 +25,7 @@ for(const rel of jsFiles){
   cp.execFileSync(process.execPath,["--check",path.join(root,rel)],{stdio:"inherit"});
 }
 
-cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js")],{stdio:"inherit"});
+cp.execFileSync(process.execPath,["--test",path.join(root,"tests/pix-payload.test.js"),path.join(root,"tests/admin-navigation.test.js")],{stdio:"inherit"});
 
 const pkg=JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8"));
 if(!pkg.dependencies?.["@neondatabase/serverless"])throw new Error("Missing @neondatabase/serverless dependency");
